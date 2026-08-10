@@ -1,0 +1,59 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "mischief",
+  "homepage": "https://github.com/Tinkerers-Labs/mischief",
+  "items": [
+    {
+      "name": "magnetic-tabs",
+      "type": "registry:ui",
+      "title": "Magnetic Tabs",
+      "description": "Accessible tabs with a gently responsive label and a clear active surface.",
+      "dependencies": [
+        "@base-ui/react@^1.7.0",
+        "clsx@^2.1.1",
+        "motion@^13.1.0",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/magnetic-tabs/magnetic-tabs.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["navigation", "tabs", "motion"]
+    },
+    {
+      "name": "elastic-slider",
+      "type": "registry:ui",
+      "title": "Elastic Slider",
+      "description": "An accessible value slider with restrained physical feedback at its limits.",
+      "dependencies": [
+        "@base-ui/react@^1.7.0",
+        "clsx@^2.1.1",
+        "motion@^13.1.0",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/elastic-slider/elastic-slider.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["form", "slider", "motion"]
+    },
+    {
+      "name": "hold-button",
+      "type": "registry:ui",
+      "title": "Hold Button",
+      "description": "A confirmation button that completes after a deliberate pointer hold and remains accessible from a keyboard.",
+      "dependencies": ["clsx@^2.1.1", "tailwind-merge@^3.3.1"],
+      "files": [
+        {
+          "path": "registry/default/hold-button/hold-button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["button", "confirmation", "feedback"]
+    }
+  ]
+}
