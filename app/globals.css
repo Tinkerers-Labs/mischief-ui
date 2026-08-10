@@ -65,7 +65,6 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-body), sans-serif;
   font-optical-sizing: auto;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -85,25 +84,6 @@ a:focus-visible {
 ::selection {
   background: var(--accent);
   color: var(--accent-foreground);
-}
-
-.site-header {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  margin: 0 auto;
-  max-width: 90rem;
-  padding: 1.25rem clamp(1rem, 4vw, 3rem);
-}
-
-.brand,
-.github-link {
-  align-items: center;
-  color: inherit;
-  display: inline-flex;
-  font-weight: 650;
-  gap: 0.625rem;
-  text-decoration: none;
 }
 
 .brand-lockup {
@@ -127,39 +107,8 @@ a:focus-visible {
   width: 100%;
 }
 
-.site-nav {
-  align-items: center;
-  display: flex;
-  font-size: 0.875rem;
-  font-weight: 600;
-  gap: clamp(0.75rem, 2.5vw, 1.75rem);
-}
-
-.site-nav a {
-  color: inherit;
-  min-height: 44px;
-  align-items: center;
-  display: inline-flex;
-  text-decoration: none;
-}
-
-.site-nav a:hover,
 .detail-link:hover {
   color: var(--primary);
-}
-
-.github-link {
-  min-height: 44px;
-  text-decoration-line: underline;
-  text-underline-offset: 0.25rem;
-}
-
-.hero {
-  display: grid;
-  margin: 0 auto;
-  max-width: 90rem;
-  min-height: calc(100svh - 84px);
-  padding: clamp(4rem, 9vw, 8rem) clamp(1rem, 4vw, 3rem) 3rem;
 }
 
 .eyebrow,
@@ -170,78 +119,11 @@ a:focus-visible {
   text-transform: uppercase;
 }
 
-.hero h1 {
-  align-self: center;
-  font-family: var(--font-display), sans-serif;
-  font-size: clamp(3.25rem, 9.5vw, 8.5rem);
-  font-weight: 650;
-  letter-spacing: -0.06em;
-  line-height: 0.88;
-  max-width: 11ch;
-  text-wrap: balance;
-}
-
-.hero h1 em {
-  color: var(--primary);
-  display: block;
-  font-style: normal;
-  margin-left: clamp(0rem, 8vw, 8rem);
-}
-
-.hero-footer {
-  align-items: end;
-  display: flex;
-  gap: 2rem;
-  justify-content: space-between;
-}
-
-.hero-footer p {
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  line-height: 1.55;
-  max-width: 42rem;
-  text-wrap: pretty;
-}
-
-.hero-actions {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-  margin-top: 2rem;
-}
-
-.hero-actions a,
-.primary-link,
 .download-link,
 .detail-link {
   color: inherit;
   font-weight: 650;
   text-underline-offset: 0.3rem;
-}
-
-.hero-actions .primary-link {
-  background: var(--foreground);
-  border-radius: 999px;
-  color: var(--background);
-  padding: 0.8rem 1.2rem;
-  text-decoration: none;
-}
-
-.round-link {
-  align-items: center;
-  background: var(--foreground);
-  border-radius: 999px;
-  color: var(--background);
-  display: flex;
-  flex: 0 0 auto;
-  height: 3.5rem;
-  justify-content: center;
-  transition: transform 160ms ease-out;
-  width: 3.5rem;
-}
-
-.round-link:hover {
-  transform: translateY(3px);
 }
 
 .gallery {
@@ -447,8 +329,8 @@ a:focus-visible {
   gap: 0.15rem;
   padding: 2rem 2rem 4rem;
   position: sticky;
-  top: 0;
-  height: 100svh;
+  height: calc(100svh - 4.5rem);
+  top: 4.5rem;
 }
 
 .docs-sidebar a {
@@ -735,22 +617,6 @@ footer p {
 }
 
 @media (max-width: 780px) {
-  .site-nav > a:not(.github-link):not(:first-child) {
-    display: none;
-  }
-
-  .nav-github-label {
-    display: none;
-  }
-
-  .hero {
-    min-height: 46rem;
-  }
-
-  .hero h1 em {
-    margin-left: 0;
-  }
-
   .component-section {
     grid-template-columns: 1fr;
   }

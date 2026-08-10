@@ -2,7 +2,7 @@
 
 Good interfaces deserve a little mischief.
 
-Three playful, production-ready React components built with Base UI, Motion, Tailwind CSS, and shadcn theme tokens.
+Playful, production-ready React components built with Base UI, Motion, Tailwind CSS, and shadcn theme tokens.
 
 ## Install from npm
 

@@ -169,7 +169,7 @@ Motion must explain state, preserve continuity, or provide tactile feedback.
 
 ## Component family
 
-The first collection is called Tactile Controls. It contains three familiar controls with clearer physical feedback:
+The first collection is called Tactile Controls. It is a focused set of familiar controls with clearer physical feedback:
 
 ### Magnetic Tabs
 
