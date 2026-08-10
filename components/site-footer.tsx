@@ -2,27 +2,28 @@ import Link from "next/link"
 import {
   ArrowRight,
   ArrowUpRight,
-  GitFork,
   Package,
   type LucideIcon,
 } from "lucide-react"
 
 import { BrandLogo } from "@/components/brand-logo"
+import { GitHubIcon } from "@/components/github-icon"
 import {
   externalLinks,
   type ExternalLinkId,
   siteNavigation,
+  tinkerersLabsUrl,
 } from "@/lib/site-links"
 
 const externalIcons: Record<ExternalLinkId, LucideIcon> = {
   npm: Package,
-  github: GitFork,
+  github: GitHubIcon,
 }
 
 export function SiteFooter() {
   return (
-    <footer className="bg-foreground text-background mt-16">
-      <div className="mx-auto max-w-[90rem] px-4 py-12 md:px-8 md:py-16 lg:px-12 lg:py-24">
+    <footer className="bg-foreground text-background mt-16 overflow-hidden">
+      <div className="mx-auto max-w-[90rem] px-4 pt-12 md:px-8 md:pt-16 lg:px-12 lg:pt-24">
         <div className="grid gap-16 lg:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.65fr)] lg:gap-24">
           <div>
             <p className="text-background/60 text-xs font-bold tracking-[0.08em] uppercase">
@@ -98,12 +99,28 @@ export function SiteFooter() {
           </nav>
         </div>
 
-        <div className="border-background/15 mt-16 flex flex-col gap-6 border-t pt-6 text-sm sm:flex-row sm:items-center sm:justify-between">
+        <div className="border-background/15 mt-16 flex flex-col gap-6 border-t py-6 text-sm sm:flex-row sm:items-center sm:justify-between">
           <BrandLogo />
           <div className="text-background/55 flex flex-wrap gap-x-6 gap-y-2">
             <span>MIT licensed.</span>
-            <span>Built carefully at Tinkerers Labs.</span>
+            <span>
+              Built carefully at{" "}
+              <a
+                className="hover:text-primary underline decoration-current/35 underline-offset-4 transition-colors duration-150"
+                href={tinkerersLabsUrl}
+              >
+                Tinkerers Labs
+              </a>
+              .
+            </span>
           </div>
+        </div>
+
+        <div
+          className="text-background/[0.07] overflow-hidden pt-8 text-center font-[family-name:var(--font-display)] text-[clamp(5rem,17vw,15rem)] leading-[0.72] font-semibold tracking-[-0.075em] whitespace-nowrap select-none"
+          aria-hidden="true"
+        >
+          Mischief
         </div>
       </div>
     </footer>

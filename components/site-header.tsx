@@ -1,7 +1,8 @@
 import Link from "next/link"
-import { GitFork, Package, type LucideIcon } from "lucide-react"
+import { Package, type LucideIcon } from "lucide-react"
 
 import { BrandLogo } from "@/components/brand-logo"
+import { GitHubIcon } from "@/components/github-icon"
 import {
   externalLinks,
   type ExternalLinkId,
@@ -10,7 +11,7 @@ import {
 
 const utilityIcons: Record<ExternalLinkId, LucideIcon> = {
   npm: Package,
-  github: GitFork,
+  github: GitHubIcon,
 }
 
 function UtilityLink({
@@ -39,7 +40,7 @@ function UtilityLink({
 export function SiteHeader() {
   return (
     <header className="border-border bg-background/90 fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl">
-      <div className="mx-auto flex h-18 max-w-[90rem] items-center justify-between px-4 md:px-8 lg:px-12">
+      <div className="mx-auto flex h-16 max-w-[90rem] items-center justify-between px-4 md:px-8 lg:px-12">
         <Link
           className="inline-flex items-center font-semibold text-inherit no-underline"
           href="/"

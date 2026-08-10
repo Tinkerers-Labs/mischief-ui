@@ -4,6 +4,8 @@ export const siteNavigation = [
   { href: "/brand", label: "Brand" },
 ] as const
 
+export const tinkerersLabsUrl = "https://tinkererslabs.com/"
+
 export const externalLinks = [
   {
     id: "npm",

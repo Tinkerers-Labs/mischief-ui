@@ -329,8 +329,8 @@ a:focus-visible {
   gap: 0.15rem;
   padding: 2rem 2rem 4rem;
   position: sticky;
-  height: calc(100svh - 4.5rem);
-  top: 4.5rem;
+  height: calc(100svh - 4rem);
+  top: 4rem;
 }
 
 .docs-sidebar a {

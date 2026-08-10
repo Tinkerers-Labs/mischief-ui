@@ -11,7 +11,7 @@ export default function Home() {
       <SiteHeader />
 
       <section
-        className="mx-auto grid min-h-[calc(100svh-4.5rem)] max-w-[90rem] grid-rows-[auto_1fr_auto] px-4 py-12 md:px-8 md:py-16 lg:px-12 lg:py-24"
+        className="mx-auto grid min-h-[calc(100svh-4rem)] max-w-[90rem] grid-rows-[auto_1fr_auto] px-4 py-12 md:px-8 md:py-16 lg:px-12 lg:py-24"
         id="top"
       >
         <p className="text-xs font-bold tracking-[0.08em] uppercase">
