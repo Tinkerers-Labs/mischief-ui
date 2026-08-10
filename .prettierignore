@@ -1,4 +1,5 @@
 .next
 node_modules
+next-env.d.ts
 public/r
 pnpm-lock.yaml
