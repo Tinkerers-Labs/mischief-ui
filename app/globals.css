@@ -602,20 +602,6 @@ pre {
   color: var(--accent-foreground);
 }
 
-footer {
-  background: var(--foreground);
-  color: var(--background);
-  display: flex;
-  gap: 2rem;
-  justify-content: space-between;
-  margin-top: 4rem;
-  padding: 2rem clamp(1rem, 4vw, 3rem);
-}
-
-footer p {
-  font-size: 0.875rem;
-}
-
 @media (max-width: 780px) {
   .component-section {
     grid-template-columns: 1fr;
@@ -627,11 +613,6 @@ footer p {
 
   .demo-frame {
     min-height: 25rem;
-  }
-
-  footer {
-    align-items: flex-start;
-    flex-direction: column;
   }
 
   .docs-layout {

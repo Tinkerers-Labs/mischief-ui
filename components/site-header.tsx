@@ -2,39 +2,28 @@ import Link from "next/link"
 import { GitFork, Package, type LucideIcon } from "lucide-react"
 
 import { BrandLogo } from "@/components/brand-logo"
+import {
+  externalLinks,
+  type ExternalLinkId,
+  siteNavigation,
+} from "@/lib/site-links"
 
-const navigation = [
-  { href: "/docs/components/magnetic-tabs", label: "Components" },
-  { href: "/docs", label: "Docs" },
-  { href: "/brand", label: "Brand" },
-] as const
-
-const utilities = [
-  {
-    href: "https://www.npmjs.com/package/mischief-ui",
-    label: "Mischief on npm",
-    title: "npm",
-    icon: Package,
-  },
-  {
-    href: "https://github.com/Tinkerers-Labs/mischief-ui",
-    label: "Mischief on GitHub",
-    title: "GitHub",
-    icon: GitFork,
-  },
-] satisfies ReadonlyArray<{
-  href: string
-  label: string
-  title: string
-  icon: LucideIcon
-}>
+const utilityIcons: Record<ExternalLinkId, LucideIcon> = {
+  npm: Package,
+  github: GitFork,
+}
 
 function UtilityLink({
   href,
   label,
   title,
   icon: Icon,
-}: (typeof utilities)[number]) {
+}: {
+  href: string
+  label: string
+  title: string
+  icon: LucideIcon
+}) {
   return (
     <a
       className="hover:text-primary inline-flex size-11 items-center justify-center transition-colors duration-150"
@@ -62,7 +51,7 @@ export function SiteHeader() {
           className="flex items-center gap-0 text-sm font-semibold sm:gap-2 lg:gap-4"
           aria-label="Main navigation"
         >
-          {navigation.map((item) => (
+          {siteNavigation.map((item) => (
             <Link
               key={item.href}
               className="hover:text-primary hidden min-h-11 items-center text-inherit no-underline transition-colors duration-150 min-[520px]:inline-flex"
@@ -75,8 +64,14 @@ export function SiteHeader() {
             className="bg-border mx-1 hidden h-5 w-px min-[520px]:block"
             aria-hidden="true"
           />
-          {utilities.map((item) => (
-            <UtilityLink key={item.href} {...item} />
+          {externalLinks.map((item) => (
+            <UtilityLink
+              key={item.id}
+              href={item.href}
+              label={item.accessibleLabel}
+              title={item.label}
+              icon={utilityIcons[item.id]}
+            />
           ))}
         </nav>
       </div>

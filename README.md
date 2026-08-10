@@ -2,7 +2,7 @@
 
 Good interfaces deserve a little mischief.
 
-Browse the live components and documentation at [tinkerers-labs.github.io/mischief-ui](https://tinkerers-labs.github.io/mischief-ui/).
+Browse the live components and documentation at [ui.tinkererslabs.com](https://ui.tinkererslabs.com/).
 
 Mischief is a small collection of playful, production-ready React components. The components use Base UI where behavior is complex, Tailwind CSS for styling, and shadcn theme tokens so they fit the project that receives them.
 

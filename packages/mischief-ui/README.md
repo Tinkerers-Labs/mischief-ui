@@ -33,4 +33,4 @@ For full source ownership, install through the shadcn registry instead:
 pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/elastic-slider
 ```
 
-See the live components and complete docs at https://tinkerers-labs.github.io/mischief-ui/.
+See the live components and complete docs at https://ui.tinkererslabs.com/.

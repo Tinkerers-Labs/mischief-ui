@@ -2,6 +2,7 @@ import Link from "next/link"
 import { ArrowDown } from "lucide-react"
 
 import { ComponentGallery } from "@/components/component-gallery"
+import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 
 export default function Home() {
@@ -55,10 +56,7 @@ export default function Home() {
 
       <ComponentGallery />
 
-      <footer>
-        <p>Built carefully at Tinkerers Labs.</p>
-        <p>MIT licensed. Take the code and make it yours.</p>
-      </footer>
+      <SiteFooter />
     </main>
   )
 }

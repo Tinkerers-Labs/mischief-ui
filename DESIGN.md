@@ -130,6 +130,8 @@ Pages should alternate between open editorial space and dense, useful examples. 
 
 Component documentation uses a stable left rail on wide screens and a horizontal component list on small screens. Each detail page follows the same reading order: purpose, live preview, installation, usage, API, accessibility, dependencies, and source.
 
+The site footer is an ink-colored closing section used on every public page. It pairs one direct invitation with compact navigation, package links, and a quiet license line. It should feel like a useful final thought, not a sitemap dump.
+
 ## Radius, borders, and shadows
 
 | Token        | Value                                                                       | Usage                         |

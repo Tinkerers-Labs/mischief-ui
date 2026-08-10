@@ -1,4 +1,5 @@
 import { MischiefMark } from "@/components/brand-logo"
+import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 
 export default function BrandPage() {
@@ -55,6 +56,7 @@ export default function BrandPage() {
           </div>
         </section>
       </main>
+      <SiteFooter />
     </>
   )
 }
