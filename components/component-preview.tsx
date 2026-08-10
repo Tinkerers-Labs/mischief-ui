@@ -3,9 +3,13 @@
 import * as React from "react"
 import { Apple, Check, RotateCcw, Volume2 } from "lucide-react"
 
+import { AskAiDemo } from "@/components/ask-ai-demo"
 import { FloatingIndexDemo } from "@/components/floating-index-demo"
+import { FileThumbnailDemo } from "@/components/file-thumbnail-demo"
 import { ImageGalleryDemo } from "@/components/image-gallery-demo"
+import { ScrollToTopDemo } from "@/components/scroll-to-top-demo"
 import { ElasticSlider } from "@/registry/default/elastic-slider/elastic-slider"
+import { FileUpload } from "@/registry/default/file-upload/file-upload"
 import { HoldButton } from "@/registry/default/hold-button/hold-button"
 import { ImpossibleCheckbox } from "@/registry/default/impossible-checkbox/impossible-checkbox"
 import { MagneticTabs } from "@/registry/default/magnetic-tabs/magnetic-tabs"
@@ -122,6 +126,28 @@ export function ComponentPreview({ slug }: { slug: string }) {
 
   if (slug === "image-gallery") {
     return <ImageGalleryDemo />
+  }
+
+  if (slug === "scroll-to-top-button") {
+    return <ScrollToTopDemo />
+  }
+
+  if (slug === "ask-ai") {
+    return <AskAiDemo />
+  }
+
+  if (slug === "file-upload") {
+    return (
+      <FileUpload
+        accept="image/*,.pdf"
+        className="mx-auto max-w-2xl"
+        description="Images or PDF · Up to 10 MB each"
+      />
+    )
+  }
+
+  if (slug === "file-thumbnail") {
+    return <FileThumbnailDemo />
   }
 
   return (

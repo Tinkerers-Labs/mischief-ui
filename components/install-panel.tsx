@@ -6,12 +6,37 @@ import { Braces, Package } from "lucide-react"
 import { CopyCommand } from "@/components/copy-command"
 import { siteConfig } from "@/site.config"
 
-type InstallMethod = "shadcn" | "npm"
+type InstallMethod = "source" | "npm"
+type PackageManager = "pnpm" | "npm" | "yarn" | "bun"
 
 const methods = [
-  { id: "shadcn", label: "shadcn", icon: Braces },
-  { id: "npm", label: "npm", icon: Package },
+  { id: "source", label: "Source", icon: Braces },
+  { id: "npm", label: "npm package", icon: Package },
 ] as const
+
+const packageManagers = ["pnpm", "npm", "yarn", "bun"] as const
+
+function sourceCommands(command: string): Record<PackageManager, string> {
+  const args = command.replace(/^pnpm dlx /, "")
+
+  return {
+    pnpm: command,
+    npm: `npx ${args}`,
+    yarn: `yarn dlx ${args}`,
+    bun: `bunx --bun ${args}`,
+  }
+}
+
+function packageCommands(command: string): Record<PackageManager, string> {
+  const packages = command.replace(/^pnpm add /, "")
+
+  return {
+    pnpm: command,
+    npm: `npm install ${packages}`,
+    yarn: `yarn add ${packages}`,
+    bun: `bun add ${packages}`,
+  }
+}
 
 export function InstallPanel({
   shadcnCommand,
@@ -20,7 +45,12 @@ export function InstallPanel({
   shadcnCommand: string
   npmImport: string
 }) {
-  const [method, setMethod] = React.useState<InstallMethod>("shadcn")
+  const [method, setMethod] = React.useState<InstallMethod>("source")
+  const [manager, setManager] = React.useState<PackageManager>("pnpm")
+  const commands =
+    method === "source"
+      ? sourceCommands(shadcnCommand)
+      : packageCommands(siteConfig.package.installCommand)
 
   return (
     <div className="install-panel">
@@ -40,24 +70,35 @@ export function InstallPanel({
       </div>
 
       <div className="install-content">
-        {method === "shadcn" && (
-          <>
-            <p>Copy the source into your project and make it yours.</p>
-            <CopyCommand label="Run" command={shadcnCommand} />
-          </>
-        )}
+        <p>
+          {method === "source"
+            ? "Copy the component into your project and make it yours."
+            : "Keep the component behind a package import."}
+        </p>
+
+        <div
+          aria-label="Package manager"
+          className="package-manager-tabs"
+          role="group"
+        >
+          {packageManagers.map((packageManager) => (
+            <button
+              aria-pressed={manager === packageManager}
+              key={packageManager}
+              onClick={() => setManager(packageManager)}
+              type="button"
+            >
+              {packageManager}
+            </button>
+          ))}
+        </div>
+
+        <CopyCommand command={commands[manager]} />
 
         {method === "npm" && (
-          <>
-            <p>Keep the components behind a package import.</p>
-            <CopyCommand
-              label="Run"
-              command={siteConfig.package.installCommand}
-            />
-            <pre className="install-import">
-              <code>{npmImport}</code>
-            </pre>
-          </>
+          <pre className="install-import">
+            <code>{npmImport}</code>
+          </pre>
         )}
       </div>
     </div>

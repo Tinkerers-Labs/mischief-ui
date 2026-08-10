@@ -1,15 +1,23 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 
 import { CopyCommand } from "@/components/copy-command"
 import { componentDocs } from "@/lib/component-docs"
 import { registryInstallCommand, siteConfig } from "@/site.config"
 
+export const metadata: Metadata = {
+  title: `Documentation | ${siteConfig.name}`,
+  description:
+    "Install Mischief UI components through the shadcn registry or npm, then adapt the source for your React project.",
+  alternates: { canonical: "/docs" },
+}
+
 export default function DocsPage() {
   const components = componentDocs.filter(({ kind }) => kind === "component")
   const blocks = componentDocs.filter(({ kind }) => kind === "block")
 
   return (
-    <article className="docs-article">
+    <article className="docs-article docs-intro">
       <p className="eyebrow">Introduction</p>
       <h1>
         Small collection.

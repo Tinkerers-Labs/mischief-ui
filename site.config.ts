@@ -1,5 +1,6 @@
 const repositoryPath = "Tinkerers-Labs/mischief-ui"
 const repositoryUrl = `https://github.com/${repositoryPath}`
+const siteUrl = "https://ui.tinkererslabs.com/"
 const siteName = "Mischief"
 const packageName = "mischief-ui"
 const packageUrl = `https://www.npmjs.com/package/${packageName}`
@@ -7,9 +8,10 @@ const skillName = "mischief-ui"
 const routes = {
   home: "/",
   docs: "/docs",
-  components: "/docs/components/magnetic-tabs",
+  components: "/#components",
   brand: "/brand",
   license: "/license",
+  skill: "/skill.md",
 } as const
 
 const navigation = [
@@ -20,14 +22,17 @@ const navigation = [
 
 export const siteConfig = {
   name: siteName,
-  title: `${siteName} | UI with personality`,
+  title: `${siteName} UI | Playful React Components for shadcn`,
   tagline: "Good interfaces deserve a little mischief.",
   description:
-    "Playful, production-ready React components that work with shadcn.",
-  url: "https://ui.tinkererslabs.com/",
+    "Open-source React components and blocks for shadcn projects, with playful interaction, accessible behavior, Tailwind CSS, and source you can own.",
+  url: siteUrl,
   routes,
   assets: {
     socialPreview: "/brand/mischief-social-preview.png",
+  },
+  analytics: {
+    googleMeasurementId: "G-PSFZX72FZ4",
   },
   organization: {
     name: "Tinkerers Labs",
@@ -54,6 +59,8 @@ export const siteConfig = {
   },
   skill: {
     name: skillName,
+    url: `${siteUrl}skill.md`,
+    prompt: `Read ${siteUrl}skill.md and follow its instructions.`,
     installCommand: `npx skills add ${repositoryPath} --skill ${skillName}`,
   },
   navigation,

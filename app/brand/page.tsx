@@ -1,7 +1,15 @@
+import type { Metadata } from "next"
+
 import { MischiefMark } from "@/components/brand-logo"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { siteConfig } from "@/site.config"
+
+export const metadata: Metadata = {
+  title: `Brand | ${siteConfig.name}`,
+  description: "Download the Mischief UI mark and learn how to use it.",
+  alternates: { canonical: "/brand" },
+}
 
 export default function BrandPage() {
   return (
@@ -49,10 +57,22 @@ export default function BrandPage() {
             <p className="eyebrow">Palette</p>
             <h2>Warm, not loud</h2>
             <div className="swatches">
-              <span className="swatch swatch-paper">Paper</span>
-              <span className="swatch swatch-ink">Ink</span>
-              <span className="swatch swatch-tomato">Tomato</span>
-              <span className="swatch swatch-leaf">Leaf</span>
+              <span className="swatch swatch-paper">
+                <strong>Paper</strong>
+                <code>#FFFFFF</code>
+              </span>
+              <span className="swatch swatch-ink">
+                <strong>Ink</strong>
+                <code>#201711</code>
+              </span>
+              <span className="swatch swatch-tomato">
+                <strong>Tomato</strong>
+                <code>#FB573B</code>
+              </span>
+              <span className="swatch swatch-leaf">
+                <strong>Leaf</strong>
+                <code>#99CA50</code>
+              </span>
             </div>
           </div>
         </section>

@@ -6,8 +6,11 @@ import { Apple, Check, RotateCcw, Volume2 } from "lucide-react"
 
 import { CopyCommand } from "@/components/copy-command"
 import { FloatingIndexDemo } from "@/components/floating-index-demo"
+import { FileThumbnailDemo } from "@/components/file-thumbnail-demo"
 import { ImageGalleryDemo } from "@/components/image-gallery-demo"
+import { ScrollToTopDemo } from "@/components/scroll-to-top-demo"
 import { ElasticSlider } from "@/registry/default/elastic-slider/elastic-slider"
+import { FileUpload } from "@/registry/default/file-upload/file-upload"
 import { HoldButton } from "@/registry/default/hold-button/hold-button"
 import { ImpossibleCheckbox } from "@/registry/default/impossible-checkbox/impossible-checkbox"
 import { MagneticTabs } from "@/registry/default/magnetic-tabs/magnetic-tabs"
@@ -278,6 +281,69 @@ export function ComponentGallery() {
         </div>
         <div className="demo-frame items-start">
           <ImageGalleryDemo />
+        </div>
+      </section>
+
+      <section className="component-section">
+        <div className="component-copy">
+          <p className="component-number">09 / Wayfinding</p>
+          <h2>Scroll to Top Button</h2>
+          <p>
+            A floating way back after someone has moved down a long page. It
+            stays hidden near the top and respects reduced-motion preferences.
+          </p>
+          <InstallCommand name="scroll-to-top-button" />
+          <Link
+            className="detail-link"
+            href="/docs/components/scroll-to-top-button"
+          >
+            Preview, API, and source
+          </Link>
+        </div>
+        <div className="demo-frame">
+          <ScrollToTopDemo />
+        </div>
+      </section>
+
+      <section className="component-section">
+        <div className="component-copy">
+          <p className="component-number">11 / Forms</p>
+          <h2>File Upload</h2>
+          <p>
+            Pick files or drop them into a queue that explains what happened.
+            Type, size, count, and duplicate rules are built in. Connect your
+            own upload function when you need progress, cancel, and retry.
+          </p>
+          <InstallCommand name="file-upload" />
+          <Link className="detail-link" href="/docs/components/file-upload">
+            Preview, API, and source
+          </Link>
+        </div>
+        <div className="demo-frame p-4 md:p-8">
+          <FileUpload
+            accept="image/*,.pdf"
+            className="w-full max-w-2xl"
+            description="Images or PDF · Up to 10 MB each"
+          />
+        </div>
+      </section>
+
+      <section className="component-section">
+        <div className="component-copy">
+          <p className="component-number">12 / Files</p>
+          <h2>File Thumbnail</h2>
+          <p>
+            Give image attachments and upload queues a consistent preview. Local
+            image files work directly, and slow or failed images keep their
+            state clear.
+          </p>
+          <InstallCommand name="file-thumbnail" />
+          <Link className="detail-link" href="/docs/components/file-thumbnail">
+            Preview, API, and source
+          </Link>
+        </div>
+        <div className="demo-frame p-6 md:p-10">
+          <FileThumbnailDemo />
         </div>
       </section>
     </div>

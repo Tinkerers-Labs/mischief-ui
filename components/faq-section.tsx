@@ -71,9 +71,12 @@ const questions = [
     question: "Can my coding agent install components for me?",
     answer: (
       <p>
-        Yes. Install the {siteConfig.name} skill once, then ask your agent for a
-        component by name. The command is in the homepage hero and the project
-        README.
+        Yes. Ask it to read{" "}
+        <ExternalLink href={siteConfig.skill.url}>
+          mischief-ui/skill.md
+        </ExternalLink>
+        , follow the instructions, and add a component by name. The same file is
+        available through the standard Agent Skills discovery endpoint.
       </p>
     ),
   },

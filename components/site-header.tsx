@@ -38,7 +38,7 @@ function UtilityLink({
 export function SiteHeader() {
   return (
     <header className="border-border bg-background/90 fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-[90rem] items-center justify-between px-4 md:px-8 lg:px-12">
+      <div className="mx-auto flex h-14 max-w-[90rem] items-center justify-between px-4 md:px-8 lg:px-12">
         <Link
           className="inline-flex items-center font-semibold text-inherit no-underline"
           href={siteConfig.routes.home}
@@ -47,32 +47,36 @@ export function SiteHeader() {
           <BrandLogo />
         </Link>
         <nav
-          className="flex items-center gap-0 text-sm font-semibold sm:gap-2 lg:gap-4"
+          className="flex items-center text-sm font-semibold"
           aria-label="Main navigation"
         >
-          {siteConfig.navigation.map((item) => (
-            <Link
-              key={item.href}
-              className="hover:text-primary hidden min-h-11 items-center text-inherit no-underline transition-colors duration-150 min-[520px]:inline-flex"
-              href={item.href}
-            >
-              {item.label}
-            </Link>
-          ))}
+          <div className="hidden items-center gap-5 min-[520px]:flex lg:gap-6">
+            {siteConfig.navigation.map((item) => (
+              <Link
+                key={item.href}
+                className="hover:text-primary inline-flex min-h-11 items-center text-inherit no-underline transition-colors duration-150"
+                href={item.href}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
           <span
-            className="bg-border mx-1 hidden h-5 w-px min-[520px]:block"
+            className="bg-border mx-2 hidden h-5 w-px min-[520px]:block lg:mx-3"
             aria-hidden="true"
           />
-          {siteConfig.externalLinks.map((item) => (
-            <UtilityLink
-              key={item.id}
-              href={item.href}
-              label={item.accessibleLabel}
-              title={item.label}
-              icon={utilityIcons[item.id]}
-            />
-          ))}
-          <ThemeToggle />
+          <div className="flex items-center gap-0">
+            {siteConfig.externalLinks.map((item) => (
+              <UtilityLink
+                key={item.id}
+                href={item.href}
+                label={item.accessibleLabel}
+                title={item.label}
+                icon={utilityIcons[item.id]}
+              />
+            ))}
+            <ThemeToggle />
+          </div>
         </nav>
       </div>
     </header>

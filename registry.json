@@ -143,6 +143,78 @@
         }
       ],
       "categories": ["gallery", "images", "dialog", "layout"]
+    },
+    {
+      "name": "scroll-to-top-button",
+      "type": "registry:ui",
+      "title": "Scroll to Top Button",
+      "description": "A floating shortcut that appears after someone moves down a long page or scroll container and returns them to the top.",
+      "dependencies": [
+        "clsx@^2.1.1",
+        "lucide-react@^1.31.0",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/scroll-to-top-button/scroll-to-top-button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["button", "navigation", "scroll", "floating"]
+    },
+    {
+      "name": "ask-ai",
+      "type": "registry:ui",
+      "title": "Ask AI",
+      "description": "A source-aware handoff that opens a prepared prompt in an AI assistant or copies it for another one.",
+      "dependencies": [
+        "clsx@^2.1.1",
+        "lucide-react@^1.31.0",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ask-ai/ask-ai.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "button", "links", "copy"]
+    },
+    {
+      "name": "file-upload",
+      "type": "registry:ui",
+      "title": "File Upload",
+      "description": "A file picker and dropzone with validation, a visible queue, and optional progress, cancel, and retry handling.",
+      "dependencies": [
+        "clsx@^2.1.1",
+        "lucide-react@^1.31.0",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/file-upload/file-upload.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["file", "upload", "dropzone", "form"]
+    },
+    {
+      "name": "file-thumbnail",
+      "type": "registry:ui",
+      "title": "File Thumbnail",
+      "description": "A compact image preview with automatic browser File support, loading, and failure states.",
+      "dependencies": [
+        "clsx@^2.1.1",
+        "lucide-react@^1.31.0",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/file-thumbnail/file-thumbnail.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["file", "thumbnail", "preview", "loading"]
     }
   ]
 }

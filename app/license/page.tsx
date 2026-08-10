@@ -11,6 +11,7 @@ import { siteConfig } from "@/site.config"
 export const metadata: Metadata = {
   title: `License | ${siteConfig.name}`,
   description: `How you can use, modify, and distribute ${siteConfig.name} under the MIT License.`,
+  alternates: { canonical: siteConfig.routes.license },
 }
 
 const permissions = [

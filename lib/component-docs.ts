@@ -340,6 +340,210 @@ export function WorkGallery() {
     accessibility:
       "Every thumbnail is a named button. Base UI supplies the modal dialog, focus trap, scroll lock, Escape handling, and focus restoration. Left and Right Arrow move between images. Captions, position, and close controls remain available without hover.",
   },
+  {
+    slug: "scroll-to-top-button",
+    kind: "component",
+    name: "Scroll to Top Button",
+    number: "09",
+    family: "Wayfinding",
+    summary:
+      "A floating way back after someone has moved down a long page or scroll area. It stays hidden near the top.",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("scroll-to-top-button"),
+    npmImport: packageImport("ScrollToTopButton"),
+    usage: `export function LongPage() {
+  return (
+    <>
+      <main>{/* Long page content */}</main>
+      <ScrollToTopButton />
+    </>
+  )
+}`,
+    props: [
+      [
+        "containerRef",
+        "RefObject<HTMLElement>",
+        "Scrolls a container instead of the page.",
+      ],
+      [
+        "showAfter",
+        "number",
+        "Scroll distance before the button appears. Defaults to 320.",
+      ],
+      [
+        "behavior",
+        '"auto" | "instant" | "smooth"',
+        "The requested scroll behavior. Defaults to smooth.",
+      ],
+      ["label", "string", "The accessible name and title."],
+      ["className", "string", "Classes for placement and appearance."],
+      ["...buttonProps", "ButtonHTMLAttributes", "Native button attributes."],
+    ],
+    accessibility:
+      "The control is a named native button with a 48px target. It stays out of the tab order until the page has moved down, uses immediate scrolling when reduced motion is requested, and leaves keyboard navigation unchanged.",
+  },
+  {
+    slug: "ask-ai",
+    kind: "component",
+    name: "Ask AI",
+    number: "10",
+    family: "Agent handoffs",
+    summary:
+      "Hand someone a prepared, source-aware prompt in the AI assistant they already use, or let them copy it for another one.",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("ask-ai"),
+    npmImport: packageImport("AskAi"),
+    usage: `const prompt = [
+  "Explain what Acme does using current web sources.",
+  "Prefer Acme's own docs, cite every claim, and flag anything unverified.",
+].join("\\n")
+
+export function AskAboutAcme() {
+  return <AskAi subject="Acme" prompt={prompt} />
+}`,
+    props: [
+      [
+        "subject",
+        "string",
+        "The product or topic named in the heading and labels.",
+      ],
+      [
+        "prompt",
+        "string",
+        "The complete prompt sent to or copied for an assistant.",
+      ],
+      [
+        "targets",
+        "readonly AskAiTarget[]",
+        "Custom assistant names and prepared URLs. Defaults to ChatGPT, Claude, Perplexity, and Grok.",
+      ],
+      ["description", "ReactNode", "Supporting copy below the heading."],
+      ["copyLabel", "string", "The idle copy button label."],
+      [
+        "onPromptCopied",
+        "(prompt: string) => void",
+        "Runs after the prompt reaches the clipboard.",
+      ],
+      ["className", "string", "Classes for the root element."],
+      [
+        "...rootProps",
+        "HTMLAttributes<HTMLDivElement>",
+        "Native root attributes.",
+      ],
+    ],
+    accessibility:
+      "Every assistant is a named external link with a 44px target and explicit new-tab wording. The copy action is a native button. Success and failure are shown in the button and announced through a polite status region. The component does not open a destination until someone chooses it.",
+  },
+  {
+    slug: "file-upload",
+    kind: "component",
+    name: "File Upload",
+    number: "11",
+    family: "Forms",
+    summary:
+      "A file picker and dropzone with clear validation and a visible queue. Connect your upload function when you need progress, cancel, and retry.",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("file-upload"),
+    npmImport: packageImport("FileUpload"),
+    usage: `async function uploadFile(file, { signal, onProgress }) {
+  await uploadToYourStorage(file, { signal, onProgress })
+}
+
+export function Attachments() {
+  return (
+    <FileUpload
+      accept="image/*,.pdf"
+      maxFiles={5}
+      maxSize={10 * 1024 * 1024}
+      uploadFile={uploadFile}
+    />
+  )
+}`,
+    props: [
+      ["accept", "string", "MIME types and extensions accepted by the picker."],
+      ["multiple", "boolean", "Allows more than one file. Defaults to true."],
+      ["maxFiles", "number", "Maximum files in the queue. Defaults to 5."],
+      ["maxSize", "number", "Maximum bytes per file. Defaults to 10 MB."],
+      [
+        "uploadFile",
+        "FileUploadAdapter",
+        "Your async upload function with progress and cancellation hooks.",
+      ],
+      [
+        "autoUpload",
+        "boolean",
+        "Starts the adapter when files are accepted. Defaults to true.",
+      ],
+      [
+        "onFilesAccepted",
+        "(files: File[]) => void",
+        "Runs with files that pass validation.",
+      ],
+      [
+        "onFilesRejected",
+        "(rejections) => void",
+        "Reports type, size, count, and duplicate failures.",
+      ],
+      [
+        "onFilesChange",
+        "(entries) => void",
+        "Runs when the queue or an upload state changes.",
+      ],
+      ["disabled", "boolean", "Disables both picking and dropping."],
+      ["className", "string", "Classes for the root element."],
+    ],
+    accessibility:
+      "The picker is a named native button backed by a file input. Drag and drop is an additional path, not the only one. Validation and upload changes are announced politely. Every queue action and the primary picker keep a 44px target. Progress uses native progressbar semantics.",
+  },
+  {
+    slug: "file-thumbnail",
+    kind: "component",
+    name: "File Thumbnail",
+    number: "12",
+    family: "Files",
+    summary:
+      "A compact image preview for attachments, upload queues, and file lists. Browser image files work without any setup.",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("file-thumbnail"),
+    npmImport: packageImport("FileThumbnail"),
+    usage: `export function ImagePreview({ file }: { file: File }) {
+  return (
+    <FileThumbnail
+      file={file}
+      className="w-32"
+    />
+  )
+}`,
+    props: [
+      [
+        "file",
+        "File | FileThumbnailFile",
+        "A browser File or an object with a name and optional MIME type.",
+      ],
+      [
+        "previewImageUrl",
+        "string | null",
+        "An existing image URL. Browser image File objects preview themselves when omitted.",
+      ],
+      [
+        "previewAspectRatio",
+        "number",
+        "The frame aspect ratio. Defaults to 1.",
+      ],
+      ["fit", '"cover" | "contain"', "Image fitting. Defaults to cover."],
+      [
+        "alt",
+        "string",
+        "Alternative text for the preview image. Defaults to decorative.",
+      ],
+      ["isLoading", "boolean", "Shows the loading state."],
+      ["hasError", "boolean", "Forces the file-type fallback."],
+      ["previewClassName", "string", "Classes for the preview content."],
+      ["className", "string", "Classes for the preview frame."],
+    ],
+    accessibility:
+      "Failed previews expose the file name and explain that the image is unavailable. Loading previews use a named status. Preview images default to decorative because file names usually sit beside thumbnails, but alt text can be supplied when the image itself carries meaning. Reduced motion removes the fade and shimmer movement.",
+  },
 ] as const
 
 export type ComponentSlug = (typeof componentDocs)[number]["slug"]

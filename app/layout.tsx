@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next"
+import { GoogleAnalytics } from "@next/third-parties/google"
 import {
   Bricolage_Grotesque,
   Geist_Mono,
@@ -20,6 +21,8 @@ const themeScript = `(() => {
   } catch (_) {}
 })();`
 
+const isProduction = process.env.NODE_ENV === "production"
+
 const display = Bricolage_Grotesque({
   subsets: ["latin"],
   variable: "--font-bricolage",
@@ -39,12 +42,11 @@ export const metadata: Metadata = {
   title: siteConfig.title,
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
-  alternates: {
-    canonical: "/",
-  },
   openGraph: {
-    title: siteConfig.name,
-    description: siteConfig.tagline,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    siteName: `${siteConfig.name} UI`,
     type: "website",
     images: [
       {
@@ -57,8 +59,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: siteConfig.name,
-    description: siteConfig.tagline,
+    title: siteConfig.title,
+    description: siteConfig.description,
     images: [siteConfig.assets.socialPreview],
   },
 }
@@ -82,7 +84,10 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="pt-16 font-sans">{children}</body>
+      <body className="pt-14 font-sans">{children}</body>
+      {isProduction && (
+        <GoogleAnalytics gaId={siteConfig.analytics.googleMeasurementId} />
+      )}
     </html>
   )
 }

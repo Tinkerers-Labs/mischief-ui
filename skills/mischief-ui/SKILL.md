@@ -35,6 +35,10 @@ Use `pnpm add mischief-ui @base-ui/react motion` only when the user specifically
 - `floating-index`: A compact page outline that tracks reading progress and the active section.
 - `shift-button`: A call to action whose leading icon makes room for a directional cue.
 - `image-gallery`: A responsive gallery block with grid and masonry layouts and an accessible lightbox.
+- `scroll-to-top-button`: A floating shortcut that appears after someone moves down a long page or scroll container and takes them back to the top.
+- `ask-ai`: A source-aware prompt handoff for ChatGPT, Claude, Perplexity, Grok, or a copied prompt.
+- `file-upload`: A validated file picker and dropzone with a visible queue and optional upload progress, cancel, and retry handling.
+- `file-thumbnail`: A compact image preview with automatic browser File support, loading, and failure states.
 
 ## Guardrails
 

@@ -72,6 +72,8 @@ The bend connects the brand to the physical feedback in the components. The spar
 | leaf          | `oklch(0.78 0.16 128)`        | Small success details                   |
 | line          | `oklch(0.215 0.018 58 / 16%)` | Rules and quiet borders                 |
 
+Public brand references also show the sRGB hex equivalents: Paper `#FFFFFF`, Ink `#201711`, Tomato `#FB573B`, and Leaf `#99CA50`.
+
 ### Dark mode
 
 | Token      | Value                       | Usage                                   |
@@ -141,11 +143,15 @@ Use a 4px base unit.
 
 Pages should alternate between open editorial space and dense, useful examples. Avoid a repeated grid of identical cards.
 
-The homepage hero keeps the brand promise dominant and uses its smaller utility column to introduce the agent skill. Agent support is a useful way to install and discover components, not the identity of the product.
+The homepage hero uses a compact 42/58 live split. The left column keeps the category-clear headline, explanation, one primary action, and quiet utility links together. The right column is an open, ruled stage containing one complete Magnetic Tabs interaction. It has no window chrome, selector, or decorative product shell. The whole interaction remains visible inside the first viewport on desktop and mobile. Agent support remains a small text link, not a competing panel.
+
+The header keeps text navigation and external utilities as two clear groups. npm, GitHub, and theme controls sit directly beside one another with 44px targets and no visual gap. The header is 56px tall.
 
 The homepage FAQ follows the component gallery and resolves practical questions before the footer. It uses a two-column editorial layout with native disclosure rows. Questions cover installation, ownership, compatibility, accessibility, licensing, blocks, and agent use without turning into sales copy.
 
-Component documentation uses a stable left rail on wide screens and a horizontal component list on small screens. Each detail page follows the same reading order: purpose, live preview, installation, usage, API, accessibility, dependencies, and source.
+Component documentation uses a stable left rail on wide screens and a horizontal component list on small screens. Detail pages keep the title compact, put the live preview first, and use small copy, previous, and next actions near the heading. A sticky in-page index appears on wide screens. Each page follows the same reading order: purpose, live preview, installation, usage, API, accessibility, dependencies, and source.
+
+Documentation headings use a compact scale rather than the website display scale. Introduction titles stop at 4rem and component titles stop at 3.25rem. Desktop page actions use smaller visual surfaces with expanded 44px hit areas; mobile actions remain 44px tall.
 
 The site footer is an ink-colored closing section used on every public page. It pairs one direct invitation with compact navigation and package links. Its attribution line credits Tinkerers Labs and Aman, then points to the source on GitHub. An oversized, low-contrast Mischief wordmark closes the page as a brand signature. It should feel like a useful final thought, not a sitemap dump.
 
@@ -223,6 +229,22 @@ A call to action whose leading icon steps aside for a directional cue. The label
 ### Image Gallery
 
 A reusable block for presenting a related image set. It supports equal and masonry layouts, then opens images in a modal lightbox with full keyboard and focus behavior.
+
+### Scroll to Top Button
+
+A floating way back on long pages and scroll areas. It appears only after someone has moved down, disappears again near the top, and uses immediate scrolling when reduced motion is preferred. Its default target is 48px and its placement can be overridden for contained scrollers.
+
+### Ask AI
+
+A compact handoff for products that want visitors to get an outside, source-aware explanation. The consumer supplies the subject and complete prompt. Default links open ChatGPT, Claude, Perplexity, or Grok with that prompt, while a copy action supports any other assistant. It must describe new-tab behavior, report clipboard success or failure, and never send someone away without an explicit choice.
+
+### File Upload
+
+A picker and dropzone that keeps file handling legible after the drop. It validates type, size, count, and duplicates before adding files to a visible queue. Upload transport stays with the consumer through an adapter that can report progress and honor cancellation. Retry and remove actions remain named and keyboard accessible. The file stack responds to dragging, while reduced motion keeps it still.
+
+### File Thumbnail
+
+A compact image preview for attachments, upload queues, and file lists. Browser image files preview themselves, while an existing image URL can be supplied directly. Loading and failed images remain recognizable. The small folded corner gives the empty state a physical detail without competing with real preview content.
 
 ## Content examples
 

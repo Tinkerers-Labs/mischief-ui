@@ -499,13 +499,173 @@ a:focus-visible {
   min-width: 0;
 }
 
+.component-doc-layout {
+  margin: 0 auto;
+  max-width: 75rem;
+  min-width: 0;
+  position: relative;
+}
+
 .docs-article {
   margin: 0 auto;
   max-width: 60rem;
   padding: clamp(4rem, 8vw, 7rem) clamp(1.25rem, 6vw, 5rem) 8rem;
 }
 
-.docs-article h1,
+.component-doc {
+  max-width: 66rem;
+  padding-top: clamp(3rem, 6vw, 5rem);
+}
+
+.component-doc-header {
+  align-items: start;
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+}
+
+.component-doc-header > div {
+  min-width: 0;
+}
+
+.component-doc h1 {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(2.35rem, 3.4vw, 3.25rem);
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  margin-top: 0.8rem;
+  text-wrap: balance;
+}
+
+.component-doc .docs-lead {
+  margin-top: 1rem;
+}
+
+.component-page-actions {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.25rem;
+  margin-top: 1.5rem;
+}
+
+.component-page-action,
+.component-page-arrow {
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  color: var(--foreground);
+  display: inline-flex;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 650;
+  justify-content: center;
+  min-height: 40px;
+  position: relative;
+  text-decoration: none;
+}
+
+.component-page-action {
+  cursor: pointer;
+  gap: 0.5rem;
+  padding: 0 0.7rem;
+}
+
+.component-page-action::before,
+.component-page-arrow::before,
+.copy-page-toggle::before {
+  content: "";
+  inset: -2px;
+  position: absolute;
+}
+
+.copy-page-menu {
+  position: relative;
+}
+
+.copy-page-trigger {
+  display: flex;
+}
+
+.copy-page-trigger .component-page-action {
+  border-radius: 0.65rem 0 0 0.65rem;
+}
+
+.copy-page-toggle {
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 0;
+  border-radius: 0 0.65rem 0.65rem 0;
+  color: var(--foreground);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  min-height: 40px;
+  position: relative;
+  width: 34px;
+}
+
+.copy-page-toggle:hover,
+.copy-page-toggle[aria-expanded="true"] {
+  background: var(--muted);
+}
+
+.copy-page-popover {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.8rem;
+  box-shadow:
+    0 1px 0 oklch(0.215 0.018 58 / 8%),
+    0 8px 24px oklch(0.215 0.018 58 / 8%);
+  display: grid;
+  min-width: 15rem;
+  padding: 0.35rem;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.4rem);
+  z-index: 20;
+}
+
+.copy-page-popover a,
+.copy-page-popover button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 0.55rem;
+  color: var(--foreground);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  font-size: 0.85rem;
+  gap: 0.7rem;
+  min-height: 40px;
+  padding: 0 0.7rem;
+  text-align: left;
+  text-decoration: none;
+}
+
+.copy-page-popover a:hover,
+.copy-page-popover button:hover {
+  background: var(--muted);
+}
+
+.component-page-arrow {
+  width: 40px;
+}
+
+.component-page-action:hover,
+.component-page-arrow:hover {
+  background: var(--muted);
+}
+
+.component-page-arrow.disabled {
+  color: var(--muted-foreground);
+  opacity: 0.35;
+}
+
 .brand-page h1 {
   font-family: var(--font-display), sans-serif;
   font-size: clamp(3rem, 7vw, 6rem);
@@ -516,13 +676,31 @@ a:focus-visible {
   text-wrap: balance;
 }
 
-.docs-lead,
 .brand-lead {
   color: var(--muted-foreground);
   font-size: clamp(1.1rem, 2vw, 1.3rem);
   line-height: 1.65;
   margin-top: 2rem;
   max-width: 44rem;
+  text-wrap: pretty;
+}
+
+.docs-intro h1 {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(2.75rem, 4.5vw, 4rem);
+  font-weight: 650;
+  letter-spacing: -0.05em;
+  line-height: 0.96;
+  margin-top: 1rem;
+  text-wrap: balance;
+}
+
+.docs-lead {
+  color: var(--muted-foreground);
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.65;
+  margin-top: 1.5rem;
+  max-width: 42rem;
   text-wrap: pretty;
 }
 
@@ -609,6 +787,31 @@ a:focus-visible {
   margin: 0 0 0.2rem;
 }
 
+.package-manager-tabs {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+}
+
+.package-manager-tabs button {
+  background: transparent;
+  border: 0;
+  border-radius: 0.45rem;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  min-height: 36px;
+  padding: 0 0.7rem;
+}
+
+.package-manager-tabs button[aria-pressed="true"] {
+  background: var(--muted);
+  color: var(--foreground);
+  font-weight: 700;
+}
+
 .install-import {
   margin-top: 0;
 }
@@ -648,8 +851,45 @@ a:focus-visible {
   color: var(--primary);
 }
 
-.docs-preview {
+.component-preview-panel {
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
   margin-top: 3rem;
+  overflow: hidden;
+}
+
+.component-preview-toolbar {
+  align-items: center;
+  background: color-mix(in oklch, var(--muted) 55%, transparent);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  font-size: 0.75rem;
+  font-weight: 700;
+  justify-content: space-between;
+  letter-spacing: 0.04em;
+  min-height: 3rem;
+  padding: 0 1rem;
+  text-transform: uppercase;
+}
+
+.component-preview-toolbar a {
+  align-items: center;
+  color: var(--muted-foreground);
+  display: inline-flex;
+  gap: 0.4rem;
+  min-height: 44px;
+  text-decoration: none;
+}
+
+.component-preview-toolbar a:hover {
+  color: var(--foreground);
+}
+
+.component-preview-panel .docs-preview {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
   min-height: 28rem;
 }
 
@@ -663,6 +903,34 @@ pre {
   margin-top: 1rem;
   overflow-x: auto;
   padding: 1.25rem;
+}
+
+.docs-code-block {
+  position: relative;
+}
+
+.docs-code-block pre {
+  padding-right: 4rem;
+}
+
+.docs-code-block > button {
+  align-items: center;
+  background: color-mix(in oklch, var(--background) 12%, transparent);
+  border: 1px solid color-mix(in oklch, var(--background) 18%, transparent);
+  border-radius: 0.55rem;
+  color: var(--background);
+  cursor: pointer;
+  display: inline-flex;
+  height: 36px;
+  justify-content: center;
+  position: absolute;
+  right: 0.75rem;
+  top: 0.75rem;
+  width: 36px;
+}
+
+.docs-code-block > button:hover {
+  background: color-mix(in oklch, var(--background) 20%, transparent);
 }
 
 .props-table {
@@ -699,6 +967,48 @@ pre {
   color: inherit;
   font-weight: 650;
   text-underline-offset: 0.3rem;
+}
+
+.component-toc {
+  display: none;
+}
+
+@media (min-width: 1260px) {
+  .component-doc-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 9rem;
+  }
+
+  .component-doc {
+    margin: 0;
+  }
+
+  .component-toc {
+    align-content: start;
+    display: grid;
+    gap: 0.6rem;
+    padding-top: 5rem;
+    position: sticky;
+    top: 3.5rem;
+    height: max-content;
+  }
+
+  .component-toc p {
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  .component-toc a {
+    color: var(--muted-foreground);
+    font-size: 0.8rem;
+    min-height: 32px;
+    text-decoration: none;
+  }
+
+  .component-toc a:hover {
+    color: var(--foreground);
+  }
 }
 
 /* Brand */
@@ -771,9 +1081,19 @@ pre {
   align-items: end;
   aspect-ratio: 2 / 1;
   display: flex;
+  flex-direction: column;
   font-size: 0.75rem;
   font-weight: 700;
+  justify-content: end;
   padding: 0.75rem;
+}
+
+.swatch code {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  margin-top: 0.2rem;
+  opacity: 0.78;
 }
 
 .swatch-paper {
@@ -851,6 +1171,43 @@ pre {
   .props-row {
     grid-template-columns: 1fr;
     gap: 0.35rem;
+  }
+
+  .component-doc-header {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .component-page-actions {
+    margin-top: 0;
+    width: 100%;
+  }
+
+  .component-page-action {
+    margin-right: auto;
+  }
+
+  .component-page-action,
+  .component-page-arrow,
+  .copy-page-toggle {
+    min-height: 44px;
+  }
+
+  .component-page-arrow {
+    width: 44px;
+  }
+
+  .copy-page-toggle {
+    width: 38px;
+  }
+
+  .copy-page-popover {
+    left: 0;
+    right: auto;
+  }
+
+  .component-preview-panel {
+    margin-top: 2rem;
   }
 
   .detail-footer,

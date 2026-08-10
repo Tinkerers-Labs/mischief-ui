@@ -41,6 +41,10 @@ pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/impossible-checkbox
 pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/floating-index
 pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/shift-button
 pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/image-gallery
+pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/scroll-to-top-button
+pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/ask-ai
+pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/file-upload
+pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/file-thumbnail
 ```
 
 Use `npm`, `yarn`, or `bun` if that is what your project uses. The shadcn CLI reads `components.json` and places the source in the configured UI directory.
@@ -168,6 +172,62 @@ export function DownloadButton() {
 ```
 
 The component uses Base UI so the same interaction can remain a button or render as a real link.
+
+### Scroll to Top Button
+
+```tsx
+import { ScrollToTopButton } from "@/components/ui/scroll-to-top-button"
+
+export function LongPage() {
+  return (
+    <>
+      <main>{/* Long page content */}</main>
+      <ScrollToTopButton />
+    </>
+  )
+}
+```
+
+Pass `containerRef` to target a scroll area instead of the page. The button appears after scrolling down and switches to immediate scrolling when reduced motion is preferred.
+
+### Ask AI
+
+```tsx
+import { AskAi } from "@/components/ui/ask-ai"
+
+const prompt =
+  "Explain Acme using current sources. Cite claims and flag anything unverified."
+
+export function AskAboutAcme() {
+  return <AskAi subject="Acme" prompt={prompt} />
+}
+```
+
+The default destinations are ChatGPT, Claude, Perplexity, and Grok. Pass `targets` to provide another set. The copy action keeps the same prompt available for any other assistant.
+
+### File Upload
+
+```tsx
+import { FileUpload } from "@/components/ui/file-upload"
+
+export function Attachments() {
+  return <FileUpload accept="image/*,.pdf" maxFiles={5} />
+}
+```
+
+The component validates file type, size, count, and duplicates before adding anything to its queue. Pass `uploadFile` to connect storage and enable progress, cancel, and retry behavior.
+
+### File Thumbnail
+
+```tsx
+import { FileThumbnail } from "@/components/ui/file-thumbnail"
+
+export function Preview() {
+  return <FileThumbnail file={file} className="w-32" />
+}
+```
+
+Pass a browser image `File` to preview it directly, or use `previewImageUrl` for an image that already lives elsewhere. Loading and failed images have clear fallback states.
 
 ## Blocks
 
