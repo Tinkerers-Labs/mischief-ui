@@ -54,6 +54,20 @@
         }
       ],
       "categories": ["button", "confirmation", "feedback"]
+    },
+    {
+      "name": "signature-footer",
+      "type": "registry:ui",
+      "title": "Signature Footer",
+      "description": "A composed site footer that ends with an oversized, low-contrast wordmark.",
+      "dependencies": ["clsx@^2.1.1", "tailwind-merge@^3.3.1"],
+      "files": [
+        {
+          "path": "registry/default/signature-footer/signature-footer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["layout", "footer", "branding"]
     }
   ]
 }

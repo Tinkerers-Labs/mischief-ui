@@ -8,6 +8,7 @@ import { CopyCommand } from "@/components/copy-command"
 import { ElasticSlider } from "@/registry/default/elastic-slider/elastic-slider"
 import { HoldButton } from "@/registry/default/hold-button/hold-button"
 import { MagneticTabs } from "@/registry/default/magnetic-tabs/magnetic-tabs"
+import { SignatureFooter } from "@/registry/default/signature-footer/signature-footer"
 
 const owner = "Tinkerers-Labs/mischief-ui"
 
@@ -166,6 +167,35 @@ export function ComponentGallery() {
               </>
             )}
           </div>
+        </div>
+      </section>
+
+      <section className="component-section">
+        <div className="component-copy">
+          <p className="component-number">04 / Layout</p>
+          <h2>Signature Footer</h2>
+          <p>
+            A useful closing section with one strong final gesture. Put the
+            links first, then let the oversized wordmark sign off.
+          </p>
+          <InstallCommand name="signature-footer" />
+          <Link
+            className="detail-link"
+            href="/docs/components/signature-footer"
+          >
+            Preview, API, and source
+          </Link>
+        </div>
+        <div className="demo-frame p-4 md:p-8">
+          <SignatureFooter
+            className="w-full rounded-[var(--radius)] [&_[data-slot=signature-footer-heading]]:text-[clamp(2.5rem,5vw,4.5rem)] [&_[data-slot=signature-footer-inner]]:px-6 [&_[data-slot=signature-footer-inner]]:pt-8 [&_[data-slot=signature-footer-meta]]:mt-8 [&_[data-slot=signature-footer-navigation]]:hidden [&_[data-slot=signature-footer-wordmark]]:pt-4 [&_[data-slot=signature-footer-wordmark]]:text-[clamp(4rem,10vw,8rem)]"
+            eyebrow="One last useful thought"
+            heading="Make the ending memorable."
+            description="Keep the links practical. Let the wordmark do the rest."
+            brand={<strong>Northstar</strong>}
+            meta={<span className="text-background/55">Made with care.</span>}
+            wordmark="Northstar"
+          />
         </div>
       </section>
     </div>

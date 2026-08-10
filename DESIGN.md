@@ -185,6 +185,10 @@ A value slider with a track that gives subtle visual feedback at its limits. It 
 
 A confirmation button for consequential actions. Holding fills a progress surface, releasing early cancels, and completing triggers the action once. It provides a standard click alternative for keyboard and assistive technology users.
 
+### Signature Footer
+
+A complete closing section with practical content first and an oversized, low-contrast wordmark at the end. Content stays composable so projects can supply their own navigation, actions, brand lockup, and metadata.
+
 ## Content examples
 
 Examples should resemble real product moments:

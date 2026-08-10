@@ -1,6 +1,6 @@
 {
   "name": "mischief-ui",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Playful, production-ready React components for shadcn projects.",
   "license": "MIT",
   "type": "module",

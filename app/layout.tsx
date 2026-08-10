@@ -34,6 +34,20 @@ export const metadata: Metadata = {
     title: "Mischief",
     description: "Good interfaces deserve a little mischief.",
     type: "website",
+    images: [
+      {
+        url: "/brand/mischief-social-preview.png",
+        width: 1280,
+        height: 640,
+        alt: "Mischief. Good interfaces deserve a little mischief.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mischief",
+    description: "Good interfaces deserve a little mischief.",
+    images: ["/brand/mischief-social-preview.png"],
   },
 }
 

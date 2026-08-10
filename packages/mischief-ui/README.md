@@ -2,7 +2,7 @@
 
 Good interfaces deserve a little mischief.
 
-Playful, production-ready React components built with Base UI, Motion, Tailwind CSS, and shadcn theme tokens.
+Playful, production-ready React components built with Base UI, Motion, Tailwind CSS, and shadcn theme tokens. The package exports Magnetic Tabs, Elastic Slider, Hold Button, and Signature Footer.
 
 ## Install from npm
 
@@ -25,6 +25,12 @@ import { ElasticSlider } from "mischief-ui"
 export function Volume() {
   return <ElasticSlider label="Volume" defaultValue={68} />
 }
+```
+
+The layout components use the same import path:
+
+```tsx
+import { SignatureFooter } from "mischief-ui"
 ```
 
 For full source ownership, install through the shadcn registry instead:

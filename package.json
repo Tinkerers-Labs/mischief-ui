@@ -18,7 +18,7 @@
     "format:check": "prettier --check .",
     "registry:build": "shadcn build",
     "package:build": "pnpm --dir packages/mischief-ui build",
-    "package:pack": "pnpm package:build && npm pack --dry-run --workspace=packages/mischief-ui",
+    "package:pack": "pnpm package:build && npm pack --dry-run ./packages/mischief-ui",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm build"
   },
   "dependencies": {

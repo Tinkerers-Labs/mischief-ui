@@ -6,6 +6,7 @@ import { Check, RotateCcw, Volume2 } from "lucide-react"
 import { ElasticSlider } from "@/registry/default/elastic-slider/elastic-slider"
 import { HoldButton } from "@/registry/default/hold-button/hold-button"
 import { MagneticTabs } from "@/registry/default/magnetic-tabs/magnetic-tabs"
+import { SignatureFooter } from "@/registry/default/signature-footer/signature-footer"
 
 const tabItems = [
   {
@@ -80,6 +81,20 @@ export function ComponentPreview({ slug }: { slug: string }) {
           className="[--background:oklch(0.215_0.018_58)] [--foreground:oklch(0.975_0.012_84)] [--muted:oklch(1_0_0/14%)] [--primary:oklch(0.78_0.16_128)]"
         />
       </div>
+    )
+  }
+
+  if (slug === "signature-footer") {
+    return (
+      <SignatureFooter
+        className="w-full rounded-[var(--radius)] [&_[data-slot=signature-footer-heading]]:text-4xl [&_[data-slot=signature-footer-inner]]:px-6 [&_[data-slot=signature-footer-inner]]:pt-8 [&_[data-slot=signature-footer-meta]]:mt-8 [&_[data-slot=signature-footer-navigation]]:hidden [&_[data-slot=signature-footer-wordmark]]:pt-4 [&_[data-slot=signature-footer-wordmark]]:text-6xl"
+        eyebrow="One last useful thought"
+        heading="Make the ending memorable."
+        description="Keep the links practical. Let the wordmark do the rest."
+        brand={<strong>Northstar</strong>}
+        meta={<span className="text-background/55">Made with care.</span>}
+        wordmark="Northstar"
+      />
     )
   }
 

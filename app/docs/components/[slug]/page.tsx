@@ -31,7 +31,9 @@ export default async function ComponentPage({
 
   return (
     <article className="docs-article component-doc">
-      <p className="eyebrow">{component.number} / Tactile controls</p>
+      <p className="eyebrow">
+        {component.number} / {component.family}
+      </p>
       <h1>{component.name}</h1>
       <p className="docs-lead">{component.summary}</p>
 

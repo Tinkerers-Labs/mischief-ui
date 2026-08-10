@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" role="img" aria-labelledby="title description">
+  <title id="title">Mischief</title>
+  <desc id="description">Good interfaces deserve a little mischief.</desc>
+  <rect width="1280" height="640" fill="#f9f4e9"/>
+  <rect x="48" y="48" width="1184" height="544" rx="44" fill="#211b17"/>
+  <g transform="translate(110 150) scale(5.8)" fill="none" stroke="#ef5a35" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.5">
+    <path d="M7.5 36.5C8.8 27.6 9.6 19.6 12.4 11.5C17.1 17.4 20.6 24 24.1 30.7C27.3 24.8 29.1 16.8 33.2 9.8C36.4 17.7 38.4 27.5 40.5 36.5"/>
+  </g>
+  <path d="M343.16 137.04L350.12 156.18L369.84 163.14L350.12 170.1L343.16 189.24L336.2 170.1L317.06 163.14L336.2 156.18Z" fill="#ef5a35"/>
+  <text x="470" y="300" fill="#f9f4e9" font-family="Arial, Helvetica, sans-serif" font-size="116" font-weight="700" letter-spacing="-7">Mischief</text>
+  <text x="477" y="375" fill="#bdb3a9" font-family="Arial, Helvetica, sans-serif" font-size="30">Good interfaces deserve a little mischief.</text>
+  <text x="477" y="455" fill="#ef5a35" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" letter-spacing="2">OPEN SOURCE · REACT · SHADCN</text>
+</svg>

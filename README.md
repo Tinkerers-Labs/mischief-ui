@@ -1,6 +1,12 @@
-# Mischief
+<p align="center">
+  <a href="https://ui.tinkererslabs.com/" aria-label="Mischief website">
+    <img src="./public/brand/mischief-mark.svg" width="88" height="88" alt="Mischief" />
+  </a>
+</p>
 
-Good interfaces deserve a little mischief.
+<h1 align="center">Mischief</h1>
+
+<p align="center">Good interfaces deserve a little mischief.</p>
 
 Browse the live components and documentation at [ui.tinkererslabs.com](https://ui.tinkererslabs.com/).
 
@@ -14,6 +20,7 @@ Mischief is a public GitHub registry for shadcn CLI v4. Install a component dire
 pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/magnetic-tabs
 pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/elastic-slider
 pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/hold-button
+pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/signature-footer
 ```
 
 Use `npm`, `yarn`, or `bun` if that is what your project uses. The shadcn CLI reads `components.json` and places the source in the configured UI directory.
@@ -72,6 +79,25 @@ export function Example() {
 ```
 
 Pointer users hold for 900ms by default. Keyboard and assistive technology users activate the native button once. Set `duration` to change the hold time, with a minimum of 500ms.
+
+### Signature Footer
+
+```tsx
+import { SignatureFooter } from "@/components/ui/signature-footer"
+
+export function Footer() {
+  return (
+    <SignatureFooter
+      heading="Make the ending memorable."
+      navigation={<nav aria-label="Footer">...</nav>}
+      brand={<a href="/">Northstar</a>}
+      wordmark="Northstar"
+    />
+  )
+}
+```
+
+Pass ordinary React nodes for the action, navigation, compact brand, and metadata. The footer owns the composition while your app owns its links and language.
 
 ## Compatibility
 

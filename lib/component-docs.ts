@@ -3,6 +3,7 @@ export const componentDocs = [
     slug: "magnetic-tabs",
     name: "Magnetic Tabs",
     number: "01",
+    family: "Tactile controls",
     summary:
       "Familiar tabs with a gentle pull toward the pointer. Selection stays clear and keyboard navigation remains immediate.",
     dependencies: ["@base-ui/react", "motion", "clsx", "tailwind-merge"],
@@ -39,6 +40,7 @@ export function Example() {
     slug: "elastic-slider",
     name: "Elastic Slider",
     number: "02",
+    family: "Tactile controls",
     summary:
       "A precise slider with a small amount of give at either end. The current value stays visible and the control works without a pointer.",
     dependencies: ["@base-ui/react", "motion", "clsx", "tailwind-merge"],
@@ -86,6 +88,7 @@ export function Example() {
     slug: "hold-button",
     name: "Hold Button",
     number: "03",
+    family: "Tactile controls",
     summary:
       "A confirmation button for actions that deserve a second thought. Release early to cancel, or activate once with a keyboard.",
     dependencies: ["clsx", "tailwind-merge"],
@@ -120,6 +123,45 @@ export function Example() {
     ],
     accessibility:
       "Pointer users hold to confirm. Keyboard and assistive technology users activate the native button once, avoiding a timing barrier. Progress and completion are announced politely.",
+  },
+  {
+    slug: "signature-footer",
+    name: "Signature Footer",
+    number: "04",
+    family: "Layout",
+    summary:
+      "A complete closing section with room for the useful links first and one oversized wordmark at the end.",
+    dependencies: ["clsx", "tailwind-merge"],
+    install:
+      "pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/signature-footer",
+    npmImport: 'import { SignatureFooter } from "mischief-ui"',
+    usage: `export function Footer() {
+  return (
+    <SignatureFooter
+      eyebrow="One last useful thought"
+      heading="Make the ending memorable."
+      description="Keep the links practical. Let the wordmark do the rest."
+      action={<a href="/work">See our work</a>}
+      navigation={<nav aria-label="Footer">...</nav>}
+      brand={<a href="/">Northstar</a>}
+      meta={<span>Independent and curious.</span>}
+      wordmark="Northstar"
+    />
+  )
+}`,
+    props: [
+      ["heading", "ReactNode", "The footer's main invitation."],
+      ["wordmark", "string", "The oversized closing brand name."],
+      ["eyebrow", "ReactNode", "A short label above the heading."],
+      ["description", "ReactNode", "Supporting copy below the heading."],
+      ["action", "ReactNode", "A primary link or button."],
+      ["navigation", "ReactNode", "Product, company, or social links."],
+      ["brand", "ReactNode", "The compact logo or home link."],
+      ["meta", "ReactNode", "License, location, or ownership details."],
+      ["className", "string", "Classes for the footer element."],
+    ],
+    accessibility:
+      "The component uses a semantic footer and heading. Navigation, links, and labels remain yours, so their names stay specific to your site. The repeated oversized wordmark is decorative and hidden from assistive technology.",
   },
 ] as const
 
