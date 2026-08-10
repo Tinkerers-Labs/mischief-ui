@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "mischief",
-  "homepage": "https://github.com/Tinkerers-Labs/mischief",
+  "homepage": "https://github.com/Tinkerers-Labs/mischief-ui",
   "items": [
     {
       "name": "magnetic-tabs",

@@ -45,6 +45,18 @@ Mischief uses warm paper, dark ink, and a sharp tomato accent. The shapes are st
 
 The website can have a distinct identity. Installed components must inherit the consumer's shadcn tokens unless an explicit color prop is part of the component API.
 
+## Brand mark
+
+The Mischief mark is a crooked, single-line M with a small spark above its final stroke. It should feel hand-drawn at first glance and deliberate on closer inspection.
+
+- Use the tomato mark on paper or the paper mark on ink.
+- Keep clear space equal to the height of the spark on every side.
+- Do not rotate, stretch, outline, or add effects to the mark.
+- At sizes below 24px, use the mark without the word Mischief.
+- Use the supplied SVG instead of redrawing the curve.
+
+The bend connects the brand to the physical feedback in the components. The spark is the small surprise promised by the name. Neither element should be animated in routine navigation.
+
 ## Colors
 
 ### Website palette
@@ -115,6 +127,8 @@ Use a 4px base unit.
 - Test at 375px, 768px, 1440px, and 1920px
 
 Pages should alternate between open editorial space and dense, useful examples. Avoid a repeated grid of identical cards.
+
+Component documentation uses a stable left rail on wide screens and a horizontal component list on small screens. Each detail page follows the same reading order: purpose, live preview, installation, usage, API, accessibility, dependencies, and source.
 
 ## Radius, borders, and shadows
 

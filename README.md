@@ -2,6 +2,8 @@
 
 Good interfaces deserve a little mischief.
 
+Browse the live components and documentation at [tinkerers-labs.github.io/mischief-ui](https://tinkerers-labs.github.io/mischief-ui/).
+
 Mischief is a small collection of playful, production-ready React components. The components use Base UI where behavior is complex, Tailwind CSS for styling, and shadcn theme tokens so they fit the project that receives them.
 
 ## Install
@@ -9,12 +11,20 @@ Mischief is a small collection of playful, production-ready React components. Th
 Mischief is a public GitHub registry for shadcn CLI v4. Install a component directly from this repository:
 
 ```bash
-pnpm dlx shadcn@latest add Tinkerers-Labs/mischief/magnetic-tabs
-pnpm dlx shadcn@latest add Tinkerers-Labs/mischief/elastic-slider
-pnpm dlx shadcn@latest add Tinkerers-Labs/mischief/hold-button
+pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/magnetic-tabs
+pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/elastic-slider
+pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/hold-button
 ```
 
 Use `npm`, `yarn`, or `bun` if that is what your project uses. The shadcn CLI reads `components.json` and places the source in the configured UI directory.
+
+Mischief is also available as [`mischief-ui`](https://www.npmjs.com/package/mischief-ui):
+
+```bash
+pnpm add mischief-ui @base-ui/react motion
+```
+
+Import `mischief-ui/styles.css` in your Tailwind CSS entry file, then import components from `mischief-ui`. The registry remains the recommended path when you want to own and adapt the source.
 
 ## Components
 

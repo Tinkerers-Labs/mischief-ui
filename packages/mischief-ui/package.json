@@ -1,0 +1,52 @@
+{
+  "name": "mischief-ui",
+  "version": "0.1.0",
+  "description": "Playful, production-ready React components for shadcn projects.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "styles.css",
+    "README.md",
+    "LICENSE"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles.css": "./styles.css"
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "peerDependencies": {
+    "@base-ui/react": ">=1.7.0 <2",
+    "motion": ">=12 <14",
+    "react": ">=18 <20",
+    "react-dom": ">=18 <20"
+  },
+  "keywords": [
+    "react",
+    "shadcn",
+    "tailwindcss",
+    "components",
+    "motion",
+    "ui"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tinkerers-Labs/mischief-ui.git",
+    "directory": "packages/mischief-ui"
+  },
+  "homepage": "https://tinkerers-labs.github.io/mischief-ui/",
+  "bugs": "https://github.com/Tinkerers-Labs/mischief-ui/issues",
+  "publishConfig": {
+    "access": "public"
+  }
+}

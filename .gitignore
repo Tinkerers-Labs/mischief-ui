@@ -3,6 +3,7 @@
 !.env.example
 .next/
 node_modules/
+packages/*/dist/
 output/
 out/
 .playwright-cli/

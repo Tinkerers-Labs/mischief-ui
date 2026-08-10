@@ -10,13 +10,15 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "shadcn build && next build",
+    "build": "shadcn build && pnpm package:build && next build",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "registry:build": "shadcn build",
+    "package:build": "pnpm --dir packages/mischief-ui build",
+    "package:pack": "pnpm package:build && npm pack --dry-run --workspace=packages/mischief-ui",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm build"
   },
   "dependencies": {
@@ -41,6 +43,7 @@
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^4.3.3",
+    "tsup": "^8.5.0",
     "typescript": "^5.9.3"
   }
 }

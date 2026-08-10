@@ -1,27 +1,13 @@
-import { ArrowDown, Code2 } from "lucide-react"
+import Link from "next/link"
+import { ArrowDown } from "lucide-react"
 
 import { ComponentGallery } from "@/components/component-gallery"
+import { SiteHeader } from "@/components/site-header"
 
 export default function Home() {
   return (
     <main>
-      <header className="site-header">
-        <a className="brand" href="#top" aria-label="Mischief home">
-          <span className="brand-mark" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-          </span>
-          Mischief
-        </a>
-        <a
-          className="github-link"
-          href="https://github.com/Tinkerers-Labs/mischief"
-        >
-          <Code2 aria-hidden="true" size={18} />
-          GitHub
-        </a>
-      </header>
+      <SiteHeader />
 
       <section className="hero" id="top">
         <p className="eyebrow">Open source. Three components. No filler.</p>
@@ -39,6 +25,14 @@ export default function Home() {
             aria-label="See components"
           >
             <ArrowDown aria-hidden="true" size={24} />
+          </a>
+        </div>
+        <div className="hero-actions">
+          <Link className="primary-link" href="/docs">
+            Read the docs
+          </Link>
+          <a href="https://www.npmjs.com/package/mischief-ui">
+            mischief-ui on npm
           </a>
         </div>
       </section>

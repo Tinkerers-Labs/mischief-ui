@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   title: "Mischief | UI with personality",
   description:
     "Playful, production-ready React components that work with shadcn.",
-  metadataBase: new URL("https://github.com/Tinkerers-Labs/mischief"),
+  metadataBase: new URL("https://tinkerers-labs.github.io/mischief-ui/"),
   openGraph: {
     title: "Mischief",
     description: "Good interfaces deserve a little mischief.",

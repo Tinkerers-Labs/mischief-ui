@@ -1,34 +1,18 @@
 "use client"
 
 import * as React from "react"
-import { Check, Clipboard, RotateCcw, Volume2 } from "lucide-react"
+import Link from "next/link"
+import { Check, RotateCcw, Volume2 } from "lucide-react"
 
+import { CopyCommand } from "@/components/copy-command"
 import { ElasticSlider } from "@/registry/default/elastic-slider/elastic-slider"
 import { HoldButton } from "@/registry/default/hold-button/hold-button"
 import { MagneticTabs } from "@/registry/default/magnetic-tabs/magnetic-tabs"
 
-const owner = "Tinkerers-Labs/mischief"
+const owner = "Tinkerers-Labs/mischief-ui"
 
 function InstallCommand({ name }: { name: string }) {
-  const [copied, setCopied] = React.useState(false)
-  const command = `pnpm dlx shadcn@latest add ${owner}/${name}`
-
-  async function copyCommand() {
-    await navigator.clipboard.writeText(command)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 1400)
-  }
-
-  return (
-    <button className="install-command" onClick={copyCommand} type="button">
-      <code>{command}</code>
-      {copied ? (
-        <Check aria-label="Copied" size={16} />
-      ) : (
-        <Clipboard aria-label="Copy command" size={16} />
-      )}
-    </button>
-  )
+  return <CopyCommand command={`pnpm dlx shadcn@latest add ${owner}/${name}`} />
 }
 
 const tabItems = [
@@ -85,6 +69,9 @@ export function ComponentGallery() {
             surface stays clear, and keyboard navigation remains immediate.
           </p>
           <InstallCommand name="magnetic-tabs" />
+          <Link className="detail-link" href="/docs/components/magnetic-tabs">
+            Preview, API, and source
+          </Link>
         </div>
         <div className="demo-frame">
           <div className="demo-content">
@@ -102,6 +89,9 @@ export function ComponentGallery() {
             value is always visible and the control works without a pointer.
           </p>
           <InstallCommand name="elastic-slider" />
+          <Link className="detail-link" href="/docs/components/elastic-slider">
+            Preview, API, and source
+          </Link>
         </div>
         <div className="demo-frame">
           <div className="demo-content slider-demo">
@@ -136,6 +126,9 @@ export function ComponentGallery() {
             once.
           </p>
           <InstallCommand name="hold-button" />
+          <Link className="detail-link" href="/docs/components/hold-button">
+            Preview, API, and source
+          </Link>
         </div>
         <div className="demo-frame">
           <div className="demo-content hold-demo">
