@@ -34,17 +34,18 @@
 
 :root {
   --radius: 0.75rem;
-  --background: oklch(0.975 0.012 84);
+  color-scheme: light;
+  --background: oklch(1 0 0);
   --foreground: oklch(0.215 0.018 58);
-  --card: oklch(0.995 0.006 84);
+  --card: oklch(1 0 0);
   --card-foreground: oklch(0.215 0.018 58);
-  --popover: oklch(0.995 0.006 84);
+  --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.215 0.018 58);
   --primary: oklch(0.675 0.205 32);
   --primary-foreground: oklch(0.99 0.005 84);
-  --secondary: oklch(0.91 0.026 80);
+  --secondary: oklch(0.955 0.012 80);
   --secondary-foreground: oklch(0.27 0.02 58);
-  --muted: oklch(0.93 0.018 82);
+  --muted: oklch(0.958 0.009 82);
   --muted-foreground: oklch(0.48 0.025 58);
   --accent: oklch(0.78 0.16 128);
   --accent-foreground: oklch(0.24 0.04 128);
@@ -52,6 +53,30 @@
   --border: oklch(0.215 0.018 58 / 16%);
   --input: oklch(0.215 0.018 58 / 20%);
   --ring: oklch(0.675 0.205 32);
+  --brand-paper: oklch(1 0 0);
+  --brand-ink: oklch(0.215 0.018 58);
+}
+
+.dark {
+  color-scheme: dark;
+  --background: oklch(0.17 0.012 58);
+  --foreground: oklch(0.94 0.01 84);
+  --card: oklch(0.215 0.014 58);
+  --card-foreground: oklch(0.94 0.01 84);
+  --popover: oklch(0.215 0.014 58);
+  --popover-foreground: oklch(0.94 0.01 84);
+  --primary: oklch(0.72 0.185 32);
+  --primary-foreground: oklch(0.16 0.012 58);
+  --secondary: oklch(0.27 0.018 58);
+  --secondary-foreground: oklch(0.92 0.01 84);
+  --muted: oklch(0.25 0.014 58);
+  --muted-foreground: oklch(0.72 0.016 76);
+  --accent: oklch(0.72 0.14 128);
+  --accent-foreground: oklch(0.17 0.035 128);
+  --destructive: oklch(0.68 0.2 28);
+  --border: oklch(0.94 0.01 84 / 15%);
+  --input: oklch(0.94 0.01 84 / 20%);
+  --ring: oklch(0.72 0.185 32);
 }
 
 * {
@@ -68,6 +93,9 @@ body {
   font-optical-sizing: auto;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+  transition:
+    background-color 180ms ease-out,
+    color 180ms ease-out;
 }
 
 button,
@@ -84,6 +112,12 @@ a:focus-visible {
 ::selection {
   background: var(--accent);
   color: var(--accent-foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
 }
 
 .brand-lockup {
@@ -178,7 +212,6 @@ a:focus-visible {
   font-family: var(--font-mono), monospace;
   font-size: 0.75rem;
   gap: 0.75rem;
-  justify-content: space-between;
   max-width: 100%;
   min-height: 44px;
   overflow: hidden;
@@ -188,9 +221,16 @@ a:focus-visible {
 }
 
 .install-command code {
+  flex: 1 1 auto;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.install-command > svg {
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
 .command-label {
@@ -201,6 +241,7 @@ a:focus-visible {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  width: 4.5rem;
 }
 
 .detail-link {
@@ -309,6 +350,102 @@ a:focus-visible {
   height: 3.5rem;
   justify-content: center;
   width: 3.5rem;
+}
+
+/* FAQ */
+
+.faq-section {
+  border-top: 1px solid var(--border);
+  display: grid;
+  gap: clamp(3rem, 8vw, 8rem);
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+  margin: 0 auto;
+  max-width: 90rem;
+  padding: clamp(4rem, 9vw, 8rem) clamp(1rem, 4vw, 3rem);
+}
+
+.faq-intro {
+  align-self: start;
+  position: sticky;
+  top: 6rem;
+}
+
+.faq-intro h2 {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 650;
+  letter-spacing: -0.05em;
+  line-height: 0.98;
+  margin-top: 1.25rem;
+  max-width: 9ch;
+  text-wrap: balance;
+}
+
+.faq-intro > p:last-child {
+  color: var(--muted-foreground);
+  line-height: 1.65;
+  margin-top: 2rem;
+  max-width: 28rem;
+  text-wrap: pretty;
+}
+
+.faq-intro a {
+  color: var(--foreground);
+  font-weight: 650;
+  text-underline-offset: 0.25rem;
+}
+
+.faq-list {
+  border-top: 1px solid var(--border);
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--border);
+}
+
+.faq-item summary {
+  align-items: center;
+  cursor: pointer;
+  display: grid;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-weight: 620;
+  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr) 2.75rem;
+  letter-spacing: -0.02em;
+  list-style: none;
+  min-height: 5rem;
+  padding: 1rem 0;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary svg {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  box-sizing: content-box;
+  justify-self: end;
+  padding: 0.7rem;
+  transition: transform 150ms ease-out;
+}
+
+.faq-item[open] summary svg {
+  transform: rotate(45deg);
+}
+
+.faq-item summary:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 4px;
+}
+
+.faq-answer {
+  color: var(--muted-foreground);
+  line-height: 1.7;
+  max-width: 42rem;
+  padding: 0 4.25rem 1.75rem 0;
+  text-wrap: pretty;
 }
 
 /* Documentation */
@@ -420,6 +557,60 @@ a:focus-visible {
 
 .docs-section ul {
   padding-left: 1.25rem;
+}
+
+.install-panel {
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  margin-top: 1.5rem;
+  overflow: hidden;
+}
+
+.install-tabs {
+  background: color-mix(in oklch, var(--muted) 55%, transparent);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.4rem;
+}
+
+.install-tab {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 0.6rem;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 650;
+  gap: 0.45rem;
+  min-height: 36px;
+  padding: 0.45rem 0.8rem;
+}
+
+.install-tab[aria-pressed="true"] {
+  background: var(--card);
+  box-shadow: 0 1px 4px oklch(0.215 0.018 58 / 10%);
+  color: var(--foreground);
+}
+
+.install-content {
+  display: grid;
+  gap: 0.7rem;
+  padding: 1rem;
+}
+
+.install-content > p {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  margin: 0 0 0.2rem;
+}
+
+.install-import {
+  margin-top: 0;
 }
 
 .install-options {
@@ -609,6 +800,22 @@ pre {
 
   .component-copy {
     position: static;
+  }
+
+  .faq-section {
+    grid-template-columns: 1fr;
+  }
+
+  .faq-intro {
+    position: static;
+  }
+
+  .faq-intro h2 {
+    max-width: 12ch;
+  }
+
+  .faq-answer {
+    padding-right: 0;
   }
 
   .demo-frame {

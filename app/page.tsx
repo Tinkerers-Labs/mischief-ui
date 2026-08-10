@@ -1,10 +1,12 @@
 import Link from "next/link"
+import { Bot } from "lucide-react"
 
-import { MischiefMark } from "@/components/brand-logo"
 import { ComponentGallery } from "@/components/component-gallery"
 import { CopyCommand } from "@/components/copy-command"
+import { FaqSection } from "@/components/faq-section"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
+import { siteConfig } from "@/site.config"
 
 export default function Home() {
   return (
@@ -12,19 +14,9 @@ export default function Home() {
       <SiteHeader />
 
       <section
-        className="mx-auto grid min-h-[calc(100svh-4rem)] max-w-[90rem] grid-rows-[auto_1fr_auto] gap-12 overflow-hidden px-4 py-10 md:px-8 md:py-14 lg:px-12 lg:py-16"
+        className="mx-auto grid min-h-[calc(100svh-4rem)] max-w-[90rem] grid-rows-[1fr_auto] gap-12 overflow-hidden px-4 py-10 md:px-8 md:py-14 lg:px-12 lg:py-16"
         id="top"
       >
-        <div className="flex items-start justify-between gap-8">
-          <p className="text-xs font-bold tracking-[0.08em] uppercase">
-            Open source. Made for shadcn.
-          </p>
-          <MischiefMark
-            className="text-primary hidden size-20 md:block"
-            aria-hidden="true"
-          />
-        </div>
-
         <h1 className="self-center font-[family-name:var(--font-display)] text-[clamp(3rem,9.5vw,8.5rem)] leading-[0.88] font-semibold tracking-[-0.06em]">
           <span className="block">Good interfaces</span>
           <span className="block">deserve</span>
@@ -48,27 +40,35 @@ export default function Home() {
               </a>
               <Link
                 className="font-semibold underline underline-offset-4"
-                href="/docs"
+                href={siteConfig.routes.docs}
               >
                 Read the docs
               </Link>
             </div>
           </div>
 
-          <div className="border-border min-w-0 border-l pl-5 md:pl-8">
-            <p className="mb-3 text-sm font-semibold">Start with the source</p>
+          <div className="border-border min-w-0 border-t pt-6 md:border-t-0 md:border-l md:pt-0 md:pl-8">
+            <p className="mb-2 flex items-center gap-2 text-sm font-semibold">
+              <Bot aria-hidden="true" size={16} strokeWidth={1.8} />
+              Your agent can browse {siteConfig.name} too
+            </p>
+            <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
+              Install the skill once, then ask for a component by name.
+            </p>
             <CopyCommand
-              label="shadcn"
-              command="pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/magnetic-tabs"
+              label="Agent skill"
+              command={siteConfig.skill.installCommand}
             />
             <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
-              It lands in your project, ready to edit.
+              Try: Use <code>$mischief-ui</code> to add magnetic-tabs.
             </p>
           </div>
         </div>
       </section>
 
       <ComponentGallery />
+
+      <FaqSection />
 
       <SiteFooter />
     </main>

@@ -2,7 +2,7 @@
 
 Good interfaces deserve a little mischief.
 
-Playful, production-ready React components built with Base UI, Motion, Tailwind CSS, and shadcn theme tokens. The package exports Magnetic Tabs, Elastic Slider, Hold Button, and Signature Footer.
+Playful, production-ready React components and blocks built with Base UI, Motion, Tailwind CSS, and shadcn theme tokens. The package exports Magnetic Tabs, Elastic Slider, Hold Button, Signature Footer, Impossible Checkbox, Floating Index, Shift Button, and Image Gallery.
 
 ## Install from npm
 

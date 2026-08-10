@@ -41,7 +41,7 @@ Bad: "Reimagine destructive actions through delightful interaction."
 
 ## Visual character
 
-Mischief uses warm paper, dark ink, and a sharp tomato accent. The shapes are sturdy, the typography is lively, and motion has a clear physical cause.
+Mischief uses white paper, dark ink, and a sharp tomato accent. The shapes are sturdy, the typography is lively, and motion has a clear physical cause. Light mode should feel crisp rather than creamy. Dark mode uses warm brown-black surfaces instead of cool blue-gray ones.
 
 The website can have a distinct identity. Installed components must inherit the consumer's shadcn tokens unless an explicit color prop is part of the component API.
 
@@ -63,14 +63,27 @@ The bend connects the brand to the physical feedback in the components. The spar
 
 | Token         | Value                         | Usage                                   |
 | ------------- | ----------------------------- | --------------------------------------- |
-| paper         | `oklch(0.975 0.012 84)`       | Page background                         |
-| paper-raised  | `oklch(0.995 0.006 84)`       | Raised examples and menus               |
+| paper         | `oklch(1 0 0)`                | Page background                         |
+| paper-raised  | `oklch(1 0 0)`                | Raised examples and menus               |
 | ink           | `oklch(0.215 0.018 58)`       | Primary text and strong borders         |
 | ink-muted     | `oklch(0.48 0.025 58)`        | Supporting text                         |
 | tomato        | `oklch(0.675 0.205 32)`       | Links, active states, and focus accents |
 | tomato-strong | `oklch(0.59 0.22 30)`         | Pressed states                          |
 | leaf          | `oklch(0.78 0.16 128)`        | Small success details                   |
 | line          | `oklch(0.215 0.018 58 / 16%)` | Rules and quiet borders                 |
+
+### Dark mode
+
+| Token      | Value                       | Usage                                   |
+| ---------- | --------------------------- | --------------------------------------- |
+| background | `oklch(0.17 0.012 58)`      | Page background                         |
+| surface    | `oklch(0.215 0.014 58)`     | Raised examples and menus               |
+| text       | `oklch(0.94 0.01 84)`       | Primary text                            |
+| text-muted | `oklch(0.72 0.016 76)`      | Supporting text                         |
+| tomato     | `oklch(0.72 0.185 32)`      | Links, active states, and focus accents |
+| line       | `oklch(0.94 0.01 84 / 15%)` | Rules and quiet borders                 |
+
+Use the operating system preference on a first visit. A manual choice persists locally. The fixed header contains one icon button that clearly switches to the other mode. The branded site footer remains ink on paper in both modes so its closing gesture stays recognizable.
 
 ### Installed component tokens
 
@@ -128,9 +141,15 @@ Use a 4px base unit.
 
 Pages should alternate between open editorial space and dense, useful examples. Avoid a repeated grid of identical cards.
 
+The homepage hero keeps the brand promise dominant and uses its smaller utility column to introduce the agent skill. Agent support is a useful way to install and discover components, not the identity of the product.
+
+The homepage FAQ follows the component gallery and resolves practical questions before the footer. It uses a two-column editorial layout with native disclosure rows. Questions cover installation, ownership, compatibility, accessibility, licensing, blocks, and agent use without turning into sales copy.
+
 Component documentation uses a stable left rail on wide screens and a horizontal component list on small screens. Each detail page follows the same reading order: purpose, live preview, installation, usage, API, accessibility, dependencies, and source.
 
-The site footer is an ink-colored closing section used on every public page. It pairs one direct invitation with compact navigation, package links, and a quiet license line. An oversized, low-contrast Mischief wordmark closes the page as a brand signature. It should feel like a useful final thought, not a sitemap dump.
+The site footer is an ink-colored closing section used on every public page. It pairs one direct invitation with compact navigation and package links. Its attribution line credits Tinkerers Labs and Aman, then points to the source on GitHub. An oversized, low-contrast Mischief wordmark closes the page as a brand signature. It should feel like a useful final thought, not a sitemap dump.
+
+The license page is a public editorial page rather than a dense legal portal. It summarizes MIT permissions and obligations in plain language, then shows the exact repository license text. It links from the docs sidebar and footer without adding another item to the compact header navigation.
 
 ## Radius, borders, and shadows
 
@@ -188,6 +207,22 @@ A confirmation button for consequential actions. Holding fills a progress surfac
 ### Signature Footer
 
 A complete closing section with practical content first and an oversized, low-contrast wordmark at the end. Content stays composable so projects can supply their own navigation, actions, brand lockup, and metadata.
+
+### Impossible Checkbox
+
+A novelty checkbox that a bear immediately switches off. It belongs in demos, Easter eggs, and other harmless moments, never in a form or setting where the person needs control. The component keeps native checkbox semantics, announces its refusal, and removes the swat animation when reduced motion is enabled.
+
+### Floating Index
+
+A compact floating outline for long pages and scroll containers. It shows reading progress at a glance, exposes the full section list on demand, and follows the active section without taking over the layout.
+
+### Shift Button
+
+A call to action whose leading icon steps aside for a directional cue. The label stays stable and readable. Reduced motion keeps the leading icon and text in place.
+
+### Image Gallery
+
+A reusable block for presenting a related image set. It supports equal and masonry layouts, then opens images in a modal lightbox with full keyboard and focus behavior.
 
 ## Content examples
 

@@ -2,19 +2,16 @@ import Link from "next/link"
 import {
   ArrowRight,
   ArrowUpRight,
+  Heart,
   Package,
   type LucideIcon,
 } from "lucide-react"
 
 import { BrandLogo } from "@/components/brand-logo"
+import { ExternalLink } from "@/components/external-link"
 import { GitHubIcon } from "@/components/github-icon"
-import {
-  externalLinks,
-  type ExternalLinkId,
-  siteNavigation,
-  tinkerersLabsUrl,
-} from "@/lib/site-links"
 import { SignatureFooter } from "@/registry/default/signature-footer/signature-footer"
+import { type ExternalLinkId, siteConfig } from "@/site.config"
 
 const externalIcons: Record<ExternalLinkId, LucideIcon> = {
   npm: Package,
@@ -24,8 +21,8 @@ const externalIcons: Record<ExternalLinkId, LucideIcon> = {
 export function SiteFooter() {
   return (
     <SignatureFooter
-      className="mt-16 [&_[data-slot=signature-footer-heading]]:font-[family-name:var(--font-display)] [&_[data-slot=signature-footer-wordmark]]:font-[family-name:var(--font-display)]"
-      eyebrow="Good interfaces deserve a little mischief"
+      className="mt-16 [--background:var(--brand-paper)] [--foreground:var(--brand-ink)] [&_[data-slot=signature-footer-heading]]:font-[family-name:var(--font-display)] [&_[data-slot=signature-footer-wordmark]]:font-[family-name:var(--font-display)]"
+      eyebrow={siteConfig.tagline}
       heading={
         <>
           Take the code.
@@ -36,7 +33,7 @@ export function SiteFooter() {
       action={
         <Link
           className="bg-background text-foreground inline-flex min-h-11 items-center gap-3 rounded-full px-5 font-semibold no-underline transition-transform duration-150 hover:translate-x-1"
-          href="/docs/components/magnetic-tabs"
+          href={siteConfig.routes.components}
         >
           Browse components
           <ArrowRight aria-hidden="true" size={18} />
@@ -52,7 +49,7 @@ export function SiteFooter() {
               Explore
             </p>
             <ul className="mt-4 grid gap-1">
-              {siteNavigation.map((item) => (
+              {siteConfig.footerNavigation.map((item) => (
                 <li key={item.href}>
                   <Link
                     className="hover:text-primary inline-flex min-h-11 items-center text-lg font-semibold no-underline transition-colors duration-150"
@@ -70,12 +67,12 @@ export function SiteFooter() {
               Elsewhere
             </p>
             <ul className="mt-4 grid gap-1">
-              {externalLinks.map((item) => {
+              {siteConfig.externalLinks.map((item) => {
                 const Icon = externalIcons[item.id]
 
                 return (
                   <li key={item.id}>
-                    <a
+                    <ExternalLink
                       className="hover:text-primary inline-flex min-h-11 items-center gap-3 text-lg font-semibold no-underline transition-colors duration-150"
                       href={item.href}
                       aria-label={item.accessibleLabel}
@@ -87,7 +84,7 @@ export function SiteFooter() {
                         aria-hidden="true"
                         size={15}
                       />
-                    </a>
+                    </ExternalLink>
                   </li>
                 )
               })}
@@ -97,21 +94,45 @@ export function SiteFooter() {
       }
       brand={<BrandLogo />}
       meta={
-        <div className="text-background/55 flex flex-wrap gap-x-6 gap-y-2">
-          <span>MIT licensed.</span>
+        <p className="text-background/55 max-w-2xl leading-relaxed">
           <span>
-            Built carefully at{" "}
-            <a
+            A product by{" "}
+            <ExternalLink
               className="hover:text-primary underline decoration-current/35 underline-offset-4 transition-colors duration-150"
-              href={tinkerersLabsUrl}
+              href={siteConfig.organization.url}
             >
-              Tinkerers Labs
-            </a>
+              {siteConfig.organization.name}
+            </ExternalLink>
+            .
+          </span>{" "}
+          <span>
+            Built with{" "}
+            <span className="text-primary inline-flex align-[-0.1em]">
+              <Heart aria-hidden="true" fill="currentColor" size={14} />
+              <span className="sr-only">love</span>
+            </span>{" "}
+            by{" "}
+            <ExternalLink
+              className="hover:text-primary underline decoration-current/35 underline-offset-4 transition-colors duration-150"
+              href={siteConfig.author.url}
+            >
+              {siteConfig.author.name}
+            </ExternalLink>
+            .
+          </span>{" "}
+          <span>
+            The source code is available on{" "}
+            <ExternalLink
+              className="hover:text-primary underline decoration-current/35 underline-offset-4 transition-colors duration-150"
+              href={siteConfig.repository.url}
+            >
+              GitHub
+            </ExternalLink>
             .
           </span>
-        </div>
+        </p>
       }
-      wordmark="Mischief"
+      wordmark={siteConfig.name}
     />
   )
 }

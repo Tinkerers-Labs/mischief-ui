@@ -2,8 +2,12 @@ import Link from "next/link"
 
 import { CopyCommand } from "@/components/copy-command"
 import { componentDocs } from "@/lib/component-docs"
+import { registryInstallCommand, siteConfig } from "@/site.config"
 
 export default function DocsPage() {
+  const components = componentDocs.filter(({ kind }) => kind === "component")
+  const blocks = componentDocs.filter(({ kind }) => kind === "block")
+
   return (
     <article className="docs-article">
       <p className="eyebrow">Introduction</p>
@@ -13,9 +17,10 @@ export default function DocsPage() {
         High bar.
       </h1>
       <p className="docs-lead">
-        Mischief adds physical feedback and a little personality to familiar
-        controls. Every component is open source, theme-aware, and usable with a
-        keyboard, touch, pointer, or screen reader where applicable.
+        {siteConfig.name} adds physical feedback and a little personality to
+        familiar controls. Every component is open source, theme-aware, and
+        usable with a keyboard, touch, pointer, or screen reader where
+        applicable.
       </p>
 
       <section className="docs-section">
@@ -29,11 +34,11 @@ export default function DocsPage() {
         <div className="install-options">
           <CopyCommand
             label="Source"
-            command="pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/magnetic-tabs"
+            command={registryInstallCommand("magnetic-tabs")}
           />
           <CopyCommand
             label="Package"
-            command="pnpm add mischief-ui @base-ui/react motion"
+            command={siteConfig.package.installCommand}
           />
         </div>
       </section>
@@ -41,7 +46,7 @@ export default function DocsPage() {
       <section className="docs-section">
         <h2>The components</h2>
         <div className="docs-component-list">
-          {componentDocs.map((component) => (
+          {components.map((component) => (
             <Link
               key={component.slug}
               href={`/docs/components/${component.slug}`}
@@ -49,6 +54,24 @@ export default function DocsPage() {
               <span>{component.number}</span>
               <strong>{component.name}</strong>
               <p>{component.summary}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="docs-section">
+        <h2>The blocks</h2>
+        <p>
+          Blocks are reusable React components too. They simply cover a larger
+          part of a page and compose more behavior. Install them the same way,
+          then replace their content through props.
+        </p>
+        <div className="docs-component-list">
+          {blocks.map((block) => (
+            <Link key={block.slug} href={`/docs/components/${block.slug}`}>
+              <span>{block.number}</span>
+              <strong>{block.name}</strong>
+              <p>{block.summary}</p>
             </Link>
           ))}
         </div>

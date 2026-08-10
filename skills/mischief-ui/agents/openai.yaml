@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mischief UI"
+  short_description: "Find and add playful shadcn components"
+  default_prompt: "Use $mischief-ui to find and add a fitting Mischief component to this project."

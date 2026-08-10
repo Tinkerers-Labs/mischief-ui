@@ -2,8 +2,10 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 import { ComponentPreview } from "@/components/component-preview"
-import { CopyCommand } from "@/components/copy-command"
+import { ExternalLink } from "@/components/external-link"
+import { InstallPanel } from "@/components/install-panel"
 import { componentDocs, getComponentDoc } from "@/lib/component-docs"
+import { componentSourceUrl, siteConfig } from "@/site.config"
 
 export function generateStaticParams() {
   return componentDocs.map(({ slug }) => ({ slug }))
@@ -16,7 +18,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const component = getComponentDoc((await params).slug)
   return {
-    title: component ? `${component.name} | Mischief` : "Component | Mischief",
+    title: component
+      ? `${component.name} | ${siteConfig.name}`
+      : `Component | ${siteConfig.name}`,
     description: component?.summary,
   }
 }
@@ -43,20 +47,11 @@ export default async function ComponentPage({
 
       <section className="docs-section">
         <h2>Install</h2>
-        <p>
-          Copy the source with shadcn, or add the package if you prefer imports
-          from npm.
-        </p>
-        <div className="install-options">
-          <CopyCommand label="shadcn" command={component.install} />
-          <CopyCommand
-            label="npm"
-            command="pnpm add mischief-ui @base-ui/react motion"
-          />
-        </div>
-        <pre>
-          <code>{component.npmImport}</code>
-        </pre>
+        <p>Copy the source into your project, or keep it behind a package.</p>
+        <InstallPanel
+          npmImport={component.npmImport}
+          shadcnCommand={component.install}
+        />
       </section>
 
       <section className="docs-section">
@@ -93,11 +88,9 @@ export default async function ComponentPage({
           <h2>Dependencies</h2>
           <p>{component.dependencies.join(", ")}</p>
         </div>
-        <a
-          href={`https://github.com/Tinkerers-Labs/mischief-ui/blob/main/registry/default/${component.slug}/${component.slug}.tsx`}
-        >
+        <ExternalLink href={componentSourceUrl(component.slug)}>
           Read the full source on GitHub
-        </a>
+        </ExternalLink>
       </section>
     </article>
   )

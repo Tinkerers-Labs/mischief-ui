@@ -2,12 +2,10 @@ import Link from "next/link"
 import { Package, type LucideIcon } from "lucide-react"
 
 import { BrandLogo } from "@/components/brand-logo"
+import { ExternalLink } from "@/components/external-link"
 import { GitHubIcon } from "@/components/github-icon"
-import {
-  externalLinks,
-  type ExternalLinkId,
-  siteNavigation,
-} from "@/lib/site-links"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { type ExternalLinkId, siteConfig } from "@/site.config"
 
 const utilityIcons: Record<ExternalLinkId, LucideIcon> = {
   npm: Package,
@@ -26,14 +24,14 @@ function UtilityLink({
   icon: LucideIcon
 }) {
   return (
-    <a
+    <ExternalLink
       className="hover:text-primary inline-flex size-11 items-center justify-center transition-colors duration-150"
       href={href}
       aria-label={label}
       title={title}
     >
       <Icon aria-hidden="true" size={19} strokeWidth={1.9} />
-    </a>
+    </ExternalLink>
   )
 }
 
@@ -43,8 +41,8 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-[90rem] items-center justify-between px-4 md:px-8 lg:px-12">
         <Link
           className="inline-flex items-center font-semibold text-inherit no-underline"
-          href="/"
-          aria-label="Mischief home"
+          href={siteConfig.routes.home}
+          aria-label={`${siteConfig.name} home`}
         >
           <BrandLogo />
         </Link>
@@ -52,7 +50,7 @@ export function SiteHeader() {
           className="flex items-center gap-0 text-sm font-semibold sm:gap-2 lg:gap-4"
           aria-label="Main navigation"
         >
-          {siteNavigation.map((item) => (
+          {siteConfig.navigation.map((item) => (
             <Link
               key={item.href}
               className="hover:text-primary hidden min-h-11 items-center text-inherit no-underline transition-colors duration-150 min-[520px]:inline-flex"
@@ -65,7 +63,7 @@ export function SiteHeader() {
             className="bg-border mx-1 hidden h-5 w-px min-[520px]:block"
             aria-hidden="true"
           />
-          {externalLinks.map((item) => (
+          {siteConfig.externalLinks.map((item) => (
             <UtilityLink
               key={item.id}
               href={item.href}
@@ -74,6 +72,7 @@ export function SiteHeader() {
               icon={utilityIcons[item.id]}
             />
           ))}
+          <ThemeToggle />
         </nav>
       </div>
     </header>

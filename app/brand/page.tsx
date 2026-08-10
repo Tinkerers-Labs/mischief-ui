@@ -1,13 +1,14 @@
 import { MischiefMark } from "@/components/brand-logo"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
+import { siteConfig } from "@/site.config"
 
 export default function BrandPage() {
   return (
     <>
       <SiteHeader />
       <main className="brand-page">
-        <p className="eyebrow">The Mischief mark</p>
+        <p className="eyebrow">The {siteConfig.name} mark</p>
         <h1>
           A crooked M<br />
           with a bright idea.
@@ -20,11 +21,11 @@ export default function BrandPage() {
         <section className="brand-showcase">
           <div className="brand-tile brand-tile-paper">
             <MischiefMark />
-            <span>Mischief</span>
+            <span>{siteConfig.name}</span>
           </div>
           <div className="brand-tile brand-tile-ink">
             <MischiefMark />
-            <span>Mischief</span>
+            <span>{siteConfig.name}</span>
           </div>
         </section>
 

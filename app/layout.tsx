@@ -1,11 +1,24 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import {
   Bricolage_Grotesque,
   Geist_Mono,
   Schibsted_Grotesk,
 } from "next/font/google"
 
+import { siteConfig } from "@/site.config"
+
 import "./globals.css"
+
+const themeScript = `(() => {
+  try {
+    const saved = localStorage.getItem("mischief-theme");
+    const theme = saved === "light" || saved === "dark"
+      ? saved
+      : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    document.documentElement.style.colorScheme = theme;
+  } catch (_) {}
+})();`
 
 const display = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -23,32 +36,38 @@ const mono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Mischief | UI with personality",
-  description:
-    "Playful, production-ready React components that work with shadcn.",
-  metadataBase: new URL("https://ui.tinkererslabs.com/"),
+  title: siteConfig.title,
+  description: siteConfig.description,
+  metadataBase: new URL(siteConfig.url),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Mischief",
-    description: "Good interfaces deserve a little mischief.",
+    title: siteConfig.name,
+    description: siteConfig.tagline,
     type: "website",
     images: [
       {
-        url: "/brand/mischief-social-preview.png",
+        url: siteConfig.assets.socialPreview,
         width: 1280,
         height: 640,
-        alt: "Mischief. Good interfaces deserve a little mischief.",
+        alt: `${siteConfig.name}. ${siteConfig.tagline}`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mischief",
-    description: "Good interfaces deserve a little mischief.",
-    images: ["/brand/mischief-social-preview.png"],
+    title: siteConfig.name,
+    description: siteConfig.tagline,
+    images: [siteConfig.assets.socialPreview],
   },
+}
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#1d1a18" },
+  ],
 }
 
 export default function RootLayout({
@@ -58,7 +77,11 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${display.variable} ${body.variable} ${mono.variable}`}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="pt-16 font-sans">{children}</body>
     </html>
   )

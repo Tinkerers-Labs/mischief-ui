@@ -14,6 +14,22 @@ Mischief is a small collection of playful, production-ready React components. Th
 
 ## Install
 
+### Give Mischief to your agent
+
+Install the catalog as an agent skill:
+
+```bash
+npx skills add Tinkerers-Labs/mischief-ui --skill mischief-ui
+```
+
+Then ask for what you need:
+
+```text
+Use $mischief-ui to add the impossible-checkbox component to this project.
+```
+
+### Add it yourself
+
 Mischief is a public GitHub registry for shadcn CLI v4. Install a component directly from this repository:
 
 ```bash
@@ -21,6 +37,10 @@ pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/magnetic-tabs
 pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/elastic-slider
 pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/hold-button
 pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/signature-footer
+pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/impossible-checkbox
+pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/floating-index
+pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/shift-button
+pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/image-gallery
 ```
 
 Use `npm`, `yarn`, or `bun` if that is what your project uses. The shadcn CLI reads `components.json` and places the source in the configured UI directory.
@@ -98,6 +118,81 @@ export function Footer() {
 ```
 
 Pass ordinary React nodes for the action, navigation, compact brand, and metadata. The footer owns the composition while your app owns its links and language.
+
+### Impossible Checkbox
+
+```tsx
+import { ImpossibleCheckbox } from "@/components/ui/impossible-checkbox"
+
+export function Demo() {
+  return <ImpossibleCheckbox aria-label="Enable bear mode" />
+}
+```
+
+The bear always turns it back off. Use it for demos and harmless jokes, never for consent or a setting someone needs to change.
+
+### Floating Index
+
+```tsx
+import { FloatingIndex } from "@/components/ui/floating-index"
+
+const items = [
+  { id: "introduction", label: "Introduction" },
+  { id: "details", label: "Details" },
+  { id: "examples", label: "Examples" },
+]
+
+export function PageIndex() {
+  return <FloatingIndex items={items} />
+}
+```
+
+The index tracks page progress and the active section. Pass `containerRef` when the content scrolls inside an element instead of the page.
+
+### Shift Button
+
+```tsx
+import { Apple } from "lucide-react"
+import { ShiftButton } from "@/components/ui/shift-button"
+
+export function DownloadButton() {
+  return (
+    <ShiftButton
+      render={<a href="/download" />}
+      leadingIcon={<Apple aria-hidden="true" />}
+    >
+      Download for Mac
+    </ShiftButton>
+  )
+}
+```
+
+The component uses Base UI so the same interaction can remain a button or render as a real link.
+
+## Blocks
+
+### Image Gallery
+
+```tsx
+import { ImageGallery } from "@/components/ui/image-gallery"
+
+const images = [
+  {
+    id: "studio",
+    src: "/photos/studio.jpg",
+    alt: "Sunlight across the studio table",
+    width: 1600,
+    height: 1200,
+    caption: "The studio",
+  },
+]
+
+export function WorkGallery() {
+  return <ImageGallery images={images} title="Recent work" />
+}
+```
+
+The lightbox traps focus, locks page scroll, restores focus on close, and supports Left Arrow, Right Arrow, and Escape.
 
 ## Compatibility
 

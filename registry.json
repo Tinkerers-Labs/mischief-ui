@@ -57,17 +57,92 @@
     },
     {
       "name": "signature-footer",
-      "type": "registry:ui",
+      "type": "registry:block",
       "title": "Signature Footer",
       "description": "A composed site footer that ends with an oversized, low-contrast wordmark.",
       "dependencies": ["clsx@^2.1.1", "tailwind-merge@^3.3.1"],
       "files": [
         {
           "path": "registry/default/signature-footer/signature-footer.tsx",
-          "type": "registry:ui"
+          "type": "registry:block"
         }
       ],
       "categories": ["layout", "footer", "branding"]
+    },
+    {
+      "name": "impossible-checkbox",
+      "type": "registry:ui",
+      "title": "Impossible Checkbox",
+      "description": "A playful checkbox that a determined bear refuses to leave on.",
+      "dependencies": [
+        "clsx@^2.1.1",
+        "motion@^13.1.0",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/impossible-checkbox/impossible-checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["checkbox", "feedback", "motion", "playful"]
+    },
+    {
+      "name": "floating-index",
+      "type": "registry:ui",
+      "title": "Floating Index",
+      "description": "A compact floating outline that tracks reading progress and the active section.",
+      "dependencies": [
+        "clsx@^2.1.1",
+        "lucide-react@^1.31.0",
+        "motion@^13.1.0",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/floating-index/floating-index.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["navigation", "scroll", "progress", "motion"]
+    },
+    {
+      "name": "shift-button",
+      "type": "registry:ui",
+      "title": "Shift Button",
+      "description": "A call-to-action button that trades its leading icon for a directional cue.",
+      "dependencies": [
+        "@base-ui/react@^1.7.0",
+        "clsx@^2.1.1",
+        "lucide-react@^1.31.0",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/shift-button/shift-button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["button", "call-to-action", "motion"]
+    },
+    {
+      "name": "image-gallery",
+      "type": "registry:block",
+      "title": "Image Gallery",
+      "description": "A responsive image collection with grid and masonry layouts and an accessible lightbox.",
+      "dependencies": [
+        "@base-ui/react@^1.7.0",
+        "clsx@^2.1.1",
+        "lucide-react@^1.31.0",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/image-gallery/image-gallery.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "categories": ["gallery", "images", "dialog", "layout"]
     }
   ]
 }

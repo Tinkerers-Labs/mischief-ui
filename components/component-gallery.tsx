@@ -2,18 +2,21 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { Check, RotateCcw, Volume2 } from "lucide-react"
+import { Apple, Check, RotateCcw, Volume2 } from "lucide-react"
 
 import { CopyCommand } from "@/components/copy-command"
+import { FloatingIndexDemo } from "@/components/floating-index-demo"
+import { ImageGalleryDemo } from "@/components/image-gallery-demo"
 import { ElasticSlider } from "@/registry/default/elastic-slider/elastic-slider"
 import { HoldButton } from "@/registry/default/hold-button/hold-button"
+import { ImpossibleCheckbox } from "@/registry/default/impossible-checkbox/impossible-checkbox"
 import { MagneticTabs } from "@/registry/default/magnetic-tabs/magnetic-tabs"
 import { SignatureFooter } from "@/registry/default/signature-footer/signature-footer"
-
-const owner = "Tinkerers-Labs/mischief-ui"
+import { ShiftButton } from "@/registry/default/shift-button/shift-button"
+import { registryInstallCommand } from "@/site.config"
 
 function InstallCommand({ name }: { name: string }) {
-  return <CopyCommand command={`pnpm dlx shadcn@latest add ${owner}/${name}`} />
+  return <CopyCommand command={registryInstallCommand(name)} />
 }
 
 const tabItems = [
@@ -196,6 +199,85 @@ export function ComponentGallery() {
             meta={<span className="text-background/55">Made with care.</span>}
             wordmark="Northstar"
           />
+        </div>
+      </section>
+
+      <section className="component-section">
+        <div className="component-copy">
+          <p className="component-number">05 / Playful extras</p>
+          <h2>Impossible Checkbox</h2>
+          <p>
+            Try to turn it on. The bear has other plans. Keep this one for
+            demos, Easter eggs, and preferences that do not matter.
+          </p>
+          <InstallCommand name="impossible-checkbox" />
+          <Link
+            className="detail-link"
+            href="/docs/components/impossible-checkbox"
+          >
+            Preview, API, and source
+          </Link>
+        </div>
+        <div className="demo-frame">
+          <ImpossibleCheckbox className="bg-[#947cb0] [--impossible-bear:#784421] [--impossible-features:#16110e] [--impossible-muzzle:#e9c6af]" />
+        </div>
+      </section>
+
+      <section className="component-section">
+        <div className="component-copy">
+          <p className="component-number">06 / Wayfinding</p>
+          <h2>Floating Index</h2>
+          <p>
+            A small outline that stays nearby on long pages. It tracks the
+            active section, shows reading progress, and opens when you need to
+            jump.
+          </p>
+          <InstallCommand name="floating-index" />
+          <Link className="detail-link" href="/docs/components/floating-index">
+            Preview, API, and source
+          </Link>
+        </div>
+        <div className="demo-frame">
+          <FloatingIndexDemo />
+        </div>
+      </section>
+
+      <section className="component-section">
+        <div className="component-copy">
+          <p className="component-number">07 / Actions</p>
+          <h2>Shift Button</h2>
+          <p>
+            A call to action that clears a path as you approach it. The leading
+            icon steps aside and a directional cue takes its place.
+          </p>
+          <InstallCommand name="shift-button" />
+          <Link className="detail-link" href="/docs/components/shift-button">
+            Preview, API, and source
+          </Link>
+        </div>
+        <div className="demo-frame">
+          <ShiftButton leadingIcon={<Apple aria-hidden="true" />}>
+            Download for Mac
+          </ShiftButton>
+        </div>
+      </section>
+
+      <section className="component-section">
+        <div className="component-copy">
+          <p className="component-number">08 / Block</p>
+          <h2>Image Gallery</h2>
+          <p>
+            A responsive collection with two useful layouts and a proper
+            lightbox. Arrow keys move through the set and focus returns when you
+            close it.
+          </p>
+          <InstallCommand name="image-gallery" />
+          <Link className="detail-link" href="/docs/components/image-gallery">
+            Preview, API, and source
+          </Link>
+        </div>
+        <div className="demo-frame items-start">
+          <ImageGalleryDemo />
         </div>
       </section>
     </div>

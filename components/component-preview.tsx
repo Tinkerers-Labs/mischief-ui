@@ -1,12 +1,16 @@
 "use client"
 
 import * as React from "react"
-import { Check, RotateCcw, Volume2 } from "lucide-react"
+import { Apple, Check, RotateCcw, Volume2 } from "lucide-react"
 
+import { FloatingIndexDemo } from "@/components/floating-index-demo"
+import { ImageGalleryDemo } from "@/components/image-gallery-demo"
 import { ElasticSlider } from "@/registry/default/elastic-slider/elastic-slider"
 import { HoldButton } from "@/registry/default/hold-button/hold-button"
+import { ImpossibleCheckbox } from "@/registry/default/impossible-checkbox/impossible-checkbox"
 import { MagneticTabs } from "@/registry/default/magnetic-tabs/magnetic-tabs"
 import { SignatureFooter } from "@/registry/default/signature-footer/signature-footer"
+import { ShiftButton } from "@/registry/default/shift-button/shift-button"
 
 const tabItems = [
   {
@@ -96,6 +100,28 @@ export function ComponentPreview({ slug }: { slug: string }) {
         wordmark="Northstar"
       />
     )
+  }
+
+  if (slug === "impossible-checkbox") {
+    return (
+      <ImpossibleCheckbox className="bg-[#947cb0] [--impossible-bear:#784421] [--impossible-features:#16110e] [--impossible-muzzle:#e9c6af]" />
+    )
+  }
+
+  if (slug === "floating-index") {
+    return <FloatingIndexDemo />
+  }
+
+  if (slug === "shift-button") {
+    return (
+      <ShiftButton leadingIcon={<Apple aria-hidden="true" />}>
+        Download for Mac
+      </ShiftButton>
+    )
+  }
+
+  if (slug === "image-gallery") {
+    return <ImageGalleryDemo />
   }
 
   return (
