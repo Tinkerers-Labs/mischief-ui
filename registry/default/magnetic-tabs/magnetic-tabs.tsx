@@ -22,7 +22,10 @@ export interface MagneticTabItem {
   disabled?: boolean
 }
 
-export interface MagneticTabsProps {
+export interface MagneticTabsProps extends Omit<
+  React.ComponentPropsWithoutRef<typeof Tabs.Root>,
+  "children" | "defaultValue" | "onValueChange" | "value"
+> {
   items: MagneticTabItem[]
   defaultValue?: string
   value?: string
@@ -73,20 +76,22 @@ function MagneticTab({ item }: MagneticTabProps) {
   )
 }
 
-export function MagneticTabs({
-  items,
-  defaultValue,
-  value,
-  onValueChange,
-  className,
-}: MagneticTabsProps) {
+export const MagneticTabs = React.forwardRef<
+  React.ComponentRef<typeof Tabs.Root>,
+  MagneticTabsProps
+>(function MagneticTabs(
+  { items, defaultValue, value, onValueChange, className, ...rootProps },
+  forwardedRef
+) {
   const firstEnabledItem = items.find((item) => !item.disabled)
 
   if (!firstEnabledItem) return null
 
   return (
     <Tabs.Root
+      {...rootProps}
       data-slot="magnetic-tabs"
+      ref={forwardedRef}
       value={value}
       defaultValue={defaultValue ?? firstEnabledItem.value}
       onValueChange={(nextValue) => {
@@ -96,20 +101,26 @@ export function MagneticTabs({
     >
       <Tabs.List
         activateOnFocus
+        data-slot="magnetic-tabs-list"
         className="bg-muted relative isolate flex w-full rounded-[var(--radius)] p-1"
       >
         {items.map((item) => (
           <MagneticTab key={item.value} item={item} />
         ))}
         <Tabs.Indicator
+          data-slot="magnetic-tabs-indicator"
           renderBeforeHydration
           className="border-border/70 bg-background absolute top-1 bottom-1 left-0 -z-0 w-[var(--active-tab-width)] translate-x-[var(--active-tab-left)] rounded-[calc(var(--radius)-0.25rem)] border shadow-sm transition-[width,translate] duration-200 ease-out motion-reduce:transition-none"
         />
       </Tabs.List>
 
-      <div className="bg-card text-card-foreground mt-3 overflow-hidden rounded-[var(--radius)] border">
+      <div
+        data-slot="magnetic-tabs-panels"
+        className="bg-card text-card-foreground mt-3 overflow-hidden rounded-[var(--radius)] border"
+      >
         {items.map((item) => (
           <Tabs.Panel
+            data-slot="magnetic-tabs-panel"
             key={item.value}
             value={item.value}
             className="focus-visible:ring-ring p-5 text-sm leading-6 transition-[opacity,translate] duration-200 ease-out outline-none focus-visible:ring-2 focus-visible:ring-inset data-[ending-style]:-translate-y-1 data-[ending-style]:opacity-0 data-[starting-style]:translate-y-1 data-[starting-style]:opacity-0 motion-reduce:transition-none"
@@ -120,4 +131,4 @@ export function MagneticTabs({
       </div>
     </Tabs.Root>
   )
-}
+})

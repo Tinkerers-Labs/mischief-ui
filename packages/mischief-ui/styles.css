@@ -1,1 +1,7 @@
 @source "./dist";
+
+@keyframes mischief-file-thumbnail-shimmer {
+  to {
+    transform: translateX(300%) skewX(-12deg);
+  }
+}

@@ -11,12 +11,13 @@ function cn(...inputs: Parameters<typeof clsx>) {
 
 export type FileUploadStatus = "queued" | "uploading" | "complete" | "error"
 
-export type FileUploadEntry = {
+export type FileUploadEntry<TResult = unknown> = {
   id: string
   file: File
   status: FileUploadStatus
   progress: number
   error?: string
+  result?: TResult
 }
 
 export type FileUploadRejectionCode = "type" | "size" | "duplicate" | "count"
@@ -27,15 +28,15 @@ export type FileUploadRejection = {
   message: string
 }
 
-export type FileUploadAdapter = (
+export type FileUploadAdapter<TResult = unknown> = (
   file: File,
   options: {
     signal: AbortSignal
     onProgress: (progress: number) => void
   }
-) => Promise<void>
+) => Promise<TResult>
 
-export type FileUploadProps = Omit<
+export type FileUploadProps<TResult = unknown> = Omit<
   React.HTMLAttributes<HTMLDivElement>,
   "onChange"
 > & {
@@ -49,11 +50,15 @@ export type FileUploadProps = Omit<
   description?: React.ReactNode
   browseLabel?: string
   dropLabel?: string
-  uploadFile?: FileUploadAdapter
+  uploadFile?: FileUploadAdapter<TResult>
   autoUpload?: boolean
+  value?: FileUploadEntry<TResult>[]
+  defaultValue?: FileUploadEntry<TResult>[]
   onFilesAccepted?: (files: File[]) => void
   onFilesRejected?: (rejections: FileUploadRejection[]) => void
-  onFilesChange?: (files: FileUploadEntry[]) => void
+  onFilesChange?: (files: FileUploadEntry<TResult>[]) => void
+  onValueChange?: (files: FileUploadEntry<TResult>[]) => void
+  onUploadComplete?: (entry: FileUploadEntry<TResult>, result: TResult) => void
 }
 
 const DEFAULT_MAX_SIZE = 10 * 1024 * 1024
@@ -101,43 +106,65 @@ function clampProgress(progress: number) {
   return Math.min(100, Math.max(0, Math.round(progress)))
 }
 
-export function FileUpload({
-  accept,
-  multiple = true,
-  maxFiles = 5,
-  maxSize = DEFAULT_MAX_SIZE,
-  disabled = false,
-  name,
-  title = "Drop files here",
-  description,
-  browseLabel = "Choose files",
-  dropLabel = "Let go to add them",
-  uploadFile,
-  autoUpload = true,
-  onFilesAccepted,
-  onFilesRejected,
-  onFilesChange,
-  className,
-  ...rootProps
-}: FileUploadProps) {
+function FileUploadInner<TResult = unknown>(
+  {
+    accept,
+    multiple = true,
+    maxFiles = 5,
+    maxSize = DEFAULT_MAX_SIZE,
+    disabled = false,
+    name,
+    title = "Drop files here",
+    description,
+    browseLabel = "Choose files",
+    dropLabel = "Let go to add them",
+    uploadFile,
+    autoUpload = true,
+    value,
+    defaultValue = [],
+    onFilesAccepted,
+    onFilesRejected,
+    onFilesChange,
+    onValueChange,
+    onUploadComplete,
+    className,
+    ...rootProps
+  }: FileUploadProps<TResult>,
+  forwardedRef: React.ForwardedRef<HTMLDivElement>
+) {
   const inputRef = React.useRef<HTMLInputElement>(null)
   const dragDepthRef = React.useRef(0)
   const controllersRef = React.useRef(new Map<string, AbortController>())
-  const onFilesChangeRef = React.useRef(onFilesChange)
   const [isDragging, setIsDragging] = React.useState(false)
-  const [files, setFiles] = React.useState<FileUploadEntry[]>([])
+  const [uncontrolledFiles, setUncontrolledFiles] =
+    React.useState<FileUploadEntry<TResult>[]>(defaultValue)
   const [notice, setNotice] = React.useState("")
   const [rejectionMessage, setRejectionMessage] = React.useState<string | null>(
     null
   )
 
-  React.useEffect(() => {
-    onFilesChangeRef.current = onFilesChange
-  }, [onFilesChange])
+  const files = value ?? uncontrolledFiles
+  const filesRef = React.useRef(files)
 
   React.useEffect(() => {
-    onFilesChangeRef.current?.(files)
+    filesRef.current = files
   }, [files])
+
+  const updateFiles = React.useCallback(
+    (
+      update:
+        | FileUploadEntry<TResult>[]
+        | ((current: FileUploadEntry<TResult>[]) => FileUploadEntry<TResult>[])
+    ) => {
+      const nextFiles =
+        typeof update === "function" ? update(filesRef.current) : update
+      filesRef.current = nextFiles
+      if (value === undefined) setUncontrolledFiles(nextFiles)
+      onValueChange?.(nextFiles)
+      onFilesChange?.(nextFiles)
+    },
+    [onFilesChange, onValueChange, value]
+  )
 
   React.useEffect(() => {
     const controllers = controllersRef.current
@@ -148,14 +175,14 @@ export function FileUpload({
   }, [])
 
   const startUpload = React.useCallback(
-    async (entry: FileUploadEntry) => {
+    async (entry: FileUploadEntry<TResult>) => {
       if (!uploadFile || disabled) return
 
       controllersRef.current.get(entry.id)?.abort()
       const controller = new AbortController()
       controllersRef.current.set(entry.id, controller)
 
-      setFiles((current) =>
+      updateFiles((current) =>
         current.map((item) =>
           item.id === entry.id
             ? { ...item, status: "uploading", progress: 0, error: undefined }
@@ -164,11 +191,11 @@ export function FileUpload({
       )
 
       try {
-        await uploadFile(entry.file, {
+        const result = await uploadFile(entry.file, {
           signal: controller.signal,
           onProgress: (progress) => {
             if (controller.signal.aborted) return
-            setFiles((current) =>
+            updateFiles((current) =>
               current.map((item) =>
                 item.id === entry.id
                   ? { ...item, progress: clampProgress(progress) }
@@ -179,19 +206,23 @@ export function FileUpload({
         })
 
         if (controller.signal.aborted) return
-        setFiles((current) =>
-          current.map((item) =>
-            item.id === entry.id
-              ? { ...item, status: "complete", progress: 100 }
-              : item
-          )
+        const completedEntry: FileUploadEntry<TResult> = {
+          ...entry,
+          status: "complete",
+          progress: 100,
+          error: undefined,
+          result,
+        }
+        updateFiles((current) =>
+          current.map((item) => (item.id === entry.id ? completedEntry : item))
         )
+        onUploadComplete?.(completedEntry, result)
         setNotice(`${entry.file.name} uploaded.`)
       } catch (error) {
         if (controller.signal.aborted) return
         const message =
           error instanceof Error ? error.message : "The upload did not finish."
-        setFiles((current) =>
+        updateFiles((current) =>
           current.map((item) =>
             item.id === entry.id
               ? { ...item, status: "error", error: message }
@@ -205,7 +236,7 @@ export function FileUpload({
         }
       }
     },
-    [disabled, uploadFile]
+    [disabled, onUploadComplete, updateFiles, uploadFile]
   )
 
   const addFiles = React.useCallback(
@@ -213,10 +244,13 @@ export function FileUpload({
       if (disabled) return
 
       const candidates = Array.from(nextFiles)
-      const existingKeys = new Set(files.map(({ file }) => fileKey(file)))
+      const currentFiles = filesRef.current
+      const existingKeys = new Set(
+        currentFiles.map(({ file }) => fileKey(file))
+      )
       const accepted: File[] = []
       const rejections: FileUploadRejection[] = []
-      const remaining = Math.max(0, maxFiles - files.length)
+      const remaining = Math.max(0, maxFiles - currentFiles.length)
 
       candidates.forEach((file) => {
         if (
@@ -252,7 +286,7 @@ export function FileUpload({
         }
       })
 
-      const entries = accepted.map<FileUploadEntry>((file) => ({
+      const entries = accepted.map<FileUploadEntry<TResult>>((file) => ({
         id: createId(file),
         file,
         status: "queued",
@@ -260,7 +294,9 @@ export function FileUpload({
       }))
 
       if (entries.length > 0) {
-        setFiles((current) => (multiple ? [...current, ...entries] : entries))
+        updateFiles((current) =>
+          multiple ? [...current, ...entries] : entries
+        )
         onFilesAccepted?.(accepted)
         setRejectionMessage(null)
         setNotice(
@@ -283,34 +319,46 @@ export function FileUpload({
       accept,
       autoUpload,
       disabled,
-      files,
       maxFiles,
       maxSize,
       multiple,
       onFilesAccepted,
       onFilesRejected,
       startUpload,
+      updateFiles,
       uploadFile,
     ]
   )
 
-  const removeFile = React.useCallback((id: string) => {
-    controllersRef.current.get(id)?.abort()
-    controllersRef.current.delete(id)
-    setFiles((current) => current.filter((item) => item.id !== id))
-  }, [])
+  const removeFile = React.useCallback(
+    (id: string) => {
+      controllersRef.current.get(id)?.abort()
+      controllersRef.current.delete(id)
+      updateFiles((current) => current.filter((item) => item.id !== id))
+    },
+    [updateFiles]
+  )
 
-  const cancelUpload = React.useCallback((id: string) => {
-    controllersRef.current.get(id)?.abort()
-    controllersRef.current.delete(id)
-    setFiles((current) =>
-      current.map((item) =>
-        item.id === id
-          ? { ...item, status: "queued", progress: 0, error: undefined }
-          : item
+  const cancelUpload = React.useCallback(
+    (id: string) => {
+      controllersRef.current.get(id)?.abort()
+      controllersRef.current.delete(id)
+      updateFiles((current) =>
+        current.map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                status: "queued",
+                progress: 0,
+                error: undefined,
+                result: undefined,
+              }
+            : item
+        )
       )
-    )
-  }, [])
+    },
+    [updateFiles]
+  )
 
   const helpText =
     description ??
@@ -320,9 +368,11 @@ export function FileUpload({
     <div
       className={cn("w-full space-y-3", className)}
       data-slot="file-upload"
+      ref={forwardedRef}
       {...rootProps}
     >
       <div
+        data-slot="file-upload-dropzone"
         className={cn(
           "border-border bg-background relative flex min-h-56 flex-col items-center justify-center overflow-hidden rounded-[var(--radius)] border border-dashed px-6 py-8 text-center transition-[border-color,background-color] duration-200",
           "motion-reduce:transition-none",
@@ -352,6 +402,7 @@ export function FileUpload({
         }}
       >
         <div
+          data-slot="file-upload-illustration"
           aria-hidden="true"
           className="text-foreground relative mb-5 h-14 w-24"
         >
@@ -377,17 +428,26 @@ export function FileUpload({
           />
         </div>
 
-        <p className="font-medium">{isDragging ? dropLabel : title}</p>
-        <div className="text-muted-foreground mt-1 max-w-md text-sm">
+        <p data-slot="file-upload-title" className="font-medium">
+          {isDragging ? dropLabel : title}
+        </p>
+        <div
+          data-slot="file-upload-description"
+          className="text-muted-foreground mt-1 max-w-md text-sm"
+        >
           {helpText}
         </div>
         {rejectionMessage ? (
-          <p className="text-destructive mt-2 max-w-md text-sm">
+          <p
+            data-slot="file-upload-error"
+            className="text-destructive mt-2 max-w-md text-sm"
+          >
             {rejectionMessage}
           </p>
         ) : null}
 
         <button
+          data-slot="file-upload-browse"
           className="bg-foreground text-background focus-visible:ring-ring mt-5 inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-sm font-semibold outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none"
           disabled={disabled}
           type="button"
@@ -397,6 +457,7 @@ export function FileUpload({
           {browseLabel}
         </button>
         <input
+          data-slot="file-upload-input"
           ref={inputRef}
           className="hidden"
           type="file"
@@ -413,9 +474,16 @@ export function FileUpload({
       </div>
 
       {files.length > 0 ? (
-        <ul className="border-border bg-background divide-border divide-y rounded-[var(--radius)] border">
+        <ul
+          data-slot="file-upload-list"
+          className="border-border bg-background divide-border divide-y rounded-[var(--radius)] border"
+        >
           {files.map((entry) => (
-            <li className="flex min-w-0 items-center gap-3 p-3" key={entry.id}>
+            <li
+              data-slot="file-upload-item"
+              className="flex min-w-0 items-center gap-3 p-3"
+              key={entry.id}
+            >
               <span className="bg-muted text-muted-foreground grid size-10 shrink-0 place-items-center rounded-lg">
                 <File aria-hidden="true" size={18} />
               </span>
@@ -431,6 +499,7 @@ export function FileUpload({
                 {entry.status === "uploading" ? (
                   <div className="mt-2 flex items-center gap-2">
                     <div
+                      data-slot="file-upload-progress"
                       aria-label={`${entry.file.name} upload progress`}
                       aria-valuemax={100}
                       aria-valuemin={0}
@@ -465,7 +534,10 @@ export function FileUpload({
                 )}
               </div>
 
-              <div className="flex shrink-0 items-center">
+              <div
+                data-slot="file-upload-actions"
+                className="flex shrink-0 items-center"
+              >
                 {entry.status === "complete" ? (
                   <span
                     aria-label="Upload complete"
@@ -521,9 +593,20 @@ export function FileUpload({
         </ul>
       ) : null}
 
-      <p className="sr-only" aria-live="polite" role="status">
+      <p
+        data-slot="file-upload-status"
+        className="sr-only"
+        aria-live="polite"
+        role="status"
+      >
         {notice}
       </p>
     </div>
   )
 }
+
+export const FileUpload = React.forwardRef(FileUploadInner) as <
+  TResult = unknown,
+>(
+  props: FileUploadProps<TResult> & React.RefAttributes<HTMLDivElement>
+) => React.ReactElement

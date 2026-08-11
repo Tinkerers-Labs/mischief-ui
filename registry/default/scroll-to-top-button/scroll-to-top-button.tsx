@@ -14,6 +14,7 @@ export interface ScrollToTopButtonProps extends Omit<
   "children"
 > {
   containerRef?: React.RefObject<HTMLElement | null>
+  container?: HTMLElement | null
   behavior?: ScrollBehavior
   label?: string
   showAfter?: number
@@ -26,6 +27,7 @@ export const ScrollToTopButton = React.forwardRef<
   {
     behavior = "smooth",
     className,
+    container,
     containerRef,
     label = "Scroll to top",
     onClick,
@@ -38,11 +40,11 @@ export const ScrollToTopButton = React.forwardRef<
   const [visible, setVisible] = React.useState(false)
 
   React.useEffect(() => {
-    const container = containerRef?.current
-    const scrollTarget = container ?? window
+    const scrollContainer = container ?? containerRef?.current
+    const scrollTarget = scrollContainer ?? window
 
     function updateVisibility() {
-      const scrollTop = container?.scrollTop ?? window.scrollY
+      const scrollTop = scrollContainer?.scrollTop ?? window.scrollY
       setVisible(scrollTop > showAfter)
     }
 
@@ -50,7 +52,7 @@ export const ScrollToTopButton = React.forwardRef<
     scrollTarget.addEventListener("scroll", updateVisibility, { passive: true })
 
     return () => scrollTarget.removeEventListener("scroll", updateVisibility)
-  }, [containerRef, showAfter])
+  }, [container, containerRef, showAfter])
 
   function scrollToTop(event: React.MouseEvent<HTMLButtonElement>) {
     onClick?.(event)
@@ -60,10 +62,10 @@ export const ScrollToTopButton = React.forwardRef<
       "(prefers-reduced-motion: reduce)"
     ).matches
     const scrollBehavior = reduceMotion ? "instant" : behavior
-    const container = containerRef?.current
+    const scrollContainer = container ?? containerRef?.current
 
-    if (container) {
-      container.scrollTo({ top: 0, behavior: scrollBehavior })
+    if (scrollContainer) {
+      scrollContainer.scrollTo({ top: 0, behavior: scrollBehavior })
       return
     }
 
@@ -75,8 +77,9 @@ export const ScrollToTopButton = React.forwardRef<
   return (
     <button
       aria-label={label}
+      data-slot="scroll-to-top-button"
       className={cn(
-        "group bg-foreground text-background fixed right-6 bottom-6 z-40 inline-flex size-12 items-center justify-center rounded-full shadow-[0_1px_0_oklch(0.215_0.018_58/18%),0_10px_30px_oklch(0.215_0.018_58/18%)] transition-transform duration-150 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97] motion-reduce:transition-none",
+        "group bg-foreground text-background fixed right-6 bottom-6 z-40 inline-flex size-12 items-center justify-center rounded-full shadow-lg transition-transform duration-150 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97] motion-reduce:transition-none",
         className
       )}
       onClick={scrollToTop}

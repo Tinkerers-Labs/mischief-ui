@@ -10,7 +10,10 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export interface ElasticSliderProps {
+export interface ElasticSliderProps extends Omit<
+  React.ComponentPropsWithoutRef<typeof Slider.Root>,
+  "children" | "defaultValue" | "onValueChange" | "onValueCommitted" | "value"
+> {
   label: React.ReactNode
   defaultValue?: number
   value?: number
@@ -25,20 +28,27 @@ export interface ElasticSliderProps {
   className?: string
 }
 
-export function ElasticSlider({
-  label,
-  defaultValue = 50,
-  value,
-  onValueChange,
-  onValueCommitted,
-  min = 0,
-  max = 100,
-  step = 1,
-  name,
-  disabled,
-  formatValue = (nextValue) => `${nextValue}%`,
-  className,
-}: ElasticSliderProps) {
+export const ElasticSlider = React.forwardRef<
+  React.ComponentRef<typeof Slider.Root>,
+  ElasticSliderProps
+>(function ElasticSlider(
+  {
+    label,
+    defaultValue = 50,
+    value,
+    onValueChange,
+    onValueCommitted,
+    min = 0,
+    max = 100,
+    step = 1,
+    name,
+    disabled,
+    formatValue = (nextValue) => `${nextValue}%`,
+    className,
+    ...rootProps
+  },
+  forwardedRef
+) {
   const [internalValue, setInternalValue] = React.useState(defaultValue)
   const prefersReducedMotion = useReducedMotion()
   const currentValue = value ?? internalValue
@@ -53,7 +63,9 @@ export function ElasticSlider({
 
   return (
     <Slider.Root
+      {...rootProps}
       data-slot="elastic-slider"
+      ref={forwardedRef}
       value={value}
       defaultValue={defaultValue}
       min={min}
@@ -75,17 +87,26 @@ export function ElasticSlider({
         className
       )}
     >
-      <div className="flex items-baseline justify-between gap-4">
-        <Slider.Label className="text-sm font-medium">{label}</Slider.Label>
+      <div
+        data-slot="elastic-slider-header"
+        className="flex items-baseline justify-between gap-4"
+      >
+        <Slider.Label
+          data-slot="elastic-slider-label"
+          className="text-sm font-medium"
+        >
+          {label}
+        </Slider.Label>
         <output
+          data-slot="elastic-slider-output"
           className="font-mono text-sm font-semibold tabular-nums"
-          aria-live="polite"
         >
           {formatValue(currentValue)}
         </output>
       </div>
 
       <motion.div
+        data-slot="elastic-slider-motion"
         style={{
           transformOrigin: atStart ? "left" : atEnd ? "right" : "center",
         }}
@@ -99,10 +120,20 @@ export function ElasticSlider({
         }
         transition={{ type: "spring", stiffness: 460, damping: 26, mass: 0.4 }}
       >
-        <Slider.Control className="flex min-h-11 touch-none items-center py-4 select-none">
-          <Slider.Track className="bg-muted relative h-2 w-full rounded-full shadow-inner">
-            <Slider.Indicator className="bg-primary rounded-full" />
+        <Slider.Control
+          data-slot="elastic-slider-control"
+          className="flex min-h-11 touch-none items-center py-4 select-none"
+        >
+          <Slider.Track
+            data-slot="elastic-slider-track"
+            className="bg-muted relative h-2 w-full rounded-full shadow-inner"
+          >
+            <Slider.Indicator
+              data-slot="elastic-slider-indicator"
+              className="bg-primary rounded-full"
+            />
             <Slider.Thumb
+              data-slot="elastic-slider-thumb"
               className="border-primary bg-background focus-visible:ring-ring/35 size-6 rounded-full border-2 shadow-md transition-transform duration-150 outline-none hover:scale-105 focus-visible:ring-4 data-dragging:scale-105 motion-reduce:transition-none"
               aria-label={typeof label === "string" ? label : "Value"}
             />
@@ -111,4 +142,4 @@ export function ElasticSlider({
       </motion.div>
     </Slider.Root>
   )
-}
+})

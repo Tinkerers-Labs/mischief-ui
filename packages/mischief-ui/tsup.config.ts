@@ -1,12 +1,38 @@
 import { defineConfig } from "tsup"
 
 export default defineConfig({
-  entry: ["src/index.ts"],
+  entry: {
+    index: "src/index.ts",
+    "magnetic-tabs": "../../registry/default/magnetic-tabs/magnetic-tabs.tsx",
+    "elastic-slider":
+      "../../registry/default/elastic-slider/elastic-slider.tsx",
+    "hold-button": "../../registry/default/hold-button/hold-button.tsx",
+    "signature-footer":
+      "../../registry/default/signature-footer/signature-footer.tsx",
+    "impossible-checkbox":
+      "../../registry/default/impossible-checkbox/impossible-checkbox.tsx",
+    "floating-index":
+      "../../registry/default/floating-index/floating-index.tsx",
+    "shift-button": "../../registry/default/shift-button/shift-button.tsx",
+    "image-gallery": "../../registry/default/image-gallery/image-gallery.tsx",
+    "scroll-to-top-button":
+      "../../registry/default/scroll-to-top-button/scroll-to-top-button.tsx",
+    "ask-ai": "../../registry/default/ask-ai/ask-ai.tsx",
+    "file-upload": "../../registry/default/file-upload/file-upload.tsx",
+    "file-thumbnail":
+      "../../registry/default/file-thumbnail/file-thumbnail.tsx",
+  },
   format: ["esm", "cjs"],
-  banner: { js: '"use client";' },
   dts: true,
   clean: true,
   sourcemap: true,
-  external: ["react", "react-dom", "@base-ui/react", "motion"],
-  noExternal: ["clsx", "tailwind-merge"],
+  external: [
+    "react",
+    "react-dom",
+    "@base-ui/react",
+    "motion",
+    "clsx",
+    "lucide-react",
+    "tailwind-merge",
+  ],
 })

@@ -20,23 +20,30 @@ export interface SignatureFooterProps extends Omit<
   wordmark: string
 }
 
-export function SignatureFooter({
-  eyebrow,
-  heading,
-  description,
-  action,
-  navigation,
-  brand,
-  meta,
-  wordmark,
-  className,
-  ...props
-}: SignatureFooterProps) {
+export const SignatureFooter = React.forwardRef<
+  HTMLElement,
+  SignatureFooterProps
+>(function SignatureFooter(
+  {
+    eyebrow,
+    heading,
+    description,
+    action,
+    navigation,
+    brand,
+    meta,
+    wordmark,
+    className,
+    ...props
+  },
+  forwardedRef
+) {
   return (
     <footer
-      data-slot="signature-footer"
-      className={cn("bg-foreground text-background overflow-hidden", className)}
       {...props}
+      data-slot="signature-footer"
+      ref={forwardedRef}
+      className={cn("bg-foreground text-background overflow-hidden", className)}
     >
       <div
         data-slot="signature-footer-inner"
@@ -100,4 +107,4 @@ export function SignatureFooter({
       </div>
     </footer>
   )
-}
+})

@@ -41,7 +41,7 @@ export const ShiftButton = React.forwardRef<HTMLElement, ShiftButtonProps>(
       >
         <span
           data-slot="shift-button-leading-icon"
-          className="flex size-5 items-center justify-center transition-[transform,opacity] duration-150 ease-out group-hover:-translate-x-2 group-hover:opacity-0 group-focus-visible:-translate-x-2 group-focus-visible:opacity-0 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0 motion-reduce:group-hover:opacity-100 motion-reduce:group-focus-visible:translate-x-0 motion-reduce:group-focus-visible:opacity-100 [&_svg]:size-5"
+          className="flex size-5 items-center justify-center transition-[transform,opacity] duration-150 ease-out group-hover:-translate-x-2 group-hover:opacity-0 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0 motion-reduce:group-hover:opacity-100 [&_svg]:size-5"
         >
           {leadingIcon}
         </span>
@@ -50,7 +50,7 @@ export const ShiftButton = React.forwardRef<HTMLElement, ShiftButtonProps>(
         </span>
         <span
           data-slot="shift-button-trailing-icon"
-          className="flex size-5 translate-x-2 items-center justify-center opacity-0 transition-[transform,opacity] duration-150 ease-out group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 motion-reduce:hidden [&_svg]:size-5"
+          className="flex size-5 translate-x-2 items-center justify-center opacity-0 transition-[transform,opacity] duration-150 ease-out group-hover:translate-x-0 group-hover:opacity-100 motion-reduce:hidden [&_svg]:size-5"
         >
           {trailingIcon}
         </span>

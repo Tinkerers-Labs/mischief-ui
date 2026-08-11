@@ -136,16 +136,22 @@ function BearArm() {
   )
 }
 
-export function ImpossibleCheckbox({
-  onAttempt,
-  revealAfter = 2,
-  angryAfter = 5,
-  className,
-  "aria-label": ariaLabel = "Impossible checkbox",
-  "aria-describedby": ariaDescribedBy,
-  disabled,
-  ...inputProps
-}: ImpossibleCheckboxProps) {
+export const ImpossibleCheckbox = React.forwardRef<
+  HTMLInputElement,
+  ImpossibleCheckboxProps
+>(function ImpossibleCheckbox(
+  {
+    onAttempt,
+    revealAfter = 2,
+    angryAfter = 5,
+    className,
+    "aria-label": ariaLabel = "Impossible checkbox",
+    "aria-describedby": ariaDescribedBy,
+    disabled,
+    ...inputProps
+  },
+  forwardedRef
+) {
   const [checked, setChecked] = React.useState(false)
   const [attempts, setAttempts] = React.useState(0)
   const [busy, setBusy] = React.useState(false)
@@ -156,6 +162,17 @@ export function ImpossibleCheckbox({
   const armWrap = useAnimationControls()
   const arm = useAnimationControls()
   const paw = useAnimationControls()
+  const runRef = React.useRef(0)
+
+  React.useEffect(() => {
+    return () => {
+      runRef.current += 1
+      bear.stop()
+      armWrap.stop()
+      arm.stop()
+      paw.stop()
+    }
+  }, [arm, armWrap, bear, paw])
 
   const bearIsVisible = attempts >= revealAfter
   const bearIsAngry = attempts >= angryAfter
@@ -164,6 +181,8 @@ export function ImpossibleCheckbox({
   async function refuse() {
     if (busy || disabled) return
 
+    const run = runRef.current + 1
+    runRef.current = run
     const nextAttempt = attempts + 1
     const duration = prefersReducedMotion ? 0 : 0.2
     setBusy(true)
@@ -173,19 +192,23 @@ export function ImpossibleCheckbox({
 
     if (!prefersReducedMotion) {
       await new Promise((resolve) => window.setTimeout(resolve, 180))
+      if (runRef.current !== run) return
 
       if (nextAttempt > revealAfter) {
         await bear.start({
           y: nextAttempt >= angryAfter ? "0%" : "40%",
           transition: { duration: 0.24 },
         })
+        if (runRef.current !== run) return
       }
 
       await armWrap.start({ x: 32, transition: { duration } })
+      if (runRef.current !== run) return
       await Promise.all([
         arm.start({ scaleX: 0.7, transition: { duration } }),
         paw.start({ scaleX: 0.85, transition: { duration: 0.1 } }),
       ])
+      if (runRef.current !== run) return
     }
 
     setChecked(false)
@@ -199,6 +222,7 @@ export function ImpossibleCheckbox({
         armWrap.start({ x: 0, transition: { duration } }),
         bear.start({ y: "100%", transition: { duration: 0.24 } }),
       ])
+      if (runRef.current !== run) return
     }
 
     setBusy(false)
@@ -270,6 +294,7 @@ export function ImpossibleCheckbox({
         <span className="sr-only">{ariaLabel}</span>
         <input
           {...inputProps}
+          ref={forwardedRef}
           type="checkbox"
           checked={checked}
           disabled={disabled}
@@ -301,4 +326,4 @@ export function ImpossibleCheckbox({
       </span>
     </div>
   )
-}
+})

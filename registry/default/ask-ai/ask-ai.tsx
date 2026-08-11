@@ -149,22 +149,29 @@ export const AskAi = React.forwardRef<HTMLDivElement, AskAiProps>(
         ref={forwardedRef}
         {...rootProps}
       >
-        <div className="min-w-0">
-          <p className="font-semibold">Ask an AI about {subject}</p>
+        <div data-slot="ask-ai-content" className="min-w-0">
+          <p data-slot="ask-ai-title" className="font-semibold">
+            Ask an AI about {subject}
+          </p>
           {description && (
-            <p className="text-muted-foreground mt-1 max-w-[34rem] text-sm leading-relaxed">
+            <p
+              data-slot="ask-ai-description"
+              className="text-muted-foreground mt-1 max-w-[34rem] text-sm leading-relaxed"
+            >
               {description}
             </p>
           )}
         </div>
 
         <div
+          data-slot="ask-ai-actions"
           aria-label={`Choose an AI assistant to ask about ${subject}`}
           className="flex flex-wrap items-center gap-2"
           role="group"
         >
           {resolvedTargets.map((target) => (
             <a
+              data-slot="ask-ai-target"
               aria-label={`Ask ${target.name} about ${subject}, opens in a new tab`}
               className="bg-background text-foreground border-border hover:bg-muted inline-flex size-11 shrink-0 items-center justify-center rounded-full border no-underline transition-[background-color,transform] duration-150 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.96] motion-reduce:transition-none"
               href={target.href}
@@ -178,6 +185,7 @@ export const AskAi = React.forwardRef<HTMLDivElement, AskAiProps>(
           ))}
 
           <button
+            data-slot="ask-ai-copy"
             aria-label={`${copyLabel} about ${subject}`}
             className="bg-foreground text-background inline-flex min-h-11 items-center gap-2 rounded-lg border border-transparent px-3 text-sm font-semibold transition-transform duration-150 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] motion-reduce:transition-none"
             onClick={copyPrompt}
@@ -194,7 +202,12 @@ export const AskAi = React.forwardRef<HTMLDivElement, AskAiProps>(
           </button>
         </div>
 
-        <span aria-live="polite" className="sr-only" role="status">
+        <span
+          data-slot="ask-ai-status"
+          aria-live="polite"
+          className="sr-only"
+          role="status"
+        >
           {copyState === "copied"
             ? "Prompt copied to clipboard."
             : copyState === "error"

@@ -55,7 +55,7 @@ Mischief is also available as [`mischief-ui`](https://www.npmjs.com/package/misc
 pnpm add mischief-ui @base-ui/react motion
 ```
 
-Import `mischief-ui/styles.css` in your Tailwind CSS entry file, then import components from `mischief-ui`. The registry remains the recommended path when you want to own and adapt the source.
+Import `mischief-ui/styles.css` in your Tailwind CSS entry file, then use a direct entry such as `mischief-ui/magnetic-tabs`. The root export remains available when one import path is more convenient. The registry remains the recommended path when you want to own and adapt the source.
 
 ## Components
 
@@ -215,7 +215,9 @@ export function Attachments() {
 }
 ```
 
-The component validates file type, size, count, and duplicates before adding anything to its queue. Pass `uploadFile` to connect storage and enable progress, cancel, and retry behavior.
+The component validates file type, size, count, and duplicates before adding anything to its queue. Pass `uploadFile` to connect storage and enable progress, cancel, and retry behavior. Its return value is stored on the completed entry and passed to `onUploadComplete`. Use `value` and `onValueChange` when the queue belongs to application state.
+
+Repeat file type, size, and authorization checks on the server. Browser validation is user feedback, not a security boundary.
 
 ### File Thumbnail
 
@@ -263,6 +265,8 @@ The lightbox traps focus, locks page scroll, restores focus on close, and suppor
 - Next.js, Vite, React Router, TanStack Start, and other React projects supported by shadcn
 - Light and dark themes through semantic shadcn tokens
 - Left-to-right and right-to-left document direction through logical layout and Base UI behavior
+
+For reproducible GitHub installs, append a release tag or full commit SHA to the item address. Unpinned commands intentionally install the current version from `main`.
 
 ## Local development
 

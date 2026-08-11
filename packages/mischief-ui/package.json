@@ -1,10 +1,12 @@
 {
   "name": "mischief-ui",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Playful, production-ready React components for shadcn projects.",
   "license": "MIT",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "./styles.css"
+  ],
   "files": [
     "dist",
     "styles.css",
@@ -20,10 +22,75 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
+    "./magnetic-tabs": {
+      "types": "./dist/magnetic-tabs.d.ts",
+      "import": "./dist/magnetic-tabs.js",
+      "require": "./dist/magnetic-tabs.cjs"
+    },
+    "./elastic-slider": {
+      "types": "./dist/elastic-slider.d.ts",
+      "import": "./dist/elastic-slider.js",
+      "require": "./dist/elastic-slider.cjs"
+    },
+    "./hold-button": {
+      "types": "./dist/hold-button.d.ts",
+      "import": "./dist/hold-button.js",
+      "require": "./dist/hold-button.cjs"
+    },
+    "./signature-footer": {
+      "types": "./dist/signature-footer.d.ts",
+      "import": "./dist/signature-footer.js",
+      "require": "./dist/signature-footer.cjs"
+    },
+    "./impossible-checkbox": {
+      "types": "./dist/impossible-checkbox.d.ts",
+      "import": "./dist/impossible-checkbox.js",
+      "require": "./dist/impossible-checkbox.cjs"
+    },
+    "./floating-index": {
+      "types": "./dist/floating-index.d.ts",
+      "import": "./dist/floating-index.js",
+      "require": "./dist/floating-index.cjs"
+    },
+    "./shift-button": {
+      "types": "./dist/shift-button.d.ts",
+      "import": "./dist/shift-button.js",
+      "require": "./dist/shift-button.cjs"
+    },
+    "./image-gallery": {
+      "types": "./dist/image-gallery.d.ts",
+      "import": "./dist/image-gallery.js",
+      "require": "./dist/image-gallery.cjs"
+    },
+    "./scroll-to-top-button": {
+      "types": "./dist/scroll-to-top-button.d.ts",
+      "import": "./dist/scroll-to-top-button.js",
+      "require": "./dist/scroll-to-top-button.cjs"
+    },
+    "./ask-ai": {
+      "types": "./dist/ask-ai.d.ts",
+      "import": "./dist/ask-ai.js",
+      "require": "./dist/ask-ai.cjs"
+    },
+    "./file-upload": {
+      "types": "./dist/file-upload.d.ts",
+      "import": "./dist/file-upload.js",
+      "require": "./dist/file-upload.cjs"
+    },
+    "./file-thumbnail": {
+      "types": "./dist/file-thumbnail.d.ts",
+      "import": "./dist/file-thumbnail.js",
+      "require": "./dist/file-thumbnail.cjs"
+    },
     "./styles.css": "./styles.css"
   },
   "scripts": {
     "build": "tsup"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.31.0",
+    "tailwind-merge": "^3.3.1"
   },
   "peerDependencies": {
     "@base-ui/react": ">=1.7.0 <2",

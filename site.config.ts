@@ -87,8 +87,8 @@ export function registryInstallCommand(slug: string) {
   return `pnpm dlx shadcn@latest add ${siteConfig.repository.path}/${slug}`
 }
 
-export function packageImport(exportName: string) {
-  return `import { ${exportName} } from "${siteConfig.package.name}"`
+export function packageImport(exportName: string, slug: string) {
+  return `import { ${exportName} } from "${siteConfig.package.name}/${slug}"`
 }
 
 export function componentSourceUrl(slug: string) {

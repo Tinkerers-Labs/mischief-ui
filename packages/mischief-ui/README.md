@@ -17,21 +17,28 @@ Import `mischief-ui/styles.css` once in your Tailwind CSS entry file so Tailwind
 @import "mischief-ui/styles.css";
 ```
 
-Then import a component:
+Then import a component from its direct entry:
 
 ```tsx
-import { ElasticSlider } from "mischief-ui"
+import { ElasticSlider } from "mischief-ui/elastic-slider"
 
 export function Volume() {
   return <ElasticSlider label="Volume" defaultValue={68} />
 }
 ```
 
-The layout components use the same import path:
+The root export remains available when a single import path is more convenient:
 
 ```tsx
-import { SignatureFooter } from "mischief-ui"
+import { ElasticSlider, SignatureFooter } from "mischief-ui"
 ```
+
+Direct entries keep each component independently loadable. Importing
+`mischief-ui/signature-footer` also keeps that server-safe component out of a
+client boundary.
+
+File validation must be repeated on the server. The browser checks only help
+people correct a selection before upload.
 
 For full source ownership, install through the shadcn registry instead:
 

@@ -11,7 +11,7 @@ export const componentDocs = [
       "Familiar tabs with a gentle pull toward the pointer. Selection stays clear and keyboard navigation remains immediate.",
     dependencies: ["@base-ui/react", "motion", "clsx", "tailwind-merge"],
     install: registryInstallCommand("magnetic-tabs"),
-    npmImport: packageImport("MagneticTabs"),
+    npmImport: packageImport("MagneticTabs", "magnetic-tabs"),
     usage: `const items = [
   { value: "overview", label: "Overview", content: <p>Ready to go.</p> },
   { value: "activity", label: "Activity", content: <p>No new activity.</p> },
@@ -48,7 +48,7 @@ export function Example() {
       "A precise slider with a small amount of give at either end. The current value stays visible and the control works without a pointer.",
     dependencies: ["@base-ui/react", "motion", "clsx", "tailwind-merge"],
     install: registryInstallCommand("elastic-slider"),
-    npmImport: packageImport("ElasticSlider"),
+    npmImport: packageImport("ElasticSlider", "elastic-slider"),
     usage: `export function Volume() {
   return (
     <ElasticSlider
@@ -96,7 +96,7 @@ export function Example() {
       "A confirmation button for actions that deserve a second thought. Release early to cancel, or activate once with a keyboard.",
     dependencies: ["clsx", "tailwind-merge"],
     install: registryInstallCommand("hold-button"),
-    npmImport: packageImport("HoldButton"),
+    npmImport: packageImport("HoldButton", "hold-button"),
     usage: `export function RemoveDownload() {
   return (
     <HoldButton onComplete={removeDownload}>
@@ -136,7 +136,7 @@ export function Example() {
       "A complete closing section with room for the useful links first and one oversized wordmark at the end.",
     dependencies: ["clsx", "tailwind-merge"],
     install: registryInstallCommand("signature-footer"),
-    npmImport: packageImport("SignatureFooter"),
+    npmImport: packageImport("SignatureFooter", "signature-footer"),
     usage: `export function Footer() {
   return (
     <SignatureFooter
@@ -175,7 +175,7 @@ export function Example() {
       "A checkbox with one stubborn rule: the bear will not let you leave it on. Best kept for demos, Easter eggs, and harmless preferences.",
     dependencies: ["motion", "clsx", "tailwind-merge"],
     install: registryInstallCommand("impossible-checkbox"),
-    npmImport: packageImport("ImpossibleCheckbox"),
+    npmImport: packageImport("ImpossibleCheckbox", "impossible-checkbox"),
     usage: `export function Demo() {
   return (
     <ImpossibleCheckbox
@@ -220,7 +220,7 @@ export function Example() {
       "A compact outline for long pages. It keeps the active section and reading progress visible without becoming another permanent sidebar.",
     dependencies: ["motion", "lucide-react", "clsx", "tailwind-merge"],
     install: registryInstallCommand("floating-index"),
-    npmImport: packageImport("FloatingIndex"),
+    npmImport: packageImport("FloatingIndex", "floating-index"),
     usage: `const items = [
   { id: "introduction", label: "Introduction" },
   { id: "details", label: "Details" },
@@ -245,6 +245,11 @@ export function PageIndex() {
         "Runs when the visible section changes.",
       ],
       [
+        "container",
+        "HTMLElement | null",
+        "Tracks a controlled scroll container that can change after mount.",
+      ],
+      [
         "containerRef",
         "RefObject<HTMLElement>",
         "Tracks a scroll container instead of the page.",
@@ -264,7 +269,7 @@ export function PageIndex() {
       "A call to action that trades its leading icon for a directional cue when someone approaches it.",
     dependencies: ["@base-ui/react", "lucide-react", "clsx", "tailwind-merge"],
     install: registryInstallCommand("shift-button"),
-    npmImport: packageImport("ShiftButton"),
+    npmImport: packageImport("ShiftButton", "shift-button"),
     usage: `export function DownloadButton() {
   return (
     <ShiftButton
@@ -295,7 +300,7 @@ export function PageIndex() {
       "A responsive image collection with equal and masonry layouts, plus a lightbox that handles focus, keyboard navigation, and scroll locking.",
     dependencies: ["@base-ui/react", "lucide-react", "clsx", "tailwind-merge"],
     install: registryInstallCommand("image-gallery"),
-    npmImport: packageImport("ImageGallery"),
+    npmImport: packageImport("ImageGallery", "image-gallery"),
     usage: `const images = [
   {
     id: "studio",
@@ -336,6 +341,11 @@ export function WorkGallery() {
         "ReactNode",
         "Content shown when the collection is empty.",
       ],
+      [
+        "renderImage",
+        "(image, context) => ReactNode",
+        "Uses a framework image component or another custom renderer.",
+      ],
     ],
     accessibility:
       "Every thumbnail is a named button. Base UI supplies the modal dialog, focus trap, scroll lock, Escape handling, and focus restoration. Left and Right Arrow move between images. Captions, position, and close controls remain available without hover.",
@@ -350,7 +360,7 @@ export function WorkGallery() {
       "A floating way back after someone has moved down a long page or scroll area. It stays hidden near the top.",
     dependencies: ["lucide-react", "clsx", "tailwind-merge"],
     install: registryInstallCommand("scroll-to-top-button"),
-    npmImport: packageImport("ScrollToTopButton"),
+    npmImport: packageImport("ScrollToTopButton", "scroll-to-top-button"),
     usage: `export function LongPage() {
   return (
     <>
@@ -360,6 +370,11 @@ export function WorkGallery() {
   )
 }`,
     props: [
+      [
+        "container",
+        "HTMLElement | null",
+        "Scrolls a controlled container that can change after mount.",
+      ],
       [
         "containerRef",
         "RefObject<HTMLElement>",
@@ -392,7 +407,7 @@ export function WorkGallery() {
       "Hand someone a prepared, source-aware prompt in the AI assistant they already use, or let them copy it for another one.",
     dependencies: ["lucide-react", "clsx", "tailwind-merge"],
     install: registryInstallCommand("ask-ai"),
-    npmImport: packageImport("AskAi"),
+    npmImport: packageImport("AskAi", "ask-ai"),
     usage: `const prompt = [
   "Explain what Acme does using current web sources.",
   "Prefer Acme's own docs, cite every claim, and flag anything unverified.",
@@ -432,7 +447,7 @@ export function AskAboutAcme() {
       ],
     ],
     accessibility:
-      "Every assistant is a named external link with a 44px target and explicit new-tab wording. The copy action is a native button. Success and failure are shown in the button and announced through a polite status region. The component does not open a destination until someone chooses it.",
+      "Every assistant is a named external link with a 44px target and explicit new-tab wording. The copy action is a native button. Success and failure are shown in the button and announced through a polite status region. The component does not open a destination until someone chooses it. Prompts are placed in destination URLs, so they must not contain secrets or private data.",
   },
   {
     slug: "file-upload",
@@ -444,9 +459,9 @@ export function AskAboutAcme() {
       "A file picker and dropzone with clear validation and a visible queue. Connect your upload function when you need progress, cancel, and retry.",
     dependencies: ["lucide-react", "clsx", "tailwind-merge"],
     install: registryInstallCommand("file-upload"),
-    npmImport: packageImport("FileUpload"),
+    npmImport: packageImport("FileUpload", "file-upload"),
     usage: `async function uploadFile(file, { signal, onProgress }) {
-  await uploadToYourStorage(file, { signal, onProgress })
+  return uploadToYourStorage(file, { signal, onProgress })
 }
 
 export function Attachments() {
@@ -489,11 +504,22 @@ export function Attachments() {
         "(entries) => void",
         "Runs when the queue or an upload state changes.",
       ],
+      [
+        "value, defaultValue",
+        "FileUploadEntry[]",
+        "Controls the queue or supplies its initial entries.",
+      ],
+      ["onValueChange", "(entries) => void", "Updates a controlled queue."],
+      [
+        "onUploadComplete",
+        "(entry, result) => void",
+        "Receives the value returned by your upload adapter.",
+      ],
       ["disabled", "boolean", "Disables both picking and dropping."],
       ["className", "string", "Classes for the root element."],
     ],
     accessibility:
-      "The picker is a named native button backed by a file input. Drag and drop is an additional path, not the only one. Validation and upload changes are announced politely. Every queue action and the primary picker keep a 44px target. Progress uses native progressbar semantics.",
+      "The picker is a named native button backed by a file input. Drag and drop is an additional path, not the only one. Validation and upload changes are announced politely. Every queue action and the primary picker keep a 44px target. Progress uses native progressbar semantics. File type and size checks must also run on the server because browser validation is not a security boundary.",
   },
   {
     slug: "file-thumbnail",
@@ -505,7 +531,7 @@ export function Attachments() {
       "A compact image preview for attachments, upload queues, and file lists. Browser image files work without any setup.",
     dependencies: ["lucide-react", "clsx", "tailwind-merge"],
     install: registryInstallCommand("file-thumbnail"),
-    npmImport: packageImport("FileThumbnail"),
+    npmImport: packageImport("FileThumbnail", "file-thumbnail"),
     usage: `export function ImagePreview({ file }: { file: File }) {
   return (
     <FileThumbnail

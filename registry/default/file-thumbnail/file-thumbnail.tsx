@@ -41,19 +41,25 @@ function isImageFile(file: FileThumbnailFile | File) {
   )
 }
 
-export function FileThumbnail({
-  file,
-  previewImageUrl,
-  previewAspectRatio = 1,
-  previewClassName,
-  fit = "cover",
-  alt = "",
-  isLoading = false,
-  hasError = false,
-  className,
-  style,
-  ...rootProps
-}: FileThumbnailProps) {
+export const FileThumbnail = React.forwardRef<
+  HTMLDivElement,
+  FileThumbnailProps
+>(function FileThumbnail(
+  {
+    file,
+    previewImageUrl,
+    previewAspectRatio = 1,
+    previewClassName,
+    fit = "cover",
+    alt = "",
+    isLoading = false,
+    hasError = false,
+    className,
+    style,
+    ...rootProps
+  },
+  forwardedRef
+) {
   const [filePreview, setFilePreview] = React.useState<{
     file: File
     url: string
@@ -96,7 +102,12 @@ export function FileThumbnail({
         : "error"
   const showImage = Boolean(imageUrl) && !hasError && imageState !== "error"
   const showLoading =
-    isLoading || (Boolean(imageUrl) && imageState === "loading" && !hasError)
+    isLoading ||
+    (!hasError &&
+      ((Boolean(browserFile) &&
+        previewImageUrl === undefined &&
+        !filePreview) ||
+        (Boolean(imageUrl) && imageState === "loading")))
   const showFallback = !showImage && !showLoading
   const handleImageRef = React.useCallback(
     (image: HTMLImageElement | null) => {
@@ -120,12 +131,14 @@ export function FileThumbnail({
       data-slot="file-thumbnail"
       data-state={showLoading ? "loading" : showFallback ? "fallback" : "ready"}
       style={{ aspectRatio: previewAspectRatio, ...style }}
+      ref={forwardedRef}
       {...rootProps}
     >
       {imageUrl && !hasError ? (
         // A native image keeps this registry item independent of framework image loaders.
         // eslint-disable-next-line @next/next/no-img-element
         <img
+          data-slot="file-thumbnail-image"
           ref={handleImageRef}
           alt={alt}
           className={cn(
@@ -142,19 +155,20 @@ export function FileThumbnail({
 
       {showLoading ? (
         <div
+          data-slot="file-thumbnail-loading"
           aria-label={`Loading preview for ${file.name}`}
           className="absolute inset-0 overflow-hidden"
           role="status"
         >
           <span className="sr-only">Loading preview</span>
           <span className="bg-muted absolute inset-0" />
-          <span className="bg-background/60 absolute inset-y-0 -left-1/2 w-1/2 skew-x-[-12deg] motion-safe:animate-[file-thumbnail-shimmer_1.4s_ease-in-out_infinite]" />
-          <style>{`@keyframes file-thumbnail-shimmer { to { transform: translateX(300%) skewX(-12deg); } }`}</style>
+          <span className="bg-background/60 absolute inset-y-0 -left-1/2 w-1/2 skew-x-[-12deg] motion-safe:animate-[mischief-file-thumbnail-shimmer_1.4s_ease-in-out_infinite]" />
         </div>
       ) : null}
 
       {showFallback ? (
         <div
+          data-slot="file-thumbnail-fallback"
           aria-label={`${file.name} image preview unavailable`}
           className="absolute inset-0 flex flex-col items-center justify-center gap-2"
           role="img"
@@ -171,4 +185,4 @@ export function FileThumbnail({
       ) : null}
     </div>
   )
-}
+})
