@@ -15,9 +15,9 @@ import { AnnotationLayerDemo } from "@/components/demos/annotation-layer-demo"
 import { ConversationDemo } from "@/components/demos/conversation-demo"
 import { MessageDemo } from "@/components/demos/message-demo"
 import { PromptInputDemo } from "@/components/demos/prompt-input-demo"
+import { QuestionnaireDemo } from "@/components/demos/questionnaire-demo"
 import { RedactionDemo } from "@/components/demos/redaction-demo"
 import { SuggestionsDemo } from "@/components/demos/suggestions-demo"
-import { ApprovalCardDemo } from "@/components/demos/approval-card-demo"
 import { AskAiDemo } from "@/components/demos/ask-ai-demo"
 import { ElasticSliderDemo } from "@/components/demos/elastic-slider-demo"
 import { FileThumbnailDemo } from "@/components/demos/file-thumbnail-demo"
@@ -62,7 +62,6 @@ export const componentDemos: Record<string, ComponentDemo> = {
     Demo: InlineCitationsDemo,
     frameClassName: "p-6 md:p-10",
   },
-  "approval-card": { Demo: ApprovalCardDemo, frameClassName: "p-6 md:p-10" },
   "bounding-boxes": { Demo: BoundingBoxesDemo, frameClassName: "p-6 md:p-10" },
   "page-navigator": { Demo: PageNavigatorDemo, frameClassName: "p-6 md:p-10" },
   "file-tree": { Demo: FileTreeDemo, frameClassName: "p-6 md:p-10" },
@@ -88,6 +87,7 @@ export const componentDemos: Record<string, ComponentDemo> = {
     frameClassName: "p-6 md:p-10",
   },
   redaction: { Demo: RedactionDemo, frameClassName: "p-6 md:p-10" },
+  questionnaire: { Demo: QuestionnaireDemo, frameClassName: "p-6 md:p-10" },
   "signature-footer": {
     Demo: SignatureFooterDemo,
     frameClassName: "p-4 md:p-8",

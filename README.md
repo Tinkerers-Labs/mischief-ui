@@ -35,7 +35,7 @@ Mischief is a public GitHub registry for shadcn CLI v4. Install a component dire
 ```bash
 npx shadcn@latest add Tinkerers-Labs/mischief-ui/magnetic-tabs
 npx shadcn@latest add Tinkerers-Labs/mischief-ui/conversation
-npx shadcn@latest add Tinkerers-Labs/mischief-ui/approval-card
+npx shadcn@latest add Tinkerers-Labs/mischief-ui/questionnaire
 npx shadcn@latest add Tinkerers-Labs/mischief-ui/redaction
 ```
 

@@ -34,7 +34,6 @@ export default defineConfig({
       "../../registry/default/agent-checklist/agent-checklist.tsx",
     "inline-citations":
       "../../registry/default/inline-citations/inline-citations.tsx",
-    "approval-card": "../../registry/default/approval-card/approval-card.tsx",
     "bounding-boxes":
       "../../registry/default/bounding-boxes/bounding-boxes.tsx",
     "page-navigator":
@@ -57,6 +56,7 @@ export default defineConfig({
     "annotation-layer":
       "../../registry/default/annotation-layer/annotation-layer.tsx",
     redaction: "../../registry/default/redaction/redaction.tsx",
+    questionnaire: "../../registry/default/questionnaire/questionnaire.tsx",
   },
   format: ["esm", "cjs"],
   dts: true,

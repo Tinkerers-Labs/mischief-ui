@@ -575,6 +575,63 @@ export function Starters() {
       "The row is a labelled navigation landmark holding a list of buttons, so it can be skipped or entered deliberately rather than being an unlabelled run of controls. It scrolls horizontally with snap points and every target meets the minimum touch size. Nothing is rendered at all when there is nothing to suggest.",
   },
   {
+    slug: "questionnaire",
+    kind: "component",
+    name: "Questionnaire",
+    featured: true,
+    family: "Agent UI",
+    summary:
+      "The questions an agent asks before it starts. One at a time, with single or multiple answers, a freeform option, and required ones it will not move past.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("questionnaire"),
+    npmImport: packageImport("Questionnaire", "questionnaire"),
+    usage: `const questions = [
+  {
+    id: "scope",
+    prompt: "What should I change?",
+    required: true,
+    choices: [
+      { id: "one", label: "Only this file" },
+      { id: "all", label: "Every file that matches" },
+    ],
+  },
+]
+
+export function Clarify() {
+  return <Questionnaire questions={questions} onSubmit={start} />
+}`,
+    props: [
+      [
+        "questions",
+        "Question[]",
+        "Prompt, optional description, choices, and flags for multiple, freeform, and required.",
+      ],
+      [
+        "answers, defaultAnswers, onAnswersChange",
+        "QuestionnaireAnswers",
+        "Chosen choice ids per question, controlled or uncontrolled.",
+      ],
+      [
+        "onSubmit",
+        "(answers: QuestionnaireAnswers) => void",
+        "Runs with every answer once the last question is submitted.",
+      ],
+      [
+        "shortcuts",
+        "boolean",
+        "Number keys pick the choice they label. Defaults to true.",
+      ],
+      ["showProgress", "boolean", "Shows the position and a progress bar."],
+      [
+        "previousLabel, nextLabel, skipLabel, submitLabel, requiredMessage",
+        "string",
+        "Copy for the controls and the validation message.",
+      ],
+    ],
+    accessibility:
+      "Each question is a fieldset with its prompt as the legend, so the whole question is announced rather than a run of loose options. A single answer uses radios and several uses checkboxes, which brings the right keyboard behaviour without rebuilding it. Position is reported in a polite live region, and a required question that is not answered raises an alert tied to the inputs rather than only colouring them. Number shortcuts are ignored while a freeform answer is being typed.",
+  },
+  {
     slug: "ask-ai",
     kind: "component",
     name: "Ask AI",
@@ -862,64 +919,6 @@ export function Answer() {
     ],
     accessibility:
       "Markers are real anchors to their list entry, so they work without hover or a pointer. Each one has an accessible name giving the number and the source title, and the visible digit is hidden from assistive technology to avoid reading it twice. A marker whose id is not in sources renders nothing rather than a dead link. External source links say that they open in a new tab.",
-  },
-  {
-    slug: "approval-card",
-    featured: true,
-    kind: "component",
-    name: "Approval Card",
-    family: "Agent UI",
-    summary:
-      "The question an agent asks before it acts. Ordinary answers take one click; destructive ones have to be held.",
-    dependencies: ["lucide-react"],
-    install: registryInstallCommand("approval-card"),
-    npmImport: packageImport("ApprovalCard", "approval-card"),
-    usage: `export function Confirm() {
-  return (
-    <ApprovalCard
-      question="Delete 40 files the agent flagged as unused?"
-      description="This cannot be undone from here."
-      options={[
-        { id: "delete", label: "Delete all 40", destructive: true },
-        { id: "review", label: "Show me the list first" },
-      ]}
-      onApprove={handleApprove}
-    />
-  )
-}`,
-    props: [
-      ["question", "ReactNode", "What the agent is asking."],
-      ["description", "ReactNode", "Supporting detail below the question."],
-      [
-        "options",
-        "ApprovalOption[]",
-        "Id, label, optional description, and a destructive flag.",
-      ],
-      [
-        "answerId, defaultAnswerId",
-        "string",
-        "The chosen option, controlled or uncontrolled.",
-      ],
-      [
-        "holdDuration",
-        "number",
-        "Hold time for destructive options in milliseconds. Defaults to 900, minimum 500.",
-      ],
-      ["freeform", "boolean", "Adds a field for an answer you did not list."],
-      [
-        "onApprove",
-        "(optionId: string) => void",
-        "Runs when an option is chosen.",
-      ],
-      [
-        "onFreeformSubmit",
-        "(value: string) => void",
-        "Runs when the freeform answer is sent.",
-      ],
-      ["onDismiss", "() => void", "Shows a dismiss control when supplied."],
-    ],
-    accessibility:
-      "The card is a labelled region and the options are a group tied to the question. Ordinary options are ordinary buttons. A destructive option cannot be triggered by a stray tap: pointer input has to be held, and releasing early cancels. Keyboard and assistive technology users activate it once instead, since holding a key is not a fair requirement. The progress fill is decorative and is hidden under reduced motion.",
   },
   {
     slug: "bounding-boxes",

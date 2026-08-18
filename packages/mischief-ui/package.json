@@ -100,11 +100,6 @@
       "import": "./dist/inline-citations.js",
       "require": "./dist/inline-citations.cjs"
     },
-    "./approval-card": {
-      "types": "./dist/approval-card.d.ts",
-      "import": "./dist/approval-card.js",
-      "require": "./dist/approval-card.cjs"
-    },
     "./bounding-boxes": {
       "types": "./dist/bounding-boxes.d.ts",
       "import": "./dist/bounding-boxes.js",
@@ -184,6 +179,11 @@
       "types": "./dist/redaction.d.ts",
       "import": "./dist/redaction.js",
       "require": "./dist/redaction.cjs"
+    },
+    "./questionnaire": {
+      "types": "./dist/questionnaire.d.ts",
+      "import": "./dist/questionnaire.js",
+      "require": "./dist/questionnaire.cjs"
     }
   },
   "scripts": {

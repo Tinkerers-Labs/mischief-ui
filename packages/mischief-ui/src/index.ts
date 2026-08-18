@@ -108,12 +108,6 @@ export {
 } from "../../../registry/default/inline-citations/inline-citations"
 
 export {
-  ApprovalCard,
-  type ApprovalCardProps,
-  type ApprovalOption,
-} from "../../../registry/default/approval-card/approval-card"
-
-export {
   BoundingBoxes,
   type BoundingBoxesProps,
   type BoundingBox,
@@ -218,3 +212,11 @@ export {
   type RedactionRegion,
   type RedactionRect,
 } from "../../../registry/default/redaction/redaction"
+
+export {
+  Questionnaire,
+  type QuestionnaireProps,
+  type Question,
+  type QuestionChoice,
+  type QuestionnaireAnswers,
+} from "../../../registry/default/questionnaire/questionnaire"

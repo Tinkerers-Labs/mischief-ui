@@ -263,21 +263,6 @@
       "registryDependencies": ["utils"]
     },
     {
-      "name": "approval-card",
-      "type": "registry:ui",
-      "title": "Approval Card",
-      "description": "A human-in-the-loop question an agent asks before acting, with hold-to-confirm for destructive answers.",
-      "dependencies": ["lucide-react@^1.31.0"],
-      "files": [
-        {
-          "path": "registry/default/approval-card/approval-card.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "categories": ["ai", "approval", "confirmation", "agent"],
-      "registryDependencies": ["utils"]
-    },
-    {
       "name": "bounding-boxes",
       "type": "registry:ui",
       "title": "Bounding Boxes",
@@ -513,6 +498,21 @@
       ],
       "registryDependencies": ["utils"],
       "categories": ["document", "redaction", "privacy"]
+    },
+    {
+      "name": "questionnaire",
+      "type": "registry:ui",
+      "title": "Questionnaire",
+      "description": "Multi-step questions an agent asks before starting, with single, multiple, and freeform answers.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/questionnaire/questionnaire.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": ["utils"],
+      "categories": ["ai", "form", "questions", "agent"]
     }
   ]
 }
