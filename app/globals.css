@@ -166,6 +166,84 @@ a:focus-visible {
   max-width: 90rem;
 }
 
+.catalog {
+  border-top: 1px solid var(--border);
+  display: grid;
+  gap: 2.5rem;
+  padding: clamp(3rem, 6vw, 5rem) clamp(1rem, 4vw, 3rem);
+}
+
+.catalog-intro h2 {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  margin-top: 0.6rem;
+  max-width: 20ch;
+}
+
+.catalog-intro > p:last-child {
+  color: var(--muted-foreground);
+  margin-top: 0.75rem;
+  max-width: 42rem;
+}
+
+.catalog-family h3 {
+  align-items: baseline;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 0.6rem;
+  letter-spacing: 0.08em;
+  padding-bottom: 0.6rem;
+  text-transform: uppercase;
+}
+
+.catalog-count {
+  color: var(--muted-foreground);
+  font-family: var(--font-mono), monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.catalog-family ul {
+  display: grid;
+  gap: 0.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+}
+
+.catalog-family a {
+  border-radius: 0.7rem;
+  color: inherit;
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.7rem 0.8rem;
+  text-decoration: none;
+}
+
+.catalog-family a:hover {
+  background: var(--muted);
+}
+
+.catalog-family strong {
+  font-size: 0.925rem;
+  font-weight: 650;
+}
+
+.catalog-family a span {
+  color: var(--muted-foreground);
+  display: -webkit-box;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .component-family-heading {
   align-items: baseline;
   border-bottom: 1px solid var(--border);

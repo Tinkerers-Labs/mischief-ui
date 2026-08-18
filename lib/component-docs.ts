@@ -3,6 +3,7 @@ import { packageImport, registryInstallCommand } from "@/site.config"
 const entries = [
   {
     slug: "magnetic-tabs",
+    featured: true,
     kind: "component",
     name: "Magnetic Tabs",
     family: "Controls",
@@ -39,6 +40,7 @@ export function Example() {
   },
   {
     slug: "elastic-slider",
+    featured: true,
     kind: "component",
     name: "Elastic Slider",
     family: "Controls",
@@ -86,6 +88,7 @@ export function Example() {
   },
   {
     slug: "hold-button",
+    featured: true,
     kind: "component",
     name: "Hold Button",
     family: "Controls",
@@ -155,6 +158,7 @@ export function Example() {
   },
   {
     slug: "impossible-checkbox",
+    featured: true,
     kind: "component",
     name: "Impossible Checkbox",
     family: "Controls",
@@ -412,6 +416,7 @@ export function Attachments() {
   },
   {
     slug: "conversation",
+    featured: true,
     kind: "component",
     name: "Conversation",
     family: "Agent UI",
@@ -860,6 +865,7 @@ export function Answer() {
   },
   {
     slug: "approval-card",
+    featured: true,
     kind: "component",
     name: "Approval Card",
     family: "Agent UI",
@@ -1012,6 +1018,7 @@ export function Invoice() {
   },
   {
     slug: "redaction",
+    featured: true,
     kind: "component",
     name: "Redaction",
     family: "Documents",
@@ -1456,6 +1463,7 @@ export function Layout() {
   },
   {
     slug: "image-gallery",
+    featured: true,
     kind: "block",
     name: "Image Gallery",
     family: "Blocks",
@@ -1518,7 +1526,13 @@ export function WorkGallery() {
 export const componentDocs = entries.map((entry, index) => ({
   ...entry,
   number: String(index + 1).padStart(2, "0"),
+  featured: "featured" in entry && entry.featured === true,
 }))
+
+/** Shown with a live demo on the home page. The rest are listed compactly. */
+export const featuredComponents = componentDocs.filter(
+  (component) => component.featured
+)
 
 export type ComponentDoc = (typeof componentDocs)[number]
 

@@ -20,7 +20,7 @@ export default function DocsPage() {
     <article className="docs-article docs-intro">
       <p className="eyebrow">Introduction</p>
       <h1>
-        Small collection.
+        Growing collection.
         <br />
         High bar.
       </h1>
