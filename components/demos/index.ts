@@ -38,14 +38,19 @@ import { ToolCallDemo } from "@/components/demos/tool-call-demo"
 export type ComponentDemo = {
   Demo: ComponentType
   frameClassName?: string
+  /** How much of the twelve column gallery grid this component needs. */
+  tileClassName?: string
 }
 
 export const componentDemos: Record<string, ComponentDemo> = {
-  "magnetic-tabs": { Demo: MagneticTabsDemo },
-  "elastic-slider": { Demo: ElasticSliderDemo },
-  "hold-button": { Demo: HoldButtonDemo },
+  "magnetic-tabs": { Demo: MagneticTabsDemo, tileClassName: "lg:col-span-7" },
+  "elastic-slider": { Demo: ElasticSliderDemo, tileClassName: "lg:col-span-5" },
+  "hold-button": { Demo: HoldButtonDemo, tileClassName: "lg:col-span-4" },
   "shift-button": { Demo: ShiftButtonDemo },
-  "impossible-checkbox": { Demo: ImpossibleCheckboxDemo },
+  "impossible-checkbox": {
+    Demo: ImpossibleCheckboxDemo,
+    tileClassName: "lg:col-span-4",
+  },
   "floating-index": { Demo: FloatingIndexDemo },
   "scroll-to-top-button": { Demo: ScrollToTopDemo },
   "file-upload": { Demo: FileUploadDemo, frameClassName: "p-4 md:p-8" },
@@ -78,7 +83,11 @@ export const componentDemos: Record<string, ComponentDemo> = {
     Demo: MarkdownBlocksDemo,
     frameClassName: "p-6 md:p-10",
   },
-  conversation: { Demo: ConversationDemo, frameClassName: "p-6 md:p-10" },
+  conversation: {
+    Demo: ConversationDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-4",
+  },
   message: { Demo: MessageDemo, frameClassName: "p-6 md:p-10" },
   "prompt-input": { Demo: PromptInputDemo, frameClassName: "p-6 md:p-10" },
   suggestions: { Demo: SuggestionsDemo, frameClassName: "p-6 md:p-10" },
@@ -86,11 +95,23 @@ export const componentDemos: Record<string, ComponentDemo> = {
     Demo: AnnotationLayerDemo,
     frameClassName: "p-6 md:p-10",
   },
-  redaction: { Demo: RedactionDemo, frameClassName: "p-6 md:p-10" },
-  questionnaire: { Demo: QuestionnaireDemo, frameClassName: "p-6 md:p-10" },
+  redaction: {
+    Demo: RedactionDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-5",
+  },
+  questionnaire: {
+    Demo: QuestionnaireDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-7",
+  },
   "signature-footer": {
     Demo: SignatureFooterDemo,
     frameClassName: "p-4 md:p-8",
   },
-  "image-gallery": { Demo: ImageGalleryDemo, frameClassName: "items-start" },
+  "image-gallery": {
+    Demo: ImageGalleryDemo,
+    frameClassName: "items-start",
+    tileClassName: "lg:col-span-12",
+  },
 }

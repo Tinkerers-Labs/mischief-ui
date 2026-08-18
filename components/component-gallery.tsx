@@ -1,13 +1,12 @@
 import Link from "next/link"
+import { ArrowUpRight } from "lucide-react"
 
-import { CopyCommand } from "@/components/copy-command"
 import { componentDemos } from "@/components/demos"
 import {
   componentDocs,
   featuredComponents,
   type ComponentDoc,
 } from "@/lib/component-docs"
-import { registryInstallCommand } from "@/site.config"
 
 function groupByFamily(docs: readonly ComponentDoc[]) {
   const families: { family: string; docs: ComponentDoc[] }[] = []
@@ -22,37 +21,29 @@ function groupByFamily(docs: readonly ComponentDoc[]) {
   return families
 }
 
-function ComponentSection({ doc }: { doc: ComponentDoc }) {
+function GalleryTile({ doc }: { doc: ComponentDoc }) {
   const demo = componentDemos[doc.slug]
 
   return (
-    <section className="component-section" id={`component-${doc.slug}`}>
-      <div className="component-copy">
-        <h3 className="component-title">
-          <span className="component-number">{doc.family}</span>
-          {doc.name}
-        </h3>
-        <p className="component-summary">{doc.summary}</p>
-        <div className="component-actions">
-          <CopyCommand command={registryInstallCommand(doc.slug)} />
-          <Link className="detail-link" href={`/docs/components/${doc.slug}`}>
-            Preview, API, and source
-          </Link>
-        </div>
-      </div>
-      <div className={`demo-frame ${demo?.frameClassName ?? ""}`.trim()}>
-        {demo ? <demo.Demo /> : null}
-      </div>
-    </section>
+    <article className={`gallery-tile ${demo?.tileClassName ?? ""}`.trim()}>
+      {/* The stage stays interactive, so only the footer is a link. */}
+      <div className="gallery-stage">{demo ? <demo.Demo /> : null}</div>
+
+      <Link className="gallery-tile-meta" href={`/docs/components/${doc.slug}`}>
+        <span className="gallery-tile-family">{doc.family}</span>
+        <strong>{doc.name}</strong>
+        <ArrowUpRight aria-hidden="true" size={15} />
+      </Link>
+    </article>
   )
 }
 
 export function ComponentGallery() {
   return (
     <div className="gallery" id="components">
-      <div className="component-family">
+      <div className="gallery-grid">
         {featuredComponents.map((doc) => (
-          <ComponentSection doc={doc} key={doc.slug} />
+          <GalleryTile doc={doc} key={doc.slug} />
         ))}
       </div>
 
