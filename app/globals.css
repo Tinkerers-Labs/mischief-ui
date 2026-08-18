@@ -340,7 +340,7 @@ a:focus-visible {
 .catalog {
   border-top: 1px solid var(--border);
   display: grid;
-  gap: 2.5rem;
+  gap: 1.75rem;
   padding: clamp(3rem, 6vw, 5rem) clamp(1rem, 4vw, 3rem);
 }
 
@@ -349,6 +349,34 @@ a:focus-visible {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.catalog-family ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 0.85rem 0 0;
+  padding: 0;
+}
+
+/* Names wrap rather than sitting in a fixed grid, so a family of five does not
+   leave three empty columns beside its last entry. */
+.catalog-family a {
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: inherit;
+  display: inline-flex;
+  font-size: 0.85rem;
+  min-height: 36px;
+  padding: 0 0.85rem;
+  text-decoration: none;
+}
+
+.catalog-family a:hover {
+  background: var(--muted);
+  border-color: color-mix(in oklch, var(--foreground) 25%, transparent);
 }
 
 .catalog-family h3 {
@@ -367,43 +395,6 @@ a:focus-visible {
   color: var(--muted-foreground);
   font-family: var(--font-mono), monospace;
   font-variant-numeric: tabular-nums;
-}
-
-.catalog-family ul {
-  display: grid;
-  gap: 0.25rem;
-  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
-  list-style: none;
-  margin: 0.75rem 0 0;
-  padding: 0;
-}
-
-.catalog-family a {
-  border-radius: 0.7rem;
-  color: inherit;
-  display: grid;
-  gap: 0.2rem;
-  padding: 0.7rem 0.8rem;
-  text-decoration: none;
-}
-
-.catalog-family a:hover {
-  background: var(--muted);
-}
-
-.catalog-family strong {
-  font-size: 0.925rem;
-  font-weight: 650;
-}
-
-.catalog-family a span {
-  color: var(--muted-foreground);
-  display: -webkit-box;
-  font-size: 0.8rem;
-  line-height: 1.45;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
 }
 
 .install-panel {

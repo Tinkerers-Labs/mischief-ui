@@ -66,9 +66,11 @@ export function ComponentGallery() {
             <ul>
               {docs.map((doc) => (
                 <li key={doc.slug}>
-                  <Link href={`/docs/components/${doc.slug}`}>
-                    <strong>{doc.name}</strong>
-                    <span>{doc.summary}</span>
+                  <Link
+                    href={`/docs/components/${doc.slug}`}
+                    title={doc.summary}
+                  >
+                    {doc.name}
                   </Link>
                 </li>
               ))}
