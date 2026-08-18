@@ -414,6 +414,16 @@ a:focus-visible {
   padding: 0.8rem 0.9rem;
 }
 
+.install-command-line[data-wrap] code {
+  white-space: pre-wrap;
+}
+
+.install-note {
+  color: var(--muted-foreground);
+  font-size: 0.8rem;
+  margin-top: 0.6rem;
+}
+
 .install-command-line code {
   font-family: var(--font-mono), monospace;
   font-size: 0.78rem;

@@ -7,6 +7,7 @@ import { ComponentPreview } from "@/components/component-preview"
 import { CodeBlock } from "@/components/code-block"
 import { CopyPageButton } from "@/components/copy-page-button"
 import { DocsToc } from "@/components/docs-toc"
+import { agentInstallPrompt } from "@/lib/agent-prompt"
 import { componentMarkdown } from "@/lib/component-markdown"
 import { ExternalLink } from "@/components/external-link"
 import { GitHubIcon } from "@/components/github-icon"
@@ -73,9 +74,9 @@ export default async function ComponentPage({
 
           <nav className="component-page-actions" aria-label="Component pages">
             <CopyPageButton
-              componentName={component.name}
               componentSlug={component.slug}
               markdown={componentMarkdown(component)}
+              prompt={agentInstallPrompt(component)}
             />
             {previousComponent ? (
               <Link
@@ -132,7 +133,11 @@ export default async function ComponentPage({
         <section className="docs-section" id="installation">
           <h2>Installation</h2>
           <p>Copy the source into your project, or keep it behind a package.</p>
-          <InstallPanel npmImport={component.npmImport} slug={component.slug} />
+          <InstallPanel
+            agentPrompt={agentInstallPrompt(component)}
+            npmImport={component.npmImport}
+            slug={component.slug}
+          />
         </section>
 
         <section className="docs-section" id="usage">

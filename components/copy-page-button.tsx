@@ -22,13 +22,13 @@ const assistants = [
 ] as const
 
 export function CopyPageButton({
-  componentName,
   componentSlug,
   markdown,
+  prompt,
 }: {
-  componentName: string
   componentSlug: string
   markdown: string
+  prompt: string
 }) {
   const [copied, setCopied] = React.useState<"page" | null>(null)
   const [open, setOpen] = React.useState(false)
@@ -38,13 +38,6 @@ export function CopyPageButton({
     siteConfig.markdown.path(componentSlug),
     siteConfig.url
   ).toString()
-  // Assistants are pointed at the markdown rather than the page, so they read
-  // the API and the accessibility notes instead of the site chrome.
-  const prompt = [
-    `Read ${markdownUrl} and ${siteConfig.skill.url}.`,
-    `Show me how to install and use Mischief's ${componentName} in a shadcn project.`,
-    "Use the component source and include its required dependencies.",
-  ].join(" ")
 
   React.useEffect(() => {
     function closeMenu(event: MouseEvent) {
