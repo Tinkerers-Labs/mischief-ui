@@ -38,14 +38,18 @@ export async function generateMetadata({
   }
 }
 
-const TOC_SECTIONS = [
+const BASE_SECTIONS = [
   { id: "installation", label: "Installation" },
   { id: "usage", label: "Usage" },
   { id: "api", label: "API" },
   { id: "accessibility", label: "Accessibility" },
-  { id: "dependencies", label: "Dependencies" },
-  { id: "source", label: "Source" },
 ] as const
+
+const SOURCE_SECTION = { id: "source", label: "Source" } as const
+const DEPENDENCIES_SECTION = {
+  id: "dependencies",
+  label: "Dependencies",
+} as const
 
 export default async function ComponentPage({
   params,
@@ -60,6 +64,13 @@ export default async function ComponentPage({
   )
   const previousComponent = componentDocs[componentIndex - 1]
   const nextComponent = componentDocs[componentIndex + 1]
+
+  // A component with no dependencies has no section to point at.
+  const sections = [
+    ...BASE_SECTIONS,
+    ...(component.dependencies.length > 0 ? [DEPENDENCIES_SECTION] : []),
+    SOURCE_SECTION,
+  ]
 
   return (
     <div className="component-doc-layout">
@@ -167,18 +178,16 @@ export default async function ComponentPage({
           <p>{component.accessibility}</p>
         </section>
 
-        <section className="docs-section" id="dependencies">
-          <h2>Dependencies</h2>
-          {component.dependencies.length > 0 ? (
+        {component.dependencies.length > 0 ? (
+          <section className="docs-section" id="dependencies">
+            <h2>Dependencies</h2>
             <ul className="dependency-tags">
               {component.dependencies.map((dependency) => (
                 <li key={dependency}>{dependency}</li>
               ))}
             </ul>
-          ) : (
-            <p>None beyond React and the shared cn helper.</p>
-          )}
-        </section>
+          </section>
+        ) : null}
 
         <section className="docs-section detail-footer" id="source">
           <div>
@@ -191,7 +200,7 @@ export default async function ComponentPage({
         </section>
       </article>
 
-      <DocsToc sections={TOC_SECTIONS} />
+      <DocsToc sections={sections} />
     </div>
   )
 }

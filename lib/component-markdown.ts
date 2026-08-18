@@ -37,8 +37,10 @@ export function componentMarkdown(component: ComponentDoc) {
 
   const dependencies =
     component.dependencies.length > 0
-      ? component.dependencies.map((entry) => `- ${entry}`).join("\n")
-      : "None beyond React and the shared `cn` helper."
+      ? `\n## Dependencies\n\n${component.dependencies
+          .map((entry) => `- ${entry}`)
+          .join("\n")}\n`
+      : ""
 
   return `# ${component.name}
 
@@ -72,11 +74,7 @@ ${table(component.props)}
 ## Accessibility
 
 ${component.accessibility}
-
-## Dependencies
-
 ${dependencies}
-
 ---
 
 ${siteConfig.name} UI · ${siteConfig.url} · ${siteConfig.license.name} licensed

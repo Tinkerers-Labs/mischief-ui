@@ -55,13 +55,14 @@ describe("component markdown", () => {
     expect(markdown).not.toContain("[object Object]")
   })
 
-  it("lists dependencies, or says there are none", () => {
+  it("lists dependencies, and omits the section when there are none", () => {
     for (const { component, markdown } of documents) {
       if (component.dependencies.length === 0) {
-        expect(markdown).toContain("None beyond React")
+        expect(markdown).not.toContain("## Dependencies")
         continue
       }
 
+      expect(markdown).toContain("## Dependencies")
       for (const dependency of component.dependencies) {
         expect(markdown).toContain(`- ${dependency}`)
       }
