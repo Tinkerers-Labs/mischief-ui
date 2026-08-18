@@ -21,7 +21,8 @@
     "package:build": "pnpm --dir packages/mischief-ui build",
     "package:pack": "pnpm package:build && npm pack --dry-run ./packages/mischief-ui",
     "test": "vitest run",
-    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build"
+    "check": "pnpm lockfile:check && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "lockfile:check": "pnpm install --frozen-lockfile --ignore-scripts --prefer-offline"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
