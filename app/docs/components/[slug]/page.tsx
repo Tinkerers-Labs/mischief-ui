@@ -154,7 +154,15 @@ export default async function ComponentPage({
 
         <section className="docs-section" id="dependencies">
           <h2>Dependencies</h2>
-          <p>{component.dependencies.join(", ")}</p>
+          {component.dependencies.length > 0 ? (
+            <ul className="dependency-tags">
+              {component.dependencies.map((dependency) => (
+                <li key={dependency}>{dependency}</li>
+              ))}
+            </ul>
+          ) : (
+            <p>None beyond React and the shared cn helper.</p>
+          )}
         </section>
 
         <section className="docs-section detail-footer" id="source">

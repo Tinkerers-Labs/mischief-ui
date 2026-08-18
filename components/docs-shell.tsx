@@ -3,12 +3,20 @@ import Link from "next/link"
 import { ExternalLink } from "@/components/external-link"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
-import { componentDocs } from "@/lib/component-docs"
+import { componentDocs, type ComponentDoc } from "@/lib/component-docs"
 import { siteConfig } from "@/site.config"
 
 export function DocsShell({ children }: { children: React.ReactNode }) {
-  const components = componentDocs.filter(({ kind }) => kind === "component")
-  const blocks = componentDocs.filter(({ kind }) => kind === "block")
+  // The gallery orders by family; this is a lookup list, so it orders by name.
+  const byName = (a: ComponentDoc, b: ComponentDoc) =>
+    a.name.localeCompare(b.name)
+
+  const components = componentDocs
+    .filter(({ kind }) => kind === "component")
+    .sort(byName)
+  const blocks = componentDocs
+    .filter(({ kind }) => kind === "block")
+    .sort(byName)
 
   return (
     <>

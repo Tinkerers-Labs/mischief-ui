@@ -504,20 +504,21 @@ a:focus-visible {
   align-content: start;
   border-right: 1px solid var(--border);
   display: grid;
-  gap: 0.15rem;
+  gap: 0;
   height: calc(100svh - 4rem);
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 2rem 2rem 4rem;
+  padding: 1.5rem 1.5rem 3rem;
   position: sticky;
   top: 4rem;
 }
 
 .docs-sidebar a {
-  border-radius: 0.5rem;
+  border-radius: 0.4rem;
   color: var(--muted-foreground);
-  font-size: 0.875rem;
-  padding: 0.45rem 0.6rem;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  padding: 0.28rem 0.55rem;
   text-decoration: none;
 }
 
@@ -530,12 +531,31 @@ a:focus-visible {
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  margin: 1.5rem 0 0.35rem;
+  margin: 1.1rem 0 0.3rem;
   text-transform: uppercase;
 }
 
 .sidebar-label:first-child {
   margin-top: 0;
+}
+
+.dependency-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dependency-tags li {
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--foreground);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.7rem;
 }
 
 .docs-main {
