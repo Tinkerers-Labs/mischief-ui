@@ -17,7 +17,6 @@ const routes = {
 const navigation = [
   { href: routes.components, label: "Components" },
   { href: routes.docs, label: "Docs" },
-  { href: routes.brand, label: "Brand" },
 ] as const
 
 export const siteConfig = {
@@ -64,7 +63,11 @@ export const siteConfig = {
     installCommand: `npx skills add ${repositoryPath} --skill ${skillName}`,
   },
   navigation,
-  footerNavigation: [...navigation, { href: routes.license, label: "License" }],
+  footerNavigation: [
+    ...navigation,
+    { href: routes.brand, label: "Brand" },
+    { href: routes.license, label: "License" },
+  ],
   externalLinks: [
     {
       id: "npm",
