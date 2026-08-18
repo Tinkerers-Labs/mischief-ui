@@ -505,9 +505,11 @@ a:focus-visible {
   border-right: 1px solid var(--border);
   display: grid;
   gap: 0.15rem;
+  height: calc(100svh - 4rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 2rem 2rem 4rem;
   position: sticky;
-  height: calc(100svh - 4rem);
   top: 4rem;
 }
 
