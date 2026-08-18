@@ -4,6 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { Apple, Check, RotateCcw, Volume2 } from "lucide-react"
 
+import { AskAiDemo } from "@/components/ask-ai-demo"
 import { CopyCommand } from "@/components/copy-command"
 import { FloatingIndexDemo } from "@/components/floating-index-demo"
 import { FileThumbnailDemo } from "@/components/file-thumbnail-demo"
@@ -267,7 +268,7 @@ export function ComponentGallery() {
 
       <section className="component-section">
         <div className="component-copy">
-          <p className="component-number">08 / Block</p>
+          <p className="component-number">08 / Blocks</p>
           <h2>Image Gallery</h2>
           <p>
             A responsive collection with two useful layouts and a proper
@@ -302,6 +303,25 @@ export function ComponentGallery() {
         </div>
         <div className="demo-frame">
           <ScrollToTopDemo />
+        </div>
+      </section>
+
+      <section className="component-section">
+        <div className="component-copy">
+          <p className="component-number">10 / Agent handoffs</p>
+          <h2>Ask AI</h2>
+          <p>
+            Hand someone a prepared, source-aware prompt in the assistant they
+            already use. Every destination is a named link, and the prompt can
+            always be copied for somewhere else.
+          </p>
+          <InstallCommand name="ask-ai" />
+          <Link className="detail-link" href="/docs/components/ask-ai">
+            Preview, API, and source
+          </Link>
+        </div>
+        <div className="demo-frame p-4 md:p-8">
+          <AskAiDemo />
         </div>
       </section>
 

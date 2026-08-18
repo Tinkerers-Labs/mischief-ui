@@ -34,10 +34,9 @@ export default function DocsPage() {
       <section className="docs-section">
         <h2>Choose how you install</h2>
         <p>
-          The shadcn registry copies source into your project. This is the
-          recommended path because the component becomes yours. The npm package
-          is useful when you want ordinary dependency updates or a quick look at
-          the exported API.
+          The shadcn registry copies source into your project, which is the
+          recommended path. The npm package is useful when you want ordinary
+          dependency updates or a quick look at the exported API.
         </p>
         <div className="install-options">
           <CopyCommand
