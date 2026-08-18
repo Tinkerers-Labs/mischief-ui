@@ -90,7 +90,7 @@ export function PromptInput({
       data-slot="prompt-input"
       data-status={status}
       className={cn(
-        "border-border bg-card focus-within:ring-ring/40 rounded-[calc(var(--radius)+0.35rem)] border focus-within:ring-2",
+        "border-border bg-card focus-within:ring-ring/40 rounded-[calc(var(--radius)+0.35rem)] border transition-[box-shadow,border-color] duration-150 focus-within:ring-2 motion-reduce:transition-none",
         className
       )}
       onSubmit={(event) => {
@@ -143,7 +143,7 @@ export function PromptInput({
             type="button"
             data-slot="prompt-input-stop"
             aria-label={stopLabel}
-            className="bg-foreground text-background focus-visible:ring-ring ml-auto inline-flex size-9 shrink-0 items-center justify-center rounded-full focus-visible:ring-2 focus-visible:outline-none"
+            className="bg-foreground text-background focus-visible:ring-ring ml-auto inline-flex size-9 shrink-0 items-center justify-center rounded-full transition-opacity duration-150 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none"
             onClick={onStop}
           >
             <Square aria-hidden="true" size={13} fill="currentColor" />
@@ -154,7 +154,7 @@ export function PromptInput({
             data-slot="prompt-input-submit"
             aria-label={submitLabel}
             disabled={!canSend}
-            className="bg-foreground text-background focus-visible:ring-ring ml-auto inline-flex size-9 shrink-0 items-center justify-center rounded-full focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40"
+            className="bg-foreground text-background focus-visible:ring-ring ml-auto inline-flex size-9 shrink-0 items-center justify-center rounded-full transition-opacity duration-150 focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40 motion-reduce:transition-none"
           >
             <ArrowUp aria-hidden="true" size={16} />
           </button>

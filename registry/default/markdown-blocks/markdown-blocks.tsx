@@ -82,7 +82,7 @@ export function MarkdownBlocks({
                   "focus-visible:ring-ring w-full rounded-[calc(var(--radius)-0.25rem)] border border-transparent px-3 py-2 text-left text-sm focus-visible:ring-2 focus-visible:outline-none",
                   isActive
                     ? "border-primary bg-primary/5"
-                    : "hover:border-border hover:bg-muted/40"
+                    : "hover:border-border hover:bg-muted/40 transition-colors duration-150 motion-reduce:transition-none"
                 )}
                 onClick={() => select(block.id)}
               >

@@ -198,7 +198,9 @@ export function FileTree({
               tabIndex={index === activeIndex ? 0 : -1}
               className={cn(
                 "focus-visible:ring-ring flex min-h-9 cursor-default items-center gap-1.5 rounded-[calc(var(--radius)-0.35rem)] pr-2 text-sm focus-visible:ring-2 focus-visible:outline-none",
-                isSelected ? "bg-muted font-semibold" : "hover:bg-muted/60"
+                isSelected
+                  ? "bg-muted font-semibold"
+                  : "hover:bg-muted/60 transition-colors duration-150 motion-reduce:transition-none"
               )}
               style={{ paddingLeft: `${(row.level - 1) * 0.85 + 0.35}rem` }}
               onClick={() => {

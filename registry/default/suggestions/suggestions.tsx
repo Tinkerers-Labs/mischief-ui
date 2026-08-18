@@ -44,7 +44,7 @@ export function Suggestions({
               type="button"
               data-slot="suggestion"
               disabled={disabled}
-              className="border-border hover:bg-muted focus-visible:ring-ring inline-flex min-h-11 items-center gap-2 rounded-full border px-3.5 text-sm whitespace-nowrap focus-visible:ring-2 focus-visible:outline-none disabled:opacity-50"
+              className="border-border hover:bg-muted focus-visible:ring-ring inline-flex min-h-11 items-center gap-2 rounded-full border px-3.5 text-sm whitespace-nowrap transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none disabled:opacity-50 motion-reduce:transition-none"
               onClick={() => onSelect?.(suggestion)}
             >
               {suggestion.icon ? (

@@ -108,11 +108,18 @@ export function Conversation({
         </div>
       </div>
 
-      {showJumpButton && stickToBottom && !following ? (
+      {showJumpButton && stickToBottom ? (
         <button
           type="button"
           data-slot="conversation-jump"
-          className="bg-foreground text-background focus-visible:ring-ring absolute bottom-3 left-1/2 inline-flex min-h-9 -translate-x-1/2 items-center gap-1.5 rounded-full px-3 text-xs font-semibold shadow-md focus-visible:ring-2 focus-visible:outline-none"
+          aria-hidden={following || undefined}
+          tabIndex={following ? -1 : undefined}
+          className={cn(
+            "bg-foreground text-background focus-visible:ring-ring absolute bottom-3 left-1/2 inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-semibold shadow-md transition-[opacity,transform] duration-200 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none",
+            following
+              ? "pointer-events-none -translate-x-1/2 translate-y-1 opacity-0"
+              : "-translate-x-1/2 opacity-100"
+          )}
           onClick={jump}
         >
           <ArrowDown aria-hidden="true" size={13} />

@@ -99,7 +99,7 @@ export function DocumentSplits({
           <button
             type="button"
             data-slot="document-splits-reset"
-            className="text-muted-foreground hover:text-foreground focus-visible:ring-ring ml-auto inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 text-xs font-semibold focus-visible:ring-2 focus-visible:outline-none"
+            className="text-muted-foreground hover:text-foreground focus-visible:ring-ring ml-auto inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 text-xs font-semibold transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none"
             onClick={() => setSplits([])}
           >
             <Undo2 aria-hidden="true" size={13} />
@@ -167,7 +167,7 @@ export function DocumentSplits({
                           "focus-visible:ring-ring group mt-4 flex h-16 w-6 shrink-0 items-center justify-center rounded-full focus-visible:ring-2 focus-visible:outline-none",
                           isSplit
                             ? "text-primary"
-                            : "text-muted-foreground/40 hover:text-foreground"
+                            : "text-muted-foreground/40 hover:text-foreground transition-colors duration-150 motion-reduce:transition-none"
                         )}
                         onClick={() => toggle(page.number)}
                       >

@@ -178,7 +178,7 @@ export function AnnotationLayer({
                     "focus-visible:ring-ring size-full rounded-[3px] border-2 focus-visible:ring-2 focus-visible:outline-none",
                     isActive
                       ? "border-primary bg-primary/20"
-                      : "border-primary/60 bg-primary/10 hover:bg-primary/20"
+                      : "border-primary/60 bg-primary/10 hover:bg-primary/20 transition-colors duration-150 motion-reduce:transition-none"
                   )}
                   onPointerDown={(event) => event.stopPropagation()}
                   onClick={() => select(isActive ? null : annotation.id)}
@@ -233,7 +233,7 @@ export function AnnotationLayer({
             {onDelete && !readOnly ? (
               <button
                 type="button"
-                className="hover:text-destructive focus-visible:ring-ring -my-1 inline-flex size-9 shrink-0 items-center justify-center rounded-full focus-visible:ring-2 focus-visible:outline-none"
+                className="hover:text-destructive focus-visible:ring-ring -my-1 inline-flex size-9 shrink-0 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none"
                 onClick={() => {
                   onDelete(active.id)
                   select(null)

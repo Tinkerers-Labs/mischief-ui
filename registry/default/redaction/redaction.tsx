@@ -208,7 +208,7 @@ export function Redaction({
           type="button"
           data-slot="redaction-reveal"
           aria-pressed={showing}
-          className="border-border hover:bg-muted focus-visible:ring-ring ml-auto inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3 text-xs font-semibold focus-visible:ring-2 focus-visible:outline-none"
+          className="border-border hover:bg-muted focus-visible:ring-ring ml-auto inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3 text-xs font-semibold transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none"
           onClick={toggleReveal}
         >
           {showing ? (
@@ -246,7 +246,7 @@ export function Redaction({
               </span>
               <button
                 type="button"
-                className="text-muted-foreground hover:text-destructive focus-visible:ring-ring -my-1 inline-flex size-9 shrink-0 items-center justify-center rounded-full focus-visible:ring-2 focus-visible:outline-none"
+                className="text-muted-foreground hover:text-destructive focus-visible:ring-ring -my-1 inline-flex size-9 shrink-0 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none"
                 onClick={() => onDelete(region.id)}
               >
                 <span className="sr-only">Remove redaction {index + 1}</span>

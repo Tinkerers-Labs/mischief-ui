@@ -178,7 +178,7 @@ export function SignaturePad({
                   "inline-flex min-h-9 items-center gap-1.5 rounded-full px-2.5 text-xs font-semibold",
                   isActive
                     ? "bg-foreground text-background"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground transition-colors duration-150 motion-reduce:transition-none"
                 )}
                 onClick={() => setMode(option.id)}
               >
@@ -259,7 +259,7 @@ export function SignaturePad({
             type="button"
             data-slot="signature-pad-clear"
             disabled={isEmpty}
-            className="text-muted-foreground hover:text-foreground focus-visible:ring-ring ml-auto inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 text-xs font-semibold focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40"
+            className="text-muted-foreground hover:text-foreground focus-visible:ring-ring ml-auto inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 text-xs font-semibold transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40 motion-reduce:transition-none"
             onClick={clear}
           >
             <Eraser aria-hidden="true" size={13} />

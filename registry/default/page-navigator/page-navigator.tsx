@@ -112,7 +112,9 @@ export function PageNavigator({
               tabIndex={isActive ? 0 : -1}
               className={cn(
                 "focus-visible:ring-ring group shrink-0 rounded-[calc(var(--radius)-0.25rem)] p-1 focus-visible:ring-2 focus-visible:outline-none",
-                isActive ? "bg-muted" : "hover:bg-muted/60"
+                isActive
+                  ? "bg-muted"
+                  : "hover:bg-muted/60 transition-colors duration-150 motion-reduce:transition-none"
               )}
               onClick={() => select(page.number)}
             >

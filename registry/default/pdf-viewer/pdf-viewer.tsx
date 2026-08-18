@@ -228,7 +228,7 @@ export function PdfViewer({
             type="button"
             aria-label="Previous page"
             disabled={current <= 1}
-            className="hover:bg-muted focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-full focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40"
+            className="hover:bg-muted focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40 motion-reduce:transition-none"
             onClick={() => goTo(current - 1)}
           >
             <ChevronLeft aria-hidden="true" size={15} />
@@ -245,7 +245,7 @@ export function PdfViewer({
             type="button"
             aria-label="Next page"
             disabled={pageCount === 0 || current >= pageCount}
-            className="hover:bg-muted focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-full focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40"
+            className="hover:bg-muted focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40 motion-reduce:transition-none"
             onClick={() => goTo(current + 1)}
           >
             <ChevronRight aria-hidden="true" size={15} />
@@ -257,7 +257,7 @@ export function PdfViewer({
             type="button"
             aria-label="Zoom out"
             disabled={scale <= minScale}
-            className="hover:bg-muted focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-full focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40"
+            className="hover:bg-muted focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40 motion-reduce:transition-none"
             onClick={() =>
               setScale((value) => Math.max(value - 0.25, minScale))
             }
@@ -273,7 +273,7 @@ export function PdfViewer({
             type="button"
             aria-label="Zoom in"
             disabled={scale >= maxScale}
-            className="hover:bg-muted focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-full focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40"
+            className="hover:bg-muted focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40 motion-reduce:transition-none"
             onClick={() =>
               setScale((value) => Math.min(value + 0.25, maxScale))
             }

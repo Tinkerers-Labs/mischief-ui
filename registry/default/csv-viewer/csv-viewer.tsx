@@ -190,7 +190,7 @@ export function CsvViewer({
                       >
                         <button
                           type="button"
-                          className="focus-visible:ring-ring hover:bg-background/60 flex min-h-11 w-full items-center gap-1.5 px-3 text-left focus-visible:ring-2 focus-visible:-outline-offset-2 focus-visible:outline-none"
+                          className="focus-visible:ring-ring hover:bg-background/60 flex min-h-11 w-full items-center gap-1.5 px-3 text-left transition-colors duration-150 focus-visible:ring-2 focus-visible:-outline-offset-2 focus-visible:outline-none motion-reduce:transition-none"
                           onClick={() =>
                             setSort(
                               active && direction === "asc"
@@ -218,7 +218,7 @@ export function CsvViewer({
                 {visible.map((row, rowIndex) => (
                   <tr
                     key={rowIndex}
-                    className="border-border hover:bg-muted/40 border-b last:border-b-0"
+                    className="border-border hover:bg-muted/40 border-b transition-colors duration-150 last:border-b-0 motion-reduce:transition-none"
                   >
                     {parsed.fields.map((_, columnIndex) => (
                       <td

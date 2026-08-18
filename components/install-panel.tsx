@@ -12,21 +12,6 @@ import {
 } from "@/lib/package-commands"
 import { registryInstallArgs, siteConfig } from "@/site.config"
 
-type InstallMethod = "source" | "package"
-
-const methods = [
-  {
-    id: "source",
-    label: "Source",
-    hint: "Copies the component into your project, where you can change it.",
-  },
-  {
-    id: "package",
-    label: "Package",
-    hint: "Keeps the component behind an import and updates with your lockfile.",
-  },
-] as const
-
 export function InstallPanel({
   slug,
   npmImport,
@@ -34,18 +19,17 @@ export function InstallPanel({
   slug: string
   npmImport: string
 }) {
-  const [method, setMethod] = React.useState<InstallMethod>("source")
   const [manager, setManager] = React.useState<PackageManager>(
     defaultPackageManager
   )
+  const [asPackage, setAsPackage] = React.useState(false)
   const [copied, setCopied] = React.useState(false)
 
-  const command =
-    method === "source"
-      ? runCommand(manager, registryInstallArgs(slug))
-      : addCommand(manager, siteConfig.package.installArgs)
-
-  const active = methods.find((entry) => entry.id === method)!
+  // The chosen package manager applies either way, so picking pnpm and then
+  // package gives pnpm add rather than snapping back to npm.
+  const command = asPackage
+    ? addCommand(manager, siteConfig.package.installArgs)
+    : runCommand(manager, registryInstallArgs(slug))
 
   const copy = async () => {
     await navigator.clipboard.writeText(command)
@@ -55,27 +39,6 @@ export function InstallPanel({
 
   return (
     <div className="install-panel">
-      <div
-        className="install-methods"
-        role="tablist"
-        aria-label="Install method"
-      >
-        {methods.map((entry) => (
-          <button
-            key={entry.id}
-            type="button"
-            role="tab"
-            aria-selected={method === entry.id}
-            className="install-method"
-            onClick={() => setMethod(entry.id)}
-          >
-            {entry.label}
-          </button>
-        ))}
-      </div>
-
-      <p className="install-hint">{active.hint}</p>
-
       <div className="install-block">
         <div className="install-bar">
           <span aria-hidden="true" className="install-terminal">
@@ -84,19 +47,32 @@ export function InstallPanel({
 
           <div
             role="group"
-            aria-label="Package manager"
+            aria-label="Install command"
             className="install-managers"
           >
             {packageManagers.map((entry) => (
               <button
                 key={entry}
                 type="button"
-                aria-pressed={manager === entry}
-                onClick={() => setManager(entry)}
+                aria-pressed={!asPackage && manager === entry}
+                onClick={() => {
+                  setManager(entry)
+                  setAsPackage(false)
+                }}
               >
                 {entry}
               </button>
             ))}
+
+            <span aria-hidden="true" className="install-divider" />
+
+            <button
+              type="button"
+              aria-pressed={asPackage}
+              onClick={() => setAsPackage(true)}
+            >
+              package
+            </button>
           </div>
 
           <button
@@ -114,7 +90,7 @@ export function InstallPanel({
         </pre>
       </div>
 
-      {method === "package" ? (
+      {asPackage ? (
         <pre className="install-import">
           <code>{npmImport}</code>
         </pre>

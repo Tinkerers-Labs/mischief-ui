@@ -183,7 +183,7 @@ export function ApprovalCard({
             type="button"
             data-slot="approval-card-dismiss"
             aria-label={dismissLabel}
-            className="text-muted-foreground hover:text-foreground focus-visible:ring-ring -mt-1.5 -mr-1.5 inline-flex size-11 shrink-0 items-center justify-center rounded-full focus-visible:ring-2 focus-visible:outline-none"
+            className="text-muted-foreground hover:text-foreground focus-visible:ring-ring -mt-1.5 -mr-1.5 inline-flex size-11 shrink-0 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none"
             onClick={onDismiss}
           >
             <X aria-hidden="true" size={16} />
@@ -227,7 +227,7 @@ export function ApprovalCard({
               data-slot="approval-card-option"
               data-destructive={option.destructive || undefined}
               className={cn(
-                "group border-border hover:bg-muted/60 focus-visible:ring-ring relative flex min-h-11 w-full items-center gap-2.5 overflow-hidden rounded-[calc(var(--radius)-0.25rem)] border px-3 py-2 text-left text-sm focus-visible:ring-2 focus-visible:outline-none",
+                "group border-border hover:bg-muted/60 focus-visible:ring-ring relative flex min-h-11 w-full items-center gap-2.5 overflow-hidden rounded-[calc(var(--radius)-0.25rem)] border px-3 py-2 text-left text-sm transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none",
                 option.destructive && "border-destructive/40"
               )}
               {...holdProps}

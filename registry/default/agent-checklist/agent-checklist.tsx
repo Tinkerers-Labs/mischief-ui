@@ -151,7 +151,7 @@ export function AgentChecklist({
             data-slot="agent-checklist-item"
             data-status={item.status}
             className={cn(
-              "flex items-start gap-2.5 rounded-[calc(var(--radius)-0.25rem)] px-1.5 py-1.5 text-sm",
+              "flex items-start gap-2.5 rounded-[calc(var(--radius)-0.25rem)] px-1.5 py-1.5 text-sm transition-colors duration-200 motion-reduce:transition-none",
               item.status === "active" && "bg-muted/60"
             )}
           >

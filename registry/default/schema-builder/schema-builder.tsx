@@ -152,7 +152,7 @@ function FieldRow({
             <button
               type="button"
               aria-expanded={open}
-              className="text-muted-foreground hover:text-foreground focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-full focus-visible:ring-2 focus-visible:outline-none"
+              className="text-muted-foreground hover:text-foreground focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none"
               onClick={() => setOpen(!open)}
             >
               <span className="sr-only">
@@ -172,7 +172,7 @@ function FieldRow({
 
           <button
             type="button"
-            className="text-muted-foreground hover:text-destructive focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-full focus-visible:ring-2 focus-visible:outline-none"
+            className="text-muted-foreground hover:text-destructive focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none"
             onClick={() => onRemove(field.id)}
           >
             <span className="sr-only">Remove {field.name || "this field"}</span>
@@ -201,7 +201,7 @@ function FieldRow({
 
           <button
             type="button"
-            className="text-muted-foreground hover:text-foreground focus-visible:ring-ring mt-2 inline-flex min-h-9 items-center gap-1.5 rounded-full text-xs font-semibold focus-visible:ring-2 focus-visible:outline-none"
+            className="text-muted-foreground hover:text-foreground focus-visible:ring-ring mt-2 inline-flex min-h-9 items-center gap-1.5 rounded-full text-xs font-semibold transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none"
             onClick={() => onAddChild(field.id)}
           >
             <Plus aria-hidden="true" size={13} />
@@ -290,7 +290,7 @@ export function SchemaBuilder({
       <button
         type="button"
         data-slot="schema-builder-add"
-        className="border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 focus-visible:ring-ring mt-2 inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-[calc(var(--radius)-0.25rem)] border border-dashed text-sm font-semibold focus-visible:ring-2 focus-visible:outline-none"
+        className="border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 focus-visible:ring-ring mt-2 inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-[calc(var(--radius)-0.25rem)] border border-dashed text-sm font-semibold transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none"
         onClick={() =>
           commit([...value, { id: nextId(), name: "", type: "string" }])
         }
