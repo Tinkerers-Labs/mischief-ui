@@ -130,10 +130,7 @@ export default async function ComponentPage({
         <section className="docs-section" id="installation">
           <h2>Installation</h2>
           <p>Copy the source into your project, or keep it behind a package.</p>
-          <InstallPanel
-            npmImport={component.npmImport}
-            shadcnCommand={component.install}
-          />
+          <InstallPanel npmImport={component.npmImport} slug={component.slug} />
         </section>
 
         <section className="docs-section" id="usage">

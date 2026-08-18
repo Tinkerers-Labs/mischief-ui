@@ -1,106 +1,124 @@
 "use client"
 
 import * as React from "react"
-import { Braces, Package } from "lucide-react"
+import { Check, Clipboard, Terminal } from "lucide-react"
 
-import { CopyCommand } from "@/components/copy-command"
-import { siteConfig } from "@/site.config"
+import {
+  addCommand,
+  defaultPackageManager,
+  packageManagers,
+  runCommand,
+  type PackageManager,
+} from "@/lib/package-commands"
+import { registryInstallArgs, siteConfig } from "@/site.config"
 
-type InstallMethod = "source" | "npm"
-type PackageManager = "pnpm" | "npm" | "yarn" | "bun"
+type InstallMethod = "source" | "package"
 
 const methods = [
-  { id: "source", label: "Source", icon: Braces },
-  { id: "npm", label: "npm package", icon: Package },
+  {
+    id: "source",
+    label: "Source",
+    hint: "Copies the component into your project, where you can change it.",
+  },
+  {
+    id: "package",
+    label: "Package",
+    hint: "Keeps the component behind an import and updates with your lockfile.",
+  },
 ] as const
 
-const packageManagers = ["pnpm", "npm", "yarn", "bun"] as const
-
-function sourceCommands(command: string): Record<PackageManager, string> {
-  const args = command.replace(/^pnpm dlx /, "")
-
-  return {
-    pnpm: command,
-    npm: `npx ${args}`,
-    yarn: `yarn dlx ${args}`,
-    bun: `bunx --bun ${args}`,
-  }
-}
-
-function packageCommands(command: string): Record<PackageManager, string> {
-  const packages = command.replace(/^pnpm add /, "")
-
-  return {
-    pnpm: command,
-    npm: `npm install ${packages}`,
-    yarn: `yarn add ${packages}`,
-    bun: `bun add ${packages}`,
-  }
-}
-
 export function InstallPanel({
-  shadcnCommand,
+  slug,
   npmImport,
 }: {
-  shadcnCommand: string
+  slug: string
   npmImport: string
 }) {
   const [method, setMethod] = React.useState<InstallMethod>("source")
-  const [manager, setManager] = React.useState<PackageManager>("pnpm")
-  const commands =
+  const [manager, setManager] = React.useState<PackageManager>(
+    defaultPackageManager
+  )
+  const [copied, setCopied] = React.useState(false)
+
+  const command =
     method === "source"
-      ? sourceCommands(shadcnCommand)
-      : packageCommands(siteConfig.package.installCommand)
+      ? runCommand(manager, registryInstallArgs(slug))
+      : addCommand(manager, siteConfig.package.installArgs)
+
+  const active = methods.find((entry) => entry.id === method)!
+
+  const copy = async () => {
+    await navigator.clipboard.writeText(command)
+    setCopied(true)
+    window.setTimeout(() => setCopied(false), 1400)
+  }
 
   return (
     <div className="install-panel">
-      <div className="install-tabs" role="group" aria-label="Install method">
-        {methods.map(({ id, label, icon: Icon }) => (
+      <div
+        className="install-methods"
+        role="tablist"
+        aria-label="Install method"
+      >
+        {methods.map((entry) => (
           <button
-            aria-pressed={method === id}
-            className="install-tab"
-            key={id}
-            onClick={() => setMethod(id)}
+            key={entry.id}
             type="button"
+            role="tab"
+            aria-selected={method === entry.id}
+            className="install-method"
+            onClick={() => setMethod(entry.id)}
           >
-            <Icon aria-hidden="true" size={15} strokeWidth={1.8} />
-            {label}
+            {entry.label}
           </button>
         ))}
       </div>
 
-      <div className="install-content">
-        <p>
-          {method === "source"
-            ? "Copy the component into your project and make it yours."
-            : "Keep the component behind a package import."}
-        </p>
+      <p className="install-hint">{active.hint}</p>
 
-        <div
-          aria-label="Package manager"
-          className="package-manager-tabs"
-          role="group"
-        >
-          {packageManagers.map((packageManager) => (
-            <button
-              aria-pressed={manager === packageManager}
-              key={packageManager}
-              onClick={() => setManager(packageManager)}
-              type="button"
-            >
-              {packageManager}
-            </button>
-          ))}
+      <div className="install-block">
+        <div className="install-bar">
+          <span aria-hidden="true" className="install-terminal">
+            <Terminal size={13} />
+          </span>
+
+          <div
+            role="group"
+            aria-label="Package manager"
+            className="install-managers"
+          >
+            {packageManagers.map((entry) => (
+              <button
+                key={entry}
+                type="button"
+                aria-pressed={manager === entry}
+                onClick={() => setManager(entry)}
+              >
+                {entry}
+              </button>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className="install-copy"
+            aria-label={copied ? "Copied" : "Copy command"}
+            onClick={copy}
+          >
+            {copied ? <Check size={14} /> : <Clipboard size={14} />}
+          </button>
         </div>
 
-        <CopyCommand command={commands[manager]} />
-
-        {method === "npm" && (
-          <pre className="install-import">
-            <code>{npmImport}</code>
-          </pre>
-        )}
+        <pre className="install-command-line">
+          <code>{command}</code>
+        </pre>
       </div>
+
+      {method === "package" ? (
+        <pre className="install-import">
+          <code>{npmImport}</code>
+        </pre>
+      ) : null}
     </div>
   )
 }

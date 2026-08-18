@@ -3,6 +3,7 @@ import Link from "next/link"
 
 import { CopyCommand } from "@/components/copy-command"
 import { componentDocs } from "@/lib/component-docs"
+import { addCommand, defaultPackageManager } from "@/lib/package-commands"
 import { registryInstallCommand, siteConfig } from "@/site.config"
 
 export const metadata: Metadata = {
@@ -11,6 +12,11 @@ export const metadata: Metadata = {
     "Install Mischief UI components through the shadcn registry or npm, then adapt the source for your React project.",
   alternates: { canonical: "/docs" },
 }
+
+const packageInstallCommand = addCommand(
+  defaultPackageManager,
+  siteConfig.package.installArgs
+)
 
 export default function DocsPage() {
   const components = componentDocs.filter(({ kind }) => kind === "component")
@@ -43,10 +49,7 @@ export default function DocsPage() {
             label="Source"
             command={registryInstallCommand("magnetic-tabs")}
           />
-          <CopyCommand
-            label="Package"
-            command={siteConfig.package.installCommand}
-          />
+          <CopyCommand label="Package" command={packageInstallCommand} />
         </div>
       </section>
 

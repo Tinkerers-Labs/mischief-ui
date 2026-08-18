@@ -2,12 +2,14 @@
 
 Good interfaces deserve a little mischief.
 
-Playful, production-ready React components and blocks built with Base UI, Motion, Tailwind CSS, and shadcn theme tokens. The package exports Magnetic Tabs, Elastic Slider, Hold Button, Signature Footer, Impossible Checkbox, Floating Index, Shift Button, Image Gallery, Scroll to Top Button, Ask AI, File Upload, and File Thumbnail.
+Playful, production-ready React components and blocks built with Base UI, Motion, Tailwind CSS, and shadcn theme tokens. Every component is a separate entry point, and anything heavier than React is an optional peer, so installing this package pulls none of them.
+
+See the full list at https://ui.tinkererslabs.com.
 
 ## Install from npm
 
 ```bash
-pnpm add mischief-ui @base-ui/react motion
+npm install mischief-ui
 ```
 
 Import `mischief-ui/styles.css` once in your Tailwind CSS entry file so Tailwind can find the component classes:
@@ -43,7 +45,7 @@ people correct a selection before upload.
 For full source ownership, install through the shadcn registry instead:
 
 ```bash
-pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/elastic-slider
+npx shadcn@latest add Tinkerers-Labs/mischief-ui/elastic-slider
 ```
 
 See the live components and complete docs at https://ui.tinkererslabs.com/.

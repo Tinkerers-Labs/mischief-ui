@@ -33,26 +33,20 @@ Use $mischief-ui to add the impossible-checkbox component to this project.
 Mischief is a public GitHub registry for shadcn CLI v4. Install a component directly from this repository:
 
 ```bash
-pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/magnetic-tabs
-pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/elastic-slider
-pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/hold-button
-pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/signature-footer
-pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/impossible-checkbox
-pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/floating-index
-pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/shift-button
-pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/image-gallery
-pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/scroll-to-top-button
-pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/ask-ai
-pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/file-upload
-pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/file-thumbnail
+npx shadcn@latest add Tinkerers-Labs/mischief-ui/magnetic-tabs
+npx shadcn@latest add Tinkerers-Labs/mischief-ui/conversation
+npx shadcn@latest add Tinkerers-Labs/mischief-ui/approval-card
+npx shadcn@latest add Tinkerers-Labs/mischief-ui/redaction
 ```
 
-Use `npm`, `yarn`, or `bun` if that is what your project uses. The shadcn CLI reads `components.json` and places the source in the configured UI directory.
+Every component is listed at [ui.tinkererslabs.com](https://ui.tinkererslabs.com/), and each page carries the command for it.
+
+Use `pnpm dlx`, `yarn dlx`, or `bunx` if that is what your project uses. The shadcn CLI reads `components.json` and places the source in the configured UI directory.
 
 Mischief is also available as [`mischief-ui`](https://www.npmjs.com/package/mischief-ui):
 
 ```bash
-pnpm add mischief-ui @base-ui/react motion
+npm install mischief-ui
 ```
 
 Import `mischief-ui/styles.css` in your Tailwind CSS entry file, then use a direct entry such as `mischief-ui/magnetic-tabs`. The root export remains available when one import path is more convenient. The registry remains the recommended path when you want to own and adapt the source.

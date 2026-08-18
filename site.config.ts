@@ -1,3 +1,5 @@
+import { defaultPackageManager, runCommand } from "@/lib/package-commands"
+
 const repositoryPath = "Tinkerers-Labs/mischief-ui"
 const repositoryUrl = `https://github.com/${repositoryPath}`
 const siteUrl = "https://ui.tinkererslabs.com/"
@@ -54,7 +56,7 @@ export const siteConfig = {
   package: {
     name: packageName,
     url: packageUrl,
-    installCommand: `pnpm add ${packageName} @base-ui/react motion`,
+    installArgs: packageName,
   },
   skill: {
     name: skillName,
@@ -86,8 +88,13 @@ export const siteConfig = {
 
 export type ExternalLinkId = (typeof siteConfig.externalLinks)[number]["id"]
 
+/** Arguments for the shadcn CLI, without a package runner in front. */
+export function registryInstallArgs(slug: string) {
+  return `shadcn@latest add ${siteConfig.repository.path}/${slug}`
+}
+
 export function registryInstallCommand(slug: string) {
-  return `pnpm dlx shadcn@latest add ${siteConfig.repository.path}/${slug}`
+  return runCommand(defaultPackageManager, registryInstallArgs(slug))
 }
 
 export function packageImport(exportName: string, slug: string) {

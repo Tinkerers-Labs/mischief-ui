@@ -320,6 +320,130 @@ a:focus-visible {
   justify-items: start;
 }
 
+.install-panel {
+  margin-top: 1.25rem;
+}
+
+.install-methods {
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 1.25rem;
+}
+
+.install-method {
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 650;
+  margin-bottom: -1px;
+  padding: 0 0 0.55rem;
+}
+
+.install-method[aria-selected="true"] {
+  border-bottom-color: var(--foreground);
+  color: var(--foreground);
+}
+
+.install-hint {
+  color: var(--muted-foreground);
+  font-size: 0.85rem;
+  margin: 0.85rem 0 0;
+}
+
+.install-block {
+  background: color-mix(in oklch, var(--muted) 45%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  margin-top: 0.85rem;
+  overflow: hidden;
+}
+
+.install-bar {
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.35rem 0.4rem 0.35rem 0.6rem;
+}
+
+.install-terminal {
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  color: var(--muted-foreground);
+  display: inline-flex;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
+}
+
+.install-managers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem;
+}
+
+.install-managers button {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 0.45rem;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  font: inherit;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.78rem;
+  min-height: 30px;
+  padding: 0 0.55rem;
+}
+
+.install-managers button:hover {
+  color: var(--foreground);
+}
+
+.install-managers button[aria-pressed="true"] {
+  background: var(--card);
+  border-color: var(--border);
+  color: var(--foreground);
+}
+
+.install-copy {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 0.45rem;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  display: inline-flex;
+  height: 30px;
+  justify-content: center;
+  margin-left: auto;
+  width: 30px;
+}
+
+.install-copy:hover {
+  background: var(--card);
+  color: var(--foreground);
+}
+
+.install-command-line {
+  background: transparent;
+  border-radius: 0;
+  color: var(--foreground);
+  margin: 0;
+  overflow-x: auto;
+  padding: 0.8rem 0.9rem;
+}
+
+.install-command-line code {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.8rem;
+}
+
 .install-command {
   align-items: center;
   background: var(--foreground);
@@ -978,81 +1102,6 @@ a:focus-visible {
 
 .docs-section ul {
   padding-left: 1.25rem;
-}
-
-.install-panel {
-  border: 1px solid var(--border);
-  border-radius: 1rem;
-  margin-top: 1.5rem;
-  overflow: hidden;
-}
-
-.install-tabs {
-  background: color-mix(in oklch, var(--muted) 55%, transparent);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  gap: 0.25rem;
-  padding: 0.4rem;
-}
-
-.install-tab {
-  align-items: center;
-  background: transparent;
-  border: 0;
-  border-radius: 0.6rem;
-  color: var(--muted-foreground);
-  cursor: pointer;
-  display: inline-flex;
-  font: inherit;
-  font-size: 0.8rem;
-  font-weight: 650;
-  gap: 0.45rem;
-  min-height: 36px;
-  padding: 0.45rem 0.8rem;
-}
-
-.install-tab[aria-pressed="true"] {
-  background: var(--card);
-  box-shadow: 0 1px 4px oklch(0.215 0.018 58 / 10%);
-  color: var(--foreground);
-}
-
-.install-content {
-  display: grid;
-  gap: 0.7rem;
-  padding: 1rem;
-}
-
-.install-content > p {
-  color: var(--muted-foreground);
-  font-size: 0.875rem;
-  line-height: 1.55;
-  margin: 0 0 0.2rem;
-}
-
-.package-manager-tabs {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.2rem;
-}
-
-.package-manager-tabs button {
-  background: transparent;
-  border: 0;
-  border-radius: 0.45rem;
-  color: var(--muted-foreground);
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.8rem;
-  min-height: 36px;
-  padding: 0 0.7rem;
-}
-
-.package-manager-tabs button[aria-pressed="true"] {
-  background: var(--muted);
-  color: var(--foreground);
-  font-weight: 700;
 }
 
 .install-import {

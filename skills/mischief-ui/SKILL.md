@@ -14,16 +14,16 @@ Add only the component that solves the request. Treat each component as owned so
 3. Prefer the shadcn registry so the source lands in the consumer's codebase:
 
    ```bash
-   pnpm dlx shadcn@latest add Tinkerers-Labs/mischief-ui/<component>
+   npx shadcn@latest add Tinkerers-Labs/mischief-ui/<component>
    ```
 
-   Replace `pnpm dlx` with the runner used by the project.
+   Replace `npx` with the runner used by the project.
 
 4. Review the installed diff. Preserve existing aliases, shadcn tokens, Tailwind conventions, and React Server Component boundaries.
 5. Adapt copy and content to the product. Do not leave demo names or placeholder text in shipped UI.
 6. Verify keyboard use, focus visibility, reduced motion, and the relevant responsive layout.
 
-Use `pnpm add mischief-ui @base-ui/react motion` only when the user specifically prefers package imports over owned source.
+Use `npm install mischief-ui` only when the user specifically prefers package imports over owned source. Base UI, Motion, and the document parsers are optional peers, so install one only if the component you added lists it.
 
 ## Catalog
 
