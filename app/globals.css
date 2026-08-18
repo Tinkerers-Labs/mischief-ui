@@ -871,14 +871,14 @@ a:focus-visible {
 
 .docs-section {
   border-top: 1px solid var(--border);
-  margin-top: 4rem;
-  padding-top: 2rem;
+  margin-top: 2.75rem;
+  padding-top: 1.75rem;
 }
 
 .docs-section h2,
 .brand-notes h2 {
   font-family: var(--font-display), sans-serif;
-  font-size: clamp(1.7rem, 3vw, 2.35rem);
+  font-size: clamp(1.3rem, 2vw, 1.6rem);
   font-weight: 650;
   letter-spacing: -0.035em;
   line-height: 1.05;
@@ -1018,8 +1018,8 @@ a:focus-visible {
 
 .component-preview-panel {
   border: 1px solid var(--border);
-  border-radius: 1.25rem;
-  margin-top: 3rem;
+  border-radius: 1rem;
+  margin-top: 2rem;
   overflow: hidden;
 }
 
@@ -1028,12 +1028,12 @@ a:focus-visible {
   background: color-mix(in oklch, var(--muted) 55%, transparent);
   border-bottom: 1px solid var(--border);
   display: flex;
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   font-weight: 700;
   justify-content: space-between;
-  letter-spacing: 0.04em;
-  min-height: 3rem;
-  padding: 0 1rem;
+  letter-spacing: 0.06em;
+  min-height: 2.25rem;
+  padding: 0 0.85rem;
   text-transform: uppercase;
 }
 
@@ -1042,7 +1042,7 @@ a:focus-visible {
   color: var(--muted-foreground);
   display: inline-flex;
   gap: 0.4rem;
-  min-height: 44px;
+  min-height: 2.25rem;
   text-decoration: none;
 }
 
@@ -1055,7 +1055,7 @@ a:focus-visible {
   border-radius: 0;
   box-shadow: none;
   margin: 0;
-  min-height: 28rem;
+  min-height: 20rem;
 }
 
 pre {
@@ -1100,16 +1100,16 @@ pre {
 
 .props-table {
   border-bottom: 1px solid var(--border);
-  margin-top: 1.5rem;
+  margin-top: 1.1rem;
 }
 
 .props-row {
   border-top: 1px solid var(--border);
   display: grid;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   gap: 1rem;
-  grid-template-columns: minmax(7rem, 0.45fr) minmax(10rem, 0.7fr) 1fr;
-  padding: 1rem 0;
+  grid-template-columns: minmax(7rem, 0.4fr) minmax(9rem, 0.62fr) 1fr;
+  padding: 0.7rem 0;
 }
 
 .props-row code:first-child {

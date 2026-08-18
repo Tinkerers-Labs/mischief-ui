@@ -89,7 +89,7 @@ export function SiteSearch() {
         data-slot="site-search-trigger"
         aria-label="Search components"
         aria-keyshortcuts="Meta+K Control+K"
-        className="group focus-visible:ring-ring ml-3 inline-flex h-11 items-center rounded-full focus-visible:ring-2 focus-visible:outline-none lg:ml-5"
+        className="group focus-visible:ring-ring inline-flex h-11 items-center rounded-full focus-visible:ring-2 focus-visible:outline-none"
         onClick={open}
       >
         {/* The tap target stays 44px while the visible field stays small. */}

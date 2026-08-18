@@ -26,7 +26,7 @@ function UtilityLink({
 }) {
   return (
     <ExternalLink
-      className="hover:text-primary inline-flex size-11 items-center justify-center transition-colors duration-150"
+      className="hover:text-primary inline-flex h-11 w-9 items-center justify-center transition-colors duration-150"
       href={href}
       aria-label={label}
       title={title}
@@ -51,7 +51,8 @@ export function SiteHeader() {
           className="flex items-center text-sm font-semibold"
           aria-label="Main navigation"
         >
-          <div className="hidden items-center gap-5 min-[520px]:flex lg:gap-6">
+          <SiteSearch />
+          <div className="ml-3 hidden items-center gap-5 min-[520px]:flex lg:ml-5 lg:gap-6">
             {siteConfig.navigation.map((item) => (
               <Link
                 key={item.href}
@@ -62,7 +63,6 @@ export function SiteHeader() {
               </Link>
             ))}
           </div>
-          <SiteSearch />
           <span
             className="bg-border mx-2 hidden h-5 w-px min-[520px]:block lg:mx-3"
             aria-hidden="true"

@@ -61,7 +61,7 @@ export function ThemeToggle() {
 
   return (
     <button
-      className="hover:text-primary inline-flex size-11 cursor-pointer items-center justify-center border-0 bg-transparent text-inherit transition-colors duration-150"
+      className="hover:text-primary inline-flex h-11 w-9 cursor-pointer items-center justify-center border-0 bg-transparent text-inherit transition-colors duration-150"
       type="button"
       onClick={() => applyTheme(nextTheme)}
       aria-label={`Switch to ${nextTheme} mode`}
