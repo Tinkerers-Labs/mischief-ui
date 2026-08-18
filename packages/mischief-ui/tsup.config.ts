@@ -21,6 +21,15 @@ export default defineConfig({
     "file-upload": "../../registry/default/file-upload/file-upload.tsx",
     "file-thumbnail":
       "../../registry/default/file-thumbnail/file-thumbnail.tsx",
+    "streaming-text":
+      "../../registry/default/streaming-text/streaming-text.tsx",
+    "thinking-state":
+      "../../registry/default/thinking-state/thinking-state.tsx",
+    "tool-call": "../../registry/default/tool-call/tool-call.tsx",
+    "agent-checklist":
+      "../../registry/default/agent-checklist/agent-checklist.tsx",
+    "inline-citations":
+      "../../registry/default/inline-citations/inline-citations.tsx",
   },
   format: ["esm", "cjs"],
   dts: true,

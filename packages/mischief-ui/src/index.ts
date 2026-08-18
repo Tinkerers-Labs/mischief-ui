@@ -72,3 +72,37 @@ export {
   type FileThumbnailFile,
   type FileThumbnailProps,
 } from "../../../registry/default/file-thumbnail/file-thumbnail"
+
+export {
+  StreamingText,
+  type StreamingTextProps,
+  type StreamingTextStatus,
+  type StreamSource,
+} from "../../../registry/default/streaming-text/streaming-text"
+
+export {
+  ThinkingState,
+  type ThinkingStateProps,
+  type ThinkingStatus,
+} from "../../../registry/default/thinking-state/thinking-state"
+
+export {
+  ToolCall,
+  type ToolCallProps,
+  type ToolCallStatus,
+} from "../../../registry/default/tool-call/tool-call"
+
+export {
+  AgentChecklist,
+  type AgentChecklistProps,
+  type AgentChecklistItem,
+  type ChecklistItemStatus,
+} from "../../../registry/default/agent-checklist/agent-checklist"
+
+export {
+  Citation,
+  InlineCitations,
+  type InlineCitationsProps,
+  type CitationProps,
+  type CitationSource,
+} from "../../../registry/default/inline-citations/inline-citations"

@@ -68,6 +68,18 @@ const questions = [
     ),
   },
   {
+    question: "How does Agent UI compare to AI Elements?",
+    answer: (
+      <p>
+        They compose. AI Elements covers a much larger surface, including
+        conversation, voice, and workflow. The {siteConfig.name} Agent UI family
+        is a small set of the pieces an agent shows mid-task, installed the same
+        way as everything else here. Use both in one project if that is what
+        fits.
+      </p>
+    ),
+  },
+  {
     question: "Can my coding agent install components for me?",
     answer: (
       <p>

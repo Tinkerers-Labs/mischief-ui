@@ -57,7 +57,8 @@ export default function Home() {
 
             <p className="mt-5 max-w-[34rem] text-[clamp(1.05rem,1.4vw,1.2rem)] leading-relaxed text-pretty">
               Accessible components and blocks for shadcn projects. Tabs that
-              follow, sliders with a little give.
+              follow, sliders with a little give, and a set for the things an
+              agent shows while it works.
             </p>
 
             <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">

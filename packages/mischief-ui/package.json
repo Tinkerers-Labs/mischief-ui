@@ -82,7 +82,32 @@
       "import": "./dist/file-thumbnail.js",
       "require": "./dist/file-thumbnail.cjs"
     },
-    "./styles.css": "./styles.css"
+    "./styles.css": "./styles.css",
+    "./streaming-text": {
+      "types": "./dist/streaming-text.d.ts",
+      "import": "./dist/streaming-text.js",
+      "require": "./dist/streaming-text.cjs"
+    },
+    "./thinking-state": {
+      "types": "./dist/thinking-state.d.ts",
+      "import": "./dist/thinking-state.js",
+      "require": "./dist/thinking-state.cjs"
+    },
+    "./tool-call": {
+      "types": "./dist/tool-call.d.ts",
+      "import": "./dist/tool-call.js",
+      "require": "./dist/tool-call.cjs"
+    },
+    "./agent-checklist": {
+      "types": "./dist/agent-checklist.d.ts",
+      "import": "./dist/agent-checklist.js",
+      "require": "./dist/agent-checklist.cjs"
+    },
+    "./inline-citations": {
+      "types": "./dist/inline-citations.d.ts",
+      "import": "./dist/inline-citations.js",
+      "require": "./dist/inline-citations.cjs"
+    }
   },
   "scripts": {
     "build": "tsup"

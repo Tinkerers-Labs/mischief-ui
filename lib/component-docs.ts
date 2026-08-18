@@ -6,7 +6,7 @@ export const componentDocs = [
     kind: "component",
     name: "Magnetic Tabs",
     number: "01",
-    family: "Tactile controls",
+    family: "Controls",
     summary:
       "Familiar tabs with a gentle pull toward the pointer. Selection stays clear and keyboard navigation remains immediate.",
     dependencies: ["@base-ui/react", "motion", "clsx", "tailwind-merge"],
@@ -43,7 +43,7 @@ export function Example() {
     kind: "component",
     name: "Elastic Slider",
     number: "02",
-    family: "Tactile controls",
+    family: "Controls",
     summary:
       "A precise slider with a small amount of give at either end. The current value stays visible and the control works without a pointer.",
     dependencies: ["@base-ui/react", "motion", "clsx", "tailwind-merge"],
@@ -91,7 +91,7 @@ export function Example() {
     kind: "component",
     name: "Hold Button",
     number: "03",
-    family: "Tactile controls",
+    family: "Controls",
     summary:
       "A confirmation button for actions that deserve a second thought. Release early to cancel, or activate once with a keyboard.",
     dependencies: ["clsx", "tailwind-merge"],
@@ -127,50 +127,42 @@ export function Example() {
       "Pointer users hold to confirm. Keyboard and assistive technology users activate the native button once, avoiding a timing barrier. Progress and completion are announced politely.",
   },
   {
-    slug: "signature-footer",
-    kind: "block",
-    name: "Signature Footer",
+    slug: "shift-button",
+    kind: "component",
+    name: "Shift Button",
     number: "04",
-    family: "Layout",
+    family: "Controls",
     summary:
-      "A complete closing section with room for the useful links first and one oversized wordmark at the end.",
-    dependencies: ["clsx", "tailwind-merge"],
-    install: registryInstallCommand("signature-footer"),
-    npmImport: packageImport("SignatureFooter", "signature-footer"),
-    usage: `export function Footer() {
+      "A call to action that trades its leading icon for a directional cue when someone approaches it.",
+    dependencies: ["@base-ui/react", "lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("shift-button"),
+    npmImport: packageImport("ShiftButton", "shift-button"),
+    usage: `export function DownloadButton() {
   return (
-    <SignatureFooter
-      eyebrow="One last useful thought"
-      heading="Make the ending memorable."
-      description="Keep the links practical. Let the wordmark do the rest."
-      action={<a href="/work">See our work</a>}
-      navigation={<nav aria-label="Footer">...</nav>}
-      brand={<a href="/">Northstar</a>}
-      meta={<span>Independent and curious.</span>}
-      wordmark="Northstar"
-    />
+    <ShiftButton
+      render={<a href="/download" />}
+      leadingIcon={<Apple aria-hidden="true" />}
+    >
+      Download for Mac
+    </ShiftButton>
   )
 }`,
     props: [
-      ["heading", "ReactNode", "The footer's main invitation."],
-      ["wordmark", "string", "The oversized closing brand name."],
-      ["eyebrow", "ReactNode", "A short label above the heading."],
-      ["description", "ReactNode", "Supporting copy below the heading."],
-      ["action", "ReactNode", "A primary link or button."],
-      ["navigation", "ReactNode", "Product, company, or social links."],
-      ["brand", "ReactNode", "The compact logo or home link."],
-      ["meta", "ReactNode", "License, location, or ownership details."],
-      ["className", "string", "Classes for the footer element."],
+      ["children", "ReactNode", "The button or link label."],
+      ["leadingIcon", "ReactNode", "The icon visible at rest."],
+      ["trailingIcon", "ReactNode", "The arriving icon. Defaults to an arrow."],
+      ["render", "ReactElement", "Renders another element, such as a link."],
+      ["className", "string", "Classes for the root element."],
     ],
     accessibility:
-      "The component uses a semantic footer and heading. Navigation, links, and labels remain yours, so their names stay specific to your site. The repeated oversized wordmark is decorative and hidden from assistive technology.",
+      "Base UI preserves native button behavior and supports rendering a real link for navigation. The label never disappears, focus remains visible, and reduced motion keeps both the leading icon and text still.",
   },
   {
     slug: "impossible-checkbox",
     kind: "component",
     name: "Impossible Checkbox",
     number: "05",
-    family: "Playful extras",
+    family: "Controls",
     summary:
       "A checkbox with one stubborn rule: the bear will not let you leave it on. Best kept for demos, Easter eggs, and harmless preferences.",
     dependencies: ["motion", "clsx", "tailwind-merge"],
@@ -260,101 +252,10 @@ export function PageIndex() {
       "The index is a labelled navigation landmark with native buttons, visible focus, aria-expanded on the toggle, and aria-current on the active section. Escape closes the outline. Reduced motion removes panel animation and smooth scrolling.",
   },
   {
-    slug: "shift-button",
-    kind: "component",
-    name: "Shift Button",
-    number: "07",
-    family: "Actions",
-    summary:
-      "A call to action that trades its leading icon for a directional cue when someone approaches it.",
-    dependencies: ["@base-ui/react", "lucide-react", "clsx", "tailwind-merge"],
-    install: registryInstallCommand("shift-button"),
-    npmImport: packageImport("ShiftButton", "shift-button"),
-    usage: `export function DownloadButton() {
-  return (
-    <ShiftButton
-      render={<a href="/download" />}
-      leadingIcon={<Apple aria-hidden="true" />}
-    >
-      Download for Mac
-    </ShiftButton>
-  )
-}`,
-    props: [
-      ["children", "ReactNode", "The button or link label."],
-      ["leadingIcon", "ReactNode", "The icon visible at rest."],
-      ["trailingIcon", "ReactNode", "The arriving icon. Defaults to an arrow."],
-      ["render", "ReactElement", "Renders another element, such as a link."],
-      ["className", "string", "Classes for the root element."],
-    ],
-    accessibility:
-      "Base UI preserves native button behavior and supports rendering a real link for navigation. The label never disappears, focus remains visible, and reduced motion keeps both the leading icon and text still.",
-  },
-  {
-    slug: "image-gallery",
-    kind: "block",
-    name: "Image Gallery",
-    number: "08",
-    family: "Blocks",
-    summary:
-      "A responsive image collection with equal and masonry layouts, plus a lightbox that handles focus, keyboard navigation, and scroll locking.",
-    dependencies: ["@base-ui/react", "lucide-react", "clsx", "tailwind-merge"],
-    install: registryInstallCommand("image-gallery"),
-    npmImport: packageImport("ImageGallery", "image-gallery"),
-    usage: `const images = [
-  {
-    id: "studio",
-    src: "/photos/studio.jpg",
-    alt: "Sunlight across the studio table",
-    width: 1600,
-    height: 1200,
-    caption: "The studio",
-  },
-]
-
-export function WorkGallery() {
-  return <ImageGallery images={images} title="Recent work" />
-}`,
-    props: [
-      [
-        "images",
-        "ImageGalleryItem[]",
-        "Image sources, alt text, captions, and optional downloads.",
-      ],
-      ["title", "ReactNode", "The heading above the collection."],
-      ["layout", '"grid" | "masonry"', "The layout when controlled."],
-      [
-        "defaultLayout",
-        '"grid" | "masonry"',
-        "The initial uncontrolled layout.",
-      ],
-      ["onLayoutChange", "(layout) => void", "Runs when the layout changes."],
-      ["selectedId", "string | null", "The open image when controlled."],
-      [
-        "onSelectedIdChange",
-        "(id) => void",
-        "Runs when the lightbox opens, moves, or closes.",
-      ],
-      ["showLayoutToggle", "boolean", "Shows or hides the layout control."],
-      [
-        "emptyState",
-        "ReactNode",
-        "Content shown when the collection is empty.",
-      ],
-      [
-        "renderImage",
-        "(image, context) => ReactNode",
-        "Uses a framework image component or another custom renderer.",
-      ],
-    ],
-    accessibility:
-      "Every thumbnail is a named button. Base UI supplies the modal dialog, focus trap, scroll lock, Escape handling, and focus restoration. Left and Right Arrow move between images. Captions, position, and close controls remain available without hover.",
-  },
-  {
     slug: "scroll-to-top-button",
     kind: "component",
     name: "Scroll to Top Button",
-    number: "09",
+    number: "07",
     family: "Wayfinding",
     summary:
       "A floating way back after someone has moved down a long page or scroll area. It stays hidden near the top.",
@@ -398,63 +299,11 @@ export function WorkGallery() {
       "The control is a named native button with a 48px target. It stays out of the tab order until the page has moved down, uses immediate scrolling when reduced motion is requested, and leaves keyboard navigation unchanged.",
   },
   {
-    slug: "ask-ai",
-    kind: "component",
-    name: "Ask AI",
-    number: "10",
-    family: "Agent handoffs",
-    summary:
-      "Hand someone a prepared, source-aware prompt in the AI assistant they already use, or let them copy it for another one.",
-    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
-    install: registryInstallCommand("ask-ai"),
-    npmImport: packageImport("AskAi", "ask-ai"),
-    usage: `const prompt = [
-  "Explain what Acme does using current web sources.",
-  "Prefer Acme's own docs, cite every claim, and flag anything unverified.",
-].join("\\n")
-
-export function AskAboutAcme() {
-  return <AskAi subject="Acme" prompt={prompt} />
-}`,
-    props: [
-      [
-        "subject",
-        "string",
-        "The product or topic named in the heading and labels.",
-      ],
-      [
-        "prompt",
-        "string",
-        "The complete prompt sent to or copied for an assistant.",
-      ],
-      [
-        "targets",
-        "readonly AskAiTarget[]",
-        "Custom assistant names and prepared URLs. Defaults to ChatGPT, Claude, Perplexity, and Grok.",
-      ],
-      ["description", "ReactNode", "Supporting copy below the heading."],
-      ["copyLabel", "string", "The idle copy button label."],
-      [
-        "onPromptCopied",
-        "(prompt: string) => void",
-        "Runs after the prompt reaches the clipboard.",
-      ],
-      ["className", "string", "Classes for the root element."],
-      [
-        "...rootProps",
-        "HTMLAttributes<HTMLDivElement>",
-        "Native root attributes.",
-      ],
-    ],
-    accessibility:
-      "Every assistant is a named external link with a 44px target and explicit new-tab wording. The copy action is a native button. Success and failure are shown in the button and announced through a polite status region. The component does not open a destination until someone chooses it. Prompts are placed in destination URLs, so they must not contain secrets or private data.",
-  },
-  {
     slug: "file-upload",
     kind: "component",
     name: "File Upload",
-    number: "11",
-    family: "Forms",
+    number: "08",
+    family: "Files",
     summary:
       "A file picker and dropzone with clear validation and a visible queue. Connect your upload function when you need progress, cancel, and retry.",
     dependencies: ["lucide-react", "clsx", "tailwind-merge"],
@@ -525,7 +374,7 @@ export function Attachments() {
     slug: "file-thumbnail",
     kind: "component",
     name: "File Thumbnail",
-    number: "12",
+    number: "09",
     family: "Files",
     summary:
       "A compact image preview for attachments, upload queues, and file lists. Browser image files work without any setup.",
@@ -570,9 +419,405 @@ export function Attachments() {
     accessibility:
       "Failed previews expose the file name and explain that the image is unavailable. Loading previews use a named status. Preview images default to decorative because file names usually sit beside thumbnails, but alt text can be supplied when the image itself carries meaning. Reduced motion removes the fade and shimmer movement.",
   },
+  {
+    slug: "ask-ai",
+    kind: "component",
+    name: "Ask AI",
+    number: "10",
+    family: "Agent UI",
+    summary:
+      "Hand someone a prepared, source-aware prompt in the AI assistant they already use, or let them copy it for another one.",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("ask-ai"),
+    npmImport: packageImport("AskAi", "ask-ai"),
+    usage: `const prompt = [
+  "Explain what Acme does using current web sources.",
+  "Prefer Acme's own docs, cite every claim, and flag anything unverified.",
+].join("\\n")
+
+export function AskAboutAcme() {
+  return <AskAi subject="Acme" prompt={prompt} />
+}`,
+    props: [
+      [
+        "subject",
+        "string",
+        "The product or topic named in the heading and labels.",
+      ],
+      [
+        "prompt",
+        "string",
+        "The complete prompt sent to or copied for an assistant.",
+      ],
+      [
+        "targets",
+        "readonly AskAiTarget[]",
+        "Custom assistant names and prepared URLs. Defaults to ChatGPT, Claude, Perplexity, and Grok.",
+      ],
+      ["description", "ReactNode", "Supporting copy below the heading."],
+      ["copyLabel", "string", "The idle copy button label."],
+      [
+        "onPromptCopied",
+        "(prompt: string) => void",
+        "Runs after the prompt reaches the clipboard.",
+      ],
+      ["className", "string", "Classes for the root element."],
+      [
+        "...rootProps",
+        "HTMLAttributes<HTMLDivElement>",
+        "Native root attributes.",
+      ],
+    ],
+    accessibility:
+      "Every assistant is a named external link with a 44px target and explicit new-tab wording. The copy action is a native button. Success and failure are shown in the button and announced through a polite status region. The component does not open a destination until someone chooses it. Prompts are placed in destination URLs, so they must not contain secrets or private data.",
+  },
+  {
+    slug: "streaming-text",
+    kind: "component",
+    name: "Streaming Text",
+    number: "11",
+    family: "Agent UI",
+    summary:
+      "Text that arrives a piece at a time from an async source, with a cursor while it runs and sentence-level announcements for screen readers.",
+    dependencies: ["clsx", "tailwind-merge"],
+    install: registryInstallCommand("streaming-text"),
+    npmImport: packageImport("StreamingText", "streaming-text"),
+    usage: `export function Answer({ stream }: { stream: AsyncIterable<string> }) {
+  return <StreamingText source={stream} onDone={saveAnswer} />
+}`,
+    props: [
+      ["text", "string", "Static content, or the script replayed by speed."],
+      [
+        "source",
+        "AsyncIterable<string> | ReadableStream<string>",
+        "A live source consumed once and appended as it arrives.",
+      ],
+      [
+        "speed",
+        "number",
+        "Characters per second when replaying text. Defaults to 0, which renders instantly.",
+      ],
+      [
+        "streaming",
+        "boolean",
+        "Forces the streaming state when the caller owns the text.",
+      ],
+      [
+        "cursor",
+        "ReactNode | false",
+        "Replaces or removes the trailing cursor.",
+      ],
+      [
+        "announce",
+        '"sentences" | "off"',
+        'How the live region reports progress. Defaults to "sentences".',
+      ],
+      ["onDone", "(text: string) => void", "Runs once the source completes."],
+      ["onError", "(error: unknown) => void", "Runs when the source rejects."],
+      [
+        "onStatusChange",
+        "(status: StreamingTextStatus) => void",
+        "Runs on every status transition.",
+      ],
+    ],
+    accessibility:
+      "While text is arriving the visible node is hidden from assistive technology and a polite live region receives completed sentences instead, flushed on terminal punctuation, after a one second pause, or on completion. When the source settles the visible text is exposed normally and the live region is cleared. Static text never populates a live region. The cursor stops animating under reduced motion.",
+  },
+  {
+    slug: "thinking-state",
+    kind: "component",
+    name: "Thinking State",
+    number: "12",
+    family: "Agent UI",
+    summary:
+      "A status row for work in progress, with a live elapsed timer and optional reasoning behind a disclosure.",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("thinking-state"),
+    npmImport: packageImport("ThinkingState", "thinking-state"),
+    usage: `export function Status({ startedAt }: { startedAt: number }) {
+  return (
+    <ThinkingState
+      status="thinking"
+      startedAt={startedAt}
+      reasoning={<StreamingText source={reasoningStream} />}
+    />
+  )
+}`,
+    props: [
+      [
+        "status",
+        '"idle" | "thinking" | "done" | "error"',
+        'The current phase. Defaults to "thinking".',
+      ],
+      ["label, doneLabel, errorLabel", "ReactNode", "Copy for each phase."],
+      [
+        "startedAt",
+        "number",
+        "Epoch milliseconds. Drives a timer that ticks while thinking.",
+      ],
+      [
+        "elapsedMs",
+        "number",
+        "A fixed duration, used instead of the timer when supplied.",
+      ],
+      ["showElapsed", "boolean", "Shows the duration. Defaults to true."],
+      [
+        "reasoning",
+        "ReactNode",
+        "Optional detail behind a disclosure. Compose Streaming Text here for live reasoning.",
+      ],
+      [
+        "open, defaultOpen, onOpenChange",
+        "boolean, boolean, (open: boolean) => void",
+        "Controls the reasoning disclosure.",
+      ],
+    ],
+    accessibility:
+      "The root carries aria-busy while thinking and drops it once the work settles. Reasoning uses a native button with aria-expanded and aria-controls rather than a details element, so it can animate and stay predictable. The spinner and label stop animating under reduced motion.",
+  },
+  {
+    slug: "tool-call",
+    kind: "component",
+    name: "Tool Call",
+    number: "13",
+    family: "Agent UI",
+    summary:
+      "A compact record of one tool invocation: name, status, duration, and the input and output behind a disclosure.",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("tool-call"),
+    npmImport: packageImport("ToolCall", "tool-call"),
+    usage: `export function Search() {
+  return (
+    <ToolCall
+      name="web_search"
+      status="success"
+      input={{ query: "agent ui", limit: 5 }}
+      output={<p>Three matches.</p>}
+      durationMs={340}
+    />
+  )
+}`,
+    props: [
+      ["name", "string", "The tool name shown in the header."],
+      [
+        "status",
+        '"pending" | "running" | "success" | "error"',
+        'The current phase. Defaults to "pending".',
+      ],
+      [
+        "input",
+        "unknown",
+        "Rendered as formatted JSON, or as-is when it is a string.",
+      ],
+      ["output", "ReactNode", "Whatever the tool returned, rendered by you."],
+      ["error", "string", "A failure message shown inside the panel."],
+      [
+        "startedAt",
+        "number",
+        "Epoch milliseconds. Drives a live duration while running.",
+      ],
+      ["durationMs", "number", "The final duration once the call settles."],
+      ["icon", "ReactNode", "Replaces the default tool icon."],
+      [
+        "open, defaultOpen, onOpenChange",
+        "boolean, boolean, (open: boolean) => void",
+        "Controls the detail disclosure.",
+      ],
+    ],
+    accessibility:
+      "Status changes are announced through a polite status region naming the tool. The disclosure is a native button with aria-expanded and aria-controls, and its accessible name says which tool it belongs to. Input is rendered as plain preformatted text in a horizontally scrollable region, with no syntax highlighting and no extra dependency.",
+  },
+  {
+    slug: "agent-checklist",
+    kind: "component",
+    name: "Agent Checklist",
+    number: "14",
+    family: "Agent UI",
+    summary:
+      "A task list whose items change state as work proceeds, announcing what changed instead of re-reading the whole list.",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("agent-checklist"),
+    npmImport: packageImport("AgentChecklist", "agent-checklist"),
+    usage: `const items = [
+  { id: "read", label: "Read the changelog", status: "done" },
+  { id: "diff", label: "Compare versions", status: "active" },
+  { id: "write", label: "Draft the summary", status: "pending" },
+]
+
+export function Plan() {
+  return <AgentChecklist items={items} title="Plan" />
+}`,
+    props: [
+      [
+        "items",
+        "AgentChecklistItem[]",
+        "Id, label, status, and optional detail per step. Fully controlled.",
+      ],
+      ["title", "ReactNode", "An optional heading above the list."],
+      [
+        "announce",
+        "boolean",
+        "Announces status transitions politely. Defaults to true.",
+      ],
+      [
+        "showProgress",
+        "boolean",
+        "Shows the settled count in the header. Defaults to true.",
+      ],
+    ],
+    accessibility:
+      "The list is an ordered list and every item states its status in text for screen readers, not through colour or icon alone. When a status changes, only the difference is announced along with a running count, so a long list does not get re-read on every update. Spinners stop under reduced motion.",
+  },
+  {
+    slug: "inline-citations",
+    kind: "component",
+    name: "Inline Citations",
+    number: "15",
+    family: "Agent UI",
+    summary:
+      "Numbered markers placed inside generated text, each linking to its entry in a source list underneath.",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("inline-citations"),
+    npmImport: packageImport("InlineCitations", "inline-citations"),
+    usage: `const sources = [
+  { id: "docs", title: "Agent UI docs", url: "https://example.com/docs" },
+]
+
+export function Answer() {
+  return (
+    <InlineCitations sources={sources}>
+      <p>
+        Streaming is supported<Citation id="docs" />.
+      </p>
+    </InlineCitations>
+  )
+}`,
+    props: [
+      [
+        "sources",
+        "CitationSource[]",
+        "Id, title, and optional url and snippet. Order sets the numbering.",
+      ],
+      [
+        "children",
+        "ReactNode",
+        "The text, with Citation markers placed inline.",
+      ],
+      [
+        "showSourceList",
+        "boolean",
+        "Renders the numbered list below the text. Defaults to true.",
+      ],
+      ["sourceListLabel", "ReactNode", "Heading for the source list."],
+      ["id (Citation)", "string", "Which source this marker points at."],
+    ],
+    accessibility:
+      "Markers are real anchors to their list entry, so they work without hover or a pointer. Each one has an accessible name giving the number and the source title, and the visible digit is hidden from assistive technology to avoid reading it twice. A marker whose id is not in sources renders nothing rather than a dead link. External source links say that they open in a new tab.",
+  },
+  {
+    slug: "signature-footer",
+    kind: "block",
+    name: "Signature Footer",
+    number: "16",
+    family: "Blocks",
+    summary:
+      "A complete closing section with room for the useful links first and one oversized wordmark at the end.",
+    dependencies: ["clsx", "tailwind-merge"],
+    install: registryInstallCommand("signature-footer"),
+    npmImport: packageImport("SignatureFooter", "signature-footer"),
+    usage: `export function Footer() {
+  return (
+    <SignatureFooter
+      eyebrow="One last useful thought"
+      heading="Make the ending memorable."
+      description="Keep the links practical. Let the wordmark do the rest."
+      action={<a href="/work">See our work</a>}
+      navigation={<nav aria-label="Footer">...</nav>}
+      brand={<a href="/">Northstar</a>}
+      meta={<span>Independent and curious.</span>}
+      wordmark="Northstar"
+    />
+  )
+}`,
+    props: [
+      ["heading", "ReactNode", "The footer's main invitation."],
+      ["wordmark", "string", "The oversized closing brand name."],
+      ["eyebrow", "ReactNode", "A short label above the heading."],
+      ["description", "ReactNode", "Supporting copy below the heading."],
+      ["action", "ReactNode", "A primary link or button."],
+      ["navigation", "ReactNode", "Product, company, or social links."],
+      ["brand", "ReactNode", "The compact logo or home link."],
+      ["meta", "ReactNode", "License, location, or ownership details."],
+      ["className", "string", "Classes for the footer element."],
+    ],
+    accessibility:
+      "The component uses a semantic footer and heading. Navigation, links, and labels remain yours, so their names stay specific to your site. The repeated oversized wordmark is decorative and hidden from assistive technology.",
+  },
+  {
+    slug: "image-gallery",
+    kind: "block",
+    name: "Image Gallery",
+    number: "17",
+    family: "Blocks",
+    summary:
+      "A responsive image collection with equal and masonry layouts, plus a lightbox that handles focus, keyboard navigation, and scroll locking.",
+    dependencies: ["@base-ui/react", "lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("image-gallery"),
+    npmImport: packageImport("ImageGallery", "image-gallery"),
+    usage: `const images = [
+  {
+    id: "studio",
+    src: "/photos/studio.jpg",
+    alt: "Sunlight across the studio table",
+    width: 1600,
+    height: 1200,
+    caption: "The studio",
+  },
+]
+
+export function WorkGallery() {
+  return <ImageGallery images={images} title="Recent work" />
+}`,
+    props: [
+      [
+        "images",
+        "ImageGalleryItem[]",
+        "Image sources, alt text, captions, and optional downloads.",
+      ],
+      ["title", "ReactNode", "The heading above the collection."],
+      ["layout", '"grid" | "masonry"', "The layout when controlled."],
+      [
+        "defaultLayout",
+        '"grid" | "masonry"',
+        "The initial uncontrolled layout.",
+      ],
+      ["onLayoutChange", "(layout) => void", "Runs when the layout changes."],
+      ["selectedId", "string | null", "The open image when controlled."],
+      [
+        "onSelectedIdChange",
+        "(id) => void",
+        "Runs when the lightbox opens, moves, or closes.",
+      ],
+      ["showLayoutToggle", "boolean", "Shows or hides the layout control."],
+      [
+        "emptyState",
+        "ReactNode",
+        "Content shown when the collection is empty.",
+      ],
+      [
+        "renderImage",
+        "(image, context) => ReactNode",
+        "Uses a framework image component or another custom renderer.",
+      ],
+    ],
+    accessibility:
+      "Every thumbnail is a named button. Base UI supplies the modal dialog, focus trap, scroll lock, Escape handling, and focus restoration. Left and Right Arrow move between images. Captions, position, and close controls remain available without hover.",
+  },
 ] as const
 
-export type ComponentSlug = (typeof componentDocs)[number]["slug"]
+export type ComponentDoc = (typeof componentDocs)[number]
+
+export type ComponentSlug = ComponentDoc["slug"]
 
 export function getComponentDoc(slug: string) {
   return componentDocs.find((component) => component.slug === slug)

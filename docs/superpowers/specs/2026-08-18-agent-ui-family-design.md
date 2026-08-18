@@ -1,7 +1,7 @@
 # Agent UI family — design
 
 Date: 2026-08-18
-Status: approved for planning
+Status: implemented
 
 ## Goal
 
@@ -35,13 +35,13 @@ gallery eyebrow and the docs detail header, and is unrelated to the
 `categories` tags in `registry.json`. Numbers are display-only too; no URLs
 change.
 
-| Family | Members (new numbering) |
-| --- | --- |
-| Controls | 01 Magnetic Tabs, 02 Elastic Slider, 03 Hold Button, 04 Shift Button, 05 Impossible Checkbox |
-| Wayfinding | 06 Floating Index, 07 Scroll to Top Button |
-| Files | 08 File Upload, 09 File Thumbnail |
-| Agent UI | 10 Ask AI, 11 Streaming Text, 12 Thinking State, 13 Tool Call, 14 Agent Checklist, 15 Inline Citations |
-| Blocks | 16 Signature Footer, 17 Image Gallery |
+| Family     | Members (new numbering)                                                                                |
+| ---------- | ------------------------------------------------------------------------------------------------------ |
+| Controls   | 01 Magnetic Tabs, 02 Elastic Slider, 03 Hold Button, 04 Shift Button, 05 Impossible Checkbox           |
+| Wayfinding | 06 Floating Index, 07 Scroll to Top Button                                                             |
+| Files      | 08 File Upload, 09 File Thumbnail                                                                      |
+| Agent UI   | 10 Ask AI, 11 Streaming Text, 12 Thinking State, 13 Tool Call, 14 Agent Checklist, 15 Inline Citations |
+| Blocks     | 16 Signature Footer, 17 Image Gallery                                                                  |
 
 Merges: Tactile controls + Actions + Playful extras into Controls; Layout into
 Blocks; Agent handoffs into Agent UI. Files stays separate from Agent UI —
@@ -119,17 +119,19 @@ Cursor blink and status transitions are disabled under
 ```ts
 export type StreamingTextStatus = "idle" | "streaming" | "done" | "error"
 
-export type StreamingTextProps =
-  Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & {
-    text?: string
-    source?: StreamSource
-    speed?: number              // chars/sec when replaying `text`; 0 = instant
-    cursor?: React.ReactNode | false
-    status?: StreamingTextStatus       // controlled
-    announce?: "sentences" | "off"     // defaults to "sentences"
-    onDone?: (text: string) => void
-    onError?: (error: unknown) => void
-  }
+export type StreamingTextProps = Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "children"
+> & {
+  text?: string
+  source?: StreamSource
+  speed?: number // chars/sec when replaying `text`; 0 = instant
+  cursor?: React.ReactNode | false
+  status?: StreamingTextStatus // controlled
+  announce?: "sentences" | "off" // defaults to "sentences"
+  onDone?: (text: string) => void
+  onError?: (error: unknown) => void
+}
 ```
 
 Renders `data-slot="streaming-text"` with `data-status`. With `source`,
@@ -144,11 +146,11 @@ export type ThinkingStatus = "idle" | "thinking" | "done" | "error"
 
 export type ThinkingStateProps = React.HTMLAttributes<HTMLDivElement> & {
   status?: ThinkingStatus
-  label?: React.ReactNode          // defaults to "Thinking"
+  label?: React.ReactNode // defaults to "Thinking"
   doneLabel?: React.ReactNode
-  startedAt?: number               // epoch ms; drives the live elapsed timer
-  showElapsed?: boolean            // defaults to true
-  reasoning?: string | StreamSource
+  startedAt?: number // epoch ms; drives the live elapsed timer
+  showElapsed?: boolean // defaults to true
+  reasoning?: React.ReactNode
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
@@ -159,8 +161,10 @@ A live elapsed timer ticking on an interval while `status === "thinking"`,
 cleared on settle. `aria-busy` reflects thinking. When `reasoning` is given
 the component renders a disclosure (button with `aria-expanded` /
 `aria-controls`, not `<details>`, so it can animate) containing the reasoning
-text. The streaming logic for `reasoning` is duplicated from Streaming Text
-rather than imported, per the standalone-install convention.
+node. `reasoning` takes a `ReactNode` rather than a source: the caller composes
+`<StreamingText>` inside it when they want live reasoning. This was a change
+from the original design, which duplicated the stream logic into this file —
+composition removes the duplication without creating a registry dependency.
 
 ### 13 · Tool Call
 
@@ -173,8 +177,8 @@ export type ToolCallProps = React.HTMLAttributes<HTMLDivElement> & {
   input?: unknown
   output?: React.ReactNode
   error?: string
-  startedAt?: number        // live duration while running
-  durationMs?: number       // final duration once settled
+  startedAt?: number // live duration while running
+  durationMs?: number // final duration once settled
   icon?: React.ReactNode
   open?: boolean
   defaultOpen?: boolean
@@ -193,7 +197,7 @@ icons, alongside `clsx` / `tailwind-merge`.
 
 ```ts
 export type ChecklistItemStatus =
-  | "pending" | "active" | "done" | "error" | "skipped"
+  "pending" | "active" | "done" | "error" | "skipped"
 
 export type AgentChecklistItem = {
   id: string
@@ -205,7 +209,7 @@ export type AgentChecklistItem = {
 export type AgentChecklistProps = React.HTMLAttributes<HTMLElement> & {
   items: AgentChecklistItem[]
   title?: React.ReactNode
-  announce?: boolean        // defaults to true
+  announce?: boolean // defaults to true
 }
 ```
 
@@ -227,7 +231,7 @@ export type CitationSource = {
 export type InlineCitationsProps = React.HTMLAttributes<HTMLDivElement> & {
   sources: CitationSource[]
   children: React.ReactNode
-  showSourceList?: boolean   // defaults to true
+  showSourceList?: boolean // defaults to true
 }
 
 export type CitationProps = { id: string }
@@ -247,7 +251,13 @@ containing brackets and hides the mapping from the reader.
   npm import, usage, props, and accessibility notes.
 - `components/component-gallery.tsx` — group sections under one header per
   family; drop the per-card `NN / Family` eyebrow in favour of a family
-  header plus a plain number. Add five demos.
+  header plus a plain number.
+- `components/demos/` — one demo component per registry item plus an
+  `index.ts` mapping slug to demo. The gallery and the docs preview both had
+  their own drifted copy of every demo, and the preview fell through to the
+  hold-button demo for any unknown slug. Both now render from `componentDocs`
+  and this one catalog, so a new component cannot be silently missing from
+  either surface.
 - `app/globals.css` — styles for the family header row.
 - `registry/default/<slug>/<slug>.tsx` — five new files.
 - `registry.json` — five items, `categories` including `"ai"`.

@@ -70,7 +70,7 @@ export function FileThumbnailDemo() {
         </figure>
 
         {examples.map(({ label, ...props }) => (
-          <figure className="min-w-0" key={label}>
+          <figure className="min-w-0" key={props.file.name}>
             <FileThumbnail
               {...props}
               className="w-full"

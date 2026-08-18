@@ -222,6 +222,92 @@
         }
       },
       "categories": ["file", "thumbnail", "preview", "loading"]
+    },
+    {
+      "name": "streaming-text",
+      "type": "registry:ui",
+      "title": "Streaming Text",
+      "description": "Text that arrives a piece at a time from an async source, with sentence-level announcements.",
+      "dependencies": ["clsx@^2.1.1", "tailwind-merge@^3.3.1"],
+      "files": [
+        {
+          "path": "registry/default/streaming-text/streaming-text.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "streaming", "text", "agent"]
+    },
+    {
+      "name": "thinking-state",
+      "type": "registry:ui",
+      "title": "Thinking State",
+      "description": "A status row for work in progress, with a live elapsed timer and optional reasoning.",
+      "dependencies": [
+        "lucide-react@^1.31.0",
+        "clsx@^2.1.1",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/thinking-state/thinking-state.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "status", "loading", "agent"]
+    },
+    {
+      "name": "tool-call",
+      "type": "registry:ui",
+      "title": "Tool Call",
+      "description": "A compact record of one tool invocation with its input and output behind a disclosure.",
+      "dependencies": [
+        "lucide-react@^1.31.0",
+        "clsx@^2.1.1",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/tool-call/tool-call.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "tool", "disclosure", "agent"]
+    },
+    {
+      "name": "agent-checklist",
+      "type": "registry:ui",
+      "title": "Agent Checklist",
+      "description": "A task list whose items change state as work proceeds, announcing only what changed.",
+      "dependencies": [
+        "lucide-react@^1.31.0",
+        "clsx@^2.1.1",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/agent-checklist/agent-checklist.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "list", "progress", "agent"]
+    },
+    {
+      "name": "inline-citations",
+      "type": "registry:ui",
+      "title": "Inline Citations",
+      "description": "Numbered markers inside generated text, each linking to its entry in a source list.",
+      "dependencies": [
+        "lucide-react@^1.31.0",
+        "clsx@^2.1.1",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/inline-citations/inline-citations.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "citations", "sources", "agent"]
     }
   ]
 }
