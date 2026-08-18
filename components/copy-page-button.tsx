@@ -75,9 +75,9 @@ export function CopyPageButton({
           type="button"
         >
           {copied === "page" ? (
-            <Check aria-hidden="true" size={16} />
+            <Check aria-hidden="true" size={13} />
           ) : (
-            <Copy aria-hidden="true" size={16} />
+            <Copy aria-hidden="true" size={13} />
           )}
           {copied === "page" ? "Copied" : "Copy page"}
         </button>
@@ -89,7 +89,7 @@ export function CopyPageButton({
           onClick={() => setOpen((current) => !current)}
           type="button"
         >
-          <ChevronDown aria-hidden="true" size={16} />
+          <ChevronDown aria-hidden="true" size={13} />
         </button>
       </div>
 

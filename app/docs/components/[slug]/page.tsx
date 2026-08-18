@@ -68,7 +68,6 @@ export default async function ComponentPage({
               {component.number} / {component.family}
             </p>
             <h1>{component.name}</h1>
-            <p className="docs-lead">{component.summary}</p>
           </div>
 
           <nav className="component-page-actions" aria-label="Component pages">
@@ -83,14 +82,14 @@ export default async function ComponentPage({
                 href={`/docs/components/${previousComponent.slug}`}
                 title={`Previous: ${previousComponent.name}`}
               >
-                <ArrowLeft aria-hidden="true" size={18} />
+                <ArrowLeft aria-hidden="true" size={15} />
               </Link>
             ) : (
               <span
                 aria-hidden="true"
                 className="component-page-arrow disabled"
               >
-                <ArrowLeft size={18} />
+                <ArrowLeft size={15} />
               </span>
             )}
             {nextComponent ? (
@@ -100,18 +99,20 @@ export default async function ComponentPage({
                 href={`/docs/components/${nextComponent.slug}`}
                 title={`Next: ${nextComponent.name}`}
               >
-                <ArrowRight aria-hidden="true" size={18} />
+                <ArrowRight aria-hidden="true" size={15} />
               </Link>
             ) : (
               <span
                 aria-hidden="true"
                 className="component-page-arrow disabled"
               >
-                <ArrowRight size={18} />
+                <ArrowRight size={15} />
               </span>
             )}
           </nav>
         </header>
+
+        <p className="docs-lead">{component.summary}</p>
 
         <div className="component-preview-panel">
           <div className="component-preview-toolbar">

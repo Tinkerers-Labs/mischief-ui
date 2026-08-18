@@ -695,11 +695,11 @@ a:focus-visible {
 
 .component-doc h1 {
   font-family: var(--font-display), sans-serif;
-  font-size: clamp(2.35rem, 3.4vw, 3.25rem);
+  font-size: clamp(1.9rem, 2.6vw, 2.5rem);
   font-weight: 650;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
-  margin-top: 0.8rem;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  margin-top: 0.6rem;
   text-wrap: balance;
 }
 
@@ -712,7 +712,7 @@ a:focus-visible {
   display: flex;
   flex: 0 0 auto;
   gap: 0.25rem;
-  margin-top: 1.5rem;
+  margin-top: 1.1rem;
 }
 
 .component-page-action,
@@ -724,18 +724,18 @@ a:focus-visible {
   color: var(--foreground);
   display: inline-flex;
   font: inherit;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 650;
   justify-content: center;
-  min-height: 40px;
+  min-height: 32px;
   position: relative;
   text-decoration: none;
 }
 
 .component-page-action {
   cursor: pointer;
-  gap: 0.5rem;
-  padding: 0 0.7rem;
+  gap: 0.4rem;
+  padding: 0 0.6rem;
 }
 
 .component-page-action::before,
@@ -768,9 +768,9 @@ a:focus-visible {
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
-  min-height: 40px;
+  min-height: 32px;
   position: relative;
-  width: 34px;
+  width: 28px;
 }
 
 .copy-page-toggle:hover,
@@ -818,7 +818,7 @@ a:focus-visible {
 }
 
 .component-page-arrow {
-  width: 40px;
+  width: 32px;
 }
 
 .component-page-action:hover,
