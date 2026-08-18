@@ -1,11 +1,10 @@
 import { packageImport, registryInstallCommand } from "@/site.config"
 
-export const componentDocs = [
+const entries = [
   {
     slug: "magnetic-tabs",
     kind: "component",
     name: "Magnetic Tabs",
-    number: "01",
     family: "Controls",
     summary:
       "Familiar tabs with a gentle pull toward the pointer. Selection stays clear and keyboard navigation remains immediate.",
@@ -42,7 +41,6 @@ export function Example() {
     slug: "elastic-slider",
     kind: "component",
     name: "Elastic Slider",
-    number: "02",
     family: "Controls",
     summary:
       "A precise slider with a small amount of give at either end. The current value stays visible and the control works without a pointer.",
@@ -90,7 +88,6 @@ export function Example() {
     slug: "hold-button",
     kind: "component",
     name: "Hold Button",
-    number: "03",
     family: "Controls",
     summary:
       "A confirmation button for actions that deserve a second thought. Release early to cancel, or activate once with a keyboard.",
@@ -130,7 +127,6 @@ export function Example() {
     slug: "shift-button",
     kind: "component",
     name: "Shift Button",
-    number: "04",
     family: "Controls",
     summary:
       "A call to action that trades its leading icon for a directional cue when someone approaches it.",
@@ -161,7 +157,6 @@ export function Example() {
     slug: "impossible-checkbox",
     kind: "component",
     name: "Impossible Checkbox",
-    number: "05",
     family: "Controls",
     summary:
       "A checkbox with one stubborn rule: the bear will not let you leave it on. Best kept for demos, Easter eggs, and harmless preferences.",
@@ -206,7 +201,6 @@ export function Example() {
     slug: "floating-index",
     kind: "component",
     name: "Floating Index",
-    number: "06",
     family: "Wayfinding",
     summary:
       "A compact outline for long pages. It keeps the active section and reading progress visible without becoming another permanent sidebar.",
@@ -255,7 +249,6 @@ export function PageIndex() {
     slug: "scroll-to-top-button",
     kind: "component",
     name: "Scroll to Top Button",
-    number: "07",
     family: "Wayfinding",
     summary:
       "A floating way back after someone has moved down a long page or scroll area. It stays hidden near the top.",
@@ -302,7 +295,6 @@ export function PageIndex() {
     slug: "file-upload",
     kind: "component",
     name: "File Upload",
-    number: "08",
     family: "Files",
     summary:
       "A file picker and dropzone with clear validation and a visible queue. Connect your upload function when you need progress, cancel, and retry.",
@@ -374,7 +366,6 @@ export function Attachments() {
     slug: "file-thumbnail",
     kind: "component",
     name: "File Thumbnail",
-    number: "09",
     family: "Files",
     summary:
       "A compact image preview for attachments, upload queues, and file lists. Browser image files work without any setup.",
@@ -420,10 +411,168 @@ export function Attachments() {
       "Failed previews expose the file name and explain that the image is unavailable. Loading previews use a named status. Preview images default to decorative because file names usually sit beside thumbnails, but alt text can be supplied when the image itself carries meaning. Reduced motion removes the fade and shimmer movement.",
   },
   {
+    slug: "conversation",
+    kind: "component",
+    name: "Conversation",
+    family: "Agent UI",
+    summary:
+      "The scroll container a thread lives in. It follows a streaming reply to the bottom, and stops the moment the reader scrolls up to read something older.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("conversation"),
+    npmImport: packageImport("Conversation", "conversation"),
+    usage: `export function Thread({ messages }: { messages: Msg[] }) {
+  return (
+    <Conversation className="h-[32rem]">
+      {messages.map((message) => (
+        <Message key={message.id} role={message.role}>
+          {message.content}
+        </Message>
+      ))}
+    </Conversation>
+  )
+}`,
+    props: [
+      [
+        "stickToBottom",
+        "boolean",
+        "Follows new content to the bottom. Defaults to true.",
+      ],
+      [
+        "threshold",
+        "number",
+        "How close to the bottom still counts as following, in pixels. Defaults to 48.",
+      ],
+      [
+        "showJumpButton, jumpLabel",
+        "boolean, string",
+        "The control offered once following has stopped.",
+      ],
+      [
+        "onFollowChange",
+        "(following: boolean) => void",
+        "Runs when the reader leaves or returns to the bottom.",
+      ],
+    ],
+    accessibility:
+      "Scrolling is never taken away from the reader. New content is followed only while they are already at the bottom, so scrolling up to read something older is not undone by the next token. Returning is an ordinary button rather than a gesture. The viewport uses contained overscroll so reaching the end does not scroll the page behind it.",
+  },
+  {
+    slug: "message",
+    kind: "component",
+    name: "Message",
+    family: "Agent UI",
+    summary:
+      "One turn in a thread, with a role, an optional avatar and timestamp, and actions that stay reachable without a pointer.",
+    dependencies: [],
+    install: registryInstallCommand("message"),
+    npmImport: packageImport("Message", "message"),
+    usage: `export function Turn() {
+  return (
+    <Message role="assistant" avatar="M" timestamp="just now">
+      <StreamingText source={reply} />
+    </Message>
+  )
+}`,
+    props: [
+      [
+        "role",
+        '"user" | "assistant" | "system"',
+        "Who is speaking. Sets the layout and the announced name.",
+      ],
+      ["name", "ReactNode", "Overrides the name read out for the role."],
+      ["avatar", "ReactNode", "A decorative avatar beside the turn."],
+      ["timestamp", "ReactNode", "Shown under the body."],
+      ["actions", "ReactNode", "Controls such as copy or regenerate."],
+      ["pending", "boolean", "Marks the turn busy while it is still arriving."],
+    ],
+    accessibility:
+      "Each turn is an article naming its speaker, so a thread can be navigated turn by turn instead of read as one block. Actions are hidden with opacity rather than display, which keeps them focusable by keyboard and reveals them on focus as well as hover; on touch, where there is no hover, they stay visible. A turn still arriving reports aria-busy.",
+  },
+  {
+    slug: "prompt-input",
+    kind: "component",
+    name: "Prompt Input",
+    family: "Agent UI",
+    summary:
+      "The composer. Grows with the message, sends on Enter, keeps Shift+Enter for a new line, and turns into a stop button while a reply streams.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("prompt-input"),
+    npmImport: packageImport("PromptInput", "prompt-input"),
+    usage: `export function Composer() {
+  return (
+    <PromptInput
+      status={isStreaming ? "streaming" : "ready"}
+      onSubmit={send}
+      onStop={stop}
+    />
+  )
+}`,
+    props: [
+      [
+        "value, defaultValue, onValueChange",
+        "string, string, (value: string) => void",
+        "The text, controlled or uncontrolled.",
+      ],
+      ["onSubmit", "(value: string) => void", "Runs with the trimmed message."],
+      [
+        "status",
+        '"ready" | "streaming"',
+        "Swaps the send button for a stop button.",
+      ],
+      ["onStop", "() => void", "Runs when the stop button is pressed."],
+      [
+        "maxRows",
+        "number",
+        "How far the field grows before it scrolls. Defaults to 8.",
+      ],
+      [
+        "attachments, actions",
+        "ReactNode",
+        "Slots above the field and beside the send button.",
+      ],
+    ],
+    accessibility:
+      "The field has a real label and the send and stop buttons have accessible names rather than only icons. Enter sends and Shift+Enter starts a new line, but Enter is left alone while an input method editor has a candidate open, so composing text in Japanese or Chinese does not send the message early. Sending is refused when the field holds only whitespace.",
+  },
+  {
+    slug: "suggestions",
+    kind: "component",
+    name: "Suggestions",
+    family: "Agent UI",
+    summary:
+      "A row of prompts to start or continue with, for the moment someone does not know what to ask.",
+    dependencies: [],
+    install: registryInstallCommand("suggestions"),
+    npmImport: packageImport("Suggestions", "suggestions"),
+    usage: `const prompts = [
+  { id: "summary", label: "Summarise this document" },
+  { id: "risks", label: "Find the risks" },
+]
+
+export function Starters() {
+  return <Suggestions suggestions={prompts} onSelect={send} />
+}`,
+    props: [
+      [
+        "suggestions",
+        "Suggestion[]",
+        "Id, label, and an optional prompt and icon.",
+      ],
+      [
+        "onSelect",
+        "(suggestion: Suggestion) => void",
+        "Runs with the chosen suggestion.",
+      ],
+      ["disabled", "boolean", "Disables every suggestion at once."],
+      ["label", "string", "The accessible name of the row."],
+    ],
+    accessibility:
+      "The row is a labelled navigation landmark holding a list of buttons, so it can be skipped or entered deliberately rather than being an unlabelled run of controls. It scrolls horizontally with snap points and every target meets the minimum touch size. Nothing is rendered at all when there is nothing to suggest.",
+  },
+  {
     slug: "ask-ai",
     kind: "component",
     name: "Ask AI",
-    number: "10",
     family: "Agent UI",
     summary:
       "Hand someone a prepared, source-aware prompt in the AI assistant they already use, or let them copy it for another one.",
@@ -475,7 +624,6 @@ export function AskAboutAcme() {
     slug: "streaming-text",
     kind: "component",
     name: "Streaming Text",
-    number: "11",
     family: "Agent UI",
     summary:
       "Text that arrives a piece at a time from an async source, with a cursor while it runs and sentence-level announcements for screen readers.",
@@ -527,7 +675,6 @@ export function AskAboutAcme() {
     slug: "thinking-state",
     kind: "component",
     name: "Thinking State",
-    number: "12",
     family: "Agent UI",
     summary:
       "A status row for work in progress, with a live elapsed timer and optional reasoning behind a disclosure.",
@@ -579,7 +726,6 @@ export function AskAboutAcme() {
     slug: "tool-call",
     kind: "component",
     name: "Tool Call",
-    number: "13",
     family: "Agent UI",
     summary:
       "A compact record of one tool invocation: name, status, duration, and the input and output behind a disclosure.",
@@ -631,7 +777,6 @@ export function AskAboutAcme() {
     slug: "agent-checklist",
     kind: "component",
     name: "Agent Checklist",
-    number: "14",
     family: "Agent UI",
     summary:
       "A task list whose items change state as work proceeds, announcing what changed instead of re-reading the whole list.",
@@ -672,7 +817,6 @@ export function Plan() {
     slug: "inline-citations",
     kind: "component",
     name: "Inline Citations",
-    number: "15",
     family: "Agent UI",
     summary:
       "Numbered markers placed inside generated text, each linking to its entry in a source list underneath.",
@@ -718,7 +862,6 @@ export function Answer() {
     slug: "approval-card",
     kind: "component",
     name: "Approval Card",
-    number: "16",
     family: "Agent UI",
     summary:
       "The question an agent asks before it acts. Ordinary answers take one click; destructive ones have to be held.",
@@ -776,7 +919,6 @@ export function Answer() {
     slug: "bounding-boxes",
     kind: "component",
     name: "Bounding Boxes",
-    number: "17",
     family: "Documents",
     summary:
       "Selectable regions drawn over a page image from normalized coordinates, for showing an agent exactly where an answer came from.",
@@ -818,10 +960,104 @@ export function Invoice() {
       "Regions are a labelled list of toggle buttons, so they are reachable by keyboard and announced with their label and pressed state rather than only by colour. The visible label is decorative and hidden from assistive technology to avoid reading it twice. Coordinates are clamped to the page, so bad data cannot push a region off the image or out of the document flow.",
   },
   {
+    slug: "annotation-layer",
+    kind: "component",
+    name: "Annotation Layer",
+    family: "Documents",
+    summary:
+      "Notes attached to regions of a page. Drag to add one, select to read it, and the coordinates stay relative to the page rather than the screen.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("annotation-layer"),
+    npmImport: packageImport("AnnotationLayer", "annotation-layer"),
+    usage: `export function Review({ page }: { page: string }) {
+  return (
+    <AnnotationLayer
+      src={page}
+      alt="Contract, page 2"
+      annotations={notes}
+      onCreate={(rect) => addNote(rect)}
+    />
+  )
+}`,
+    props: [
+      ["src, alt", "string", "The page image and its description."],
+      [
+        "annotations",
+        "Annotation[]",
+        "Id, note, author, and x, y, width, height as fractions of the page.",
+      ],
+      [
+        "onCreate",
+        "(rect: AnnotationRect) => void",
+        "Runs with a new region when someone drags one out. Omit it to disable drawing.",
+      ],
+      [
+        "onDelete",
+        "(id: string) => void",
+        "Shows a delete control when given.",
+      ],
+      [
+        "activeId, defaultActiveId, onActiveChange",
+        "string | null",
+        "The selected note, controlled or uncontrolled.",
+      ],
+      [
+        "minSize",
+        "number",
+        "Smallest drag that counts as a region. Defaults to 0.01 of the page.",
+      ],
+    ],
+    accessibility:
+      "Regions are toggle buttons carrying their note as an accessible name, so notes can be reached and read without a pointer. The note itself appears in a polite live region rather than a hover card. A drag that never moved is treated as a deselect instead of creating an unusably small region. Coordinates are fractions of the page, so they survive zoom and a change of screen.",
+  },
+  {
+    slug: "redaction",
+    kind: "component",
+    name: "Redaction",
+    family: "Documents",
+    summary:
+      "Mark regions to black out before a document leaves the building, with a reveal that says plainly it is only a preview.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("redaction"),
+    npmImport: packageImport("Redaction", "redaction"),
+    usage: `export function Prepare({ page }: { page: string }) {
+  return (
+    <Redaction
+      src={page}
+      alt="Statement, page 1"
+      regions={regions}
+      onCreate={(rect) => addRegion(rect)}
+      onDelete={removeRegion}
+    />
+  )
+}`,
+    props: [
+      ["src, alt", "string", "The page image and its description."],
+      [
+        "regions",
+        "RedactionRegion[]",
+        "Id, optional reason, and x, y, width, height as fractions of the page.",
+      ],
+      [
+        "onCreate",
+        "(rect: RedactionRect) => void",
+        "Runs with a new region. Omit it to disable drawing.",
+      ],
+      ["onDelete", "(id: string) => void", "Removes a region."],
+      [
+        "revealed, defaultRevealed, onRevealedChange",
+        "boolean",
+        "Whether the covered regions are shown for review.",
+      ],
+      ["readOnly", "boolean", "Shows the result without editing controls."],
+    ],
+    accessibility:
+      "Every region carries a number and its reason in text, and says when it is revealed, so the state is never conveyed by a black rectangle alone. Revealing raises a status message stating that the cover is visual only and the source file still has to be redacted, because a component that merely paints over a page must not be mistaken for one that removes data.",
+  },
+  {
     slug: "page-navigator",
     kind: "component",
     name: "Page Navigator",
-    number: "18",
     family: "Documents",
     summary:
       "A rail of page thumbnails for moving through a long document, with arrow-key navigation and a clear active page.",
@@ -865,7 +1101,6 @@ export function Invoice() {
     slug: "file-tree",
     kind: "component",
     name: "File Tree",
-    number: "19",
     family: "Documents",
     summary:
       "An expandable tree of folders and files with full keyboard navigation and correct tree semantics.",
@@ -914,7 +1149,6 @@ export function Files() {
     slug: "document-splits",
     kind: "component",
     name: "Document Splits",
-    number: "20",
     family: "Documents",
     summary:
       "Mark where one scanned batch becomes several documents. Splits are toggled between pages and the segments update as you go.",
@@ -958,7 +1192,6 @@ export function Files() {
     slug: "schema-builder",
     kind: "component",
     name: "Schema Builder",
-    number: "21",
     family: "Documents",
     summary:
       "Build the shape you want extracted from a document. Fields carry a name, type, description, and requirement, and object and array fields nest.",
@@ -1007,7 +1240,6 @@ export function Files() {
     slug: "signature-pad",
     kind: "component",
     name: "Signature Pad",
-    number: "22",
     family: "Documents",
     summary:
       "Sign with a pointer on a canvas, or type a name instead. Returns a PNG data URL or the typed text.",
@@ -1040,7 +1272,6 @@ export function Files() {
     slug: "csv-viewer",
     kind: "component",
     name: "CSV Viewer",
-    number: "23",
     family: "Documents",
     summary:
       "A real table for delimited data, with sortable columns, a sticky header, and a row cap so a large file cannot lock the page.",
@@ -1072,7 +1303,6 @@ export function Files() {
     slug: "docx-viewer",
     kind: "component",
     name: "DOCX Viewer",
-    number: "24",
     family: "Documents",
     summary:
       "Renders a Word document as elements built through an allowlist, so a file you did not write cannot bring its own scripts or links.",
@@ -1108,7 +1338,6 @@ export function Files() {
     slug: "pdf-viewer",
     kind: "component",
     name: "PDF Viewer",
-    number: "25",
     family: "Documents",
     summary:
       "Page-by-page PDF rendering on a canvas, with paging and zoom, over any loader you give it.",
@@ -1153,7 +1382,6 @@ export function Files() {
     slug: "markdown-blocks",
     kind: "component",
     name: "Markdown Blocks",
-    number: "26",
     family: "Documents",
     summary:
       "Extracted document regions rendered as markdown, each one selectable so it can be tied back to where it came from.",
@@ -1192,7 +1420,6 @@ export function Layout() {
     slug: "signature-footer",
     kind: "block",
     name: "Signature Footer",
-    number: "27",
     family: "Blocks",
     summary:
       "A complete closing section with room for the useful links first and one oversized wordmark at the end.",
@@ -1231,7 +1458,6 @@ export function Layout() {
     slug: "image-gallery",
     kind: "block",
     name: "Image Gallery",
-    number: "28",
     family: "Blocks",
     summary:
       "A responsive image collection with equal and masonry layouts, plus a lightbox that handles focus, keyboard navigation, and scroll locking.",
@@ -1288,6 +1514,11 @@ export function WorkGallery() {
       "Every thumbnail is a named button. Base UI supplies the modal dialog, focus trap, scroll lock, Escape handling, and focus restoration. Left and Right Arrow move between images. Captions, position, and close controls remain available without hover.",
   },
 ] as const
+
+export const componentDocs = entries.map((entry, index) => ({
+  ...entry,
+  number: String(index + 1).padStart(2, "0"),
+}))
 
 export type ComponentDoc = (typeof componentDocs)[number]
 

@@ -1,6 +1,6 @@
 {
   "name": "mischief-ui",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Playful, production-ready React components for shadcn projects.",
   "license": "MIT",
   "type": "module",
@@ -162,6 +162,36 @@
       "types": "./dist/markdown-blocks.d.ts",
       "import": "./dist/markdown-blocks.js",
       "require": "./dist/markdown-blocks.cjs"
+    },
+    "./conversation": {
+      "types": "./dist/conversation.d.ts",
+      "import": "./dist/conversation.js",
+      "require": "./dist/conversation.cjs"
+    },
+    "./message": {
+      "types": "./dist/message.d.ts",
+      "import": "./dist/message.js",
+      "require": "./dist/message.cjs"
+    },
+    "./prompt-input": {
+      "types": "./dist/prompt-input.d.ts",
+      "import": "./dist/prompt-input.js",
+      "require": "./dist/prompt-input.cjs"
+    },
+    "./suggestions": {
+      "types": "./dist/suggestions.d.ts",
+      "import": "./dist/suggestions.js",
+      "require": "./dist/suggestions.cjs"
+    },
+    "./annotation-layer": {
+      "types": "./dist/annotation-layer.d.ts",
+      "import": "./dist/annotation-layer.js",
+      "require": "./dist/annotation-layer.cjs"
+    },
+    "./redaction": {
+      "types": "./dist/redaction.d.ts",
+      "import": "./dist/redaction.js",
+      "require": "./dist/redaction.cjs"
     }
   },
   "scripts": {

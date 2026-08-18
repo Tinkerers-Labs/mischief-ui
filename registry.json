@@ -425,6 +425,94 @@
       ],
       "registryDependencies": ["utils"],
       "categories": ["document", "markdown", "layout", "ai"]
+    },
+    {
+      "name": "conversation",
+      "type": "registry:ui",
+      "title": "Conversation",
+      "description": "A thread scroll container that follows a streaming reply and yields to the reader.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/conversation/conversation.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": ["utils"],
+      "categories": ["ai", "chat", "scroll", "agent"]
+    },
+    {
+      "name": "message",
+      "type": "registry:ui",
+      "title": "Message",
+      "description": "One turn in a thread, with role, avatar, timestamp, and reachable actions.",
+      "files": [
+        {
+          "path": "registry/default/message/message.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": ["utils"],
+      "categories": ["ai", "chat", "message", "agent"]
+    },
+    {
+      "name": "prompt-input",
+      "type": "registry:ui",
+      "title": "Prompt Input",
+      "description": "A growing composer that sends on Enter and becomes a stop button while streaming.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/prompt-input/prompt-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": ["utils"],
+      "categories": ["ai", "chat", "input", "form", "agent"]
+    },
+    {
+      "name": "suggestions",
+      "type": "registry:ui",
+      "title": "Suggestions",
+      "description": "A scrollable row of prompts to start or continue a conversation with.",
+      "files": [
+        {
+          "path": "registry/default/suggestions/suggestions.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": ["utils"],
+      "categories": ["ai", "chat", "prompts", "agent"]
+    },
+    {
+      "name": "annotation-layer",
+      "type": "registry:ui",
+      "title": "Annotation Layer",
+      "description": "Notes attached to regions of a page, created by dragging.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/annotation-layer/annotation-layer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": ["utils"],
+      "categories": ["document", "annotation", "review"]
+    },
+    {
+      "name": "redaction",
+      "type": "registry:ui",
+      "title": "Redaction",
+      "description": "Mark regions to black out, with a reveal that states it is only a preview.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/redaction/redaction.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": ["utils"],
+      "categories": ["document", "redaction", "privacy"]
     }
   ]
 }

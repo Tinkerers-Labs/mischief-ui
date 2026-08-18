@@ -181,3 +181,40 @@ export {
   type MarkdownBlock,
   type MarkdownBlockKind,
 } from "../../../registry/default/markdown-blocks/markdown-blocks"
+
+export {
+  Conversation,
+  type ConversationProps,
+} from "../../../registry/default/conversation/conversation"
+
+export {
+  Message,
+  type MessageProps,
+  type MessageRole,
+} from "../../../registry/default/message/message"
+
+export {
+  PromptInput,
+  type PromptInputProps,
+  type PromptInputStatus,
+} from "../../../registry/default/prompt-input/prompt-input"
+
+export {
+  Suggestions,
+  type SuggestionsProps,
+  type Suggestion,
+} from "../../../registry/default/suggestions/suggestions"
+
+export {
+  AnnotationLayer,
+  type AnnotationLayerProps,
+  type Annotation,
+  type AnnotationRect,
+} from "../../../registry/default/annotation-layer/annotation-layer"
+
+export {
+  Redaction,
+  type RedactionProps,
+  type RedactionRegion,
+  type RedactionRect,
+} from "../../../registry/default/redaction/redaction"

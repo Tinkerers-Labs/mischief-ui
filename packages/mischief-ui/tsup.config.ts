@@ -48,6 +48,13 @@ export default defineConfig({
     "pdf-viewer": "../../registry/default/pdf-viewer/pdf-viewer.tsx",
     "markdown-blocks":
       "../../registry/default/markdown-blocks/markdown-blocks.tsx",
+    conversation: "../../registry/default/conversation/conversation.tsx",
+    message: "../../registry/default/message/message.tsx",
+    "prompt-input": "../../registry/default/prompt-input/prompt-input.tsx",
+    suggestions: "../../registry/default/suggestions/suggestions.tsx",
+    "annotation-layer":
+      "../../registry/default/annotation-layer/annotation-layer.tsx",
+    redaction: "../../registry/default/redaction/redaction.tsx",
   },
   format: ["esm", "cjs"],
   dts: true,
