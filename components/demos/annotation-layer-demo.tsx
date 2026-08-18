@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { pageImage } from "@/components/demos/document-fixtures"
+import { pageImage, paymentRegion } from "@/components/demos/document-fixtures"
 import {
   AnnotationLayer,
   type Annotation,
@@ -11,12 +11,9 @@ import {
 export function AnnotationLayerDemo() {
   const [notes, setNotes] = React.useState<Annotation[]>([
     {
-      id: "terms",
-      x: 0.08,
-      y: 0.26,
-      width: 0.55,
-      height: 0.09,
-      note: "Confirm the payment terms match the MSA.",
+      id: "net30",
+      ...paymentRegion,
+      note: "Finance asked whether this should be net 45.",
       author: "Priya",
     },
   ])
@@ -24,7 +21,7 @@ export function AnnotationLayerDemo() {
   return (
     <AnnotationLayer
       className="w-full max-w-sm"
-      alt="Contract, page 2"
+      alt="Master Services Agreement, page 1"
       annotations={notes}
       src={pageImage}
       onCreate={(rect) =>

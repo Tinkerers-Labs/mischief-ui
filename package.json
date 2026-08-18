@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm registry:build && pnpm registry:smoke && pnpm package:build && next build",
+    "build": "pnpm pdf-worker && pnpm registry:build && pnpm registry:smoke && pnpm package:build && next build",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "next typegen && tsc --noEmit",
@@ -22,7 +22,9 @@
     "package:pack": "pnpm package:build && npm pack --dry-run ./packages/mischief-ui",
     "test": "vitest run",
     "check": "pnpm lockfile:check && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
-    "lockfile:check": "pnpm install --frozen-lockfile --ignore-scripts --prefer-offline"
+    "lockfile:check": "pnpm install --frozen-lockfile --ignore-scripts --prefer-offline",
+    "pdf-worker": "node scripts/copy-pdf-worker.mjs",
+    "predev": "node scripts/copy-pdf-worker.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

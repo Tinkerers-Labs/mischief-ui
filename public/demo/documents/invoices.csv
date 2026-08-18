@@ -1,0 +1,13 @@
+invoice,vendor,issued,due,status,amount
+INV-1042,Northwind Traders,2026-07-02,2026-08-01,paid,1240.00
+INV-1043,Acme Supply Co.,2026-07-04,2026-08-03,paid,98.50
+INV-1044,Contoso Ltd,2026-07-09,2026-08-08,open,17300.00
+INV-1045,Northwind Traders,2026-07-11,2026-08-10,open,640.25
+INV-1046,Fabrikam,2026-07-18,2026-08-17,disputed,3.99
+INV-1047,Acme Supply Co.,2026-07-21,2026-08-20,open,512.00
+INV-1048,Tailspin Toys,2026-07-24,2026-08-23,paid,2870.40
+INV-1049,Contoso Ltd,2026-07-28,2026-08-27,open,94.00
+INV-1050,Fabrikam,2026-08-01,2026-08-31,open,15620.75
+INV-1051,Tailspin Toys,2026-08-03,2026-09-02,paid,431.10
+INV-1052,Northwind Traders,2026-08-07,2026-09-06,disputed,7788.00
+INV-1053,Acme Supply Co.,2026-08-12,2026-09-11,open,206.65

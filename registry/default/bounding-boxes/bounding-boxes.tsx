@@ -124,7 +124,7 @@ export function BoundingBoxes({
                   aria-hidden="true"
                   data-slot="bounding-box-label"
                   className={cn(
-                    "bg-foreground text-background pointer-events-none absolute -top-0.5 left-0 max-w-full -translate-y-full truncate rounded-t-[3px] px-1.5 py-0.5 text-[0.65rem] font-semibold",
+                    "bg-foreground text-background pointer-events-none absolute -top-0.5 left-0 -translate-y-full rounded-t-[3px] px-1.5 py-0.5 text-[0.65rem] font-semibold whitespace-nowrap",
                     !isActive && "opacity-70"
                   )}
                 >

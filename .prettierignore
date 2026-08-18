@@ -4,3 +4,4 @@ packages/*/dist
 next-env.d.ts
 public/r
 pnpm-lock.yaml
+public/demo/pdf.worker.min.mjs

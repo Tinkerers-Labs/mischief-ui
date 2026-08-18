@@ -1,49 +1,74 @@
-export const samplePages = [1, 2, 3, 4, 5, 6].map((number) => ({ number }))
+/** Generated from public/demo/documents/master-services-agreement.pdf. */
+export const SAMPLE_PDF = "/demo/documents/master-services-agreement.pdf"
+export const SAMPLE_DOCX = "/demo/documents/master-services-agreement.docx"
+export const SAMPLE_CSV = "/demo/documents/invoices.csv"
+export const PDF_WORKER = "/demo/pdf.worker.min.mjs"
 
+export const PAGE_COUNT = 3
+
+export const samplePages = Array.from({ length: PAGE_COUNT }, (_, index) => ({
+  number: index + 1,
+  src: `/demo/documents/page-${index + 1}.png`,
+}))
+
+export const pageImage = samplePages[0]!.src
+
+/**
+ * Read out of the PDF text layer and checked by drawing them back onto the
+ * exported page, so every region sits on the value it names.
+ */
 export const invoiceBoxes = [
   {
-    id: "vendor",
-    label: "Vendor",
-    x: 0.08,
-    y: 0.09,
-    width: 0.34,
-    height: 0.07,
+    id: "customer",
+    label: "Customer",
+    x: 0.2979,
+    y: 0.1893,
+    width: 0.1397,
+    height: 0.022,
   },
   {
-    id: "invoice-no",
-    label: "Invoice number",
-    x: 0.62,
-    y: 0.1,
-    width: 0.28,
-    height: 0.05,
+    id: "agreement-no",
+    label: "Agreement number",
+    x: 0.2979,
+    y: 0.2484,
+    width: 0.125,
+    height: 0.022,
     tone: "accent" as const,
   },
   {
-    id: "total",
-    label: "Total due",
-    x: 0.58,
-    y: 0.74,
-    width: 0.32,
-    height: 0.08,
+    id: "net30",
+    label: "Payment window",
+    x: 0.3247,
+    y: 0.6301,
+    width: 0.0553,
+    height: 0.0214,
+  },
+  {
+    id: "late-fee",
+    label: "Late payment",
+    x: 0.3247,
+    y: 0.6876,
+    width: 0.1011,
+    height: 0.0214,
     tone: "warning" as const,
   },
 ]
 
-export const pageImage =
-  "data:image/svg+xml;utf8," +
-  encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
-      <rect width="300" height="400" fill="#fbfaf8"/>
-      <rect x="24" y="34" width="102" height="28" rx="3" fill="#e6e1da"/>
-      <g fill="#ded8d0">
-        <rect x="24" y="106" width="252" height="8" rx="3"/>
-        <rect x="24" y="126" width="214" height="8" rx="3"/>
-        <rect x="24" y="160" width="168" height="8" rx="3"/>
-        <rect x="24" y="196" width="126" height="8" rx="3"/>
-        <rect x="24" y="230" width="252" height="8" rx="3"/>
-        <rect x="24" y="250" width="196" height="8" rx="3"/>
-        <rect x="24" y="284" width="232" height="8" rx="3"/>
-      </g>
-      <rect x="174" y="330" width="96" height="30" rx="3" fill="#e6e1da"/>
-    </svg>`
-  )
+export const customerRegion = {
+  x: 0.2979,
+  y: 0.1893,
+  width: 0.1397,
+  height: 0.022,
+}
+export const agreementRegion = {
+  x: 0.2979,
+  y: 0.2484,
+  width: 0.125,
+  height: 0.022,
+}
+export const paymentRegion = {
+  x: 0.3247,
+  y: 0.6301,
+  width: 0.0553,
+  height: 0.0214,
+}
