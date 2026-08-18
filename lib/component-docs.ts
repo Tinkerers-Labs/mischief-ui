@@ -485,13 +485,17 @@ export function Attachments() {
         "Who is speaking. Sets the layout and the announced name.",
       ],
       ["name", "ReactNode", "Overrides the name read out for the role."],
-      ["avatar", "ReactNode", "A decorative avatar beside the turn."],
+      [
+        "avatar",
+        "ReactNode",
+        "Initials, an icon, or an img. An image is cropped to fill the circle whatever its shape.",
+      ],
       ["timestamp", "ReactNode", "Shown under the body."],
       ["actions", "ReactNode", "Controls such as copy or regenerate."],
       ["pending", "boolean", "Marks the turn busy while it is still arriving."],
     ],
     accessibility:
-      "Each turn is an article naming its speaker, so a thread can be navigated turn by turn instead of read as one block. Actions are hidden with opacity rather than display, which keeps them focusable by keyboard and reveals them on focus as well as hover; on touch, where there is no hover, they stay visible. A turn still arriving reports aria-busy.",
+      "Each turn is an article naming its speaker, so a thread can be navigated turn by turn instead of read as one block. The avatar is hidden from assistive technology, since the speaker is already named in text, so a profile picture needs no alternative text of its own. Actions are hidden with opacity rather than display, which keeps them focusable by keyboard and reveals them on focus as well as hover; on touch, where there is no hover, they stay visible. A turn still arriving reports aria-busy.",
   },
   {
     slug: "prompt-input",

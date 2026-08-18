@@ -153,6 +153,26 @@ describe("Message", () => {
     expect(screen.getByRole("article")).toHaveAttribute("aria-busy", "true")
   })
 
+  it("crops a profile picture to the avatar rather than letterboxing it", () => {
+    const { container } = render(
+      <Message
+        role="user"
+        // eslint-disable-next-line @next/next/no-img-element
+        avatar={<img alt="" src="/avatar.png" />}
+      >
+        Hi
+      </Message>
+    )
+
+    // A photo is rarely square, so the slot has to crop whatever it is given.
+    // jsdom applies no stylesheet, so this checks the rule is declared; the
+    // rendered result was checked in a browser.
+    const slot = container.querySelector('[data-slot="message-avatar"]')!
+    expect(slot.className).toContain("[&>img]:size-full")
+    expect(slot.className).toContain("[&>img]:object-cover")
+    expect(slot.querySelector("img")).toBeInTheDocument()
+  })
+
   it("keeps actions reachable rather than hover-only", () => {
     const { container } = render(
       <Message role="assistant" actions={<button type="button">Copy</button>}>

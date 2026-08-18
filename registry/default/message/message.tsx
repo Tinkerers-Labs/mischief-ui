@@ -49,7 +49,7 @@ export function Message({
         <span
           aria-hidden="true"
           data-slot="message-avatar"
-          className="bg-muted text-muted-foreground mt-0.5 flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-full text-xs font-semibold"
+          className="bg-muted text-muted-foreground mt-0.5 flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-full text-xs font-semibold [&>img]:size-full [&>img]:object-cover"
         >
           {avatar}
         </span>
