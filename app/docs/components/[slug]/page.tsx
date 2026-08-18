@@ -7,6 +7,7 @@ import { ComponentPreview } from "@/components/component-preview"
 import { CodeBlock } from "@/components/code-block"
 import { CopyPageButton } from "@/components/copy-page-button"
 import { DocsToc } from "@/components/docs-toc"
+import { componentMarkdown } from "@/lib/component-markdown"
 import { ExternalLink } from "@/components/external-link"
 import { GitHubIcon } from "@/components/github-icon"
 import { InstallPanel } from "@/components/install-panel"
@@ -74,6 +75,7 @@ export default async function ComponentPage({
             <CopyPageButton
               componentName={component.name}
               componentSlug={component.slug}
+              markdown={componentMarkdown(component)}
             />
             {previousComponent ? (
               <Link

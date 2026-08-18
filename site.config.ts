@@ -58,6 +58,10 @@ export const siteConfig = {
     url: packageUrl,
     installArgs: packageName,
   },
+  markdown: {
+    /** Every component page is also served as markdown at this address. */
+    path: (slug: string) => `/md/${slug}.md`,
+  },
   skill: {
     name: skillName,
     url: `${siteUrl}skill.md`,
