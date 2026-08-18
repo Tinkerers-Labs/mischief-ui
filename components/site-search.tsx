@@ -89,14 +89,17 @@ export function SiteSearch() {
         data-slot="site-search-trigger"
         aria-label="Search components"
         aria-keyshortcuts="Meta+K Control+K"
-        className="text-muted-foreground hover:text-foreground border-border hover:border-foreground/25 focus-visible:ring-ring ml-1 inline-flex min-h-9 items-center gap-2 rounded-full border px-3 text-xs font-semibold focus-visible:ring-2 focus-visible:outline-none"
+        className="group focus-visible:ring-ring ml-3 inline-flex h-11 items-center rounded-full focus-visible:ring-2 focus-visible:outline-none lg:ml-5"
         onClick={open}
       >
-        <Search aria-hidden="true" size={14} />
-        <span className="hidden sm:inline">Search</span>
-        <kbd className="text-muted-foreground hidden font-[family-name:var(--font-mono),monospace] text-[0.65rem] lg:inline">
-          ⌘K
-        </kbd>
+        {/* The tap target stays 44px while the visible field stays small. */}
+        <span className="bg-muted/70 text-muted-foreground group-hover:bg-muted group-hover:text-foreground inline-flex h-8 items-center gap-1.5 rounded-full px-2.5 text-xs font-medium transition-colors duration-150 motion-reduce:transition-none">
+          <Search aria-hidden="true" size={13} className="shrink-0" />
+          <span className="hidden sm:inline">Search</span>
+          <kbd className="border-border/70 text-muted-foreground/80 ml-0.5 hidden rounded border px-1 font-[family-name:var(--font-mono),monospace] text-[0.6rem] leading-[1.35] lg:inline">
+            ⌘K
+          </kbd>
+        </span>
       </button>
 
       <dialog
