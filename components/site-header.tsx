@@ -4,6 +4,7 @@ import { Package, type LucideIcon } from "lucide-react"
 import { BrandLogo } from "@/components/brand-logo"
 import { ExternalLink } from "@/components/external-link"
 import { GitHubIcon } from "@/components/github-icon"
+import { SiteSearch } from "@/components/site-search"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { type ExternalLinkId, siteConfig } from "@/site.config"
 
@@ -61,6 +62,7 @@ export function SiteHeader() {
               </Link>
             ))}
           </div>
+          <SiteSearch />
           <span
             className="bg-border mx-2 hidden h-5 w-px min-[520px]:block lg:mx-3"
             aria-hidden="true"

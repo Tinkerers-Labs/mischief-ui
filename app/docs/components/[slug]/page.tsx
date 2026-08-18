@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react"
 import { ComponentPreview } from "@/components/component-preview"
 import { CodeBlock } from "@/components/code-block"
 import { CopyPageButton } from "@/components/copy-page-button"
+import { DocsToc } from "@/components/docs-toc"
 import { ExternalLink } from "@/components/external-link"
 import { GitHubIcon } from "@/components/github-icon"
 import { InstallPanel } from "@/components/install-panel"
@@ -34,6 +35,15 @@ export async function generateMetadata({
       : undefined,
   }
 }
+
+const TOC_SECTIONS = [
+  { id: "installation", label: "Installation" },
+  { id: "usage", label: "Usage" },
+  { id: "api", label: "API" },
+  { id: "accessibility", label: "Accessibility" },
+  { id: "dependencies", label: "Dependencies" },
+  { id: "source", label: "Source" },
+] as const
 
 export default async function ComponentPage({
   params,
@@ -176,15 +186,7 @@ export default async function ComponentPage({
         </section>
       </article>
 
-      <aside className="component-toc" aria-label="On this page">
-        <p>On this page</p>
-        <a href="#installation">Installation</a>
-        <a href="#usage">Usage</a>
-        <a href="#api">API</a>
-        <a href="#accessibility">Accessibility</a>
-        <a href="#dependencies">Dependencies</a>
-        <a href="#source">Source</a>
-      </aside>
+      <DocsToc sections={TOC_SECTIONS} />
     </div>
   )
 }
