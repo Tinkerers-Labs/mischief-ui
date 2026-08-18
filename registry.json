@@ -528,6 +528,50 @@
       ],
       "registryDependencies": ["utils"],
       "categories": ["navigation", "search", "dialog", "command"]
+    },
+    {
+      "name": "install-command",
+      "type": "registry:ui",
+      "title": "Install Command",
+      "description": "A switchable install line for a library, with the runner and installer kept apart.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/install-command/install-command.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": ["utils"],
+      "categories": ["docs", "install", "command", "copy"]
+    },
+    {
+      "name": "copy-for-ai",
+      "type": "registry:ui",
+      "title": "Copy for AI",
+      "description": "Hands a documentation page to an assistant as markdown.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/copy-for-ai/copy-for-ai.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": ["utils"],
+      "categories": ["docs", "ai", "markdown", "copy"]
+    },
+    {
+      "name": "table-of-contents",
+      "type": "registry:ui",
+      "title": "Table of Contents",
+      "description": "A page outline that marks the section the reader is in.",
+      "files": [
+        {
+          "path": "registry/default/table-of-contents/table-of-contents.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": ["utils"],
+      "categories": ["docs", "navigation", "scroll"]
     }
   ]
 }

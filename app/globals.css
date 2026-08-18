@@ -1176,7 +1176,10 @@ a:focus-visible {
   min-height: 20rem;
 }
 
-pre {
+/* Components that carry a data-slot style their own code surfaces. This rule
+   is unlayered, so without the exclusion it beats their utilities whatever
+   their specificity. */
+pre:not([data-slot]) {
   background: var(--foreground);
   border-radius: 0.9rem;
   color: var(--background);

@@ -59,6 +59,11 @@ export default defineConfig({
     questionnaire: "../../registry/default/questionnaire/questionnaire.tsx",
     "command-palette":
       "../../registry/default/command-palette/command-palette.tsx",
+    "install-command":
+      "../../registry/default/install-command/install-command.tsx",
+    "copy-for-ai": "../../registry/default/copy-for-ai/copy-for-ai.tsx",
+    "table-of-contents":
+      "../../registry/default/table-of-contents/table-of-contents.tsx",
   },
   format: ["esm", "cjs"],
   dts: true,

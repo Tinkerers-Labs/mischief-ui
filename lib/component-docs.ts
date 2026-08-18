@@ -345,6 +345,138 @@ export function Search() {
       "The control is a named native button with a 48px target. It stays out of the tab order until the page has moved down, uses immediate scrolling when reduced motion is requested, and leaves keyboard navigation unchanged.",
   },
   {
+    slug: "install-command",
+    kind: "component",
+    name: "Install Command",
+    family: "Docs",
+    summary:
+      "The install line for a library, switchable between package managers, with the runner and the installer kept apart.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("install-command"),
+    npmImport: packageImport("InstallCommand", "install-command"),
+    usage: `export function Install() {
+  return (
+    <InstallCommand
+      run="shadcn@latest add tabs"
+      add="my-lib"
+      prompt="Read the docs, then add Tabs to this project."
+    />
+  )
+}`,
+    props: [
+      [
+        "run",
+        "string",
+        "Arguments for a one-off runner, such as shadcn@latest add tabs.",
+      ],
+      ["add", "string", "Packages to add as a dependency."],
+      [
+        "prompt",
+        "string",
+        "An instruction to paste into a coding agent, offered beside the commands.",
+      ],
+      [
+        "managers, defaultManager",
+        "PackageManager[], PackageManager",
+        "Which package managers to offer and which leads. Defaults to npm.",
+      ],
+      [
+        "packageLabel, promptLabel, note",
+        "string, string, ReactNode",
+        "Copy for the two extra options and the line beneath.",
+      ],
+    ],
+    accessibility:
+      "The options are a labelled group of toggle buttons reporting their pressed state, so the current choice is announced rather than shown only by a border. Running a package and adding a dependency are separate verbs, so they come from separate tables instead of one being derived from the other by rewriting a string. Only the options you supply are rendered, and a prompt wraps rather than scrolling sideways.",
+  },
+  {
+    slug: "copy-for-ai",
+    kind: "component",
+    name: "Copy for AI",
+    family: "Docs",
+    summary:
+      "Hands the page to an assistant as markdown, by clipboard, by link, or by opening it somewhere that can read it.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("copy-for-ai"),
+    npmImport: packageImport("CopyForAi", "copy-for-ai"),
+    usage: `export function PageActions({ markdown }: { markdown: string }) {
+  return (
+    <CopyForAi
+      markdown={markdown}
+      markdownUrl="https://example.com/docs/tabs.md"
+    />
+  )
+}`,
+    props: [
+      [
+        "markdown",
+        "string",
+        "The page as markdown. This is what the button copies.",
+      ],
+      [
+        "markdownUrl",
+        "string",
+        "Where the same markdown is served. Adds a link and points destinations at it.",
+      ],
+      [
+        "prompt",
+        "string",
+        "What a destination is asked to do. Defaults to reading the markdown address.",
+      ],
+      [
+        "destinations",
+        "AiDestination[]",
+        "Where the page can be opened. Defaults to ChatGPT and Claude.",
+      ],
+      [
+        "copyLabel, copiedLabel, viewLabel, menuLabel",
+        "string",
+        "Copy for the button and the menu.",
+      ],
+    ],
+    accessibility:
+      "Copying is a button and every destination is a link, so each behaves the way its shape promises. The menu closes on Escape and on a click outside it, and the copy is announced through a polite live region rather than only changing an icon. Destinations open in a new tab and are marked so they are not followed.",
+  },
+  {
+    slug: "table-of-contents",
+    kind: "component",
+    name: "Table of Contents",
+    family: "Docs",
+    summary:
+      "An outline of the page that keeps up with the reader, marking the section they are in as they scroll.",
+    dependencies: [],
+    install: registryInstallCommand("table-of-contents"),
+    npmImport: packageImport("TableOfContents", "table-of-contents"),
+    usage: `const sections = [
+  { id: "install", label: "Install" },
+  { id: "usage", label: "Usage" },
+]
+
+export function Outline() {
+  return <TableOfContents sections={sections} />
+}`,
+    props: [
+      [
+        "sections",
+        "TocSection[]",
+        "The id of each section and the label to show for it.",
+      ],
+      [
+        "offset",
+        "number",
+        "How far below the top a heading counts as reached. Defaults to 96.",
+      ],
+      ["label", "string", "The accessible name and the visible heading."],
+      [
+        "onActiveChange",
+        "(id: string | null) => void",
+        "Runs when the reader moves into another section.",
+      ],
+    ],
+    accessibility:
+      "The current entry is marked with aria-current, so its position is announced rather than shown only in weight. Sections on a documentation page are tall and very uneven, so this tracks the heading most recently scrolled past instead of observing which box intersects a band, which selects several at once or none. The final section is often too short to reach the line, so the bottom of the page selects it outright.",
+  },
+  {
     slug: "file-upload",
     kind: "component",
     name: "File Upload",

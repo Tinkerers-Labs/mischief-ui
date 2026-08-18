@@ -13,6 +13,9 @@ import { SchemaBuilderDemo } from "@/components/demos/schema-builder-demo"
 import { SignaturePadDemo } from "@/components/demos/signature-pad-demo"
 import { AnnotationLayerDemo } from "@/components/demos/annotation-layer-demo"
 import { CommandPaletteDemo } from "@/components/demos/command-palette-demo"
+import { CopyForAiDemo } from "@/components/demos/copy-for-ai-demo"
+import { InstallCommandDemo } from "@/components/demos/install-command-demo"
+import { TableOfContentsDemo } from "@/components/demos/table-of-contents-demo"
 import { ConversationDemo } from "@/components/demos/conversation-demo"
 import { MessageDemo } from "@/components/demos/message-demo"
 import { PromptInputDemo } from "@/components/demos/prompt-input-demo"
@@ -108,6 +111,15 @@ export const componentDemos: Record<string, ComponentDemo> = {
   },
   "command-palette": {
     Demo: CommandPaletteDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "install-command": {
+    Demo: InstallCommandDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "copy-for-ai": { Demo: CopyForAiDemo, frameClassName: "p-6 md:p-10" },
+  "table-of-contents": {
+    Demo: TableOfContentsDemo,
     frameClassName: "p-6 md:p-10",
   },
   "signature-footer": {

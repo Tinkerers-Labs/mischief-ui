@@ -226,3 +226,21 @@ export {
   type CommandPaletteProps,
   type CommandItem,
 } from "../../../registry/default/command-palette/command-palette"
+
+export {
+  InstallCommand,
+  type InstallCommandProps,
+  type PackageManager,
+} from "../../../registry/default/install-command/install-command"
+
+export {
+  CopyForAi,
+  type CopyForAiProps,
+  type AiDestination,
+} from "../../../registry/default/copy-for-ai/copy-for-ai"
+
+export {
+  TableOfContents,
+  type TableOfContentsProps,
+  type TocSection,
+} from "../../../registry/default/table-of-contents/table-of-contents"

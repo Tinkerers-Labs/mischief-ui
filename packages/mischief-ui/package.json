@@ -189,6 +189,21 @@
       "types": "./dist/command-palette.d.ts",
       "import": "./dist/command-palette.js",
       "require": "./dist/command-palette.cjs"
+    },
+    "./install-command": {
+      "types": "./dist/install-command.d.ts",
+      "import": "./dist/install-command.js",
+      "require": "./dist/install-command.cjs"
+    },
+    "./copy-for-ai": {
+      "types": "./dist/copy-for-ai.d.ts",
+      "import": "./dist/copy-for-ai.js",
+      "require": "./dist/copy-for-ai.cjs"
+    },
+    "./table-of-contents": {
+      "types": "./dist/table-of-contents.d.ts",
+      "import": "./dist/table-of-contents.js",
+      "require": "./dist/table-of-contents.cjs"
     }
   },
   "scripts": {
