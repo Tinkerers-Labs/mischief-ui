@@ -1,6 +1,6 @@
 {
   "name": "mischief-ui",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Playful, production-ready React components for shadcn projects.",
   "license": "MIT",
   "type": "module",
@@ -209,10 +209,30 @@
       "types": "./dist/table-of-contents.d.ts",
       "import": "./dist/table-of-contents.js",
       "require": "./dist/table-of-contents.cjs"
+    },
+    "./code-block": {
+      "types": "./dist/code-block.d.ts",
+      "import": "./dist/code-block.js",
+      "require": "./dist/code-block.cjs"
+    },
+    "./diff-view": {
+      "types": "./dist/diff-view.d.ts",
+      "import": "./dist/diff-view.js",
+      "require": "./dist/diff-view.cjs"
+    },
+    "./terminal-output": {
+      "types": "./dist/terminal-output.d.ts",
+      "import": "./dist/terminal-output.js",
+      "require": "./dist/terminal-output.cjs"
+    },
+    "./response-actions": {
+      "types": "./dist/response-actions.d.ts",
+      "import": "./dist/response-actions.js",
+      "require": "./dist/response-actions.cjs"
     }
   },
   "scripts": {
-    "build": "tsup"
+    "build": "NODE_OPTIONS=--max-old-space-size=8192 tsup"
   },
   "dependencies": {
     "clsx": "^2.1.1",

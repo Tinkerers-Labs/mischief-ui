@@ -572,6 +572,66 @@
       ],
       "registryDependencies": ["utils"],
       "categories": ["docs", "navigation", "scroll"]
+    },
+    {
+      "name": "code-block",
+      "type": "registry:ui",
+      "title": "Code Block",
+      "description": "A code panel with copy, optional line numbers, highlighted lines, and a collapse for anything long.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/code-block/code-block.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["code", "docs", "clipboard"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "diff-view",
+      "type": "registry:ui",
+      "title": "Diff View",
+      "description": "A proposed change shown as a unified or side-by-side diff, with optional accept and reject controls.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/diff-view/diff-view.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "code", "diff", "agent"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "terminal-output",
+      "type": "registry:ui",
+      "title": "Terminal Output",
+      "description": "Streaming command output with stderr called out, an exit code, and scroll that follows without trapping you.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/terminal-output/terminal-output.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "code", "terminal", "agent"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "response-actions",
+      "type": "registry:ui",
+      "title": "Response Actions",
+      "description": "The row under an answer: copy it, ask again, and rate it.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/response-actions/response-actions.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "chat", "agent", "feedback"],
+      "registryDependencies": ["utils"]
     }
   ]
 }

@@ -1,5 +1,9 @@
 import type { ComponentType } from "react"
 
+import { CodeBlockDemo } from "@/components/demos/code-block-demo"
+import { DiffViewDemo } from "@/components/demos/diff-view-demo"
+import { ResponseActionsDemo } from "@/components/demos/response-actions-demo"
+import { TerminalOutputDemo } from "@/components/demos/terminal-output-demo"
 import { AgentChecklistDemo } from "@/components/demos/agent-checklist-demo"
 import { BoundingBoxesDemo } from "@/components/demos/bounding-boxes-demo"
 import { CsvViewerDemo } from "@/components/demos/csv-viewer-demo"
@@ -63,6 +67,16 @@ export const componentDemos: Record<string, ComponentDemo> = {
   "streaming-text": { Demo: StreamingTextDemo, frameClassName: "p-6 md:p-10" },
   "thinking-state": { Demo: ThinkingStateDemo, frameClassName: "p-6 md:p-10" },
   "tool-call": { Demo: ToolCallDemo, frameClassName: "p-6 md:p-10" },
+  "code-block": { Demo: CodeBlockDemo, frameClassName: "p-6 md:p-10" },
+  "diff-view": { Demo: DiffViewDemo, frameClassName: "p-6 md:p-10" },
+  "terminal-output": {
+    Demo: TerminalOutputDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "response-actions": {
+    Demo: ResponseActionsDemo,
+    frameClassName: "p-6 md:p-10",
+  },
   "agent-checklist": {
     Demo: AgentChecklistDemo,
     frameClassName: "p-6 md:p-10",

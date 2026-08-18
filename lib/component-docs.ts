@@ -1710,6 +1710,236 @@ export function WorkGallery() {
     accessibility:
       "Every thumbnail is a named button. Base UI supplies the modal dialog, focus trap, scroll lock, Escape handling, and focus restoration. Left and Right Arrow move between images. Captions, position, and close controls remain available without hover.",
   },
+  {
+    slug: "code-block",
+    kind: "component",
+    name: "Code Block",
+    family: "Code",
+    summary:
+      "A code panel with copy, optional line numbers, highlighted lines, and a collapse for anything long.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("code-block"),
+    npmImport: packageImport("CodeBlock", "code-block"),
+    usage: `export function Snippet() {
+  return (
+    <CodeBlock
+      code={source}
+      filename="server.ts"
+      showLineNumbers
+      highlightLines={[4, 5]}
+      maxLines={12}
+    />
+  )
+}`,
+    props: [
+      [
+        "code",
+        "string",
+        "The source to render. A single trailing newline is dropped.",
+      ],
+      [
+        "filename",
+        "string",
+        "Shown in the header, and preferred over language.",
+      ],
+      [
+        "language",
+        "string",
+        "A short label such as tsx, used when there is no filename.",
+      ],
+      [
+        "showLineNumbers",
+        "boolean",
+        "Adds a gutter sized to the highest line number.",
+      ],
+      [
+        "highlightLines",
+        "number[]",
+        "One-based lines to mark as the interesting ones.",
+      ],
+      [
+        "maxLines",
+        "number",
+        "Collapses anything past this many lines behind a toggle.",
+      ],
+      [
+        "wrap, wrappable",
+        "boolean, boolean",
+        "Wrap long lines, and offer a control that overrides it.",
+      ],
+      ["copyable", "boolean", "Shows the copy control. Defaults to true."],
+      ["actions", "ReactNode", "Extra controls placed in the header."],
+    ],
+    accessibility:
+      "The code region is focusable so it can be scrolled from the keyboard. Copying announces itself through a polite live region, and the copy control renames itself once it succeeds. Line numbers and the diff-style gutter are aria-hidden, so a screen reader reads the source rather than the decoration. There is no syntax highlighting and no highlighting dependency.",
+  },
+  {
+    slug: "diff-view",
+    kind: "component",
+    name: "Diff View",
+    family: "Code",
+    summary:
+      "A proposed change shown as a unified or side-by-side diff, with optional accept and reject controls.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("diff-view"),
+    npmImport: packageImport("DiffView", "diff-view"),
+    usage: `export function Review() {
+  return (
+    <DiffView
+      filename="server.ts"
+      before={original}
+      after={proposed}
+      onAccept={apply}
+      onReject={discard}
+    />
+  )
+}`,
+    props: [
+      [
+        "before, after",
+        "string, string",
+        "The two sides. Diffed by line when no hunks are given.",
+      ],
+      [
+        "hunks",
+        "DiffHunk[]",
+        "Precomputed hunks, which win over before and after.",
+      ],
+      [
+        "filename",
+        "string",
+        "Shown in the header. Falls back to Proposed change.",
+      ],
+      ["view", '"unified" | "split"', 'Layout. Defaults to "unified".'],
+      [
+        "context",
+        "number",
+        "Unchanged lines kept either side of a change. Defaults to 3.",
+      ],
+      [
+        "showLineNumbers",
+        "boolean",
+        "Shows the number gutters. Defaults to true.",
+      ],
+      [
+        "onAccept, onReject",
+        "() => void, () => void",
+        "Adds the decision footer when either is given.",
+      ],
+      [
+        "status",
+        '"pending" | "accepted" | "rejected"',
+        "Replaces the controls with the outcome.",
+      ],
+    ],
+    accessibility:
+      "The diff is a table with a caption naming the file and the added and removed counts, so it can be read without colour. Every line carries a + or - marker alongside its tint for the same reason. Line numbers are aria-hidden decoration. Once a decision is made the outcome is announced through a status region.",
+  },
+  {
+    slug: "terminal-output",
+    kind: "component",
+    name: "Terminal Output",
+    family: "Code",
+    summary:
+      "Streaming command output with stderr called out, an exit code, and scroll that follows without trapping you.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("terminal-output"),
+    npmImport: packageImport("TerminalOutput", "terminal-output"),
+    usage: `export function Install() {
+  return (
+    <TerminalOutput
+      command="pnpm install"
+      output={lines}
+      running={pending}
+      exitCode={code}
+    />
+  )
+}`,
+    props: [
+      [
+        "output",
+        "string | (TerminalLine | string)[]",
+        "A plain string is split on newlines as stdout.",
+      ],
+      [
+        "command",
+        "string",
+        "The command that produced the output, shown above it.",
+      ],
+      [
+        "cwd",
+        "string",
+        "Working directory, shown beside the command on wider screens.",
+      ],
+      [
+        "running",
+        "boolean",
+        "Shows the running indicator and marks the log busy.",
+      ],
+      [
+        "exitCode",
+        "number",
+        "Shown once settled. Anything other than zero reads as a failure.",
+      ],
+      [
+        "maxHeight",
+        "number | string",
+        'Height before the log scrolls. Defaults to "18rem".',
+      ],
+      ["follow", "boolean", "Keeps the newest line in view. Defaults to true."],
+    ],
+    accessibility:
+      "Output is a log region marked busy while the command runs, so assistive technology reads new lines without the page stealing focus. stderr is distinguished by a data attribute as well as colour. Following is abandoned the moment the reader scrolls up and resumes when they return to the bottom, so reading back is never interrupted. ANSI escape sequences are stripped rather than rendered.",
+  },
+  {
+    slug: "response-actions",
+    kind: "component",
+    name: "Response Actions",
+    family: "Agent UI",
+    summary:
+      "The row under an answer: copy it, ask again, and rate it. Drops into the actions slot on Message.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("response-actions"),
+    npmImport: packageImport("ResponseActions", "response-actions"),
+    usage: `export function Answer() {
+  return (
+    <Message
+      role="assistant"
+      actions={
+        <ResponseActions
+          copyText={answer}
+          onRetry={regenerate}
+          onFeedbackChange={record}
+        />
+      }
+    >
+      {answer}
+    </Message>
+  )
+}`,
+    props: [
+      [
+        "copyText",
+        "string",
+        "Copies this text. The copy control is absent without it.",
+      ],
+      ["onRetry", "() => void", "Adds the try-again control."],
+      ["retryLabel", "string", 'Names that control. Defaults to "Try again".'],
+      [
+        "onFeedbackChange",
+        "(feedback: ResponseFeedback) => void",
+        "Turns the rating controls on.",
+      ],
+      [
+        "feedback, defaultFeedback",
+        '"up" | "down" | null',
+        "Controlled and uncontrolled rating.",
+      ],
+      ["label", "string", "Names the group. Defaults to Response actions."],
+    ],
+    accessibility:
+      "The row is a labelled group of named buttons, so each one reads on its own. Ratings are toggles carrying aria-pressed, and choosing the current rating again clears it. Copying announces itself through a polite live region. The controls are 32px, matching the other compact toolbars in this set rather than the 44px targets used for primary actions; pass a className to enlarge them where this row is the main way to act.",
+  },
 ] as const
 
 export const componentDocs = entries.map((entry, index) => ({

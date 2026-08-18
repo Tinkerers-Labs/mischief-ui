@@ -64,6 +64,12 @@ export default defineConfig({
     "copy-for-ai": "../../registry/default/copy-for-ai/copy-for-ai.tsx",
     "table-of-contents":
       "../../registry/default/table-of-contents/table-of-contents.tsx",
+    "code-block": "../../registry/default/code-block/code-block.tsx",
+    "diff-view": "../../registry/default/diff-view/diff-view.tsx",
+    "terminal-output":
+      "../../registry/default/terminal-output/terminal-output.tsx",
+    "response-actions":
+      "../../registry/default/response-actions/response-actions.tsx",
   },
   format: ["esm", "cjs"],
   dts: true,

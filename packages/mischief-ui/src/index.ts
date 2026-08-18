@@ -204,6 +204,34 @@ export {
   type TocSection,
 } from "../../../registry/default/table-of-contents/table-of-contents"
 
+export {
+  CodeBlock,
+  type CodeBlockProps,
+} from "../../../registry/default/code-block/code-block"
+
+export {
+  DiffView,
+  diffLines,
+  toHunks,
+  type DiffViewProps,
+  type DiffLine,
+  type DiffHunk,
+  type DiffLineKind,
+} from "../../../registry/default/diff-view/diff-view"
+
+export {
+  TerminalOutput,
+  type TerminalOutputProps,
+  type TerminalLine,
+  type TerminalStream,
+} from "../../../registry/default/terminal-output/terminal-output"
+
+export {
+  ResponseActions,
+  type ResponseActionsProps,
+  type ResponseFeedback,
+} from "../../../registry/default/response-actions/response-actions"
+
 // Type-only, so these erase at build time and pull in no optional peer. They
 // give the declaration build one shared type graph, without which tsup walks
 // each entry separately and runs out of heap. The components themselves stay
