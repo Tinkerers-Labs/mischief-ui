@@ -179,20 +179,11 @@ a:focus-visible {
   padding: clamp(3rem, 6vw, 5rem) clamp(1rem, 4vw, 3rem);
 }
 
-.catalog-intro h2 {
-  font-family: var(--font-display), sans-serif;
-  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
-  font-weight: 650;
-  letter-spacing: -0.04em;
-  line-height: 1.05;
-  margin-top: 0.6rem;
-  max-width: 20ch;
-}
-
-.catalog-intro > p:last-child {
-  color: var(--muted-foreground);
-  margin-top: 0.75rem;
-  max-width: 42rem;
+.catalog-heading {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .catalog-family h3 {

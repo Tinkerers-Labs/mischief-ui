@@ -7,7 +7,7 @@ import {
   featuredComponents,
   type ComponentDoc,
 } from "@/lib/component-docs"
-import { registryInstallCommand, siteConfig } from "@/site.config"
+import { registryInstallCommand } from "@/site.config"
 
 function groupByFamily(docs: readonly ComponentDoc[]) {
   const families: { family: string; docs: ComponentDoc[] }[] = []
@@ -61,17 +61,9 @@ export function ComponentGallery() {
         id="catalog"
         aria-labelledby="catalog-heading"
       >
-        <div className="catalog-intro">
-          <p className="eyebrow">The whole library</p>
-          <h2 id="catalog-heading">
-            {componentDocs.length} components, installed the same way.
-          </h2>
-          <p>
-            Every one has a live preview, a typed API, and its accessibility
-            behaviour written down.{" "}
-            <Link href={siteConfig.routes.docs}>Read the docs</Link>.
-          </p>
-        </div>
+        <h2 className="catalog-heading" id="catalog-heading">
+          All components
+        </h2>
 
         {groupByFamily(componentDocs).map(({ family, docs }) => (
           <div className="catalog-family" key={family}>
