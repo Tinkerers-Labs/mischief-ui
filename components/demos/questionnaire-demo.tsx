@@ -24,7 +24,6 @@ const questions: Question[] = [
     id: "extras",
     prompt: "Anything to do alongside it?",
     multiple: true,
-    freeform: true,
     freeformPlaceholder: "Something else…",
     choices: [
       { id: "tests", label: "Update the tests" },

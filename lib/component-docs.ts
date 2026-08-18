@@ -581,7 +581,7 @@ export function Starters() {
     featured: true,
     family: "Agent UI",
     summary:
-      "The questions an agent asks before it starts. One at a time, with single or multiple answers, a freeform option, and required ones it will not move past.",
+      "The questions an agent asks before it starts. One at a time, with single or multiple answers, an open answer alongside them, and required ones it will not move past.",
     dependencies: ["lucide-react"],
     install: registryInstallCommand("questionnaire"),
     npmImport: packageImport("Questionnaire", "questionnaire"),
@@ -615,6 +615,11 @@ export function Clarify() {
         "onSubmit",
         "(answers: QuestionnaireAnswers) => void",
         "Runs with every answer once the last question is submitted.",
+      ],
+      [
+        "freeform",
+        "boolean",
+        "Offers an open answer on every question. Defaults to true, and a question can set its own.",
       ],
       [
         "shortcuts",

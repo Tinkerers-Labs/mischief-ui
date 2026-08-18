@@ -36,6 +36,8 @@ export type QuestionnaireProps = Omit<
   onSubmit?: (answers: QuestionnaireAnswers) => void
   shortcuts?: boolean
   showProgress?: boolean
+  /** Offers an open answer on every question. A question can opt out. */
+  freeform?: boolean
   previousLabel?: string
   nextLabel?: string
   skipLabel?: string
@@ -57,6 +59,7 @@ export function Questionnaire({
   onSubmit,
   shortcuts = true,
   showProgress = true,
+  freeform = true,
   previousLabel = "Back",
   nextLabel = "Next",
   skipLabel = "Skip",
@@ -130,6 +133,7 @@ export function Questionnaire({
   )
 
   const errorId = `${reactId}-error`
+  const showFreeform = question.freeform ?? freeform
 
   // The hints on each choice have to do something, so number keys pick the
   // choice they label, unless the caller is typing into the freeform field.
@@ -193,100 +197,102 @@ export function Questionnaire({
         </div>
       ) : null}
 
-      <fieldset className="border-0 px-4 py-4">
+      <fieldset className="border-0 p-0">
         <legend
           data-slot="questionnaire-prompt"
-          className="text-sm font-semibold text-pretty"
+          className="px-4 pt-4 text-sm font-semibold text-pretty"
         >
           {question.prompt}
         </legend>
 
-        {question.description ? (
-          <p className="text-muted-foreground mt-1 text-sm leading-relaxed">
-            {question.description}
-          </p>
-        ) : null}
+        <div className="px-4 pt-2 pb-4">
+          {question.description ? (
+            <p className="text-muted-foreground mb-3 text-sm leading-relaxed">
+              {question.description}
+            </p>
+          ) : null}
 
-        <div className="mt-3 grid gap-1.5">
-          {(question.choices ?? []).map((choice, choiceIndex) => {
-            const id = `${reactId}-${question.id}-${choice.id}`
-            const isChosen = chosen.has(choice.id)
+          <div className="grid gap-1.5">
+            {(question.choices ?? []).map((choice, choiceIndex) => {
+              const id = `${reactId}-${question.id}-${choice.id}`
+              const isChosen = chosen.has(choice.id)
 
-            return (
-              <label
-                key={choice.id}
-                data-slot="questionnaire-choice"
-                data-chosen={isChosen || undefined}
-                htmlFor={id}
-                className={cn(
-                  "border-border flex cursor-pointer items-start gap-2.5 rounded-[calc(var(--radius)-0.25rem)] border px-3 py-2 text-sm transition-colors duration-150 motion-reduce:transition-none",
-                  isChosen
-                    ? "border-foreground bg-muted/60"
-                    : "hover:bg-muted/40"
-                )}
-              >
-                <input
-                  id={id}
-                  className="mt-0.5"
-                  name={`${reactId}-${question.id}`}
-                  type={question.multiple ? "checkbox" : "radio"}
-                  checked={isChosen}
-                  aria-describedby={showError ? errorId : undefined}
-                  onChange={(event) =>
-                    setChoice(choice.id, event.target.checked)
-                  }
-                />
+              return (
+                <label
+                  key={choice.id}
+                  data-slot="questionnaire-choice"
+                  data-chosen={isChosen || undefined}
+                  htmlFor={id}
+                  className={cn(
+                    "border-border flex cursor-pointer items-start gap-2.5 rounded-[calc(var(--radius)-0.25rem)] border px-3 py-2 text-sm transition-colors duration-150 motion-reduce:transition-none",
+                    isChosen
+                      ? "border-foreground bg-muted/60"
+                      : "hover:bg-muted/40"
+                  )}
+                >
+                  <input
+                    id={id}
+                    className="mt-0.5"
+                    name={`${reactId}-${question.id}`}
+                    type={question.multiple ? "checkbox" : "radio"}
+                    checked={isChosen}
+                    aria-describedby={showError ? errorId : undefined}
+                    onChange={(event) =>
+                      setChoice(choice.id, event.target.checked)
+                    }
+                  />
 
-                <span className="min-w-0 flex-1">
-                  <span className="font-medium">{choice.label}</span>
-                  {choice.description ? (
-                    <span className="text-muted-foreground mt-0.5 block text-xs leading-relaxed">
-                      {choice.description}
-                    </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="font-medium">{choice.label}</span>
+                    {choice.description ? (
+                      <span className="text-muted-foreground mt-0.5 block text-xs leading-relaxed">
+                        {choice.description}
+                      </span>
+                    ) : null}
+                  </span>
+
+                  {shortcuts && choiceIndex < 9 ? (
+                    <kbd
+                      aria-hidden="true"
+                      className="border-border text-muted-foreground rounded border px-1 font-[family-name:var(--font-mono),monospace] text-[0.65rem]"
+                    >
+                      {choiceIndex + 1}
+                    </kbd>
                   ) : null}
-                </span>
-
-                {shortcuts && choiceIndex < 9 ? (
-                  <kbd
-                    aria-hidden="true"
-                    className="border-border text-muted-foreground rounded border px-1 font-[family-name:var(--font-mono),monospace] text-[0.65rem]"
-                  >
-                    {choiceIndex + 1}
-                  </kbd>
-                ) : null}
-              </label>
-            )
-          })}
-        </div>
-
-        {question.freeform ? (
-          <div className="mt-2">
-            <label
-              className="sr-only"
-              htmlFor={`${reactId}-${question.id}-freeform`}
-            >
-              {question.freeformLabel ?? "Another answer"}
-            </label>
-            <input
-              id={`${reactId}-${question.id}-freeform`}
-              className="border-border placeholder:text-muted-foreground focus-visible:ring-ring min-h-11 w-full rounded-[calc(var(--radius)-0.25rem)] border px-3 text-sm focus-visible:ring-2 focus-visible:outline-none"
-              placeholder={question.freeformPlaceholder ?? "Something else…"}
-              value={freeformValue}
-              onChange={(event) => setFreeform(event.target.value)}
-            />
+                </label>
+              )
+            })}
           </div>
-        ) : null}
 
-        {showError ? (
-          <p
-            id={errorId}
-            role="alert"
-            className="text-destructive mt-2 flex items-center gap-1.5 text-xs"
-          >
-            <TriangleAlert aria-hidden="true" size={13} />
-            {requiredMessage}
-          </p>
-        ) : null}
+          {showFreeform ? (
+            <div className="mt-1.5">
+              <label
+                className="sr-only"
+                htmlFor={`${reactId}-${question.id}-freeform`}
+              >
+                {question.freeformLabel ?? "Another answer"}
+              </label>
+              <input
+                id={`${reactId}-${question.id}-freeform`}
+                className="border-border placeholder:text-muted-foreground focus-visible:ring-ring min-h-11 w-full rounded-[calc(var(--radius)-0.25rem)] border px-3 text-sm focus-visible:ring-2 focus-visible:outline-none"
+                placeholder={question.freeformPlaceholder ?? "Something else…"}
+                value={freeformValue}
+                onChange={(event) => setFreeform(event.target.value)}
+              />
+            </div>
+          ) : null}
+
+          {showError ? (
+            <p
+              id={errorId}
+              role="alert"
+              className="text-destructive mt-2 flex items-center gap-1.5 text-xs"
+            >
+              <TriangleAlert aria-hidden="true" size={13} />
+              {requiredMessage}
+            </p>
+          ) : null}
+        </div>
       </fieldset>
 
       <div

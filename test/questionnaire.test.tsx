@@ -21,7 +21,6 @@ const questions: Question[] = [
     id: "extras",
     prompt: "Anything else to include?",
     multiple: true,
-    freeform: true,
     choices: [
       { id: "tests", label: "Update the tests" },
       { id: "docs", label: "Update the docs" },
@@ -183,6 +182,28 @@ describe("Questionnaire", () => {
     fireEvent.keyDown(container.querySelector("form")!, { key: "2" })
 
     expect(onAnswersChange).toHaveBeenCalledWith({ scope: ["all"] })
+  })
+
+  it("offers an open answer on every question by default", () => {
+    render(<Questionnaire questions={questions} />)
+
+    expect(
+      screen.getByRole("textbox", { name: /another answer/i })
+    ).toBeInTheDocument()
+  })
+
+  it("lets a question opt out of the open answer", () => {
+    render(
+      <Questionnaire questions={[{ ...questions[0]!, freeform: false }]} />
+    )
+
+    expect(screen.queryByRole("textbox")).not.toBeInTheDocument()
+  })
+
+  it("lets the whole questionnaire opt out", () => {
+    render(<Questionnaire questions={questions} freeform={false} />)
+
+    expect(screen.queryByRole("textbox")).not.toBeInTheDocument()
   })
 
   it("leaves number keys alone while typing a freeform answer", async () => {
