@@ -97,6 +97,25 @@ describe.skipIf(!built || entries.length === 0)(
       )
     })
 
+    it("does not offer a root import", () => {
+      // The barrel reaches every component, so a root import only resolves for
+      // someone who installed every optional peer. Blocking it gives a clear
+      // ERR_PACKAGE_PATH_NOT_EXPORTED rather than a missing @base-ui/react.
+      // "." would be read as a property path, so compare keys directly.
+      expect(Object.keys(packageJson.exports)).not.toContain(".")
+      expect(Object.keys(packageJson)).not.toContain("main")
+      expect(Object.keys(packageJson)).not.toContain("module")
+      expect(Object.keys(packageJson)).not.toContain("types")
+    })
+
+    it("exports a subpath for every registry item", () => {
+      const missing = registry.items
+        .map((item) => item.name)
+        .filter((name) => !(`./${name}` in packageJson.exports))
+
+      expect(missing).toEqual([])
+    })
+
     it("leaves every optional peer absent from most entries", () => {
       const optional = Object.keys(packageJson.peerDependenciesMeta)
 

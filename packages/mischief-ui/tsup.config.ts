@@ -4,6 +4,8 @@ import { defineConfig } from "tsup"
 
 export default defineConfig({
   entry: {
+    // Not exported. It exists so the declaration build has one shared type
+    // graph; without it tsup walks every entry separately and runs out of heap.
     index: "src/index.ts",
     "magnetic-tabs": "../../registry/default/magnetic-tabs/magnetic-tabs.tsx",
     "elastic-slider":

@@ -29,15 +29,11 @@ export function Volume() {
 }
 ```
 
-The root export remains available when a single import path is more convenient:
-
-```tsx
-import { ElasticSlider, SignatureFooter } from "mischief-ui"
-```
-
-Direct entries keep each component independently loadable. Importing
-`mischief-ui/signature-footer` also keeps that server-safe component out of a
-client boundary.
+Every component has its own entry, and there is no root import. A barrel would
+reach all of them, and with it every optional peer, so importing one component
+would fail unless you had installed Base UI, Motion, and the document parsers.
+Importing `mischief-ui/signature-footer` also keeps that server-safe component
+out of a client boundary.
 
 File validation must be repeated on the server. The browser checks only help
 people correct a selection before upload.
