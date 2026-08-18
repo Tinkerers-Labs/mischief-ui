@@ -107,6 +107,11 @@
       "types": "./dist/inline-citations.d.ts",
       "import": "./dist/inline-citations.js",
       "require": "./dist/inline-citations.cjs"
+    },
+    "./approval-card": {
+      "types": "./dist/approval-card.d.ts",
+      "import": "./dist/approval-card.js",
+      "require": "./dist/approval-card.cjs"
     }
   },
   "scripts": {

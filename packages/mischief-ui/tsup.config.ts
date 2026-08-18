@@ -30,6 +30,7 @@ export default defineConfig({
       "../../registry/default/agent-checklist/agent-checklist.tsx",
     "inline-citations":
       "../../registry/default/inline-citations/inline-citations.tsx",
+    "approval-card": "../../registry/default/approval-card/approval-card.tsx",
   },
   format: ["esm", "cjs"],
   dts: true,

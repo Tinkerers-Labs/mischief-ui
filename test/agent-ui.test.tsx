@@ -1,8 +1,9 @@
 import * as React from "react"
-import { act, render, screen, waitFor } from "@testing-library/react"
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 
+import { ApprovalCard } from "../registry/default/approval-card/approval-card"
 import {
   AgentChecklist,
   type AgentChecklistItem,
@@ -426,5 +427,137 @@ describe("InlineCitations", () => {
     expect(
       screen.getByRole("link", { name: "Source 1: Agent UI docs" })
     ).toBeInTheDocument()
+  })
+})
+
+describe("ApprovalCard", () => {
+  const options = [
+    { id: "three", label: "Three flavors" },
+    { id: "five", label: "Five flavors" },
+  ]
+
+  it("approves a plain option on a single click", async () => {
+    const user = userEvent.setup()
+    const onApprove = vi.fn()
+
+    render(
+      <ApprovalCard
+        question="How many flavors should we launch?"
+        options={options}
+        onApprove={onApprove}
+      />
+    )
+
+    await user.click(screen.getByRole("button", { name: /three flavors/i }))
+
+    expect(onApprove).toHaveBeenCalledWith("three")
+  })
+
+  it("collapses to the chosen answer once decided", async () => {
+    const user = userEvent.setup()
+
+    render(<ApprovalCard question="Pick one" options={options} />)
+
+    await user.click(screen.getByRole("button", { name: /five flavors/i }))
+
+    const card = screen.getByRole("region", { name: "Pick one" })
+    expect(card).toHaveAttribute("data-state", "answered")
+    expect(card).toHaveTextContent("Five flavors")
+    expect(
+      screen.queryByRole("button", { name: /three flavors/i })
+    ).not.toBeInTheDocument()
+  })
+
+  it("does not approve a destructive option from a pointer press alone", async () => {
+    const onApprove = vi.fn()
+
+    render(
+      <ApprovalCard
+        question="Delete the branch?"
+        options={[{ id: "delete", label: "Delete it", destructive: true }]}
+        onApprove={onApprove}
+      />
+    )
+
+    const button = screen.getByRole("button", { name: /delete it/i })
+    fireEvent.pointerDown(button, { button: 0, pointerId: 1 })
+    fireEvent.pointerUp(button, { pointerId: 1 })
+
+    expect(onApprove).not.toHaveBeenCalled()
+  })
+
+  it("approves a destructive option once the hold completes", async () => {
+    const onApprove = vi.fn()
+
+    render(
+      <ApprovalCard
+        question="Delete the branch?"
+        options={[{ id: "delete", label: "Delete it", destructive: true }]}
+        onApprove={onApprove}
+      />
+    )
+
+    const button = screen.getByRole("button", { name: /delete it/i })
+    fireEvent.pointerDown(button, { button: 0, pointerId: 1 })
+
+    await waitFor(() => expect(onApprove).toHaveBeenCalledWith("delete"), {
+      timeout: 3000,
+    })
+  })
+
+  it("lets keyboard users activate a destructive option without holding", () => {
+    const onApprove = vi.fn()
+
+    render(
+      <ApprovalCard
+        question="Delete the branch?"
+        options={[{ id: "delete", label: "Delete it", destructive: true }]}
+        onApprove={onApprove}
+      />
+    )
+
+    fireEvent.click(screen.getByRole("button", { name: /delete it/i }), {
+      detail: 0,
+    })
+
+    expect(onApprove).toHaveBeenCalledWith("delete")
+  })
+
+  it("stays controlled when answerId is supplied", async () => {
+    const user = userEvent.setup()
+    const onApprove = vi.fn()
+
+    render(
+      <ApprovalCard
+        question="Pick one"
+        options={options}
+        answerId={undefined}
+        onApprove={onApprove}
+      />
+    )
+
+    await user.click(screen.getByRole("button", { name: /three flavors/i }))
+    expect(onApprove).toHaveBeenCalledWith("three")
+  })
+
+  it("submits freeform text and clears the field", async () => {
+    const user = userEvent.setup()
+    const onFreeformSubmit = vi.fn()
+
+    render(
+      <ApprovalCard
+        question="Pick one"
+        options={options}
+        freeform
+        onFreeformSubmit={onFreeformSubmit}
+      />
+    )
+
+    const field = screen.getByRole("textbox", { name: /another answer/i })
+    await user.type(field, "Two, but bigger")
+    await user.click(screen.getByRole("button", { name: /another answer/i }))
+
+    expect(onFreeformSubmit).toHaveBeenCalledWith("Two, but bigger")
+    expect(field).toHaveValue("")
   })
 })

@@ -106,3 +106,9 @@ export {
   type CitationProps,
   type CitationSource,
 } from "../../../registry/default/inline-citations/inline-citations"
+
+export {
+  ApprovalCard,
+  type ApprovalCardProps,
+  type ApprovalOption,
+} from "../../../registry/default/approval-card/approval-card"

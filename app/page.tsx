@@ -3,6 +3,7 @@ import Link from "next/link"
 
 import { ComponentGallery } from "@/components/component-gallery"
 import { FaqSection } from "@/components/faq-section"
+import { GalleryIndex } from "@/components/gallery-index"
 import { HeroPlayground } from "@/components/hero-playground"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
@@ -95,6 +96,7 @@ export default function Home() {
       </section>
 
       <ComponentGallery />
+      <GalleryIndex />
       <FaqSection />
       <SiteFooter />
       <ScrollToTopButton />

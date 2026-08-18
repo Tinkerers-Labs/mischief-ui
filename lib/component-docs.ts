@@ -715,10 +715,68 @@ export function Answer() {
       "Markers are real anchors to their list entry, so they work without hover or a pointer. Each one has an accessible name giving the number and the source title, and the visible digit is hidden from assistive technology to avoid reading it twice. A marker whose id is not in sources renders nothing rather than a dead link. External source links say that they open in a new tab.",
   },
   {
+    slug: "approval-card",
+    kind: "component",
+    name: "Approval Card",
+    number: "16",
+    family: "Agent UI",
+    summary:
+      "The question an agent asks before it acts. Ordinary answers take one click; destructive ones have to be held.",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("approval-card"),
+    npmImport: packageImport("ApprovalCard", "approval-card"),
+    usage: `export function Confirm() {
+  return (
+    <ApprovalCard
+      question="Delete 40 files the agent flagged as unused?"
+      description="This cannot be undone from here."
+      options={[
+        { id: "delete", label: "Delete all 40", destructive: true },
+        { id: "review", label: "Show me the list first" },
+      ]}
+      onApprove={handleApprove}
+    />
+  )
+}`,
+    props: [
+      ["question", "ReactNode", "What the agent is asking."],
+      ["description", "ReactNode", "Supporting detail below the question."],
+      [
+        "options",
+        "ApprovalOption[]",
+        "Id, label, optional description, and a destructive flag.",
+      ],
+      [
+        "answerId, defaultAnswerId",
+        "string",
+        "The chosen option, controlled or uncontrolled.",
+      ],
+      [
+        "holdDuration",
+        "number",
+        "Hold time for destructive options in milliseconds. Defaults to 900, minimum 500.",
+      ],
+      ["freeform", "boolean", "Adds a field for an answer you did not list."],
+      [
+        "onApprove",
+        "(optionId: string) => void",
+        "Runs when an option is chosen.",
+      ],
+      [
+        "onFreeformSubmit",
+        "(value: string) => void",
+        "Runs when the freeform answer is sent.",
+      ],
+      ["onDismiss", "() => void", "Shows a dismiss control when supplied."],
+    ],
+    accessibility:
+      "The card is a labelled region and the options are a group tied to the question. Ordinary options are ordinary buttons. A destructive option cannot be triggered by a stray tap: pointer input has to be held, and releasing early cancels. Keyboard and assistive technology users activate it once instead, since holding a key is not a fair requirement. The progress fill is decorative and is hidden under reduced motion.",
+  },
+  {
     slug: "signature-footer",
     kind: "block",
     name: "Signature Footer",
-    number: "16",
+    number: "17",
     family: "Blocks",
     summary:
       "A complete closing section with room for the useful links first and one oversized wordmark at the end.",
@@ -757,7 +815,7 @@ export function Answer() {
     slug: "image-gallery",
     kind: "block",
     name: "Image Gallery",
-    number: "17",
+    number: "18",
     family: "Blocks",
     summary:
       "A responsive image collection with equal and masonry layouts, plus a lightbox that handles focus, keyboard navigation, and scroll locking.",

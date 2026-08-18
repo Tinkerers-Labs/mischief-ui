@@ -308,6 +308,24 @@
         }
       ],
       "categories": ["ai", "citations", "sources", "agent"]
+    },
+    {
+      "name": "approval-card",
+      "type": "registry:ui",
+      "title": "Approval Card",
+      "description": "A human-in-the-loop question an agent asks before acting, with hold-to-confirm for destructive answers.",
+      "dependencies": [
+        "lucide-react@^1.31.0",
+        "clsx@^2.1.1",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/approval-card/approval-card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "approval", "confirmation", "agent"]
     }
   ]
 }

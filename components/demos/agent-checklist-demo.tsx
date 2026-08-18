@@ -1,5 +1,6 @@
 "use client"
 
+import { DemoVariants } from "@/components/demos/demo-variants"
 import { RestartButton } from "@/components/demos/restart-button"
 import {
   useScriptedTimeline,
@@ -41,13 +42,44 @@ const steps: [
   { state: frame(4), holdMs: 0 },
 ]
 
-export function AgentChecklistDemo() {
+function LiveRun() {
   const { state, isFinished, restart, runId } = useScriptedTimeline(steps)
 
   return (
-    <div className="grid w-full max-w-xl gap-4">
+    <div className="grid gap-4">
       <AgentChecklist key={runId} items={state} title="Fixing the migration" />
       {isFinished ? <RestartButton onClick={restart} /> : null}
     </div>
+  )
+}
+
+export function AgentChecklistDemo() {
+  return (
+    <DemoVariants
+      label="Checklist state"
+      variants={[
+        { id: "live", label: "Live run", render: () => <LiveRun /> },
+        {
+          id: "failure",
+          label: "With a failure",
+          render: () => (
+            <AgentChecklist
+              title="Fixing the migration"
+              items={[
+                { id: "0", label: labels[0], status: "done" },
+                { id: "1", label: labels[1], status: "done" },
+                {
+                  id: "2",
+                  label: labels[2],
+                  status: "error",
+                  detail: "Permission denied on migrations/.",
+                },
+                { id: "3", label: labels[3], status: "skipped" },
+              ]}
+            />
+          ),
+        },
+      ]}
+    />
   )
 }

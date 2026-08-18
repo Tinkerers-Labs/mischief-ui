@@ -1,6 +1,7 @@
 import type { ComponentType } from "react"
 
 import { AgentChecklistDemo } from "@/components/demos/agent-checklist-demo"
+import { ApprovalCardDemo } from "@/components/demos/approval-card-demo"
 import { AskAiDemo } from "@/components/demos/ask-ai-demo"
 import { ElasticSliderDemo } from "@/components/demos/elastic-slider-demo"
 import { FileThumbnailDemo } from "@/components/demos/file-thumbnail-demo"
@@ -45,6 +46,7 @@ export const componentDemos: Record<string, ComponentDemo> = {
     Demo: InlineCitationsDemo,
     frameClassName: "p-6 md:p-10",
   },
+  "approval-card": { Demo: ApprovalCardDemo, frameClassName: "p-6 md:p-10" },
   "signature-footer": {
     Demo: SignatureFooterDemo,
     frameClassName: "p-4 md:p-8",

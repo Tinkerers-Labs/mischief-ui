@@ -22,15 +22,19 @@ function ComponentSection({ doc }: { doc: ComponentDoc }) {
   const demo = componentDemos[doc.slug]
 
   return (
-    <section className="component-section">
+    <section className="component-section" id={`component-${doc.slug}`}>
       <div className="component-copy">
-        <p className="component-number">{doc.number}</p>
-        <h2>{doc.name}</h2>
-        <p>{doc.summary}</p>
-        <CopyCommand command={registryInstallCommand(doc.slug)} />
-        <Link className="detail-link" href={`/docs/components/${doc.slug}`}>
-          Preview, API, and source
-        </Link>
+        <h3 className="component-title">
+          <span className="component-number">{doc.number}</span>
+          {doc.name}
+        </h3>
+        <p className="component-summary">{doc.summary}</p>
+        <div className="component-actions">
+          <CopyCommand command={registryInstallCommand(doc.slug)} />
+          <Link className="detail-link" href={`/docs/components/${doc.slug}`}>
+            Preview, API, and source
+          </Link>
+        </div>
       </div>
       <div className={`demo-frame ${demo?.frameClassName ?? ""}`.trim()}>
         {demo ? <demo.Demo /> : null}

@@ -195,7 +195,7 @@ a:focus-visible {
   display: grid;
   gap: clamp(2rem, 5vw, 5rem);
   grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
-  padding: clamp(4rem, 8vw, 7rem) clamp(1rem, 4vw, 3rem);
+  padding: clamp(2.75rem, 5vw, 4.5rem) clamp(1rem, 4vw, 3rem);
 }
 
 .component-section + .component-section {
@@ -205,25 +205,41 @@ a:focus-visible {
 .component-copy {
   align-self: start;
   display: grid;
-  gap: 1.25rem;
+  gap: 1rem;
   min-width: 0;
   position: sticky;
   top: 2rem;
 }
 
-.component-copy h2 {
+.component-title {
+  align-items: baseline;
+  display: flex;
   font-family: var(--font-display), sans-serif;
-  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
   font-weight: 650;
+  gap: 0.75rem;
   letter-spacing: -0.04em;
   line-height: 1;
 }
 
-.component-copy > p:not(.component-number) {
+.component-title .component-number {
   color: var(--muted-foreground);
-  line-height: 1.65;
-  max-width: 38rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.component-summary {
+  color: var(--muted-foreground);
+  line-height: 1.6;
+  max-width: 34rem;
   text-wrap: pretty;
+}
+
+.component-actions {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
 }
 
 .install-command {
@@ -284,7 +300,7 @@ a:focus-visible {
     0 24px 70px oklch(0.215 0.018 58 / 8%);
   display: flex;
   justify-content: center;
-  min-height: 30rem;
+  min-height: 24rem;
   min-width: 0;
   overflow: hidden;
   padding: clamp(1.25rem, 5vw, 4rem);

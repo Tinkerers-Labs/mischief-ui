@@ -1,5 +1,6 @@
 "use client"
 
+import { DemoVariants } from "@/components/demos/demo-variants"
 import { RestartButton } from "@/components/demos/restart-button"
 import {
   useScriptedTimeline,
@@ -20,12 +21,12 @@ const steps: [TimelineStep<ThinkingStatus>, ...TimelineStep<ThinkingStatus>[]] =
 const reasoning =
   "The index is created before the backfill runs, so any row still holding a null email will collide. Reordering the two statements is enough."
 
-export function ThinkingStateDemo() {
+function LiveRun() {
   const { state, elapsedMs, isFinished, restart, runId } =
     useScriptedTimeline(steps)
 
   return (
-    <div className="grid w-full max-w-xl gap-4">
+    <div className="grid gap-4">
       <ThinkingState
         key={runId}
         status={state}
@@ -35,5 +36,33 @@ export function ThinkingStateDemo() {
 
       {isFinished ? <RestartButton onClick={restart} /> : null}
     </div>
+  )
+}
+
+export function ThinkingStateDemo() {
+  return (
+    <DemoVariants
+      label="Thinking state"
+      variants={[
+        { id: "live", label: "Live run", render: () => <LiveRun /> },
+        {
+          id: "reasoning",
+          label: "Reasoning open",
+          render: () => (
+            <ThinkingState
+              status="done"
+              elapsedMs={4200}
+              reasoning={<p>{reasoning}</p>}
+              defaultOpen
+            />
+          ),
+        },
+        {
+          id: "error",
+          label: "Failed",
+          render: () => <ThinkingState status="error" elapsedMs={1900} />,
+        },
+      ]}
+    />
   )
 }
