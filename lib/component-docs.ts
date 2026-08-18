@@ -1037,10 +1037,162 @@ export function Files() {
       "Drawing on a canvas cannot be done with a keyboard, so typing is a first-class method rather than a fallback, and the canvas says so in its accessible name. The method switch is a labelled group of toggle buttons. Clearing is disabled while there is nothing to clear. The canvas is redrawn at the device pixel ratio so a signature is not blurred on a high-density screen.",
   },
   {
+    slug: "csv-viewer",
+    kind: "component",
+    name: "CSV Viewer",
+    number: "23",
+    family: "Documents",
+    summary:
+      "A real table for delimited data, with sortable columns, a sticky header, and a row cap so a large file cannot lock the page.",
+    dependencies: ["papaparse", "lucide-react"],
+    install: registryInstallCommand("csv-viewer"),
+    npmImport: packageImport("CsvViewer", "csv-viewer"),
+    usage: `export function Preview({ file }: { file: File }) {
+  return <CsvViewer source={file} maxRows={200} />
+}`,
+    props: [
+      ["source", "string | File", "CSV text or a file to parse."],
+      [
+        "table",
+        "CsvTable",
+        "Already parsed data as fields and rows. Skips the parser entirely.",
+      ],
+      [
+        "parser",
+        "(source) => Promise<CsvTable>",
+        "Replaces the default parser. Supply this and papaparse is never loaded.",
+      ],
+      ["maxRows", "number", "How many rows to render. Defaults to 200."],
+      ["emptyLabel, loadingLabel", "ReactNode", "Copy for those two states."],
+    ],
+    accessibility:
+      "The data is a real table with a caption, column headers, and aria-sort on the sorted column, so it can be navigated with table commands rather than read as a wall of text. Sorting is a button inside each header. Numeric columns sort numerically instead of as text. When rows are capped the footer says how many of the total are shown, rather than silently truncating.",
+  },
+  {
+    slug: "docx-viewer",
+    kind: "component",
+    name: "DOCX Viewer",
+    number: "24",
+    family: "Documents",
+    summary:
+      "Renders a Word document as elements built through an allowlist, so a file you did not write cannot bring its own scripts or links.",
+    dependencies: ["mammoth", "lucide-react"],
+    install: registryInstallCommand("docx-viewer"),
+    npmImport: packageImport("DocxViewer", "docx-viewer"),
+    usage: `export function Contract({ file }: { file: File }) {
+  return <DocxViewer source={file} />
+}`,
+    props: [
+      ["source", "ArrayBuffer | Blob", "The document to convert."],
+      [
+        "result",
+        "DocxResult",
+        "Already converted html and messages. Skips the converter.",
+      ],
+      [
+        "converter",
+        "(source: ArrayBuffer) => Promise<DocxResult>",
+        "Replaces the default converter. Supply this and mammoth is never loaded.",
+      ],
+      [
+        "allowedTags",
+        "readonly string[]",
+        "The tags permitted in the output. Anything else keeps its text and loses its wrapper.",
+      ],
+      ["showWarnings", "boolean", "Lists conversion messages under the body."],
+    ],
+    accessibility:
+      "Converted markup is never injected. The HTML is parsed and rebuilt as React elements through a tag and attribute allowlist, so event handler attributes cannot survive and a javascript: link loses its href while keeping its text. Links that do survive open in a new tab with noreferrer. The region reports aria-busy while a document is converting.",
+  },
+  {
+    slug: "pdf-viewer",
+    kind: "component",
+    name: "PDF Viewer",
+    number: "25",
+    family: "Documents",
+    summary:
+      "Page-by-page PDF rendering on a canvas, with paging and zoom, over any loader you give it.",
+    dependencies: ["pdfjs-dist", "lucide-react"],
+    install: registryInstallCommand("pdf-viewer"),
+    npmImport: packageImport("PdfViewer", "pdf-viewer"),
+    usage: `export function Contract() {
+  return <PdfViewer source="/agreement.pdf" workerSrc={workerUrl} />
+}`,
+    props: [
+      ["source", "string | ArrayBuffer", "The document to open."],
+      [
+        "document",
+        "PdfDocumentHandle",
+        "An already open document. Skips the loader.",
+      ],
+      [
+        "loader",
+        "(source) => Promise<PdfDocumentHandle>",
+        "Replaces the default loader. Supply this and pdfjs-dist is never loaded.",
+      ],
+      [
+        "page, defaultPage, onPageChange",
+        "number, number, (page: number) => void",
+        "The current page, controlled or uncontrolled.",
+      ],
+      [
+        "defaultScale, minScale, maxScale",
+        "number",
+        "Zoom range. Defaults to 1, 0.5, and 3.",
+      ],
+      [
+        "workerSrc",
+        "string",
+        "The pdfjs worker URL, which most bundlers need set explicitly.",
+      ],
+    ],
+    accessibility:
+      "The canvas carries an accessible name naming the document and the page it is showing, and the page counter is a polite live region so moving through a document is announced. Paging and zoom controls are disabled at their limits rather than silently doing nothing. A canvas cannot expose the text underneath it, so pair this with a text layer or a downloadable original when the content has to be readable.",
+  },
+  {
+    slug: "markdown-blocks",
+    kind: "component",
+    name: "Markdown Blocks",
+    number: "26",
+    family: "Documents",
+    summary:
+      "Extracted document regions rendered as markdown, each one selectable so it can be tied back to where it came from.",
+    dependencies: ["react-markdown", "remark-gfm"],
+    install: registryInstallCommand("markdown-blocks"),
+    npmImport: packageImport("MarkdownBlocks", "markdown-blocks"),
+    usage: `const blocks = [
+  { id: "title", kind: "heading", content: "# Master Agreement", page: 1 },
+]
+
+export function Layout() {
+  return <MarkdownBlocks blocks={blocks} onActiveChange={highlightRegion} />
+}`,
+    props: [
+      [
+        "blocks",
+        "MarkdownBlock[]",
+        "Id, markdown content, and optional kind, page, and label.",
+      ],
+      [
+        "activeId, defaultActiveId",
+        "string | null",
+        "The selected block, controlled or uncontrolled.",
+      ],
+      [
+        "onActiveChange",
+        "(id: string | null) => void",
+        "Runs when a block is selected or cleared. Pair with Bounding Boxes.",
+      ],
+      ["showKinds", "boolean", "Shows the kind and page above each block."],
+    ],
+    accessibility:
+      "Blocks are an ordered list of toggle buttons, so selection is reachable by keyboard and announced. Raw HTML inside a block is not rendered, since react-markdown ignores it unless a raw plugin is added, which this component deliberately does not add. Tables come from GitHub flavoured markdown and render as real tables.",
+  },
+  {
     slug: "signature-footer",
     kind: "block",
     name: "Signature Footer",
-    number: "23",
+    number: "27",
     family: "Blocks",
     summary:
       "A complete closing section with room for the useful links first and one oversized wordmark at the end.",
@@ -1079,7 +1231,7 @@ export function Files() {
     slug: "image-gallery",
     kind: "block",
     name: "Image Gallery",
-    number: "24",
+    number: "28",
     family: "Blocks",
     summary:
       "A responsive image collection with equal and masonry layouts, plus a lightbox that handles focus, keyboard navigation, and scroll locking.",

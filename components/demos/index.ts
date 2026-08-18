@@ -2,6 +2,10 @@ import type { ComponentType } from "react"
 
 import { AgentChecklistDemo } from "@/components/demos/agent-checklist-demo"
 import { BoundingBoxesDemo } from "@/components/demos/bounding-boxes-demo"
+import { CsvViewerDemo } from "@/components/demos/csv-viewer-demo"
+import { DocxViewerDemo } from "@/components/demos/docx-viewer-demo"
+import { MarkdownBlocksDemo } from "@/components/demos/markdown-blocks-demo"
+import { PdfViewerDemo } from "@/components/demos/pdf-viewer-demo"
 import { DocumentSplitsDemo } from "@/components/demos/document-splits-demo"
 import { FileTreeDemo } from "@/components/demos/file-tree-demo"
 import { PageNavigatorDemo } from "@/components/demos/page-navigator-demo"
@@ -62,6 +66,13 @@ export const componentDemos: Record<string, ComponentDemo> = {
   },
   "schema-builder": { Demo: SchemaBuilderDemo, frameClassName: "p-6 md:p-10" },
   "signature-pad": { Demo: SignaturePadDemo, frameClassName: "p-6 md:p-10" },
+  "csv-viewer": { Demo: CsvViewerDemo, frameClassName: "p-6 md:p-10" },
+  "docx-viewer": { Demo: DocxViewerDemo, frameClassName: "p-6 md:p-10" },
+  "pdf-viewer": { Demo: PdfViewerDemo, frameClassName: "p-6 md:p-10" },
+  "markdown-blocks": {
+    Demo: MarkdownBlocksDemo,
+    frameClassName: "p-6 md:p-10",
+  },
   "signature-footer": {
     Demo: SignatureFooterDemo,
     frameClassName: "p-4 md:p-8",

@@ -365,6 +365,66 @@
       ],
       "categories": ["document", "signature", "canvas", "form"],
       "registryDependencies": ["utils"]
+    },
+    {
+      "name": "csv-viewer",
+      "type": "registry:ui",
+      "title": "CSV Viewer",
+      "description": "A sortable table for delimited data with a sticky header and a row cap.",
+      "dependencies": ["papaparse@^5.6.0", "lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/csv-viewer/csv-viewer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": ["utils"],
+      "categories": ["document", "csv", "table", "data"]
+    },
+    {
+      "name": "docx-viewer",
+      "type": "registry:ui",
+      "title": "DOCX Viewer",
+      "description": "Renders a Word document as elements built through a tag and attribute allowlist.",
+      "dependencies": ["mammoth@^1.12.1", "lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/docx-viewer/docx-viewer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": ["utils"],
+      "categories": ["document", "docx", "word", "viewer"]
+    },
+    {
+      "name": "pdf-viewer",
+      "type": "registry:ui",
+      "title": "PDF Viewer",
+      "description": "Page-by-page PDF rendering on a canvas, with paging and zoom, over any loader.",
+      "dependencies": ["pdfjs-dist@^6.2.108", "lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/pdf-viewer/pdf-viewer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": ["utils"],
+      "categories": ["document", "pdf", "viewer", "canvas"]
+    },
+    {
+      "name": "markdown-blocks",
+      "type": "registry:ui",
+      "title": "Markdown Blocks",
+      "description": "Extracted document regions rendered as markdown, each one selectable.",
+      "dependencies": ["react-markdown@^10.1.0", "remark-gfm@^4.0.1"],
+      "files": [
+        {
+          "path": "registry/default/markdown-blocks/markdown-blocks.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": ["utils"],
+      "categories": ["document", "markdown", "layout", "ai"]
     }
   ]
 }

@@ -43,6 +43,11 @@ export default defineConfig({
     "schema-builder":
       "../../registry/default/schema-builder/schema-builder.tsx",
     "signature-pad": "../../registry/default/signature-pad/signature-pad.tsx",
+    "csv-viewer": "../../registry/default/csv-viewer/csv-viewer.tsx",
+    "docx-viewer": "../../registry/default/docx-viewer/docx-viewer.tsx",
+    "pdf-viewer": "../../registry/default/pdf-viewer/pdf-viewer.tsx",
+    "markdown-blocks":
+      "../../registry/default/markdown-blocks/markdown-blocks.tsx",
   },
   format: ["esm", "cjs"],
   dts: true,
@@ -62,5 +67,10 @@ export default defineConfig({
     "clsx",
     "lucide-react",
     "tailwind-merge",
+    "papaparse",
+    "mammoth",
+    "pdfjs-dist",
+    "react-markdown",
+    "remark-gfm",
   ],
 })

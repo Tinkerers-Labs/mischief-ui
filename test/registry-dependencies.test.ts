@@ -14,7 +14,7 @@ const AMBIENT = new Set(["react", "react-dom"])
 /** Shipped by the shared `utils` registry item, not by any component. */
 const FROM_UTILS = new Set(["clsx", "tailwind-merge"])
 
-const IMPORT = /(?:from|import)\s+"([^"]+)"/g
+const IMPORT = /(?:from\s+|import\s+|import\()"([^"]+)"/g
 
 function bareImportsOf(file: string) {
   const source = readFileSync(path.join(ROOT, file), "utf8")

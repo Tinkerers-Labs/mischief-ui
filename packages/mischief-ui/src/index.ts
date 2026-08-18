@@ -152,3 +152,32 @@ export {
   type SignatureValue,
   type SignatureMode,
 } from "../../../registry/default/signature-pad/signature-pad"
+
+export {
+  CsvViewer,
+  type CsvViewerProps,
+  type CsvTable,
+  type CsvParser,
+} from "../../../registry/default/csv-viewer/csv-viewer"
+
+export {
+  DocxViewer,
+  type DocxViewerProps,
+  type DocxResult,
+  type DocxConverter,
+} from "../../../registry/default/docx-viewer/docx-viewer"
+
+export {
+  PdfViewer,
+  type PdfViewerProps,
+  type PdfDocumentHandle,
+  type PdfPageHandle,
+  type PdfLoader,
+} from "../../../registry/default/pdf-viewer/pdf-viewer"
+
+export {
+  MarkdownBlocks,
+  type MarkdownBlocksProps,
+  type MarkdownBlock,
+  type MarkdownBlockKind,
+} from "../../../registry/default/markdown-blocks/markdown-blocks"

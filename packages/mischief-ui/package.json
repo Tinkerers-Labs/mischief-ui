@@ -142,6 +142,26 @@
       "types": "./dist/signature-pad.d.ts",
       "import": "./dist/signature-pad.js",
       "require": "./dist/signature-pad.cjs"
+    },
+    "./csv-viewer": {
+      "types": "./dist/csv-viewer.d.ts",
+      "import": "./dist/csv-viewer.js",
+      "require": "./dist/csv-viewer.cjs"
+    },
+    "./docx-viewer": {
+      "types": "./dist/docx-viewer.d.ts",
+      "import": "./dist/docx-viewer.js",
+      "require": "./dist/docx-viewer.cjs"
+    },
+    "./pdf-viewer": {
+      "types": "./dist/pdf-viewer.d.ts",
+      "import": "./dist/pdf-viewer.js",
+      "require": "./dist/pdf-viewer.cjs"
+    },
+    "./markdown-blocks": {
+      "types": "./dist/markdown-blocks.d.ts",
+      "import": "./dist/markdown-blocks.js",
+      "require": "./dist/markdown-blocks.cjs"
     }
   },
   "scripts": {
@@ -156,7 +176,12 @@
     "@base-ui/react": ">=1.7.0 <2",
     "motion": ">=12 <14",
     "react": ">=18 <20",
-    "react-dom": ">=18 <20"
+    "react-dom": ">=18 <20",
+    "papaparse": ">=5",
+    "mammoth": ">=1.9",
+    "pdfjs-dist": ">=5",
+    "react-markdown": ">=9",
+    "remark-gfm": ">=4"
   },
   "keywords": [
     "react",
@@ -181,6 +206,21 @@
       "optional": true
     },
     "motion": {
+      "optional": true
+    },
+    "papaparse": {
+      "optional": true
+    },
+    "mammoth": {
+      "optional": true
+    },
+    "pdfjs-dist": {
+      "optional": true
+    },
+    "react-markdown": {
+      "optional": true
+    },
+    "remark-gfm": {
       "optional": true
     }
   }
