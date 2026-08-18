@@ -513,6 +513,21 @@
       ],
       "registryDependencies": ["utils"],
       "categories": ["ai", "form", "questions", "agent"]
+    },
+    {
+      "name": "command-palette",
+      "type": "registry:ui",
+      "title": "Command Palette",
+      "description": "A search dialog over anything you can list, opened from a keyboard shortcut.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/command-palette/command-palette.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": ["utils"],
+      "categories": ["navigation", "search", "dialog", "command"]
     }
   ]
 }

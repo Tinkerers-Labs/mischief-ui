@@ -220,3 +220,9 @@ export {
   type QuestionChoice,
   type QuestionnaireAnswers,
 } from "../../../registry/default/questionnaire/questionnaire"
+
+export {
+  CommandPalette,
+  type CommandPaletteProps,
+  type CommandItem,
+} from "../../../registry/default/command-palette/command-palette"

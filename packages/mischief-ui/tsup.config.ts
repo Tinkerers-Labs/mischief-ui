@@ -57,6 +57,8 @@ export default defineConfig({
       "../../registry/default/annotation-layer/annotation-layer.tsx",
     redaction: "../../registry/default/redaction/redaction.tsx",
     questionnaire: "../../registry/default/questionnaire/questionnaire.tsx",
+    "command-palette":
+      "../../registry/default/command-palette/command-palette.tsx",
   },
   format: ["esm", "cjs"],
   dts: true,

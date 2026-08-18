@@ -184,6 +184,11 @@
       "types": "./dist/questionnaire.d.ts",
       "import": "./dist/questionnaire.js",
       "require": "./dist/questionnaire.cjs"
+    },
+    "./command-palette": {
+      "types": "./dist/command-palette.d.ts",
+      "import": "./dist/command-palette.js",
+      "require": "./dist/command-palette.cjs"
     }
   },
   "scripts": {

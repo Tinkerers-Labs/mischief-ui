@@ -5,13 +5,10 @@ import { ComponentPreview } from "@/components/component-preview"
 import { getComponentDoc } from "@/lib/component-docs"
 
 /** The one component the page leads with. Everything else is derived. */
-const HERO = {
-  slug: "questionnaire",
-  hint: "Keyboard + shortcuts",
-} as const
+const HERO_SLUG = "questionnaire"
 
 export function HeroPlayground() {
-  const component = getComponentDoc(HERO.slug)
+  const component = getComponentDoc(HERO_SLUG)
 
   if (!component) return null
 
@@ -37,15 +34,6 @@ export function HeroPlayground() {
         </div>
 
         <ComponentPreview slug={component.slug} />
-
-        <div className="border-border mt-8 flex flex-wrap items-center justify-between gap-3 border-t pt-5">
-          <p className="text-muted-foreground max-w-[22rem] text-sm leading-relaxed">
-            {component.summary}
-          </p>
-          <span className="text-muted-foreground text-xs font-semibold tracking-[0.06em] uppercase">
-            {HERO.hint}
-          </span>
-        </div>
       </div>
     </div>
   )

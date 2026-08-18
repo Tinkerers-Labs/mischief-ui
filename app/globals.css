@@ -834,108 +834,6 @@ a:focus-visible {
   margin-top: 0;
 }
 
-.site-search-dialog {
-  background: transparent;
-  border: 0;
-  color: inherit;
-  margin: 0 auto;
-  max-height: 100dvh;
-  max-width: 100vw;
-  padding: 0;
-  width: 100vw;
-}
-
-.site-search-dialog::backdrop {
-  backdrop-filter: blur(3px);
-  background: oklch(0.215 0.018 58 / 45%);
-}
-
-.site-search-panel {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 1rem;
-  box-shadow: 0 24px 70px oklch(0.215 0.018 58 / 22%);
-  margin: 5rem auto 0;
-  max-width: 34rem;
-  overflow: hidden;
-  width: calc(100vw - 2rem);
-}
-
-.site-search-field {
-  align-items: center;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  gap: 0.65rem;
-  padding: 0 1rem;
-}
-
-.site-search-field input {
-  background: transparent;
-  border: 0;
-  font-size: 0.95rem;
-  min-height: 3.25rem;
-  outline: none;
-  width: 100%;
-}
-
-.site-search-panel ul {
-  display: grid;
-  list-style: none;
-  margin: 0;
-  max-height: 22rem;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: 0.4rem;
-}
-
-.site-search-panel li button {
-  background: none;
-  border: 0;
-  border-radius: 0.6rem;
-  cursor: pointer;
-  display: grid;
-  gap: 0.15rem;
-  grid-template-columns: auto auto;
-  padding: 0.6rem 0.75rem;
-  text-align: left;
-  width: 100%;
-}
-
-.site-search-panel li[data-active] button,
-.site-search-panel li button:hover {
-  background: var(--muted);
-}
-
-.site-search-name {
-  font-size: 0.9rem;
-  font-weight: 650;
-}
-
-.site-search-family {
-  color: var(--muted-foreground);
-  font-family: var(--font-mono), monospace;
-  font-size: 0.65rem;
-  justify-self: end;
-  text-transform: uppercase;
-}
-
-.site-search-summary {
-  color: var(--muted-foreground);
-  display: -webkit-box;
-  font-size: 0.78rem;
-  grid-column: 1 / -1;
-  line-height: 1.4;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.site-search-empty {
-  color: var(--muted-foreground);
-  font-size: 0.85rem;
-  padding: 1.25rem 1rem;
-}
-
 .dependency-tags {
   display: flex;
   flex-wrap: wrap;
@@ -1638,14 +1536,6 @@ summary,
     border-color var(--motion-fast) var(--ease-out),
     color var(--motion-fast) var(--ease-out),
     opacity var(--motion-fast) var(--ease-out);
-}
-
-.site-search-dialog[open] .site-search-panel {
-  animation: panel-in var(--motion) var(--ease-out);
-}
-
-.site-search-dialog[open]::backdrop {
-  animation: fade-in var(--motion) var(--ease-out);
 }
 
 @keyframes panel-in {

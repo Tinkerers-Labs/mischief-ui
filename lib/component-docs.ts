@@ -250,6 +250,55 @@ export function PageIndex() {
       "The index is a labelled navigation landmark with native buttons, visible focus, aria-expanded on the toggle, and aria-current on the active section. Escape closes the outline. Reduced motion removes panel animation and smooth scrolling.",
   },
   {
+    slug: "command-palette",
+    kind: "component",
+    name: "Command Palette",
+    family: "Wayfinding",
+    summary:
+      "A search dialog over anything you can list, opened from a keyboard shortcut, with ranked matches and hidden keywords.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("command-palette"),
+    npmImport: packageImport("CommandPalette", "command-palette"),
+    usage: `const items = [
+  { id: "hold-button", label: "Hold Button", group: "Controls" },
+  { id: "redaction", label: "Redaction", group: "Documents" },
+]
+
+export function Search() {
+  return <CommandPalette items={items} onSelect={(item) => open(item.id)} />
+}`,
+    props: [
+      [
+        "items",
+        "CommandItem[]",
+        "Id and label, plus an optional group, description, and keywords that match without being shown.",
+      ],
+      [
+        "onSelect",
+        "(item: CommandItem) => void",
+        "Runs with the chosen item. Navigate or act from here.",
+      ],
+      [
+        "open, defaultOpen, onOpenChange",
+        "boolean",
+        "Whether the dialog is showing, controlled or uncontrolled.",
+      ],
+      [
+        "shortcut",
+        "string | false",
+        'Key used with Meta or Control. Defaults to "k". Pass false to bind nothing.',
+      ],
+      ["maxResults", "number", "How many matches to show. Defaults to 8."],
+      [
+        "placeholder, label, emptyMessage",
+        "string, string, (query) => ReactNode",
+        "Copy for the field, the dialog, and the no-match state.",
+      ],
+    ],
+    accessibility:
+      "The field is a combobox owning a listbox, and the highlighted option is reported through aria-activedescendant, so arrow keys move the selection while focus stays in the field and typing is never interrupted. It is a native dialog opened as a modal, which brings the focus trap, the escape key, and inert content behind it without rebuilding any of them. A search that matches nothing says so in a status region rather than showing an empty list.",
+  },
+  {
     slug: "scroll-to-top-button",
     kind: "component",
     name: "Scroll to Top Button",

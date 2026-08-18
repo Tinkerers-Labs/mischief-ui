@@ -12,6 +12,7 @@ import { PageNavigatorDemo } from "@/components/demos/page-navigator-demo"
 import { SchemaBuilderDemo } from "@/components/demos/schema-builder-demo"
 import { SignaturePadDemo } from "@/components/demos/signature-pad-demo"
 import { AnnotationLayerDemo } from "@/components/demos/annotation-layer-demo"
+import { CommandPaletteDemo } from "@/components/demos/command-palette-demo"
 import { ConversationDemo } from "@/components/demos/conversation-demo"
 import { MessageDemo } from "@/components/demos/message-demo"
 import { PromptInputDemo } from "@/components/demos/prompt-input-demo"
@@ -104,6 +105,10 @@ export const componentDemos: Record<string, ComponentDemo> = {
     Demo: QuestionnaireDemo,
     frameClassName: "p-6 md:p-10",
     tileClassName: "lg:col-span-7",
+  },
+  "command-palette": {
+    Demo: CommandPaletteDemo,
+    frameClassName: "p-6 md:p-10",
   },
   "signature-footer": {
     Demo: SignatureFooterDemo,

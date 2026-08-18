@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 import { ComponentGallery } from "@/components/component-gallery"
+import { ExternalLink } from "@/components/external-link"
 import { FaqSection } from "@/components/faq-section"
 import { GalleryIndex } from "@/components/gallery-index"
 import { HeroPlayground } from "@/components/hero-playground"
@@ -78,7 +79,21 @@ export default function Home() {
             </div>
 
             <p className="text-muted-foreground mt-5 text-sm">
-              Copy the source · Install from npm · MIT licensed
+              Install from{" "}
+              <ExternalLink
+                className="hover:text-foreground underline underline-offset-4"
+                href={siteConfig.package.url}
+              >
+                npm
+              </ExternalLink>{" "}
+              ·{" "}
+              <Link
+                className="hover:text-foreground underline underline-offset-4"
+                href={siteConfig.license.route}
+              >
+                {siteConfig.license.name}
+              </Link>{" "}
+              licensed
             </p>
             <p className="mt-2 text-sm">
               Using a coding agent?{" "}
