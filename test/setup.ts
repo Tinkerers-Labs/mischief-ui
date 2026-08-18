@@ -39,6 +39,22 @@ Object.defineProperty(URL, "revokeObjectURL", {
   value: () => undefined,
 })
 
+class ResizeObserverStub {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+Object.defineProperty(window, "ResizeObserver", {
+  configurable: true,
+  value: ResizeObserverStub,
+})
+
+Object.defineProperty(globalThis, "ResizeObserver", {
+  configurable: true,
+  value: ResizeObserverStub,
+})
+
 window.requestAnimationFrame = (callback) =>
   window.setTimeout(() => callback(performance.now()), 0)
 window.cancelAnimationFrame = (handle) => window.clearTimeout(handle)

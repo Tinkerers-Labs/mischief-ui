@@ -326,6 +326,110 @@
         }
       ],
       "categories": ["ai", "approval", "confirmation", "agent"]
+    },
+    {
+      "name": "bounding-boxes",
+      "type": "registry:ui",
+      "title": "Bounding Boxes",
+      "description": "Selectable regions drawn over a page image from normalized coordinates.",
+      "dependencies": ["clsx@^2.1.1", "tailwind-merge@^3.3.1"],
+      "files": [
+        {
+          "path": "registry/default/bounding-boxes/bounding-boxes.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["document", "citations", "ocr", "ai"]
+    },
+    {
+      "name": "page-navigator",
+      "type": "registry:ui",
+      "title": "Page Navigator",
+      "description": "A rail of page thumbnails for moving through a long document.",
+      "dependencies": [
+        "lucide-react@^1.31.0",
+        "clsx@^2.1.1",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/page-navigator/page-navigator.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["document", "navigation", "pages"]
+    },
+    {
+      "name": "file-tree",
+      "type": "registry:ui",
+      "title": "File Tree",
+      "description": "An expandable tree of folders and files with full keyboard navigation.",
+      "dependencies": [
+        "lucide-react@^1.31.0",
+        "clsx@^2.1.1",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/file-tree/file-tree.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["document", "tree", "files", "navigation"]
+    },
+    {
+      "name": "document-splits",
+      "type": "registry:ui",
+      "title": "Document Splits",
+      "description": "Mark where one scanned batch becomes several documents.",
+      "dependencies": [
+        "lucide-react@^1.31.0",
+        "clsx@^2.1.1",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/document-splits/document-splits.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["document", "split", "pages"]
+    },
+    {
+      "name": "schema-builder",
+      "type": "registry:ui",
+      "title": "Schema Builder",
+      "description": "Build the shape you want extracted from a document, with nesting.",
+      "dependencies": [
+        "lucide-react@^1.31.0",
+        "clsx@^2.1.1",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/schema-builder/schema-builder.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["document", "schema", "form", "ai"]
+    },
+    {
+      "name": "signature-pad",
+      "type": "registry:ui",
+      "title": "Signature Pad",
+      "description": "Sign with a pointer on a canvas, or type a name instead.",
+      "dependencies": [
+        "lucide-react@^1.31.0",
+        "clsx@^2.1.1",
+        "tailwind-merge@^3.3.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/signature-pad/signature-pad.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["document", "signature", "canvas", "form"]
     }
   ]
 }

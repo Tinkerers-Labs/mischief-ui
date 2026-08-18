@@ -773,10 +773,274 @@ export function Answer() {
       "The card is a labelled region and the options are a group tied to the question. Ordinary options are ordinary buttons. A destructive option cannot be triggered by a stray tap: pointer input has to be held, and releasing early cancels. Keyboard and assistive technology users activate it once instead, since holding a key is not a fair requirement. The progress fill is decorative and is hidden under reduced motion.",
   },
   {
+    slug: "bounding-boxes",
+    kind: "component",
+    name: "Bounding Boxes",
+    number: "17",
+    family: "Documents",
+    summary:
+      "Selectable regions drawn over a page image from normalized coordinates, for showing an agent exactly where an answer came from.",
+    dependencies: ["clsx", "tailwind-merge"],
+    install: registryInstallCommand("bounding-boxes"),
+    npmImport: packageImport("BoundingBoxes", "bounding-boxes"),
+    usage: `const boxes = [
+  { id: "total", label: "Total", x: 0.62, y: 0.71, width: 0.2, height: 0.04 },
+]
+
+export function Invoice() {
+  return <BoundingBoxes src="/page-1.png" alt="Invoice, page 1" boxes={boxes} />
+}`,
+    props: [
+      ["src, alt", "string", "The page image and its description."],
+      [
+        "boxes",
+        "BoundingBox[]",
+        "Id, optional label and tone, and x, y, width, height as fractions of the page from 0 to 1.",
+      ],
+      [
+        "activeId, defaultActiveId",
+        "string | null",
+        "The selected region, controlled or uncontrolled.",
+      ],
+      [
+        "onActiveChange",
+        "(id: string | null) => void",
+        "Runs when a region is selected or cleared.",
+      ],
+      ["showLabels", "boolean", "Shows the label tab above each region."],
+      [
+        "renderImage",
+        "(props) => ReactNode",
+        "Uses a framework image component instead of a plain img.",
+      ],
+    ],
+    accessibility:
+      "Regions are a labelled list of toggle buttons, so they are reachable by keyboard and announced with their label and pressed state rather than only by colour. The visible label is decorative and hidden from assistive technology to avoid reading it twice. Coordinates are clamped to the page, so bad data cannot push a region off the image or out of the document flow.",
+  },
+  {
+    slug: "page-navigator",
+    kind: "component",
+    name: "Page Navigator",
+    number: "18",
+    family: "Documents",
+    summary:
+      "A rail of page thumbnails for moving through a long document, with arrow-key navigation and a clear active page.",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("page-navigator"),
+    npmImport: packageImport("PageNavigator", "page-navigator"),
+    usage: `export function Sidebar({ pages }: { pages: DocumentPage[] }) {
+  return <PageNavigator pages={pages} onActivePageChange={scrollToPage} />
+}`,
+    props: [
+      [
+        "pages",
+        "DocumentPage[]",
+        "Page number, optional thumbnail src, and optional label.",
+      ],
+      [
+        "activePage, defaultActivePage",
+        "number",
+        "The current page, controlled or uncontrolled.",
+      ],
+      [
+        "onActivePageChange",
+        "(page: number) => void",
+        "Runs when the page changes.",
+      ],
+      [
+        "orientation",
+        '"vertical" | "horizontal"',
+        'Rail direction. Defaults to "vertical".',
+      ],
+      [
+        "renderImage",
+        "(props) => ReactNode",
+        "Uses a framework image component for thumbnails.",
+      ],
+    ],
+    accessibility:
+      "The rail is a tab list with a single tab stop. Arrow keys move between pages along the rail's orientation, Home and End jump to the ends, and focus follows selection. Pages without a thumbnail fall back to an icon and still carry their number, so the control works before any image has loaded.",
+  },
+  {
+    slug: "file-tree",
+    kind: "component",
+    name: "File Tree",
+    number: "19",
+    family: "Documents",
+    summary:
+      "An expandable tree of folders and files with full keyboard navigation and correct tree semantics.",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("file-tree"),
+    npmImport: packageImport("FileTree", "file-tree"),
+    usage: `const nodes = [
+  {
+    id: "invoices",
+    name: "invoices",
+    kind: "folder",
+    children: [{ id: "jan", name: "january.pdf" }],
+  },
+]
+
+export function Files() {
+  return <FileTree nodes={nodes} onSelect={openFile} />
+}`,
+    props: [
+      [
+        "nodes",
+        "FileTreeNode[]",
+        "Id, name, kind, optional children, meta, and icon.",
+      ],
+      [
+        "expandedIds, defaultExpandedIds",
+        "string[]",
+        "Which folders are open, controlled or uncontrolled.",
+      ],
+      [
+        "selectedId, defaultSelectedId",
+        "string | null",
+        "The selected node, controlled or uncontrolled.",
+      ],
+      ["onSelect", "(node: FileTreeNode) => void", "Runs on selection."],
+      [
+        "onExpandedChange",
+        "(ids: string[]) => void",
+        "Runs when a folder opens or closes.",
+      ],
+    ],
+    accessibility:
+      "The tree uses tree and treeitem roles with aria-level and aria-expanded on every row, so depth and state are announced rather than implied by indentation. There is one tab stop into the tree. Up and Down move between visible rows, Right opens a folder or steps into it, Left closes it or moves to its parent, Home and End jump to the ends, and Enter or Space selects.",
+  },
+  {
+    slug: "document-splits",
+    kind: "component",
+    name: "Document Splits",
+    number: "20",
+    family: "Documents",
+    summary:
+      "Mark where one scanned batch becomes several documents. Splits are toggled between pages and the segments update as you go.",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("document-splits"),
+    npmImport: packageImport("DocumentSplits", "document-splits"),
+    usage: `export function Batch({ pages }: { pages: SplitPage[] }) {
+  return <DocumentSplits pages={pages} onSplitChange={saveSplits} />
+}`,
+    props: [
+      [
+        "pages",
+        "SplitPage[]",
+        "Page number, optional thumbnail src, and optional label.",
+      ],
+      [
+        "splitAfter, defaultSplitAfter",
+        "number[]",
+        "Page numbers a split follows, controlled or uncontrolled.",
+      ],
+      [
+        "onSplitChange",
+        "(splitAfter: number[]) => void",
+        "Runs with the sorted boundaries whenever they change.",
+      ],
+      [
+        "segmentLabel",
+        "(segment: DocumentSegment) => ReactNode",
+        "Replaces the default heading above each document.",
+      ],
+      [
+        "renderImage",
+        "(props) => ReactNode",
+        "Uses a framework image component for thumbnails.",
+      ],
+    ],
+    accessibility:
+      "Each split control is a toggle button naming the page it follows, so the action is clear without seeing the layout. No control is offered after the final page, since a split there would mean nothing. Segment headings state the document number and page count as text.",
+  },
+  {
+    slug: "schema-builder",
+    kind: "component",
+    name: "Schema Builder",
+    number: "21",
+    family: "Documents",
+    summary:
+      "Build the shape you want extracted from a document. Fields carry a name, type, description, and requirement, and object and array fields nest.",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("schema-builder"),
+    npmImport: packageImport("SchemaBuilder", "schema-builder"),
+    usage: `export function Extraction() {
+  return (
+    <SchemaBuilder
+      defaultFields={[{ id: "total", name: "total", type: "number" }]}
+      onFieldsChange={saveSchema}
+    />
+  )
+}`,
+    props: [
+      [
+        "fields, defaultFields",
+        "SchemaField[]",
+        "The schema, controlled or uncontrolled.",
+      ],
+      [
+        "onFieldsChange",
+        "(fields: SchemaField[]) => void",
+        "Runs on every edit.",
+      ],
+      [
+        "types",
+        "readonly SchemaFieldType[]",
+        "The type options offered. Defaults to string, number, boolean, date, object, and array.",
+      ],
+      [
+        "maxDepth",
+        "number",
+        "How far object and array fields may nest. Defaults to 3.",
+      ],
+      [
+        "createId",
+        "() => string",
+        "Supplies ids for new fields when you need them stable.",
+      ],
+    ],
+    accessibility:
+      "Every input has a label naming the field it belongs to, so a screen reader user knows which row they are editing rather than hearing a run of unlabelled boxes. Nesting controls say which field they open, and remove buttons name the field they delete. Only object and array fields offer nesting, and nesting stops at maxDepth.",
+  },
+  {
+    slug: "signature-pad",
+    kind: "component",
+    name: "Signature Pad",
+    number: "22",
+    family: "Documents",
+    summary:
+      "Sign with a pointer on a canvas, or type a name instead. Returns a PNG data URL or the typed text.",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    install: registryInstallCommand("signature-pad"),
+    npmImport: packageImport("SignaturePad", "signature-pad"),
+    usage: `export function Sign() {
+  return <SignaturePad onChange={(value) => setSignature(value)} />
+}`,
+    props: [
+      [
+        "mode, defaultMode",
+        '"draw" | "type"',
+        "The active method, controlled or uncontrolled.",
+      ],
+      [
+        "onChange",
+        "(value: SignatureValue | null) => void",
+        "Runs with the PNG data URL or typed text, and null once cleared.",
+      ],
+      ["penColor, lineWidth", "string, number", "Stroke appearance."],
+      ["height", "number", "Signing area height in pixels. Defaults to 180."],
+      ["typedFontFamily", "string", "The face used for a typed signature."],
+      ["hint", "ReactNode", "Guidance shown under the signing area."],
+    ],
+    accessibility:
+      "Drawing on a canvas cannot be done with a keyboard, so typing is a first-class method rather than a fallback, and the canvas says so in its accessible name. The method switch is a labelled group of toggle buttons. Clearing is disabled while there is nothing to clear. The canvas is redrawn at the device pixel ratio so a signature is not blurred on a high-density screen.",
+  },
+  {
     slug: "signature-footer",
     kind: "block",
     name: "Signature Footer",
-    number: "17",
+    number: "23",
     family: "Blocks",
     summary:
       "A complete closing section with room for the useful links first and one oversized wordmark at the end.",
@@ -815,7 +1079,7 @@ export function Answer() {
     slug: "image-gallery",
     kind: "block",
     name: "Image Gallery",
-    number: "18",
+    number: "24",
     family: "Blocks",
     summary:
       "A responsive image collection with equal and masonry layouts, plus a lightbox that handles focus, keyboard navigation, and scroll locking.",

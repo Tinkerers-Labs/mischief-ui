@@ -112,3 +112,43 @@ export {
   type ApprovalCardProps,
   type ApprovalOption,
 } from "../../../registry/default/approval-card/approval-card"
+
+export {
+  BoundingBoxes,
+  type BoundingBoxesProps,
+  type BoundingBox,
+  type BoundingBoxTone,
+} from "../../../registry/default/bounding-boxes/bounding-boxes"
+
+export {
+  PageNavigator,
+  type PageNavigatorProps,
+  type DocumentPage,
+} from "../../../registry/default/page-navigator/page-navigator"
+
+export {
+  FileTree,
+  type FileTreeProps,
+  type FileTreeNode,
+} from "../../../registry/default/file-tree/file-tree"
+
+export {
+  DocumentSplits,
+  type DocumentSplitsProps,
+  type SplitPage,
+  type DocumentSegment,
+} from "../../../registry/default/document-splits/document-splits"
+
+export {
+  SchemaBuilder,
+  type SchemaBuilderProps,
+  type SchemaField,
+  type SchemaFieldType,
+} from "../../../registry/default/schema-builder/schema-builder"
+
+export {
+  SignaturePad,
+  type SignaturePadProps,
+  type SignatureValue,
+  type SignatureMode,
+} from "../../../registry/default/signature-pad/signature-pad"

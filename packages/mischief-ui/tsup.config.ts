@@ -31,6 +31,16 @@ export default defineConfig({
     "inline-citations":
       "../../registry/default/inline-citations/inline-citations.tsx",
     "approval-card": "../../registry/default/approval-card/approval-card.tsx",
+    "bounding-boxes":
+      "../../registry/default/bounding-boxes/bounding-boxes.tsx",
+    "page-navigator":
+      "../../registry/default/page-navigator/page-navigator.tsx",
+    "file-tree": "../../registry/default/file-tree/file-tree.tsx",
+    "document-splits":
+      "../../registry/default/document-splits/document-splits.tsx",
+    "schema-builder":
+      "../../registry/default/schema-builder/schema-builder.tsx",
+    "signature-pad": "../../registry/default/signature-pad/signature-pad.tsx",
   },
   format: ["esm", "cjs"],
   dts: true,

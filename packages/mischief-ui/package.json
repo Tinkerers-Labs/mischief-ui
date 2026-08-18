@@ -112,6 +112,36 @@
       "types": "./dist/approval-card.d.ts",
       "import": "./dist/approval-card.js",
       "require": "./dist/approval-card.cjs"
+    },
+    "./bounding-boxes": {
+      "types": "./dist/bounding-boxes.d.ts",
+      "import": "./dist/bounding-boxes.js",
+      "require": "./dist/bounding-boxes.cjs"
+    },
+    "./page-navigator": {
+      "types": "./dist/page-navigator.d.ts",
+      "import": "./dist/page-navigator.js",
+      "require": "./dist/page-navigator.cjs"
+    },
+    "./file-tree": {
+      "types": "./dist/file-tree.d.ts",
+      "import": "./dist/file-tree.js",
+      "require": "./dist/file-tree.cjs"
+    },
+    "./document-splits": {
+      "types": "./dist/document-splits.d.ts",
+      "import": "./dist/document-splits.js",
+      "require": "./dist/document-splits.cjs"
+    },
+    "./schema-builder": {
+      "types": "./dist/schema-builder.d.ts",
+      "import": "./dist/schema-builder.js",
+      "require": "./dist/schema-builder.cjs"
+    },
+    "./signature-pad": {
+      "types": "./dist/signature-pad.d.ts",
+      "import": "./dist/signature-pad.js",
+      "require": "./dist/signature-pad.cjs"
     }
   },
   "scripts": {

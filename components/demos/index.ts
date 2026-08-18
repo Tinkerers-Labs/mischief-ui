@@ -1,6 +1,12 @@
 import type { ComponentType } from "react"
 
 import { AgentChecklistDemo } from "@/components/demos/agent-checklist-demo"
+import { BoundingBoxesDemo } from "@/components/demos/bounding-boxes-demo"
+import { DocumentSplitsDemo } from "@/components/demos/document-splits-demo"
+import { FileTreeDemo } from "@/components/demos/file-tree-demo"
+import { PageNavigatorDemo } from "@/components/demos/page-navigator-demo"
+import { SchemaBuilderDemo } from "@/components/demos/schema-builder-demo"
+import { SignaturePadDemo } from "@/components/demos/signature-pad-demo"
 import { ApprovalCardDemo } from "@/components/demos/approval-card-demo"
 import { AskAiDemo } from "@/components/demos/ask-ai-demo"
 import { ElasticSliderDemo } from "@/components/demos/elastic-slider-demo"
@@ -47,6 +53,15 @@ export const componentDemos: Record<string, ComponentDemo> = {
     frameClassName: "p-6 md:p-10",
   },
   "approval-card": { Demo: ApprovalCardDemo, frameClassName: "p-6 md:p-10" },
+  "bounding-boxes": { Demo: BoundingBoxesDemo, frameClassName: "p-6 md:p-10" },
+  "page-navigator": { Demo: PageNavigatorDemo, frameClassName: "p-6 md:p-10" },
+  "file-tree": { Demo: FileTreeDemo, frameClassName: "p-6 md:p-10" },
+  "document-splits": {
+    Demo: DocumentSplitsDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "schema-builder": { Demo: SchemaBuilderDemo, frameClassName: "p-6 md:p-10" },
+  "signature-pad": { Demo: SignaturePadDemo, frameClassName: "p-6 md:p-10" },
   "signature-footer": {
     Demo: SignatureFooterDemo,
     frameClassName: "p-4 md:p-8",
