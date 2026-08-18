@@ -1,3 +1,5 @@
+import path from "node:path"
+
 import { defineConfig } from "tsup"
 
 export default defineConfig({
@@ -46,6 +48,12 @@ export default defineConfig({
   dts: true,
   clean: true,
   sourcemap: true,
+  esbuildOptions(options) {
+    options.alias = {
+      ...options.alias,
+      "@": path.resolve(import.meta.dirname, "../.."),
+    }
+  },
   external: [
     "react",
     "react-dom",

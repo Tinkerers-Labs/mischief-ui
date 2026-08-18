@@ -3,12 +3,7 @@
 import * as React from "react"
 import { Button } from "@base-ui/react/button"
 import { ArrowRight } from "lucide-react"
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
-
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
+import { cn } from "@/lib/utils"
 
 export interface ShiftButtonProps extends Omit<
   React.ComponentPropsWithoutRef<typeof Button>,

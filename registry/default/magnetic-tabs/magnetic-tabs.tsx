@@ -2,18 +2,13 @@
 
 import * as React from "react"
 import { Tabs } from "@base-ui/react/tabs"
-import { clsx, type ClassValue } from "clsx"
 import {
   motion,
   useMotionValue,
   useReducedMotion,
   useSpring,
 } from "motion/react"
-import { twMerge } from "tailwind-merge"
-
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
+import { cn } from "@/lib/utils"
 
 export interface MagneticTabItem {
   value: string

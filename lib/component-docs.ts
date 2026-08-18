@@ -9,7 +9,7 @@ export const componentDocs = [
     family: "Controls",
     summary:
       "Familiar tabs with a gentle pull toward the pointer. Selection stays clear and keyboard navigation remains immediate.",
-    dependencies: ["@base-ui/react", "motion", "clsx", "tailwind-merge"],
+    dependencies: ["@base-ui/react", "motion"],
     install: registryInstallCommand("magnetic-tabs"),
     npmImport: packageImport("MagneticTabs", "magnetic-tabs"),
     usage: `const items = [
@@ -46,7 +46,7 @@ export function Example() {
     family: "Controls",
     summary:
       "A precise slider with a small amount of give at either end. The current value stays visible and the control works without a pointer.",
-    dependencies: ["@base-ui/react", "motion", "clsx", "tailwind-merge"],
+    dependencies: ["@base-ui/react", "motion"],
     install: registryInstallCommand("elastic-slider"),
     npmImport: packageImport("ElasticSlider", "elastic-slider"),
     usage: `export function Volume() {
@@ -94,7 +94,7 @@ export function Example() {
     family: "Controls",
     summary:
       "A confirmation button for actions that deserve a second thought. Release early to cancel, or activate once with a keyboard.",
-    dependencies: ["clsx", "tailwind-merge"],
+    dependencies: [],
     install: registryInstallCommand("hold-button"),
     npmImport: packageImport("HoldButton", "hold-button"),
     usage: `export function RemoveDownload() {
@@ -134,7 +134,7 @@ export function Example() {
     family: "Controls",
     summary:
       "A call to action that trades its leading icon for a directional cue when someone approaches it.",
-    dependencies: ["@base-ui/react", "lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["@base-ui/react", "lucide-react"],
     install: registryInstallCommand("shift-button"),
     npmImport: packageImport("ShiftButton", "shift-button"),
     usage: `export function DownloadButton() {
@@ -165,7 +165,7 @@ export function Example() {
     family: "Controls",
     summary:
       "A checkbox with one stubborn rule: the bear will not let you leave it on. Best kept for demos, Easter eggs, and harmless preferences.",
-    dependencies: ["motion", "clsx", "tailwind-merge"],
+    dependencies: ["motion"],
     install: registryInstallCommand("impossible-checkbox"),
     npmImport: packageImport("ImpossibleCheckbox", "impossible-checkbox"),
     usage: `export function Demo() {
@@ -210,7 +210,7 @@ export function Example() {
     family: "Wayfinding",
     summary:
       "A compact outline for long pages. It keeps the active section and reading progress visible without becoming another permanent sidebar.",
-    dependencies: ["motion", "lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["motion", "lucide-react"],
     install: registryInstallCommand("floating-index"),
     npmImport: packageImport("FloatingIndex", "floating-index"),
     usage: `const items = [
@@ -259,7 +259,7 @@ export function PageIndex() {
     family: "Wayfinding",
     summary:
       "A floating way back after someone has moved down a long page or scroll area. It stays hidden near the top.",
-    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["lucide-react"],
     install: registryInstallCommand("scroll-to-top-button"),
     npmImport: packageImport("ScrollToTopButton", "scroll-to-top-button"),
     usage: `export function LongPage() {
@@ -306,7 +306,7 @@ export function PageIndex() {
     family: "Files",
     summary:
       "A file picker and dropzone with clear validation and a visible queue. Connect your upload function when you need progress, cancel, and retry.",
-    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["lucide-react"],
     install: registryInstallCommand("file-upload"),
     npmImport: packageImport("FileUpload", "file-upload"),
     usage: `async function uploadFile(file, { signal, onProgress }) {
@@ -378,7 +378,7 @@ export function Attachments() {
     family: "Files",
     summary:
       "A compact image preview for attachments, upload queues, and file lists. Browser image files work without any setup.",
-    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["lucide-react"],
     install: registryInstallCommand("file-thumbnail"),
     npmImport: packageImport("FileThumbnail", "file-thumbnail"),
     usage: `export function ImagePreview({ file }: { file: File }) {
@@ -427,7 +427,7 @@ export function Attachments() {
     family: "Agent UI",
     summary:
       "Hand someone a prepared, source-aware prompt in the AI assistant they already use, or let them copy it for another one.",
-    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["lucide-react"],
     install: registryInstallCommand("ask-ai"),
     npmImport: packageImport("AskAi", "ask-ai"),
     usage: `const prompt = [
@@ -479,7 +479,7 @@ export function AskAboutAcme() {
     family: "Agent UI",
     summary:
       "Text that arrives a piece at a time from an async source, with a cursor while it runs and sentence-level announcements for screen readers.",
-    dependencies: ["clsx", "tailwind-merge"],
+    dependencies: [],
     install: registryInstallCommand("streaming-text"),
     npmImport: packageImport("StreamingText", "streaming-text"),
     usage: `export function Answer({ stream }: { stream: AsyncIterable<string> }) {
@@ -531,7 +531,7 @@ export function AskAboutAcme() {
     family: "Agent UI",
     summary:
       "A status row for work in progress, with a live elapsed timer and optional reasoning behind a disclosure.",
-    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["lucide-react"],
     install: registryInstallCommand("thinking-state"),
     npmImport: packageImport("ThinkingState", "thinking-state"),
     usage: `export function Status({ startedAt }: { startedAt: number }) {
@@ -583,7 +583,7 @@ export function AskAboutAcme() {
     family: "Agent UI",
     summary:
       "A compact record of one tool invocation: name, status, duration, and the input and output behind a disclosure.",
-    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["lucide-react"],
     install: registryInstallCommand("tool-call"),
     npmImport: packageImport("ToolCall", "tool-call"),
     usage: `export function Search() {
@@ -635,7 +635,7 @@ export function AskAboutAcme() {
     family: "Agent UI",
     summary:
       "A task list whose items change state as work proceeds, announcing what changed instead of re-reading the whole list.",
-    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["lucide-react"],
     install: registryInstallCommand("agent-checklist"),
     npmImport: packageImport("AgentChecklist", "agent-checklist"),
     usage: `const items = [
@@ -676,7 +676,7 @@ export function Plan() {
     family: "Agent UI",
     summary:
       "Numbered markers placed inside generated text, each linking to its entry in a source list underneath.",
-    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["lucide-react"],
     install: registryInstallCommand("inline-citations"),
     npmImport: packageImport("InlineCitations", "inline-citations"),
     usage: `const sources = [
@@ -722,7 +722,7 @@ export function Answer() {
     family: "Agent UI",
     summary:
       "The question an agent asks before it acts. Ordinary answers take one click; destructive ones have to be held.",
-    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["lucide-react"],
     install: registryInstallCommand("approval-card"),
     npmImport: packageImport("ApprovalCard", "approval-card"),
     usage: `export function Confirm() {
@@ -780,7 +780,7 @@ export function Answer() {
     family: "Documents",
     summary:
       "Selectable regions drawn over a page image from normalized coordinates, for showing an agent exactly where an answer came from.",
-    dependencies: ["clsx", "tailwind-merge"],
+    dependencies: [],
     install: registryInstallCommand("bounding-boxes"),
     npmImport: packageImport("BoundingBoxes", "bounding-boxes"),
     usage: `const boxes = [
@@ -825,7 +825,7 @@ export function Invoice() {
     family: "Documents",
     summary:
       "A rail of page thumbnails for moving through a long document, with arrow-key navigation and a clear active page.",
-    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["lucide-react"],
     install: registryInstallCommand("page-navigator"),
     npmImport: packageImport("PageNavigator", "page-navigator"),
     usage: `export function Sidebar({ pages }: { pages: DocumentPage[] }) {
@@ -869,7 +869,7 @@ export function Invoice() {
     family: "Documents",
     summary:
       "An expandable tree of folders and files with full keyboard navigation and correct tree semantics.",
-    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["lucide-react"],
     install: registryInstallCommand("file-tree"),
     npmImport: packageImport("FileTree", "file-tree"),
     usage: `const nodes = [
@@ -918,7 +918,7 @@ export function Files() {
     family: "Documents",
     summary:
       "Mark where one scanned batch becomes several documents. Splits are toggled between pages and the segments update as you go.",
-    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["lucide-react"],
     install: registryInstallCommand("document-splits"),
     npmImport: packageImport("DocumentSplits", "document-splits"),
     usage: `export function Batch({ pages }: { pages: SplitPage[] }) {
@@ -962,7 +962,7 @@ export function Files() {
     family: "Documents",
     summary:
       "Build the shape you want extracted from a document. Fields carry a name, type, description, and requirement, and object and array fields nest.",
-    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["lucide-react"],
     install: registryInstallCommand("schema-builder"),
     npmImport: packageImport("SchemaBuilder", "schema-builder"),
     usage: `export function Extraction() {
@@ -1011,7 +1011,7 @@ export function Files() {
     family: "Documents",
     summary:
       "Sign with a pointer on a canvas, or type a name instead. Returns a PNG data URL or the typed text.",
-    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["lucide-react"],
     install: registryInstallCommand("signature-pad"),
     npmImport: packageImport("SignaturePad", "signature-pad"),
     usage: `export function Sign() {
@@ -1044,7 +1044,7 @@ export function Files() {
     family: "Blocks",
     summary:
       "A complete closing section with room for the useful links first and one oversized wordmark at the end.",
-    dependencies: ["clsx", "tailwind-merge"],
+    dependencies: [],
     install: registryInstallCommand("signature-footer"),
     npmImport: packageImport("SignatureFooter", "signature-footer"),
     usage: `export function Footer() {
@@ -1083,7 +1083,7 @@ export function Files() {
     family: "Blocks",
     summary:
       "A responsive image collection with equal and masonry layouts, plus a lightbox that handles focus, keyboard navigation, and scroll locking.",
-    dependencies: ["@base-ui/react", "lucide-react", "clsx", "tailwind-merge"],
+    dependencies: ["@base-ui/react", "lucide-react"],
     install: registryInstallCommand("image-gallery"),
     npmImport: packageImport("ImageGallery", "image-gallery"),
     usage: `const images = [

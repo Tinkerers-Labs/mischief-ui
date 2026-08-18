@@ -2,7 +2,10 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "incremental": false,
-    "noEmit": false
+    "noEmit": false,
+    "paths": {
+      "@/*": ["../../*"]
+    }
   },
   "include": ["src/**/*.ts", "../../registry/**/*.tsx"]
 }

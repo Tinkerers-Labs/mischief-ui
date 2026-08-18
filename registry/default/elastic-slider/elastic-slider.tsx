@@ -2,13 +2,8 @@
 
 import * as React from "react"
 import { Slider } from "@base-ui/react/slider"
-import { clsx, type ClassValue } from "clsx"
 import { motion, useReducedMotion } from "motion/react"
-import { twMerge } from "tailwind-merge"
-
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
+import { cn } from "@/lib/utils"
 
 export interface ElasticSliderProps extends Omit<
   React.ComponentPropsWithoutRef<typeof Slider.Root>,

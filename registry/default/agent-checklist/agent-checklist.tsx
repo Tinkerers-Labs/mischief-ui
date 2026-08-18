@@ -2,12 +2,7 @@
 
 import * as React from "react"
 import { Check, Circle, Loader, Minus, TriangleAlert } from "lucide-react"
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
-
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
+import { cn } from "@/lib/utils"
 
 export type ChecklistItemStatus =
   "pending" | "active" | "done" | "error" | "skipped"
