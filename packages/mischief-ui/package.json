@@ -175,5 +175,13 @@
   "bugs": "https://github.com/Tinkerers-Labs/mischief-ui/issues",
   "publishConfig": {
     "access": "public"
+  },
+  "peerDependenciesMeta": {
+    "@base-ui/react": {
+      "optional": true
+    },
+    "motion": {
+      "optional": true
+    }
   }
 }
