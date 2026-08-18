@@ -29,9 +29,20 @@ export function Volume() {
 }
 ```
 
-Every component has its own entry, and there is no root import. A barrel would
-reach all of them, and with it every optional peer, so importing one component
-would fail unless you had installed Base UI, Motion, and the document parsers.
+A root import also works, and tree-shakes to the same bytes:
+
+```tsx
+import { HoldButton } from "mischief-ui"
+```
+
+It carries the 31 components that resolve with nothing but React installed.
+The other seven are reachable only through their own entry, because a barrel
+holding them would drag in an optional peer and fail for everyone who had not
+installed it: Magnetic Tabs, Elastic Slider, Shift Button, and Image Gallery
+need Base UI, Impossible Checkbox and Floating Index need Motion, and Markdown
+Blocks needs react-markdown. Reaching for one of those at the root is a
+compile error naming the missing export, not a crash at run time.
+
 Importing `mischief-ui/signature-footer` also keeps that server-safe component
 out of a client boundary.
 

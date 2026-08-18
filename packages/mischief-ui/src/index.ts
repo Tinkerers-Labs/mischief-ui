@@ -1,17 +1,6 @@
 "use client"
 
 export {
-  MagneticTabs,
-  type MagneticTabItem,
-  type MagneticTabsProps,
-} from "../../../registry/default/magnetic-tabs/magnetic-tabs"
-
-export {
-  ElasticSlider,
-  type ElasticSliderProps,
-} from "../../../registry/default/elastic-slider/elastic-slider"
-
-export {
   HoldButton,
   type HoldButtonProps,
 } from "../../../registry/default/hold-button/hold-button"
@@ -20,29 +9,6 @@ export {
   SignatureFooter,
   type SignatureFooterProps,
 } from "../../../registry/default/signature-footer/signature-footer"
-
-export {
-  ImpossibleCheckbox,
-  type ImpossibleCheckboxProps,
-} from "../../../registry/default/impossible-checkbox/impossible-checkbox"
-
-export {
-  FloatingIndex,
-  type FloatingIndexItem,
-  type FloatingIndexProps,
-} from "../../../registry/default/floating-index/floating-index"
-
-export {
-  ShiftButton,
-  type ShiftButtonProps,
-} from "../../../registry/default/shift-button/shift-button"
-
-export {
-  ImageGallery,
-  type ImageGalleryItem,
-  type ImageGalleryLayout,
-  type ImageGalleryProps,
-} from "../../../registry/default/image-gallery/image-gallery"
 
 export {
   ScrollToTopButton,
@@ -170,13 +136,6 @@ export {
 } from "../../../registry/default/pdf-viewer/pdf-viewer"
 
 export {
-  MarkdownBlocks,
-  type MarkdownBlocksProps,
-  type MarkdownBlock,
-  type MarkdownBlockKind,
-} from "../../../registry/default/markdown-blocks/markdown-blocks"
-
-export {
   Conversation,
   type ConversationProps,
 } from "../../../registry/default/conversation/conversation"
@@ -244,3 +203,36 @@ export {
   type TableOfContentsProps,
   type TocSection,
 } from "../../../registry/default/table-of-contents/table-of-contents"
+
+// Type-only, so these erase at build time and pull in no optional peer. They
+// give the declaration build one shared type graph, without which tsup walks
+// each entry separately and runs out of heap. The components themselves stay
+// subpath-only: importing one is what makes its peer a real requirement.
+
+export type {
+  MagneticTabItem,
+  MagneticTabsProps,
+} from "../../../registry/default/magnetic-tabs/magnetic-tabs"
+
+export type { ElasticSliderProps } from "../../../registry/default/elastic-slider/elastic-slider"
+
+export type { ImpossibleCheckboxProps } from "../../../registry/default/impossible-checkbox/impossible-checkbox"
+
+export type {
+  FloatingIndexItem,
+  FloatingIndexProps,
+} from "../../../registry/default/floating-index/floating-index"
+
+export type { ShiftButtonProps } from "../../../registry/default/shift-button/shift-button"
+
+export type {
+  ImageGalleryItem,
+  ImageGalleryLayout,
+  ImageGalleryProps,
+} from "../../../registry/default/image-gallery/image-gallery"
+
+export type {
+  MarkdownBlocksProps,
+  MarkdownBlock,
+  MarkdownBlockKind,
+} from "../../../registry/default/markdown-blocks/markdown-blocks"

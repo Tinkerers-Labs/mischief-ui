@@ -51,6 +51,21 @@ function externalsOf(entry: string) {
   return packages
 }
 
+const optional = new Set(Object.keys(packageJson.peerDependenciesMeta))
+
+/**
+ * Slugs the barrel re-exports as values. Type-only re-exports are excluded:
+ * they erase at build time, so they add nothing to what a root import needs.
+ */
+const barrelExports = new Set(
+  [
+    ...readFileSync(
+      path.resolve(import.meta.dirname, "../packages/mischief-ui/src/index.ts"),
+      "utf8"
+    ).matchAll(/^export \{[^}]*\} from "[^"]*registry\/default\/([^/]+)\//gm),
+  ].map(([, slug]) => slug!)
+)
+
 const built = existsSync(DIST)
 
 const entries = registry.items
@@ -97,12 +112,25 @@ describe.skipIf(!built || entries.length === 0)(
       )
     })
 
-    it("does not offer a root import", () => {
-      // The barrel reaches every component, so a root import only resolves for
-      // someone who installed every optional peer. Blocking it gives a clear
-      // ERR_PACKAGE_PATH_NOT_EXPORTED rather than a missing @base-ui/react.
+    it("offers a root import that needs no optional peer", () => {
       // "." would be read as a property path, so compare keys directly.
-      expect(Object.keys(packageJson.exports)).not.toContain(".")
+      expect(Object.keys(packageJson.exports)).toContain(".")
+      expect(
+        [...externalsOf("index.js")].filter((pkg) => optional.has(pkg))
+      ).toEqual([])
+    })
+
+    it("carries every peer-free component in the barrel, and no others", () => {
+      const peerFree = entries
+        .filter((item) =>
+          [...externalsOf(`${item.name}.js`)].every((pkg) => !optional.has(pkg))
+        )
+        .map((item) => item.name)
+
+      expect([...barrelExports].sort()).toEqual(peerFree.sort())
+    })
+
+    it("resolves only through exports", () => {
       expect(Object.keys(packageJson)).not.toContain("main")
       expect(Object.keys(packageJson)).not.toContain("module")
       expect(Object.keys(packageJson)).not.toContain("types")
@@ -117,8 +145,6 @@ describe.skipIf(!built || entries.length === 0)(
     })
 
     it("leaves every optional peer absent from most entries", () => {
-      const optional = Object.keys(packageJson.peerDependenciesMeta)
-
       for (const pkg of optional) {
         const users = entries.filter((item) =>
           externalsOf(`${item.name}.js`).has(pkg)

@@ -35,6 +35,11 @@ Button must never be asked for a PDF parser.
 - **Subpath exports keep the code apart.** Every component is its own build
   entry, so `mischief-ui/hold-button` never reaches the code behind
   `mischief-ui/pdf-viewer`.
+- **The root barrel holds only what installs with React alone.** A component
+  that statically imports an optional peer stays out of `src/index.ts`, so a
+  root import never fails on a package the reader chose not to install. Its
+  types are still re-exported there, as `export type`, which erases at build
+  time and gives the declaration build one shared graph.
 
 Two tests enforce this and both fail loudly on drift.
 `test/registry-dependencies.test.ts` compares each component's real imports
