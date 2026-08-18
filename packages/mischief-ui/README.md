@@ -1,5 +1,13 @@
 # mischief-ui
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/mischief-ui"><img alt="npm version" src="https://img.shields.io/npm/v/mischief-ui?style=flat&color=FB573B&labelColor=201711&label=npm" /></a>
+  <a href="https://www.npmjs.com/package/mischief-ui"><img alt="npm downloads per month" src="https://img.shields.io/npm/dm/mischief-ui?style=flat&color=FB573B&labelColor=201711&label=downloads" /></a>
+  <a href="https://ui.tinkererslabs.com/docs"><img alt="38 components" src="https://img.shields.io/badge/components-38-FB573B?style=flat&labelColor=201711" /></a>
+  <a href="https://github.com/Tinkerers-Labs/mischief-ui/actions/workflows/ci.yml"><img alt="CI status" src="https://img.shields.io/github/actions/workflow/status/Tinkerers-Labs/mischief-ui/ci.yml?branch=main&style=flat&color=FB573B&labelColor=201711&label=CI" /></a>
+  <a href="https://github.com/Tinkerers-Labs/mischief-ui/blob/main/LICENSE"><img alt="MIT license" src="https://img.shields.io/npm/l/mischief-ui?style=flat&color=FB573B&labelColor=201711&label=license" /></a>
+</p>
+
 Good interfaces deserve a little mischief.
 
 Playful, production-ready React components and blocks built with Base UI, Motion, Tailwind CSS, and shadcn theme tokens. Every component is a separate entry point, and anything heavier than React is an optional peer, so installing this package pulls none of them.

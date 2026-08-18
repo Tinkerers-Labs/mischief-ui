@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs"
+import path from "node:path"
+
 import { describe, expect, it } from "vitest"
 
 import { componentDocs } from "../lib/component-docs"
@@ -67,5 +70,18 @@ describe("component markdown", () => {
         expect(markdown).toContain(`- ${dependency}`)
       }
     }
+  })
+})
+
+describe("readme badges", () => {
+  const readmes = ["README.md", "packages/mischief-ui/README.md"]
+
+  it.each(readmes)("%s counts the components it ships", (file) => {
+    const badge = readFileSync(
+      path.resolve(import.meta.dirname, "..", file),
+      "utf8"
+    ).match(/badge\/components-(\d+)-/)
+
+    expect(badge?.[1]).toBe(String(componentDocs.length))
   })
 })
