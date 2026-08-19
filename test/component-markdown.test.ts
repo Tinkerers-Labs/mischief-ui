@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest"
 
 import { componentDocs } from "../lib/component-docs"
 import { componentMarkdown } from "../lib/component-markdown"
+import { llmsFull, llmsIndex } from "../lib/llms-txt"
 
 const documents = componentDocs.map((component) => ({
   name: component.name,
@@ -179,6 +180,46 @@ describe("documented types", () => {
       for (const field of fields) {
         expect(source).toMatch(new RegExp(`\\b${field}\\??:`))
       }
+    }
+  })
+})
+
+describe("llms.txt", () => {
+  const index = llmsIndex()
+
+  it("follows the shape a model expects", () => {
+    const lines = index.split("\n")
+
+    expect(lines[0]).toMatch(/^# /)
+    expect(lines.find((line) => line.startsWith(">"))).toBeDefined()
+  })
+
+  it("lists every component exactly once", () => {
+    const listed = [...index.matchAll(/^- \[([^\]]+)\]\(([^)]+)\)/gm)]
+      .map(([, name]) => name)
+      .filter((name) => componentDocs.some((c) => c.name === name))
+
+    expect(new Set(listed).size).toBe(componentDocs.length)
+  })
+
+  it("points at markdown, not at pages", () => {
+    for (const component of componentDocs) {
+      expect(index).toContain(`/docs/components/${component.slug}.md`)
+    }
+  })
+
+  it("groups by family, and covers them all", () => {
+    const families = new Set(componentDocs.map((c) => c.family))
+
+    for (const family of families) expect(index).toContain(`## ${family}`)
+  })
+
+  it("carries every component's documentation in the full file", () => {
+    const full = llmsFull()
+
+    for (const component of componentDocs) {
+      expect(full).toContain(`# ${component.name}`)
+      expect(full).toContain(component.accessibility)
     }
   })
 })
