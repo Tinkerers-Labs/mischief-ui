@@ -48,6 +48,65 @@ const entries = [
 export function Example() {
   return <MagneticTabs items={items} />
 }`,
+    sections: [
+      {
+        id: "peers",
+        title: "What it needs installed",
+        blocks: [
+          {
+            kind: "text",
+            text: "This is one of the seven components that reach for something beyond React. Base UI supplies the tab semantics -- roving focus, the tab and panel relationship, arrow key movement -- and Motion drives the indicator. Both are optional peers, so they are only installed if you ask for them.",
+          },
+          {
+            kind: "code",
+            code: `npm install mischief-ui @base-ui/react motion`,
+            caption:
+              "Import it from its own entry: mischief-ui/magnetic-tabs, not the package root.",
+          },
+          {
+            kind: "text",
+            text: "The root import deliberately does not carry it, because a barrel holding it would fail for everyone who had not installed those two. That is the trade: a subpath import here, and no unexpected dependencies anywhere else.",
+          },
+        ],
+      },
+      {
+        id: "motion",
+        title: "The magnetism, and doing without it",
+        blocks: [
+          {
+            kind: "text",
+            text: "The indicator is spring-driven and leans towards the pointer as it moves across a tab, then settles when the pointer leaves. It is a stiff, light spring, so it arrives quickly rather than wobbling -- the effect should read as responsive, not bouncy.",
+          },
+          {
+            kind: "text",
+            text: "When the reader has asked for reduced motion the lean is not applied at all and the indicator moves straight to the selected tab. Nothing about which tab is selected, or how it is reached from the keyboard, depends on any of this.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "MagneticTabItem",
+        rows: [
+          [
+            "value",
+            "string",
+            "Identifies the tab. What value and onValueChange speak in.",
+          ],
+          ["label", "ReactNode", "The tab itself."],
+          [
+            "content",
+            "ReactNode",
+            "The panel shown while the tab is selected.",
+          ],
+          [
+            "disabled",
+            "boolean",
+            "Listed but unselectable, and skipped by the arrow keys.",
+          ],
+        ],
+      },
+    ],
     props: [
       [
         "items",
@@ -86,6 +145,50 @@ export function Example() {
     />
   )
 }`,
+    sections: [
+      {
+        id: "committed",
+        title: "While dragging, and after",
+        blocks: [
+          {
+            kind: "text",
+            text: "There are two callbacks because there are two moments, and confusing them is expensive. onValueChange fires continuously through a drag, which is what you want for a preview that has to keep up. onValueCommitted fires once, when the handle is released or a key is lifted.",
+          },
+          {
+            kind: "text",
+            text: "Anything with a cost belongs in the committed callback: a request, a write, an undo entry. Putting a save in onValueChange sends one for every frame of a single drag.",
+          },
+          {
+            kind: "code",
+            code: `<ElasticSlider
+  label="Volume"
+  defaultValue={68}
+  onValueChange={setPreview}
+  onValueCommitted={(value) => save({ volume: value })}
+/>`,
+          },
+        ],
+      },
+      {
+        id: "formatting",
+        title: "Reading the value",
+        blocks: [
+          {
+            kind: "text",
+            text: "The number shown beside the label comes from formatValue, and so does the value announced to a screen reader. Use it to give the number its unit, because a bare 68 says nothing about what it measures.",
+          },
+          {
+            kind: "code",
+            code: `formatValue={(value) => \`\${value}%\`}
+formatValue={(value) => \`\${(value / 100).toFixed(2)} s\`}`,
+          },
+          {
+            kind: "text",
+            text: "min, max, and step are passed to the underlying Base UI slider, so a step of 5 constrains the keyboard as well as the drag. Motion is used only for the stretch: with reduced motion the handle still tracks exactly, it simply stops deforming.",
+          },
+        ],
+      },
+    ],
     props: [
       ["label", "ReactNode", "The visible and accessible label."],
       [
@@ -132,6 +235,36 @@ export function Example() {
     </HoldButton>
   )
 }`,
+    sections: [
+      {
+        id: "why",
+        title: "Why hold instead of confirm",
+        blocks: [
+          {
+            kind: "text",
+            text: "A confirmation dialog asks a question the answer to which is almost always yes, and people learn to dismiss it without reading. A hold cannot be dismissed by reflex: it takes a second of deliberate, continuous pressure, and letting go early cancels it.",
+          },
+          {
+            kind: "text",
+            text: "That makes it a good fit for the destructive action that is common enough to be annoying behind a dialog but severe enough that an accident matters -- deleting a draft, clearing a queue, revoking a key. It is a poor fit for anything irreversible and rare, where a dialog that names what is about to happen is still the right answer.",
+          },
+        ],
+      },
+      {
+        id: "duration",
+        title: "How long the hold is",
+        blocks: [
+          {
+            kind: "text",
+            text: "The default is 900ms, which is long enough to feel like a decision and short enough not to feel broken. Shorter values are accepted but floored at 500ms, because below that the hold stops being deliberate and becomes a slow click -- exactly the reflex it exists to interrupt.",
+          },
+          {
+            kind: "text",
+            text: "onComplete runs once, at the end of a full hold. Releasing early, dragging off the button, or pressing Escape all cancel it, and nothing is reported.",
+          },
+        ],
+      },
+    ],
     props: [
       [
         "onComplete",
@@ -174,6 +307,40 @@ export function Example() {
     </ShiftButton>
   )
 }`,
+    sections: [
+      {
+        id: "shift",
+        title: "The shift",
+        blocks: [
+          {
+            kind: "text",
+            text: "On hover the leading icon slides out to the left and fades, while the trailing icon slides in from the right to take its place. The grid keeps a fixed column for each, so the label never moves and the button never changes width -- the motion happens inside a stable shape.",
+          },
+          {
+            kind: "text",
+            text: "Under reduced motion the trailing icon is not shown at all and the leading icon stays exactly where it is. The button is then simply a button with an icon, which is the point: the shift is decoration, and nothing is communicated by it alone.",
+          },
+          {
+            kind: "text",
+            text: "Give trailingIcon only when it says something -- an arrow for navigation, a check for a completed action. Leaving it out is fine, and the leading icon then stays put for everyone.",
+          },
+        ],
+      },
+      {
+        id: "peers",
+        title: "What it needs installed",
+        blocks: [
+          {
+            kind: "text",
+            text: "Base UI supplies the button, which is why this component is imported from its own entry rather than the package root, and why @base-ui/react has to be installed alongside.",
+          },
+          {
+            kind: "code",
+            code: `npm install mischief-ui @base-ui/react`,
+          },
+        ],
+      },
+    ],
     props: [
       ["children", "ReactNode", "The button or link label."],
       ["leadingIcon", "ReactNode", "The icon visible at rest."],
@@ -203,6 +370,48 @@ export function Example() {
     />
   )
 }`,
+    sections: [
+      {
+        id: "not-a-checkbox",
+        title: "Do not use this for anything that matters",
+        blocks: [
+          {
+            kind: "text",
+            text: "This is a joke. A paw reaches out and unchecks the box, and it keeps doing it until you have tried enough times. It is genuinely funny once, and it is genuinely infuriating if it stands between someone and something they need.",
+          },
+          {
+            kind: "text",
+            text: "So: never for consent, terms, permissions, a privacy choice, or anything a form submits. Anything a person must be able to set, they must be able to set on the first try. A 404 page, an easter egg, a demo, a settings toggle for something that does not exist -- those are where it belongs.",
+          },
+          {
+            kind: "text",
+            text: "revealAfter and angryAfter decide how long the bit runs before it gives up and lets the box stay checked. Keep them low if there is any chance someone actually wanted the checkbox.",
+          },
+        ],
+      },
+      {
+        id: "attempts",
+        title: "Following along",
+        blocks: [
+          {
+            kind: "text",
+            text: "onAttempt fires with a running count each time someone tries, which is what you would build the rest of the joke around -- a line of copy that escalates, a sound, a message that gives in before the paw does.",
+          },
+          {
+            kind: "code",
+            code: `<ImpossibleCheckbox
+  angryAfter={3}
+  revealAfter={5}
+  onAttempt={(attempt) => setTaunt(taunts[attempt] ?? taunts.at(-1))}
+/>`,
+          },
+          {
+            kind: "text",
+            text: "Motion is an optional peer and drives the whole performance. With reduced motion the animation collapses to nothing, so consider whether the joke still lands for that reader, and offer them the plain checkbox instead.",
+          },
+        ],
+      },
+    ],
     props: [
       [
         "onAttempt",
@@ -248,6 +457,60 @@ export function Example() {
 export function PageIndex() {
   return <FloatingIndex items={items} />
 }`,
+    sections: [
+      {
+        id: "container",
+        title: "Watching something other than the window",
+        blocks: [
+          {
+            kind: "text",
+            text: "By default the index tracks the page. When your sections scroll inside an element -- a panel, a modal, a split view -- pass that element and it observes the right scroller instead of quietly tracking a page that never moves.",
+          },
+          {
+            kind: "code",
+            code: `const panel = useRef<HTMLDivElement>(null)
+
+<div ref={panel} className="overflow-y-auto">
+  {sections.map((section) => (
+    <section key={section.id} id={section.id}>…</section>
+  ))}
+</div>
+
+<FloatingIndex items={items} containerRef={panel} />`,
+            caption:
+              "Pass container instead when you already hold the element rather than a ref.",
+          },
+          {
+            kind: "text",
+            text: "Every item's id must match the id of a real element, because that is what is being observed. An item pointing at nothing is simply never marked active.",
+          },
+        ],
+      },
+      {
+        id: "progress",
+        title: "The ring",
+        blocks: [
+          {
+            kind: "text",
+            text: "The ring around the index fills with how far through the scroller the reader is, which gives the sense of remaining length that a list of section names alone does not. It is decoration -- the active item is what carries the position, and it is marked as current for a screen reader.",
+          },
+          {
+            kind: "text",
+            text: "Motion is an optional peer here, so the component is imported from its own entry. With reduced motion the ring stops animating between values and simply reflects the current one.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "FloatingIndexItem",
+        rows: [
+          ["id", "string", "Must match the id of the element it points at."],
+          ["label", "string", "The section name."],
+          ["icon", "ReactNode", "Shown in place of the marker."],
+        ],
+      },
+    ],
     props: [
       [
         "items",
@@ -402,6 +665,44 @@ export function Search() {
     </>
   )
 }`,
+    sections: [
+      {
+        id: "appearing",
+        title: "When it appears",
+        blocks: [
+          {
+            kind: "text",
+            text: "The button stays out of the way until the reader is showAfter pixels down, so a short page never grows a control for a journey nobody took. It is removed from the page rather than hidden, so it is not a stop on the way through with the keyboard while there is nothing to go back to.",
+          },
+          {
+            kind: "text",
+            text: "Like the floating index, it watches the window unless you hand it a container, which is what you want when the thing that scrolls is a panel rather than the page.",
+          },
+          {
+            kind: "code",
+            code: `<ScrollToTopButton
+  containerRef={panel}
+  showAfter={600}
+  behavior="smooth"
+/>`,
+          },
+        ],
+      },
+      {
+        id: "behaviour",
+        title: "Smooth, and when not to be",
+        blocks: [
+          {
+            kind: "text",
+            text: 'behavior is passed straight to the browser, so "smooth" animates and "auto" jumps. A long page smooth-scrolled from the bottom can take an unpleasantly long time to arrive; if your pages are long, "auto" is the kinder default.',
+          },
+          {
+            kind: "text",
+            text: "Browsers already honour a reduced-motion preference for smooth scrolling, so you do not need to switch the value yourself for that reason.",
+          },
+        ],
+      },
+    ],
     props: [
       [
         "container",
@@ -449,6 +750,54 @@ export function Search() {
     />
   )
 }`,
+    sections: [
+      {
+        id: "verbs",
+        title: "Running something, or adding it",
+        blocks: [
+          {
+            kind: "text",
+            text: "The two props are two different verbs, and a block can offer either or both. run is a one-off execution -- a generator, a registry command -- and add is a dependency going into package.json. Each manager has its own word for each, and picking a manager applies to whichever verb is showing.",
+          },
+          {
+            kind: "table",
+            headers: ["Manager", "run", "add"],
+            rows: [
+              ["npm", "npx", "npm install"],
+              ["pnpm", "pnpm dlx", "pnpm add"],
+              ["yarn", "yarn dlx", "yarn add"],
+              ["bun", "bunx --bun", "bun add"],
+            ],
+          },
+          {
+            kind: "text",
+            text: "Pass the arguments without the verb -- shadcn@latest add tabs, not npx shadcn@latest add tabs -- and the block builds the whole line. Choosing pnpm and then switching to the package option gives pnpm add rather than snapping back to the default.",
+          },
+        ],
+      },
+      {
+        id: "prompt",
+        title: "The agent option",
+        blocks: [
+          {
+            kind: "text",
+            text: "prompt adds a third choice that is not a command at all: an instruction to paste into a coding agent. It sits beside the shell commands because that is now one of the ways people install things, and copying it uses the same control.",
+          },
+          {
+            kind: "code",
+            code: `<InstallCommand
+  run="shadcn@latest add tabs"
+  add="mischief-ui"
+  prompt={\`Read \${docsUrl} and add this component to my project.\`}
+/>`,
+          },
+          {
+            kind: "text",
+            text: "Only the options you supply are offered, so a block with just add shows no manager row at all and no empty tabs.",
+          },
+        ],
+      },
+    ],
     props: [
       [
         "run",
@@ -493,6 +842,67 @@ export function Search() {
     />
   )
 }`,
+    sections: [
+      {
+        id: "markdown",
+        title: "Copying the page, not the address",
+        blocks: [
+          {
+            kind: "text",
+            text: "The main control copies the markdown itself rather than a link to it. That is the difference between an agent having the page and an agent being told where the page is -- one of which works when the model cannot browse, is behind a login, or is reading a build that has not shipped yet.",
+          },
+          {
+            kind: "text",
+            text: "Generate that markdown from the same source your page renders from. Two hand-written copies of the same documentation disagree within a week.",
+          },
+        ],
+      },
+      {
+        id: "destinations",
+        title: "Sending it somewhere",
+        blocks: [
+          {
+            kind: "text",
+            text: "The menu's destinations each turn a prompt into a URL for a particular assistant. They are ordinary links, opened only when someone chooses one, and you can replace the set entirely to add your own or to remove any you would rather not point at.",
+          },
+          {
+            kind: "code",
+            code: `<CopyForAi
+  markdown={markdown}
+  markdownUrl={url}
+  destinations={[
+    ...defaultDestinations.filter((entry) => entry.id !== "grok"),
+    { id: "internal", name: "Our assistant", href: (prompt) =>
+      \`https://ai.example.com/new?q=\${encodeURIComponent(prompt)}\` },
+  ]}
+/>`,
+          },
+          {
+            kind: "text",
+            text: "Whatever the prompt contains ends up in a URL to a third party, and URLs are logged, kept in history, and sent as referrers. Never build one out of a customer's data, an internal document, or anything you would not paste into a public chat.",
+          },
+          {
+            kind: "text",
+            text: "The view-as-markdown entry is dropped when there is no markdownUrl, so the menu never offers a link to nothing.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "AiDestination",
+        rows: [
+          ["id", "string", "Unique within the set."],
+          ["name", "string", 'Shown as "Open in {name}".'],
+          [
+            "href",
+            "(prompt: string) => string",
+            "Builds the URL. Encode the prompt yourself.",
+          ],
+          ["icon", "ReactNode", "Shown beside the name."],
+        ],
+      },
+    ],
     props: [
       [
         "markdown",
@@ -541,6 +951,54 @@ export function Search() {
 export function Outline() {
   return <TableOfContents sections={sections} />
 }`,
+    sections: [
+      {
+        id: "active",
+        title: "How the current section is chosen",
+        blocks: [
+          {
+            kind: "text",
+            text: "On every scroll the component reads where each heading is and marks the last one to have passed a line near the top of the viewport. That line is offset, which defaults to 96 pixels -- set it to roughly the height of whatever sits fixed above your content, or headings will highlight while still hidden behind it.",
+          },
+          {
+            kind: "text",
+            text: "This is deliberately position tracking rather than an intersection observer. An observer only reports as a heading crosses an edge, so a heading scrolled past between two callbacks leaves the wrong entry marked, and the index reads a section behind the page. Reading positions costs a little more and is never wrong.",
+          },
+          {
+            kind: "code",
+            code: `<TableOfContents
+  sections={[
+    { id: "install", label: "Install" },
+    { id: "usage", label: "Usage" },
+  ]}
+  offset={72}
+  onActiveChange={setCurrent}
+/>`,
+            caption:
+              "Every id must belong to a real element; one that does not is simply never marked.",
+          },
+        ],
+      },
+      {
+        id: "smooth",
+        title: "If you use smooth scrolling",
+        blocks: [
+          {
+            kind: "text",
+            text: "With scroll-behavior set to smooth, a click on an entry animates to the heading, and the marked section changes several times on the way as each heading passes the line. That is correct, and it is also why measuring the active entry immediately after a click tells you where the page was, not where it is going.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "TocSection",
+        rows: [
+          ["id", "string", "The id of the element this entry points at."],
+          ["label", "string", "How the section is named in the index."],
+        ],
+      },
+    ],
     props: [
       [
         "sections",
@@ -716,6 +1174,54 @@ export function Attachments() {
     />
   )
 }`,
+    sections: [
+      {
+        id: "kind",
+        title: "How it decides what a file is",
+        blocks: [
+          {
+            kind: "text",
+            text: "The badge is the extension taken from the name, upper-cased and cut to five characters. A file is treated as an image when its MIME type starts with image/, or when the extension is one of png, jpg, jpeg, gif, webp, svg, or avif.",
+          },
+          {
+            kind: "text",
+            text: "Both of those are guesses from a name, which is fine for choosing an icon and useless as a check. Nothing here validates anything: a script renamed to .png is still shown as an image.",
+          },
+        ],
+      },
+      {
+        id: "previews",
+        title: "Previews are yours to make",
+        blocks: [
+          {
+            kind: "text",
+            text: "No preview is generated. Pass previewImageUrl and it is shown; leave it out and the file gets its extension badge instead. That keeps the component free of any renderer, and lets the picture come from wherever it actually lives -- a stored thumbnail, a signed URL, an object URL you made in the browser.",
+          },
+          {
+            kind: "code",
+            code: `const url = useMemo(() => URL.createObjectURL(file), [file])
+useEffect(() => () => URL.revokeObjectURL(url), [url])
+
+<FileThumbnail file={file} previewImageUrl={url} />`,
+            caption:
+              "Revoke an object URL when you are done with it, or the file stays in memory.",
+          },
+          {
+            kind: "text",
+            text: "isLoading covers the wait while a thumbnail is being made, and hasError covers one that could not be. Passing null for previewImageUrl is the honest way to say there will not be one.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "FileThumbnailFile",
+        rows: [
+          ["name", "string", "Filename. The extension becomes the badge."],
+          ["type", "string", "MIME type, used to spot an image. Optional."],
+        ],
+      },
+    ],
     props: [
       [
         "file",
@@ -842,6 +1348,52 @@ export function Attachments() {
     </Message>
   )
 }`,
+    sections: [
+      {
+        id: "avatars",
+        title: "Avatars",
+        blocks: [
+          {
+            kind: "text",
+            text: "The avatar slot takes whatever you give it and crops it into a 28 pixel circle. An image is scaled to fill and centred, so a portrait or a wide crop both work without letterboxing; initials or an icon work equally well, and are what to fall back to when someone has no picture.",
+          },
+          {
+            kind: "code",
+            code: `<Message role="user" name="Aman" avatar={<img src={photo} alt="" />}>
+  {text}
+</Message>
+
+<Message role="assistant" name="Mischief" avatar="M">
+  {answer}
+</Message>`,
+            caption:
+              "Leave the image alt empty: the name beside it already says who this is.",
+          },
+          {
+            kind: "text",
+            text: "The whole slot is hidden from assistive technology, because a picture of someone next to their name adds nothing to hear. That is also why an avatar alone is not enough to identify a speaker -- always pass name as well, or accept the role's default wording.",
+          },
+        ],
+      },
+      {
+        id: "roles",
+        title: "Roles and waiting",
+        blocks: [
+          {
+            kind: "text",
+            text: "role sets the alignment, the tone, and the default name -- You, Assistant, or System. Override that with name whenever you have something better, which for an assistant is usually the product's own name rather than the word assistant.",
+          },
+          {
+            kind: "text",
+            text: "pending marks a message that has been sent but not yet answered, or one still being written. Use it for the turn that is waiting rather than for one that failed: a message that will never arrive should say so in its own content, not sit pending forever.",
+          },
+          {
+            kind: "text",
+            text: "actions is the row beneath the message, and is where Response Actions is designed to go.",
+          },
+        ],
+      },
+    ],
     props: [
       [
         "role",
@@ -964,6 +1516,51 @@ export function Attachments() {
 export function Starters() {
   return <Suggestions suggestions={prompts} onSelect={send} />
 }`,
+    sections: [
+      {
+        id: "label-prompt",
+        title: "What is shown and what is sent",
+        blocks: [
+          {
+            kind: "text",
+            text: "A suggestion carries a label, which is what people read, and optionally a prompt, which is what you would actually send. They are separate because a good button is short and a good prompt is not: Summarise this reads well on a chip, and does far less than the three sentences you would rather the model receive.",
+          },
+          {
+            kind: "text",
+            text: "onSelect hands you the whole suggestion, so what you do with it is yours to decide -- send the prompt, or drop it into the composer for editing first.",
+          },
+          {
+            kind: "code",
+            code: `<Suggestions
+  suggestions={[
+    {
+      id: "summarise",
+      label: "Summarise this",
+      prompt: "Summarise the document in five bullets, each one sentence, no preamble.",
+    },
+  ]}
+  onSelect={(suggestion) => send(suggestion.prompt ?? String(suggestion.label))}
+/>`,
+            caption:
+              "Nothing falls back for you: decide what an absent prompt means.",
+          },
+        ],
+      },
+      {
+        id: "writing",
+        title: "Choosing what to suggest",
+        blocks: [
+          {
+            kind: "text",
+            text: "Suggestions are most useful when someone does not yet know what this thing can do, which means they should show range rather than repeat one idea three ways. Three or four that each open a different door beat eight that all summarise something.",
+          },
+          {
+            kind: "text",
+            text: "Make them specific to what is actually on screen. Ask about this document earns its place; Ask a question does not, because it tells the reader nothing they had not worked out from the text box.",
+          },
+        ],
+      },
+    ],
     props: [
       [
         "suggestions",
@@ -1154,6 +1751,54 @@ export function Clarify() {
 export function AskAboutAcme() {
   return <AskAi subject="Acme" prompt={prompt} />
 }`,
+    sections: [
+      {
+        id: "urls",
+        title: "The prompt travels in a URL",
+        blocks: [
+          {
+            kind: "text",
+            text: "Each target is a link that carries the prompt as a query parameter. Nothing is sent until someone chooses one, and then it leaves your site entirely: it lands in that assistant's logs, the reader's browser history, and anywhere a URL is ordinarily kept.",
+          },
+          {
+            kind: "text",
+            text: "So build the prompt out of public things -- a page address, a product name, a question about documentation. Never interpolate a customer record, a file someone uploaded, an API key, or the contents of an internal page. If you would not paste it into a stranger's chat window, it does not belong in the prompt.",
+          },
+          {
+            kind: "text",
+            text: "There is also a length limit you do not control: browsers and servers both cut long URLs off, and a very long prompt can arrive truncated. Keep it to an instruction and a link, and let the assistant fetch the rest.",
+          },
+        ],
+      },
+      {
+        id: "targets",
+        title: "Choosing who to offer",
+        blocks: [
+          {
+            kind: "text",
+            text: "The default set covers the assistants people are most likely to have open. Replace it with targets to cut it down, reorder it, or point at something of your own -- an internal tool, a workspace with your documentation already loaded.",
+          },
+          {
+            kind: "text",
+            text: "The copy control is the one that always works, since it needs no third party at all. Keep it available even when you have trimmed the targets to nothing.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "AskAiTarget",
+        rows: [
+          ["id", "string", "Unique within the set."],
+          ["name", "string", "The assistant's name, as shown."],
+          [
+            "href",
+            "string",
+            "The full URL, with the prompt already encoded into it.",
+          ],
+        ],
+      },
+    ],
     props: [
       [
         "subject",
@@ -1297,6 +1942,52 @@ export function AskAboutAcme() {
     />
   )
 }`,
+    sections: [
+      {
+        id: "statuses",
+        title: "The four states",
+        blocks: [
+          {
+            kind: "text",
+            text: "The component shows one of four things, and each is announced politely as it changes so a reader who is not watching still learns that the answer has started or finished.",
+          },
+          {
+            kind: "table",
+            headers: ["Status", "Shows"],
+            rows: [
+              [
+                "idle",
+                "Nothing is happening. Render it or do not, as you prefer.",
+              ],
+              [
+                "thinking",
+                "The working indicator, and a live duration if startedAt is set.",
+              ],
+              ["done", "doneLabel, and the final duration."],
+              ["error", "errorLabel in place of the label."],
+            ],
+          },
+          {
+            kind: "text",
+            text: "Pass startedAt and the duration counts up on its own; pass elapsedMs and that fixed figure is shown instead. The second is what you want when replaying a conversation, where a live counter would start again from zero on every render of an old message.",
+          },
+        ],
+      },
+      {
+        id: "reasoning",
+        title: "Showing the reasoning",
+        blocks: [
+          {
+            kind: "text",
+            text: "reasoning goes behind a disclosure that starts closed, because the point of this component is to say that work is happening without burying the answer underneath the working. Someone curious can open it; nobody has to scroll past it.",
+          },
+          {
+            kind: "text",
+            text: "Think about what you put in there. Intermediate reasoning is often less careful than the final answer, and once it is on screen it can be screenshotted and quoted as though it were the conclusion. A summary of the steps is usually more useful, and more defensible, than the raw trace.",
+          },
+        ],
+      },
+    ],
     props: [
       [
         "status",
@@ -1455,6 +2146,77 @@ export function AskAboutAcme() {
 export function Plan() {
   return <AgentChecklist items={items} title="Plan" />
 }`,
+    sections: [
+      {
+        id: "statuses",
+        title: "The five states",
+        blocks: [
+          {
+            kind: "text",
+            text: "Every item is in exactly one state, and the wording each maps to is what a screen reader hears alongside the label.",
+          },
+          {
+            kind: "table",
+            headers: ["Status", "Read as"],
+            rows: [
+              ["pending", "waiting"],
+              ["active", "in progress"],
+              ["done", "done"],
+              ["error", "failed"],
+              ["skipped", "skipped"],
+            ],
+          },
+          {
+            kind: "text",
+            text: "skipped exists so a plan that changed does not have to lie. An agent that decided a step was unnecessary should mark it skipped rather than done, which is the difference between a truthful record and a tidy one.",
+          },
+        ],
+      },
+      {
+        id: "announcing",
+        title: "Announcing progress",
+        blocks: [
+          {
+            kind: "text",
+            text: "With announce on, each change is read out as it happens. That is genuinely helpful for a plan of five or six steps and unbearable for a plan of forty, so turn it off for long lists and let the progress count carry the story instead.",
+          },
+          {
+            kind: "text",
+            text: "Write labels as the thing being done, short enough to be heard in one breath: Reading the invoice, not Now attempting to read the uploaded invoice document. Detail is for detail.",
+          },
+          {
+            kind: "code",
+            code: `<AgentChecklist
+  title="Extracting the invoice"
+  items={[
+    { id: "read", label: "Reading the file", status: "done" },
+    { id: "fields", label: "Finding the fields", status: "active" },
+    { id: "verify", label: "Checking the totals", status: "pending" },
+  ]}
+/>`,
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "AgentChecklistItem",
+        rows: [
+          ["id", "string", "Unique within the list."],
+          ["label", "ReactNode", "The step, phrased as the thing being done."],
+          [
+            "status",
+            "ChecklistItemStatus",
+            "pending, active, done, error, or skipped.",
+          ],
+          [
+            "detail",
+            "ReactNode",
+            "A second line, for what the step actually found.",
+          ],
+        ],
+      },
+    ],
     props: [
       [
         "items",
@@ -1952,6 +2714,62 @@ const annotation = {
     usage: `export function Sidebar({ pages }: { pages: DocumentPage[] }) {
   return <PageNavigator pages={pages} onActivePageChange={scrollToPage} />
 }`,
+    sections: [
+      {
+        id: "pages",
+        title: "Numbering and thumbnails",
+        blocks: [
+          {
+            kind: "text",
+            text: "Pages carry their own number rather than being counted from their position, so a navigator over pages 40 to 60 of a long document says 40 to 60. Whatever you pass is what is shown and what onActivePageChange reports.",
+          },
+          {
+            kind: "text",
+            text: "src is optional. Without it the page still appears, as a numbered placeholder, which is what you want while thumbnails are still being rendered -- the strip keeps its full length instead of growing as images arrive and pushing the current page around.",
+          },
+          {
+            kind: "code",
+            code: `<PageNavigator
+  pages={pages.map((page) => ({
+    number: page.number,
+    src: thumbnails[page.number],
+    label: page.heading,
+  }))}
+  activePage={current}
+  onActivePageChange={setCurrent}
+/>`,
+          },
+        ],
+      },
+      {
+        id: "orientation",
+        title: "Which way it runs",
+        blocks: [
+          {
+            kind: "text",
+            text: "Vertical is the familiar side rail beside a document, and is the better choice for a long file because a tall strip holds more thumbnails at a readable size than a wide one does. Horizontal suits a short document, or a narrow screen where a side rail would take a third of the width.",
+          },
+          {
+            kind: "text",
+            text: "renderImage lets your own image component take over -- a framework's optimised image, a signed URL that needs refreshing, a canvas you are already painting pages onto.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "DocumentPage",
+        rows: [
+          [
+            "number",
+            "number",
+            "Shown as the page number, and reported on change.",
+          ],
+          ["src", "string", "Thumbnail. Omit for a numbered placeholder."],
+          ["label", "string", "Extra description, such as a section heading."],
+        ],
+      },
+    ],
     props: [
       [
         "pages",
@@ -2119,6 +2937,68 @@ async function onExpandedChange(ids: string[]) {
     usage: `export function Batch({ pages }: { pages: SplitPage[] }) {
   return <DocumentSplits pages={pages} onSplitChange={saveSplits} />
 }`,
+    sections: [
+      {
+        id: "model",
+        title: "How a split is stored",
+        blocks: [
+          {
+            kind: "text",
+            text: "The state is not a list of documents. It is splitAfter: the page numbers that a break falls after. Everything else -- the segments, their order, how many there are -- is derived from that, which is why dragging a break never has to renumber anything.",
+          },
+          {
+            kind: "code",
+            code: `// Twelve pages, broken into 1-3, 4-9, and 10-12.
+<DocumentSplits pages={pages} defaultSplitAfter={[3, 9]} />`,
+          },
+          {
+            kind: "text",
+            text: "A break after the final page is ignored, since it would produce an empty segment. Duplicates and unsorted values are fine; the list is sorted before use.",
+          },
+        ],
+      },
+      {
+        id: "ranges",
+        title: "Turning it into files",
+        blocks: [
+          {
+            kind: "text",
+            text: "What a server needs is ranges, and they fall straight out of the same array. Do the conversion where the split is submitted rather than storing both, so there is only ever one description of where the breaks are.",
+          },
+          {
+            kind: "code",
+            code: `function toRanges(pages, splitAfter) {
+  const bounds = [...new Set(splitAfter)].sort((a, b) => a - b)
+  const last = pages.at(-1).number
+  const starts = [pages[0].number, ...bounds.map((page) => page + 1)]
+
+  return starts
+    .filter((start) => start <= last)
+    .map((start, index) => ({ start, end: bounds[index] ?? last }))
+}`,
+            caption:
+              "Gives [{ start: 1, end: 3 }, { start: 4, end: 9 }, { start: 10, end: 12 }].",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "SplitPage",
+        rows: [
+          ["number", "number", "The page number. What splitAfter refers to."],
+          ["src", "string", "Thumbnail. Omit for a numbered placeholder."],
+          ["label", "string", "Extra description for the page."],
+        ],
+      },
+      {
+        name: "DocumentSegment",
+        rows: [
+          ["index", "number", "Position of the segment, from zero."],
+          ["pages", "SplitPage[]", "The pages it contains, in order."],
+        ],
+      },
+    ],
     props: [
       [
         "pages",
@@ -2635,6 +3515,68 @@ await copyFile(worker, "public/pdf.worker.min.mjs")`,
 export function Layout() {
   return <MarkdownBlocks blocks={blocks} onActiveChange={highlightRegion} />
 }`,
+    sections: [
+      {
+        id: "blocks",
+        title: "Why blocks rather than a document",
+        blocks: [
+          {
+            kind: "text",
+            text: "Document extraction does not return an essay, it returns pieces: a heading here, a table there, a paragraph that came from page four. Keeping them as separate blocks means each one can be pointed at, highlighted, corrected, or traced back to where it came from, which a single rendered string cannot do.",
+          },
+          {
+            kind: "text",
+            text: "kind is what the extractor thought a block was, and page is where it found it. Both are optional, and both are what make it possible to line this up with a page navigator or a set of bounding boxes over the original.",
+          },
+          {
+            kind: "code",
+            code: `<MarkdownBlocks
+  blocks={[
+    { id: "h1", kind: "heading", content: "## Payment terms", page: 2 },
+    { id: "p1", kind: "paragraph", content: "Invoices are payable **net 30**.", page: 2 },
+    { id: "t1", kind: "table", content: tableMarkdown, page: 3 },
+  ]}
+  activeId={selected}
+  onActiveChange={setSelected}
+/>`,
+          },
+        ],
+      },
+      {
+        id: "markdown",
+        title: "What the markdown may contain",
+        blocks: [
+          {
+            kind: "text",
+            text: "Blocks are rendered with react-markdown and GitHub Flavoured Markdown, so tables, strikethrough, task lists, and bare autolinks all work on top of the usual syntax. Raw HTML inside the content is not rendered as HTML -- there is no rehype-raw here, which is what keeps text extracted from someone else's document from bringing markup into your page.",
+          },
+          {
+            kind: "text",
+            text: "react-markdown and remark-gfm are optional peers, so this component is imported from its own entry and needs both installed alongside.",
+          },
+          {
+            kind: "code",
+            code: `npm install mischief-ui react-markdown remark-gfm`,
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "MarkdownBlock",
+        rows: [
+          ["id", "string", "Unique within the set. Drives selection."],
+          [
+            "kind",
+            "MarkdownBlockKind",
+            "heading, paragraph, table, list, figure, or footer.",
+          ],
+          ["content", "string", "The markdown for this block."],
+          ["page", "number", "Where it came from in the original."],
+          ["label", "string", "Overrides the wording of the kind badge."],
+        ],
+      },
+    ],
     props: [
       [
         "blocks",
@@ -2680,6 +3622,45 @@ export function Layout() {
     />
   )
 }`,
+    sections: [
+      {
+        id: "wordmark",
+        title: "The wordmark",
+        blocks: [
+          {
+            kind: "text",
+            text: "The oversized word across the bottom is drawn at a fraction of the footer's own colour and clipped by the edge of the page. It is hidden from assistive technology and unselectable, because it is a texture rather than a heading -- a screen reader announcing an enormous brand name at the end of every page is noise.",
+          },
+          {
+            kind: "text",
+            text: "Keep it to one short word. It scales with the viewport and is set to never wrap, so anything long is simply cut off rather than reflowed, and the name you actually want read belongs in brand or meta.",
+          },
+        ],
+      },
+      {
+        id: "slots",
+        title: "Filling it in",
+        blocks: [
+          {
+            kind: "text",
+            text: "Everything except the heading and the wordmark is optional, and each slot takes whatever you give it. There is no link list baked in, no newsletter form, and no social row -- pass your own navigation and it is laid out with the rest.",
+          },
+          {
+            kind: "list",
+            items: [
+              "eyebrow and heading carry the line you want people to leave with.",
+              "action is the single thing you want them to do next, not three things.",
+              "navigation takes your own list markup, so the grouping is yours.",
+              "brand and meta hold the small print along the bottom edge.",
+            ],
+          },
+          {
+            kind: "text",
+            text: "This is a server component: it holds no state and no effects, so it can render on the server and ship no JavaScript. Import it from its own entry to keep it that way.",
+          },
+        ],
+      },
+    ],
     props: [
       ["heading", "ReactNode", "The footer's main invitation."],
       ["wordmark", "string", "The oversized closing brand name."],
@@ -2719,6 +3700,71 @@ export function Layout() {
 export function WorkGallery() {
   return <ImageGallery images={images} title="Recent work" />
 }`,
+    sections: [
+      {
+        id: "layouts",
+        title: "Grid or masonry",
+        blocks: [
+          {
+            kind: "text",
+            text: "The grid gives every image the same cell, which is the right choice when the pictures are alike and comparison matters. Masonry uses CSS columns and lets each image keep its own height, which suits a mixed set where cropping would be a loss.",
+          },
+          {
+            kind: "text",
+            text: "Masonry fills one column top to bottom before starting the next, so the visual order runs down rather than across. Where sequence carries meaning -- pages of a document, steps in order -- use the grid, because the reading order people expect and the order they are laid out in will not match.",
+          },
+        ],
+      },
+      {
+        id: "sizing",
+        title: "Dimensions and loading",
+        blocks: [
+          {
+            kind: "text",
+            text: "Give width and height wherever you know them. They reserve the right space before the image arrives, so the gallery does not reflow underneath the reader as pictures load -- and in masonry, so the columns do not rebalance twice.",
+          },
+          {
+            kind: "text",
+            text: 'Everything below the fold should stay lazy. Set loading to "eager" only for the first row or two, which are the ones the reader is waiting on.',
+          },
+          {
+            kind: "text",
+            text: "Base UI supplies the lightbox dialog, with its focus trap, scroll lock, Escape handling, and focus restoration, so this component is imported from its own entry and needs @base-ui/react installed.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "ImageGalleryItem",
+        rows: [
+          ["id", "string", "Unique within the set."],
+          ["src", "string", "The image."],
+          [
+            "alt",
+            "string",
+            "What the image shows. Empty only if it is decorative.",
+          ],
+          [
+            "width, height",
+            "number",
+            "Intrinsic size, to reserve space before it loads.",
+          ],
+          [
+            "caption",
+            "ReactNode",
+            "Shown under the image and in the lightbox.",
+          ],
+          ["description", "ReactNode", "Longer text, shown in the lightbox."],
+          ["downloadUrl", "string", "Offers the original for download."],
+          [
+            "loading",
+            '"eager" | "lazy"',
+            "Defaults to lazy. Eager for the first row.",
+          ],
+        ],
+      },
+    ],
     props: [
       [
         "images",
@@ -3143,6 +4189,57 @@ for await (const chunk of process.stdout) {
     </Message>
   )
 }`,
+    sections: [
+      {
+        id: "storing",
+        title: "The rating is yours to keep",
+        blocks: [
+          {
+            kind: "text",
+            text: "The row reports a rating and remembers nothing. Left uncontrolled it holds the choice for as long as the component is mounted, which is enough for a page that will not outlive the conversation. Pass feedback and it holds nothing at all, and what is shown is whatever you say it is.",
+          },
+          {
+            kind: "text",
+            text: "Control it whenever the rating is stored, so a failed write does not leave a thumb lit for something that was never recorded.",
+          },
+          {
+            kind: "code",
+            code: `const [feedback, setFeedback] = useState<ResponseFeedback>(null)
+
+<ResponseActions
+  copyText={answer}
+  feedback={feedback}
+  onFeedbackChange={async (next) => {
+    setFeedback(next)
+    try {
+      await rate(messageId, next)
+    } catch {
+      setFeedback(feedback)
+    }
+  }}
+/>`,
+          },
+          {
+            kind: "text",
+            text: "Choosing the current rating again clears it, and reports null. Treat that as a real answer -- someone withdrawing an opinion -- rather than as no answer.",
+          },
+        ],
+      },
+      {
+        id: "placement",
+        title: "Where it goes",
+        blocks: [
+          {
+            kind: "text",
+            text: "Message already has an actions slot beneath its content, and this is built to sit in it. Keeping it there means the controls line up down the conversation instead of drifting with the length of each answer.",
+          },
+          {
+            kind: "text",
+            text: "Only the controls you configure appear, so an answer that cannot usefully be retried simply has no retry button rather than a dead one. Anything else you need -- a share, a report, an overflow menu -- goes in as children and lands at the end of the row.",
+          },
+        ],
+      },
+    ],
     props: [
       [
         "copyText",
@@ -3293,6 +4390,62 @@ export default function RootLayout({ children }) {
     />
   )
 }`,
+    sections: [
+      {
+        id: "native",
+        title: "Why native disclosures",
+        blocks: [
+          {
+            kind: "text",
+            text: "Each row is a details element with a summary, rather than a button and a div wired together with state. That is not nostalgia: it means the open and closed state, the keyboard handling, and the accessible relationship between the two halves come from the browser, and none of it can drift as the component changes.",
+          },
+          {
+            kind: "text",
+            text: "It also means collapsed answers are still in the page and still findable. Pressing find-in-page on a word inside a closed panel scrolls to it and opens the panel, which no scripted accordion does for free.",
+          },
+        ],
+      },
+      {
+        id: "exclusive",
+        title: "One at a time",
+        blocks: [
+          {
+            kind: "text",
+            text: "Exclusivity comes from giving every details element the same name attribute, which the browser then enforces -- opening one closes the others, with no state of ours involved. Pass exclusive={false} and the name is dropped, so any number can be open at once.",
+          },
+          {
+            kind: "text",
+            text: "In a browser too old to know the name attribute, nothing breaks: the panels simply all stay open, which is the right thing to degrade to. Set defaultOpen to the ids that should start open, and leave it out for a set that starts closed.",
+          },
+          {
+            kind: "code",
+            code: `<Accordion
+  items={questions}
+  defaultOpen={["licence"]}
+  onToggle={(id, open) => open && track("faq_opened", { id })}
+/>`,
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "AccordionItem",
+        rows: [
+          [
+            "id",
+            "string",
+            "Unique within the set. What defaultOpen and onToggle name.",
+          ],
+          ["title", "ReactNode", "The summary line."],
+          [
+            "content",
+            "ReactNode",
+            "The panel, which stays in the page while closed.",
+          ],
+        ],
+      },
+    ],
     props: [
       ["items", "AccordionItem[]", "Each with an id, a title, and content."],
       [
@@ -3332,6 +4485,47 @@ export default function RootLayout({ children }) {
     </ComponentPreview>
   )
 }`,
+    sections: [
+      {
+        id: "state",
+        title: "The example keeps running",
+        blocks: [
+          {
+            kind: "text",
+            text: "Switching to the source hides the preview rather than unmounting it. Anything the reader had set up -- a slider moved, a tab chosen, a form half filled -- is still there when they come back, which is the whole reason to put the source behind a tab instead of below the example.",
+          },
+          {
+            kind: "text",
+            text: "It also means the example is still alive while hidden. A preview that streams, animates, or polls goes on doing so behind the source tab, so give it a way to stop if that would be wasteful.",
+          },
+        ],
+      },
+      {
+        id: "source",
+        title: "Where the source comes from",
+        blocks: [
+          {
+            kind: "text",
+            text: "The code you pass is a string, and nothing extracts it from the example for you. Two copies of the same snippet drift, so read the file at build time rather than retyping it beside the component.",
+          },
+          {
+            kind: "code",
+            code: `// A server component can simply read the file it is showing.
+const code = await readFile("components/examples/volume.tsx", "utf8")
+
+return (
+  <ComponentPreview code={code} title="Volume">
+    <VolumeExample />
+  </ComponentPreview>
+)`,
+          },
+          {
+            kind: "text",
+            text: "Omit code entirely and the tabs disappear, leaving a framed example. That is the right shape for something that has no source worth showing.",
+          },
+        ],
+      },
+    ],
     props: [
       ["children", "ReactNode", "The living example."],
       [
@@ -3374,6 +4568,50 @@ export default function RootLayout({ children }) {
     </p>
   )
 }`,
+    sections: [
+      {
+        id: "tokens",
+        title: "What each token becomes",
+        blocks: [
+          {
+            kind: "text",
+            text: "Write the chord the way you think about it and let the platform decide how it is spelled. Mod is the one that matters: it is Command on Apple platforms and Control everywhere else, which is exactly the distinction most shortcut hints get wrong by hard-coding one of them.",
+          },
+          {
+            kind: "table",
+            headers: ["Token", "Apple", "Elsewhere"],
+            rows: [
+              ["Mod", "⌘", "Ctrl"],
+              ["Alt or Option", "⌥", "Alt"],
+              ["Shift", "⇧", "Shift"],
+              ["Ctrl", "⌃", "Ctrl"],
+              ["Enter", "↵", "Enter"],
+              ["Escape", "Esc", "Esc"],
+            ],
+          },
+          {
+            kind: "text",
+            text: "Anything unrecognised is passed through, with a single letter upper-cased, so Mod+K and Mod+Shift+P both read correctly without a special case.",
+          },
+        ],
+      },
+      {
+        id: "binding",
+        title: "It only says the shortcut",
+        blocks: [
+          {
+            kind: "text",
+            text: "Nothing is bound. This renders a hint and no more, so the keys shown and the keys that work are kept in step by you. Where a component already owns the shortcut -- the command palette and its Mod+K, say -- name the same chord here rather than inventing a second source of truth.",
+          },
+          {
+            kind: "code",
+            code: `<p>
+  Press <Kbd keys="Mod+K" /> to search, or <Kbd keys={["Escape"]} /> to close.
+</p>`,
+          },
+        ],
+      },
+    ],
     props: [
       [
         "keys",
@@ -3409,6 +4647,46 @@ export default function RootLayout({ children }) {
     />
   )
 }`,
+    sections: [
+      {
+        id: "placement",
+        title: "Where it belongs",
+        blocks: [
+          {
+            kind: "text",
+            text: "Put it where the send control was. Someone who has just started an answer is still looking at that spot, and a stop button somewhere else costs them a search at exactly the moment they want it to be over. Prompt Input does this for you by swapping its own control while streaming.",
+          },
+          {
+            kind: "text",
+            text: "It renders nothing when there is nothing to stop, rather than dimming. A disabled stop button is a small lie: it suggests the option exists and is unavailable, when in fact there is simply no work in flight.",
+          },
+        ],
+      },
+      {
+        id: "escape",
+        title: "Escape, and the promise it makes",
+        blocks: [
+          {
+            kind: "text",
+            text: "Escape is bound while running and unbound the moment it stops, so the key never quietly does something on a page where nothing is happening. Turn it off with shortcut={false} where Escape already belongs to something else -- a dialog holding the composer, for instance, which should close rather than interrupt.",
+          },
+          {
+            kind: "text",
+            text: "Whatever onStop does, it should genuinely stop: abort the request, not just hide the text. A stop that only stops the display leaves the model running, the bill accruing, and the answer arriving anyway if the component remounts.",
+          },
+          {
+            kind: "code",
+            code: `const controller = useRef<AbortController>(null)
+
+<StopGenerating
+  running={streaming}
+  startedAt={startedAt}
+  onStop={() => controller.current?.abort()}
+/>`,
+          },
+        ],
+      },
+    ],
     props: [
       [
         "onStop",
@@ -3453,6 +4731,63 @@ export default function RootLayout({ children }) {
     />
   )
 }`,
+    sections: [
+      {
+        id: "segments",
+        title: "Showing where it went",
+        blocks: [
+          {
+            kind: "text",
+            text: "A single number tells someone they are running out; segments tell them what to do about it. Splitting the bar by what spent the budget -- the system prompt, the history, attached files -- turns a warning into a decision, because the largest band is the thing worth dropping.",
+          },
+          {
+            kind: "code",
+            code: `<TokenMeter
+  limit={200_000}
+  segments={[
+    { label: "System", value: 4_200 },
+    { label: "History", value: 71_000 },
+    { label: "Files", value: 18_400 },
+  ]}
+/>`,
+            caption:
+              "Segments are drawn in the order given, and their sum becomes the total.",
+          },
+          {
+            kind: "text",
+            text: "Order them by how permanent they are, most fixed first, so the part someone can actually reduce ends up at the changing edge of the bar rather than in the middle.",
+          },
+        ],
+      },
+      {
+        id: "thresholds",
+        title: "Running out",
+        blocks: [
+          {
+            kind: "text",
+            text: "Past warnAt -- four fifths of the limit by default -- the reading turns and the component marks itself tight, which you can style against. Lower it when hitting the limit is expensive to recover from, so the warning arrives while there is still room to act on it.",
+          },
+          {
+            kind: "text",
+            text: "format decides how both numbers read. The default abbreviates, which is right for a window of two hundred thousand; pass your own where exactness matters, or where the budget is money rather than tokens.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "TokenSegment",
+        rows: [
+          ["label", "string", "Named in the key beneath the bar."],
+          ["value", "number", "Counted towards the total."],
+          [
+            "color",
+            "string",
+            "Any CSS colour. A theme shade is used when omitted.",
+          ],
+        ],
+      },
+    ],
     props: [
       ["limit", "number", "The window. Values at or past it read as full."],
       ["used", "number", "Total consumed. Ignored when segments are given."],
@@ -3595,6 +4930,45 @@ export default function RootLayout({ children }) {
     />
   ))
 }`,
+    sections: [
+      {
+        id: "scores",
+        title: "About that percentage",
+        blocks: [
+          {
+            kind: "text",
+            text: "score is a fraction from 0 to 1, clamped, and shown as a percentage. What it means is entirely your retriever's business: a cosine similarity, a reranker's output, and a BM25 score are three different quantities, and none of them is a probability that the answer is correct.",
+          },
+          {
+            kind: "text",
+            text: "So show it only where the reader can act on it. A number that always reads between 80 and 90 percent teaches nobody anything, and a confident-looking percentage attached to a bad passage is worse than no number at all. Leave score out and the bar disappears.",
+          },
+        ],
+      },
+      {
+        id: "snippets",
+        title: "Making a source checkable",
+        blocks: [
+          {
+            kind: "text",
+            text: "The snippet should be the passage the claim actually rests on, not the opening of the document. The whole value of showing sources is that someone can check the claim in a second, and a first paragraph that happens to sit above the relevant text does not let them.",
+          },
+          {
+            kind: "text",
+            text: "Where there is no url -- an internal document, a chunk from your own store -- the card still works and simply stops being a link. Give it a source in that case, since the host it would otherwise fall back to does not exist.",
+          },
+          {
+            kind: "code",
+            code: `<SourceCard
+  index={1}
+  title="Refund policy, section 4"
+  source="Support handbook"
+  snippet="Refunds are issued to the original payment method within ten working days."
+/>`,
+          },
+        ],
+      },
+    ],
     props: [
       [
         "title",
@@ -3643,6 +5017,44 @@ export default function RootLayout({ children }) {
     />
   )
 }`,
+    sections: [
+      {
+        id: "writing",
+        title: "Writing one worth reading",
+        blocks: [
+          {
+            kind: "text",
+            text: "An empty state is the first thing many people see, and it is usually written last. The default -- No data -- tells someone what they can already see and nothing about what to do, which turns a starting point into a dead end.",
+          },
+          {
+            kind: "list",
+            items: [
+              "Say what is missing in the words of the thing itself: No documents yet, not No results.",
+              "Say why the space is empty, when the reason is not obvious: nothing uploaded yet reads very differently from a filter that matched nothing.",
+              "Offer the one action that fills it, and only one. A choice of three is a menu, not a way forward.",
+            ],
+          },
+          {
+            kind: "text",
+            text: "Distinguish the two kinds. Nothing has ever been here is an invitation, and should show someone how to begin. Nothing matched what you asked for is a result, and should offer a way back -- clearing the filter, widening the search -- rather than the same create button.",
+          },
+        ],
+      },
+      {
+        id: "fitting",
+        title: "Fitting the space",
+        blocks: [
+          {
+            kind: "text",
+            text: 'The default has room to breathe, for a page or a large panel that is otherwise blank. Use size="sm" inside a card, a sidebar, or a column where a tall empty box would push the rest of the layout around.',
+          },
+          {
+            kind: "text",
+            text: "The description is held to a readable measure rather than stretching the full width of whatever contains it, so it stays legible in a wide panel without any work on your part.",
+          },
+        ],
+      },
+    ],
     props: [
       ["title", "ReactNode", "The one line saying what is missing."],
       [

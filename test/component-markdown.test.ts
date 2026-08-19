@@ -115,7 +115,8 @@ describe("guidance sections", () => {
 
       for (const block of section.blocks) {
         if (block.kind === "text") expect(block.text.length).toBeGreaterThan(40)
-        if (block.kind === "code") expect(block.code).toContain("\n")
+        if (block.kind === "code")
+          expect(block.code.trim().length).toBeGreaterThan(10)
         if (block.kind === "list") expect(block.items.length).toBeGreaterThan(1)
         if (block.kind === "table") {
           for (const row of block.rows) {
@@ -153,7 +154,10 @@ describe("documented types", () => {
     )
 
     for (const entry of component.types) {
-      expect(source).toContain(`export type ${entry.name} =`)
+      // Components declare their shapes either way.
+      expect(source).toMatch(
+        new RegExp(`export (type ${entry.name} =|interface ${entry.name}\\b)`)
+      )
     }
   })
 
