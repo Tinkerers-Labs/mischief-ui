@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm pdf-worker && pnpm docs && pnpm registry:build && pnpm registry:smoke && pnpm package:build && next build",
+    "build": "pnpm pdf-worker && pnpm docs:build && pnpm registry:build && pnpm registry:smoke && pnpm package:build && next build",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "next typegen && tsc --noEmit",
@@ -24,8 +24,8 @@
     "check": "pnpm lockfile:check && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
     "lockfile:check": "pnpm install --frozen-lockfile --ignore-scripts --prefer-offline",
     "pdf-worker": "node scripts/copy-pdf-worker.mjs",
-    "predev": "node scripts/copy-pdf-worker.mjs && tsx scripts/generate-docs.ts",
-    "docs": "tsx scripts/generate-docs.ts"
+    "predev": "node scripts/copy-pdf-worker.mjs && pnpm docs:build",
+    "docs:build": "tsx scripts/generate-docs.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
