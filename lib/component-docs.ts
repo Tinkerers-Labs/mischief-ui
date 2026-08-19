@@ -350,7 +350,6 @@ export function Search() {
             "string[]",
             "Words that should find the item but are not shown.",
           ],
-          ["icon", "ReactNode", "Placed before the label."],
         ],
       },
     ],
@@ -587,6 +586,71 @@ export function Attachments() {
     />
   )
 }`,
+    sections: [
+      {
+        id: "validation",
+        title: "Validation is not a boundary",
+        blocks: [
+          {
+            kind: "text",
+            text: "accept and maxSize exist so someone can correct a mistake before waiting for an upload to fail. They are not security. Every one of them is trivially bypassed -- the accept attribute is a filter in a file dialog, the size is read from the file the browser hands over, and the type comes from an extension rather than the bytes.",
+          },
+          {
+            kind: "text",
+            text: "Repeat every check on the server, and sniff the actual content rather than trusting the reported type. A file named invoice.pdf is only a PDF if its bytes say so.",
+          },
+        ],
+      },
+      {
+        id: "rejections",
+        title: "Why a file was refused",
+        blocks: [
+          {
+            kind: "text",
+            text: "Refused files arrive through onReject with a code, so you can respond to the reason rather than parsing a message.",
+          },
+          {
+            kind: "table",
+            headers: ["Code", "Meaning"],
+            rows: [
+              ["type", "Did not match accept."],
+              ["size", "Larger than maxSize."],
+              ["duplicate", "Already in the queue."],
+              ["count", "Would exceed maxFiles."],
+            ],
+          },
+          {
+            kind: "text",
+            text: "Each rejection carries the file it refers to, so several can be reported at once when a whole folder is dropped in.",
+          },
+        ],
+      },
+      {
+        id: "progress",
+        title: "Driving progress",
+        blocks: [
+          {
+            kind: "text",
+            text: "The component queues files and shows their state; it never uploads anything. Move each item through its status yourself, and set progress from whatever your transport reports.",
+          },
+          {
+            kind: "code",
+            code: `async function upload(item) {
+  update(item.id, { status: "uploading", progress: 0 })
+
+  try {
+    const result = await put(item.file, {
+      onProgress: (progress) => update(item.id, { progress }),
+    })
+    update(item.id, { status: "complete", progress: 100, result })
+  } catch (error) {
+    update(item.id, { status: "error", error: String(error) })
+  }
+}`,
+          },
+        ],
+      },
+    ],
     props: [
       ["accept", "string", "MIME types and extensions accepted by the picker."],
       ["multiple", "boolean", "Allows more than one file. Defaults to true."],
@@ -704,6 +768,38 @@ export function Attachments() {
     </Conversation>
   )
 }`,
+    sections: [
+      {
+        id: "following",
+        title: "Following the newest message",
+        blocks: [
+          {
+            kind: "text",
+            text: "The viewport sticks to the bottom while it is already there, so a streaming answer stays in view. Scroll up and following stops immediately; come back within threshold pixels of the end and it resumes. That is what makes it possible to read back through a conversation while one is still arriving, without being dragged away mid-sentence.",
+          },
+          {
+            kind: "text",
+            text: "A jump control appears whenever following has stopped, so getting back to the newest message is one click rather than a long scroll. onFollowChange reports the same state if you want to show something of your own.",
+          },
+          {
+            kind: "code",
+            code: `<Conversation threshold={64} onFollowChange={setAtBottom}>
+  {messages.map((message) => (
+    <Message key={message.id} role={message.role}>
+      {message.text}
+    </Message>
+  ))}
+</Conversation>`,
+            caption:
+              "Raise threshold when messages are tall, so near the bottom still counts as the bottom.",
+          },
+          {
+            kind: "text",
+            text: "Turn the behaviour off entirely with stickToBottom={false} for a transcript that should open where it was left rather than at the end.",
+          },
+        ],
+      },
+    ],
     props: [
       [
         "stickToBottom",
@@ -784,6 +880,45 @@ export function Attachments() {
     />
   )
 }`,
+    sections: [
+      {
+        id: "keys",
+        title: "Sending and not sending",
+        blocks: [
+          {
+            kind: "text",
+            text: "Enter submits and Shift+Enter starts a new line, which is what people expect from a message box and the opposite of what a plain textarea does. Submission is skipped when the field is empty or holds only whitespace, so a stray Enter never sends an empty turn.",
+          },
+          {
+            kind: "text",
+            text: "The box grows with what is typed and stops at maxRows, scrolling after that rather than pushing the rest of the page away.",
+          },
+        ],
+      },
+      {
+        id: "status",
+        title: "Submitting, then stopping",
+        blocks: [
+          {
+            kind: "text",
+            text: "status decides which control is offered. While an answer is being generated the send control becomes a stop control, so the same place in the layout always holds the thing you currently want -- and there is never a send button that quietly does nothing.",
+          },
+          {
+            kind: "code",
+            code: `<PromptInput
+  status={streaming ? "streaming" : "ready"}
+  onSubmit={send}
+  onStop={abort}
+  attachments={<FileThumbnail file={pending} />}
+/>`,
+          },
+          {
+            kind: "text",
+            text: "attachments and actions are slots either side of the control, for what is going with the message and for what changes how it is sent -- a model picker, a tool toggle -- so the composer stays yours to arrange.",
+          },
+        ],
+      },
+    ],
     props: [
       [
         "value, defaultValue, onValueChange",
@@ -1065,6 +1200,46 @@ export function AskAboutAcme() {
     usage: `export function Answer({ stream }: { stream: AsyncIterable<string> }) {
   return <StreamingText source={stream} onDone={saveAnswer} />
 }`,
+    sections: [
+      {
+        id: "sources",
+        title: "Two ways to drive it",
+        blocks: [
+          {
+            kind: "text",
+            text: "Pass text and it is typed out at speed, which is the right thing for a canned answer or a demonstration. Pass source -- an async iterable of chunks -- and it renders what actually arrives, at the pace it arrives, with no artificial delay in front of a real response.",
+          },
+          {
+            kind: "code",
+            code: `<StreamingText
+  source={response.body}
+  onDone={(text) => save(text)}
+  onError={report}
+/>`,
+            caption:
+              "Anything async-iterable works, including a fetch body reader.",
+          },
+          {
+            kind: "text",
+            text: "Callbacks fire from the status they describe rather than from inside a render, so onDone runs once when the stream finishes and never during React's own work.",
+          },
+        ],
+      },
+      {
+        id: "announcing",
+        title: "What a screen reader hears",
+        blocks: [
+          {
+            kind: "text",
+            text: "Announcing every character would be unusable, so the live region is filled a sentence at a time as sentences complete. A reader hears the answer in whole thoughts, slightly behind the text on screen, instead of a stream of letters.",
+          },
+          {
+            kind: "text",
+            text: "Set announce to off where the text is decorative, or where something else on the page is already announcing the same content. A static render -- no streaming, no source -- fills nothing, so a transcript of past messages does not re-announce itself on mount.",
+          },
+        ],
+      },
+    ],
     props: [
       ["text", "string", "Static content, or the script replayed by speed."],
       [
@@ -1175,6 +1350,62 @@ export function AskAboutAcme() {
     />
   )
 }`,
+    sections: [
+      {
+        id: "lifecycle",
+        title: "The four states",
+        blocks: [
+          {
+            kind: "text",
+            text: "A call moves through as many of these as it needs. Each one changes what is shown and is announced politely, naming the tool, so a reader who is not watching still learns what happened.",
+          },
+          {
+            kind: "table",
+            headers: ["Status", "Shows"],
+            rows: [
+              [
+                "pending",
+                "Queued. The input, and nothing that has happened yet.",
+              ],
+              [
+                "running",
+                "In flight, with a live duration if startedAt is set.",
+              ],
+              ["success", "The output, and the final duration."],
+              ["error", "The failure message in place of the output."],
+            ],
+          },
+          {
+            kind: "text",
+            text: "Pass startedAt while running and the duration counts up on its own; pass durationMs once it settles and that fixed figure is shown instead. Setting neither is fine -- the call simply reports no timing.",
+          },
+        ],
+      },
+      {
+        id: "input-output",
+        title: "Input and output",
+        blocks: [
+          {
+            kind: "text",
+            text: "Input is rendered for you: an object is formatted as JSON, a string is shown as it is. Output is not, because only you know whether the result is a table, a paragraph, or three files. Render it and pass it in.",
+          },
+          {
+            kind: "code",
+            code: `<ToolCall
+  name="search_files"
+  status="success"
+  input={{ pattern: "nullable email", path: "migrations/" }}
+  output={<FileTree nodes={matches} />}
+  durationMs={340}
+/>`,
+          },
+          {
+            kind: "text",
+            text: "There is no syntax highlighting on the input, and no dependency that would provide it. Keep what you pass small enough to read: the arguments that decide what the call did, not everything that was in scope.",
+          },
+        ],
+      },
+    ],
     props: [
       ["name", "string", "The tool name shown in the header."],
       [
@@ -1268,6 +1499,62 @@ export function Answer() {
     </InlineCitations>
   )
 }`,
+    sections: [
+      {
+        id: "numbering",
+        title: "How references are numbered",
+        blocks: [
+          {
+            kind: "text",
+            text: "Numbers come from the position of a source in the sources array, not from the order the citations appear in the text. Two mentions of the same source are therefore the same number wherever they fall, and reordering a paragraph never renumbers anything.",
+          },
+          {
+            kind: "code",
+            code: `<InlineCitations sources={sources}>
+  <p>
+    The window is fifteen minutes <Citation id="rfc" />, and the counter
+    resets on success <Citation id="rfc" /> rather than on expiry{" "}\n    <Citation id="notes" />.
+  </p>
+</InlineCitations>`,
+            caption:
+              "Both rfc marks read as the same number; notes takes the next one.",
+          },
+          {
+            kind: "text",
+            text: "It also means the array is the thing to sort. Put the sources in the order you want them listed -- by relevance, or by the order you expect them to be met -- and the marks follow.",
+          },
+        ],
+      },
+      {
+        id: "sources",
+        title: "Writing the source list",
+        blocks: [
+          {
+            kind: "text",
+            text: "A citation is only useful if it can be checked. Give every source a title that says what it is rather than where it lives, and a snippet holding the sentence the claim actually rests on, so a reader can judge it without leaving the page.",
+          },
+          {
+            kind: "text",
+            text: "Sources without a url still work, and are the right shape for an internal document or a passage retrieved from your own store. Hide the printed list with showSourceList={false} when you are rendering it yourself somewhere else on the page.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "CitationSource",
+        rows: [
+          ["id", "string", "What a citation mark refers to."],
+          [
+            "title",
+            "string",
+            "Shown in the list, and as the mark's accessible name.",
+          ],
+          ["url", "string", "Makes the entry a link. Optional."],
+          ["snippet", "string", "The passage the claim rests on."],
+        ],
+      },
+    ],
     props: [
       [
         "sources",
@@ -1434,6 +1721,72 @@ const box = { id: "total", x: 0.5, y: 0.5, width: 0.5, height: 0.5 }`,
     />
   )
 }`,
+    sections: [
+      {
+        id: "coordinates",
+        title: "Coordinate system",
+        blocks: [
+          {
+            kind: "text",
+            text: "Annotations are stored as fractions of the image rather than pixels: x and y are the top-left corner, width and height run from there, and everything sits between 0 and 1. A note therefore stays on the same words when the image is resized, zoomed, or rendered on a denser screen, and the same numbers survive being stored and read back at another size.",
+          },
+          {
+            kind: "code",
+            code: `// A note over the middle of the page, whatever it renders at.
+const annotation = {
+  id: "clause-4",
+  x: 0.25,
+  y: 0.4,
+  width: 0.5,
+  height: 0.08,
+  note: "Check this against the master agreement",
+  author: "Aman",
+}`,
+          },
+        ],
+      },
+      {
+        id: "drawing",
+        title: "Drawing and storing",
+        blocks: [
+          {
+            kind: "text",
+            text: "The component holds no list of its own. Dragging on the image calls onCreate with the rectangle, and it is yours to store, give an id, and pass back in. Nothing appears until you do, which is what lets you await a save and show a failure instead of a note that was never kept.",
+          },
+          {
+            kind: "code",
+            code: `async function onCreate(rect) {
+  const saved = await api.annotate({ ...rect, note: await ask() })
+  setAnnotations((current) => [...current, saved])
+}`,
+          },
+          {
+            kind: "text",
+            text: "readOnly keeps the notes visible and stops new ones being drawn, which is the right mode for anyone without permission to comment. minSize discards a stray click that would leave an annotation too small to find again.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "Annotation",
+        rows: [
+          ["id", "string", "Unique within the set. Drives selection."],
+          [
+            "x, y",
+            "number",
+            "Top-left corner as a fraction of the image, from 0 to 1.",
+          ],
+          [
+            "width, height",
+            "number",
+            "Size as a fraction of the image, from 0 to 1.",
+          ],
+          ["note", "string", "The comment itself."],
+          ["author", "string", "Who left it."],
+        ],
+      },
+    ],
     props: [
       ["src, alt", "string", "The page image and its description."],
       [
@@ -1487,6 +1840,82 @@ const box = { id: "total", x: 0.5, y: 0.5, width: 0.5, height: 0.5 }`,
     />
   )
 }`,
+    sections: [
+      {
+        id: "not-redaction",
+        title: "This hides, it does not remove",
+        blocks: [
+          {
+            kind: "text",
+            text: "The black boxes are drawn over an image in the browser. Nothing about the file underneath changes. If you serve the original alongside the regions, everyone still has the unredacted document, and a reader who opens it directly, saves the image, or asks the network tab will see exactly what you meant to hide.",
+          },
+          {
+            kind: "text",
+            text: "Treat this component as the place where a person decides what to hide, and treat the regions it produces as instructions for a server that then does the hiding for real: rasterising the page with the pixels removed, or stripping the text from the source before the file is ever sent.",
+          },
+          {
+            kind: "list",
+            items: [
+              "Never send the original to a client that is only allowed to see the redacted version.",
+              "Burn the redaction into the pixels on the server, then delete the original from anything the client can reach.",
+              "For a PDF, removing the drawn rectangle is not enough -- the text layer beneath it has to go too, or the words remain selectable.",
+            ],
+          },
+          {
+            kind: "text",
+            text: "The reveal control exists for the person doing the redacting, so they can check their own work. It is not a permission boundary, and anything it can show was already in the page.",
+          },
+        ],
+      },
+      {
+        id: "regions",
+        title: "Regions",
+        blocks: [
+          {
+            kind: "text",
+            text: "Regions are fractions of the image, from 0 to 1, and are clamped into that range rather than rejected. That keeps them correct as the image is resized, and it means the same numbers can be handed to a server that renders the page at a completely different scale.",
+          },
+          {
+            kind: "code",
+            code: `function onCreate(rect) {
+  setRegions((current) => [
+    ...current,
+    { id: crypto.randomUUID(), reason: "Bank details", ...rect },
+  ])
+}`,
+            caption:
+              "onCreate hands you the drawn rectangle; you decide what it means and keep it.",
+          },
+          {
+            kind: "text",
+            text: "minSize rejects an accidental click that would otherwise leave an invisible region behind. Give a reason where you can: it is what makes an audit of what was hidden, and why, possible later.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "RedactionRegion",
+        rows: [
+          ["id", "string", "Unique within the set. Used to delete."],
+          [
+            "x, y",
+            "number",
+            "Top-left corner as a fraction of the image, from 0 to 1.",
+          ],
+          [
+            "width, height",
+            "number",
+            "Size as a fraction of the image, from 0 to 1.",
+          ],
+          [
+            "reason",
+            "string",
+            "Why this was hidden. Worth recording for an audit.",
+          ],
+        ],
+      },
+    ],
     props: [
       ["src, alt", "string", "The page image and its description."],
       [
@@ -1738,6 +2167,78 @@ async function onExpandedChange(ids: string[]) {
     />
   )
 }`,
+    sections: [
+      {
+        id: "output",
+        title: "The shape it produces",
+        blocks: [
+          {
+            kind: "text",
+            text: "Fields come back as a tree, in the order they were arranged. Object and array fields nest through their own fields array, and everything else is a leaf. This is deliberately not JSON Schema: it is small enough to read, and short enough to convert into whatever your extractor actually wants.",
+          },
+          {
+            kind: "code",
+            code: `const fields = [
+  { id: "1", name: "total", type: "number", required: true },
+  {
+    id: "2",
+    name: "supplier",
+    type: "object",
+    fields: [
+      { id: "3", name: "name", type: "string", required: true },
+      { id: "4", name: "vat", type: "string" },
+    ],
+  },
+]`,
+          },
+          {
+            kind: "text",
+            text: "Six types are offered by default -- string, number, boolean, date, object, and array. Narrow that with types when your extractor supports fewer, and cap nesting with maxDepth so nobody builds a structure the other end cannot represent.",
+          },
+        ],
+      },
+      {
+        id: "ids",
+        title: "Ids for new fields",
+        blocks: [
+          {
+            kind: "text",
+            text: "New fields need an id, and the default generator is fine for a form whose result is read once. Pass createId when the ids are going to outlive the page -- stored, compared, or sent somewhere that expects them to be stable.",
+          },
+          {
+            kind: "code",
+            code: `<SchemaBuilder
+  defaultFields={fields}
+  createId={() => crypto.randomUUID()}
+  onFieldsChange={save}
+/>`,
+            caption:
+              "crypto.randomUUID is available in the browser and on modern Node.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "SchemaField",
+        rows: [
+          ["id", "string", "Unique across the whole tree."],
+          ["name", "string", "The field name as it will be extracted."],
+          [
+            "type",
+            "SchemaFieldType",
+            "string, number, boolean, date, object, or array.",
+          ],
+          [
+            "description",
+            "string",
+            "A hint for whoever, or whatever, fills it.",
+          ],
+          ["required", "boolean", "Marks the field as expected."],
+          ["fields", "SchemaField[]", "Children, on an object or an array."],
+        ],
+      },
+    ],
     props: [
       [
         "fields, defaultFields",
@@ -1781,6 +2282,56 @@ async function onExpandedChange(ids: string[]) {
     usage: `export function Sign() {
   return <SignaturePad onChange={(value) => setSignature(value)} />
 }`,
+    sections: [
+      {
+        id: "value",
+        title: "What you get back",
+        blocks: [
+          {
+            kind: "text",
+            text: "onChange reports the whole signature or null when it is cleared. A drawn signature arrives as a PNG data URL; a typed one arrives as the text, leaving the rendering to you. The mode tells you which of the two you are holding, so you never have to guess from which field is set.",
+          },
+          {
+            kind: "code",
+            code: `<SignaturePad
+  onChange={(value) => {
+    if (!value) return clear()
+    if (value.mode === "draw") return save({ image: value.dataUrl })
+    save({ typed: value.text })
+  }}
+/>`,
+          },
+          {
+            kind: "text",
+            text: "Store the typed variant as text rather than as a picture of text. It stays searchable, it survives a font change, and you can render it at whatever size the document needs.",
+          },
+        ],
+      },
+      {
+        id: "canvas",
+        title: "Sharpness",
+        blocks: [
+          {
+            kind: "text",
+            text: "The canvas is sized to the device pixel ratio and the drawing context scaled to match, so strokes are sharp on a retina screen instead of soft. That also means the exported PNG comes out at the device's resolution, not at the CSS size: on a 2x screen a 480 by 180 pad exports 960 by 360.",
+          },
+          {
+            kind: "text",
+            text: "Size for that if the image is going into a printed document, and remember the export carries whatever penColor and lineWidth were set, on a transparent background.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "SignatureValue",
+        rows: [
+          ["mode", '"draw" | "type"', "Which kind of signature this is."],
+          ["dataUrl", "string", "PNG data URL, on a drawn signature."],
+          ["text", "string", "The typed name, on a typed signature."],
+        ],
+      },
+    ],
     props: [
       [
         "mode, defaultMode",
@@ -1813,6 +2364,61 @@ async function onExpandedChange(ids: string[]) {
     usage: `export function Preview({ file }: { file: File }) {
   return <CsvViewer source={file} maxRows={200} />
 }`,
+    sections: [
+      {
+        id: "parsing",
+        title: "Parsing",
+        blocks: [
+          {
+            kind: "text",
+            text: "papaparse is an optional peer, imported the first time a source is parsed and never bundled for anyone who does not open a CSV. Without it installed, and without a parser of your own, the component says so rather than failing quietly.",
+          },
+          {
+            kind: "text",
+            text: "Pass table when the data is already parsed -- from your API, from a worker, from a database -- and no parser is involved at all. Pass parser to use something else, or to parse somewhere that will not block the page.",
+          },
+          {
+            kind: "code",
+            code: `<CsvViewer
+  source={file}
+  parser={async (input) => {
+    const { fields, rows } = await parseInWorker(input)
+    return { fields, rows }
+  }}
+/>`,
+            caption:
+              "A parser returns { fields, rows }; how it gets there is up to you.",
+          },
+          {
+            kind: "text",
+            text: "Delimiters, quoting, and encoding are the parser's business, not the viewer's. papaparse detects the common ones; a file that needs a fixed delimiter or a particular encoding is a good reason to pass your own.",
+          },
+        ],
+      },
+      {
+        id: "size",
+        title: "Large files",
+        blocks: [
+          {
+            kind: "text",
+            text: "Every row given to the component is rendered. maxRows caps what is shown, which keeps a large file from putting hundreds of thousands of cells into the page, and is the difference between a preview that opens instantly and a tab that stops responding.",
+          },
+          {
+            kind: "text",
+            text: "Treat this as a preview of a file rather than a spreadsheet. When someone needs to work through all of it, page or virtualise on your side and hand the viewer one page at a time.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "CsvTable",
+        rows: [
+          ["fields", "string[]", "Column headers, in order."],
+          ["rows", "string[][]", "Cells per row, aligned to fields."],
+        ],
+      },
+    ],
     props: [
       ["source", "string | File", "CSV text or a file to parse."],
       [

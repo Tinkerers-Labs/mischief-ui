@@ -137,3 +137,44 @@ describe("guidance sections", () => {
     }
   })
 })
+
+describe("documented types", () => {
+  const withTypes = componentDocs.filter(
+    (component) => component.types.length > 0
+  )
+
+  it.each(withTypes)("$name documents types it exports", (component) => {
+    const source = readFileSync(
+      path.resolve(
+        import.meta.dirname,
+        `../registry/default/${component.slug}/${component.slug}.tsx`
+      ),
+      "utf8"
+    )
+
+    for (const entry of component.types) {
+      expect(source).toContain(`export type ${entry.name} =`)
+    }
+  })
+
+  it.each(withTypes)("$name documents fields that exist", (component) => {
+    const source = readFileSync(
+      path.resolve(
+        import.meta.dirname,
+        `../registry/default/${component.slug}/${component.slug}.tsx`
+      ),
+      "utf8"
+    )
+
+    for (const entry of component.types) {
+      // Rows may pair related fields, as "x, y".
+      const fields = entry.rows.flatMap(([name]) =>
+        name.split(",").map((part) => part.trim())
+      )
+
+      for (const field of fields) {
+        expect(source).toMatch(new RegExp(`\\b${field}\\??:`))
+      }
+    }
+  })
+})
