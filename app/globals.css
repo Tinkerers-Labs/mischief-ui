@@ -1333,6 +1333,15 @@ pre:not([data-slot]) {
   }
 }
 
+.docs-section h2 .docs-family-count {
+  color: var(--muted-foreground);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  margin-left: 0.6rem;
+  vertical-align: middle;
+}
+
 .props-type {
   margin-top: 2rem;
 }

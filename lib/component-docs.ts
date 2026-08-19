@@ -5087,6 +5087,54 @@ export const componentDocs = entries.map((entry, index) => ({
   types: ("types" in entry ? entry.types : []) as readonly DocTypeTable[],
 }))
 
+/**
+ * The families in the order a reader should meet them, and what each is for.
+ * This is the one place the order lives: the sidebar, the home page gallery,
+ * the docs index, and llms.txt all read it rather than grouping again.
+ */
+const familyOrder = [
+  [
+    "Agent UI",
+    "The surface an assistant answers through: the thread, the composer, and everything it shows while it is working.",
+  ],
+  [
+    "Code",
+    "Code an agent wrote, ran, or wants to change, and the controls to accept it.",
+  ],
+  [
+    "Documents",
+    "Reading a file someone uploaded, marking it up, cutting it into pieces, and pulling structure out of it.",
+  ],
+  ["Files", "Getting a file in, and showing what arrived."],
+  [
+    "Controls",
+    "Familiar inputs with more feedback than usual, and none of it required to operate them.",
+  ],
+  [
+    "Wayfinding",
+    "Knowing where you are in something long, and getting somewhere else quickly.",
+  ],
+  ["Docs", "The furniture of a documentation site, taken out of this one."],
+  [
+    "Blocks",
+    "Larger pieces that compose several components into one part of a page.",
+  ],
+] as const
+
+export type ComponentFamily = {
+  name: string
+  description: string
+  components: ComponentDoc[]
+}
+
+export const componentFamilies: ComponentFamily[] = familyOrder.map(
+  ([name, description]) => ({
+    name,
+    description,
+    components: componentDocs.filter((component) => component.family === name),
+  })
+)
+
 /** Shown with a live demo on the home page. The rest are listed compactly. */
 export const featuredComponents = componentDocs.filter(
   (component) => component.featured

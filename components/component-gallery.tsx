@@ -3,23 +3,10 @@ import { ArrowUpRight } from "lucide-react"
 
 import { componentDemos } from "@/components/demos"
 import {
-  componentDocs,
+  componentFamilies,
   featuredComponents,
   type ComponentDoc,
 } from "@/lib/component-docs"
-
-function groupByFamily(docs: readonly ComponentDoc[]) {
-  const families: { family: string; docs: ComponentDoc[] }[] = []
-
-  for (const doc of docs) {
-    const current = families.find((entry) => entry.family === doc.family)
-
-    if (current) current.docs.push(doc)
-    else families.push({ family: doc.family, docs: [doc] })
-  }
-
-  return families
-}
 
 function GalleryTile({ doc }: { doc: ComponentDoc }) {
   const demo = componentDemos[doc.slug]
@@ -56,15 +43,15 @@ export function ComponentGallery() {
           All components
         </h2>
 
-        {groupByFamily(componentDocs).map(({ family, docs }) => (
-          <div className="catalog-family" key={family}>
+        {componentFamilies.map((family) => (
+          <div className="catalog-family" key={family.name}>
             <h3>
-              <span>{family}</span>
-              <span className="catalog-count">{docs.length}</span>
+              <span>{family.name}</span>
+              <span className="catalog-count">{family.components.length}</span>
             </h3>
 
             <ul>
-              {docs.map((doc) => (
+              {family.components.map((doc) => (
                 <li key={doc.slug}>
                   <Link
                     href={`/docs/components/${doc.slug}`}

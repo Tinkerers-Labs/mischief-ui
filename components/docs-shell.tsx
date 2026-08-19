@@ -1,23 +1,13 @@
+import { Fragment } from "react"
 import Link from "next/link"
 
 import { ExternalLink } from "@/components/external-link"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
-import { componentDocs, type ComponentDoc } from "@/lib/component-docs"
+import { componentFamilies } from "@/lib/component-docs"
 import { siteConfig } from "@/site.config"
 
 export function DocsShell({ children }: { children: React.ReactNode }) {
-  // The gallery orders by family; this is a lookup list, so it orders by name.
-  const byName = (a: ComponentDoc, b: ComponentDoc) =>
-    a.name.localeCompare(b.name)
-
-  const components = componentDocs
-    .filter(({ kind }) => kind === "component")
-    .sort(byName)
-  const blocks = componentDocs
-    .filter(({ kind }) => kind === "block")
-    .sort(byName)
-
   return (
     <>
       <SiteHeader />
@@ -25,20 +15,22 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
         <aside className="docs-sidebar">
           <p className="sidebar-label">Start here</p>
           <Link href={siteConfig.routes.docs}>Introduction</Link>
-          <p className="sidebar-label">Components</p>
-          {components.map((component) => (
-            <Link
-              key={component.slug}
-              href={`/docs/components/${component.slug}`}
-            >
-              {component.name}
-            </Link>
-          ))}
-          <p className="sidebar-label">Blocks</p>
-          {blocks.map((block) => (
-            <Link key={block.slug} href={`/docs/components/${block.slug}`}>
-              {block.name}
-            </Link>
+          {componentFamilies.map((family) => (
+            <Fragment key={family.name}>
+              <p className="sidebar-label">{family.name}</p>
+              {/* Grouped by family, then by name, because within a group of
+                  this size a reader is looking one up rather than reading. */}
+              {[...family.components]
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((component) => (
+                  <Link
+                    key={component.slug}
+                    href={`/docs/components/${component.slug}`}
+                  >
+                    {component.name}
+                  </Link>
+                ))}
+            </Fragment>
           ))}
           <p className="sidebar-label">More</p>
           <Link href={siteConfig.routes.brand}>Brand</Link>

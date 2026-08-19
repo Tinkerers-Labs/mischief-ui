@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 import { CopyCommand } from "@/components/copy-command"
-import { componentDocs } from "@/lib/component-docs"
+import { componentFamilies } from "@/lib/component-docs"
 import { addCommand, defaultPackageManager } from "@/lib/package-commands"
 import { registryInstallCommand, siteConfig } from "@/site.config"
 
@@ -19,9 +19,6 @@ const packageInstallCommand = addCommand(
 )
 
 export default function DocsPage() {
-  const components = componentDocs.filter(({ kind }) => kind === "component")
-  const blocks = componentDocs.filter(({ kind }) => kind === "block")
-
   return (
     <article className="docs-article docs-intro">
       <p className="eyebrow">Introduction</p>
@@ -53,39 +50,29 @@ export default function DocsPage() {
         </div>
       </section>
 
-      <section className="docs-section">
-        <h2>The components</h2>
-        <div className="docs-component-list">
-          {components.map((component) => (
-            <Link
-              key={component.slug}
-              href={`/docs/components/${component.slug}`}
-            >
-              <span>{component.number}</span>
-              <strong>{component.name}</strong>
-              <p>{component.summary}</p>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="docs-section">
-        <h2>The blocks</h2>
-        <p>
-          Blocks are reusable React components too. They simply cover a larger
-          part of a page and compose more behavior. Install them the same way,
-          then replace their content through props.
-        </p>
-        <div className="docs-component-list">
-          {blocks.map((block) => (
-            <Link key={block.slug} href={`/docs/components/${block.slug}`}>
-              <span>{block.number}</span>
-              <strong>{block.name}</strong>
-              <p>{block.summary}</p>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {componentFamilies.map((family) => (
+        <section className="docs-section" key={family.name}>
+          <h2>
+            {family.name}
+            <span className="docs-family-count">
+              {family.components.length}
+            </span>
+          </h2>
+          <p>{family.description}</p>
+          <div className="docs-component-list">
+            {family.components.map((component) => (
+              <Link
+                key={component.slug}
+                href={`/docs/components/${component.slug}`}
+              >
+                <span>{component.number}</span>
+                <strong>{component.name}</strong>
+                <p>{component.summary}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ))}
 
       <section className="docs-section">
         <h2>Compatibility</h2>

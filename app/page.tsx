@@ -97,12 +97,14 @@ export default function Home() {
             </p>
             <p className="mt-2 text-sm">
               Using a coding agent?{" "}
-              <Link
+              {/* A plain anchor: skill.md is a markdown route, not a page, so
+                  next/link would prefetch a tree that does not exist. */}
+              <a
                 className="font-semibold underline underline-offset-4"
                 href={siteConfig.routes.skill}
               >
                 Give it skill.md.
-              </Link>
+              </a>
             </p>
           </div>
 

@@ -3,7 +3,7 @@ import path from "node:path"
 
 import { describe, expect, it } from "vitest"
 
-import { componentDocs } from "../lib/component-docs"
+import { componentDocs, componentFamilies } from "../lib/component-docs"
 import { componentMarkdown } from "../lib/component-markdown"
 import { llmsFull, llmsIndex } from "../lib/llms-txt"
 
@@ -220,6 +220,39 @@ describe("llms.txt", () => {
     for (const component of componentDocs) {
       expect(full).toContain(`# ${component.name}`)
       expect(full).toContain(component.accessibility)
+    }
+  })
+})
+
+describe("families", () => {
+  it("accounts for every component exactly once", () => {
+    const listed = componentFamilies.flatMap((family) =>
+      family.components.map((component) => component.slug)
+    )
+
+    expect(new Set(listed).size).toBe(listed.length)
+    expect([...listed].sort()).toEqual(
+      componentDocs.map((component) => component.slug).sort()
+    )
+  })
+
+  it("names no family it cannot fill", () => {
+    for (const family of componentFamilies) {
+      expect(family.components.length).toBeGreaterThan(0)
+      expect(family.description.length).toBeGreaterThan(30)
+    }
+  })
+
+  it("leads with the agent components", () => {
+    expect(componentFamilies[0]!.name).toBe("Agent UI")
+  })
+
+  it("carries the family descriptions into llms.txt", () => {
+    const index = llmsIndex()
+
+    for (const family of componentFamilies) {
+      expect(index).toContain(`## ${family.name}`)
+      expect(index).toContain(family.description)
     }
   })
 })
