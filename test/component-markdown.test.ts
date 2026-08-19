@@ -34,7 +34,13 @@ describe("component markdown", () => {
           (line) => line.startsWith("| `") && !line.startsWith("| `Prop`")
         )
 
-      expect(rows).toHaveLength(component.props.length)
+      // Type tables use the same row format, so they count towards the total.
+      const typeRows = component.types.reduce(
+        (total, entry) => total + entry.rows.length,
+        0
+      )
+
+      expect(rows).toHaveLength(component.props.length + typeRows)
 
       for (const [propName] of component.props) {
         expect(markdown).toContain(`| \`${propName}\` |`)
@@ -83,5 +89,51 @@ describe("readme badges", () => {
     ).match(/badge\/components-(\d+)-/)
 
     expect(badge?.[1]).toBe(String(componentDocs.length))
+  })
+})
+
+describe("guidance sections", () => {
+  const withSections = componentDocs.filter(
+    (component) => component.sections.length > 0
+  )
+
+  it("are carried by the components that need them", () => {
+    expect(withSections.length).toBeGreaterThan(0)
+  })
+
+  it.each(withSections)("$name anchors each section once", (component) => {
+    const ids = component.sections.map((section) => section.id)
+
+    expect(new Set(ids).size).toBe(ids.length)
+    for (const id of ids) expect(id).toMatch(/^[a-z][a-z0-9-]*$/)
+  })
+
+  it.each(withSections)("$name says something in each", (component) => {
+    for (const section of component.sections) {
+      expect(section.title).not.toBe("")
+      expect(section.blocks.length).toBeGreaterThan(0)
+
+      for (const block of section.blocks) {
+        if (block.kind === "text") expect(block.text.length).toBeGreaterThan(40)
+        if (block.kind === "code") expect(block.code).toContain("\n")
+        if (block.kind === "list") expect(block.items.length).toBeGreaterThan(1)
+        if (block.kind === "table") {
+          for (const row of block.rows) {
+            expect(row).toHaveLength(block.headers.length)
+          }
+        }
+      }
+    }
+  })
+
+  it.each(withSections)("$name carries them into the markdown", (component) => {
+    const markdown = componentMarkdown(component)
+
+    for (const section of component.sections) {
+      expect(markdown).toContain(`## ${section.title}`)
+    }
+    for (const entry of component.types) {
+      expect(markdown).toContain(`### ${entry.name}`)
+    }
   })
 })

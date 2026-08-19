@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react"
 
 import { ComponentPreview } from "@/components/component-preview"
 import { CodeBlock } from "@/components/code-block"
+import { DocBlocks } from "@/components/doc-blocks"
 import { CopyPageButton } from "@/components/copy-page-button"
 import { DocsToc } from "@/components/docs-toc"
 import { agentInstallPrompt } from "@/lib/agent-prompt"
@@ -38,18 +39,15 @@ export async function generateMetadata({
   }
 }
 
-const BASE_SECTIONS = [
+const INSTALL_SECTIONS = [
   { id: "installation", label: "Installation" },
   { id: "usage", label: "Usage" },
+] as const
+
+const CLOSING_SECTIONS = [
   { id: "api", label: "API" },
   { id: "accessibility", label: "Accessibility" },
 ] as const
-
-const SOURCE_SECTION = { id: "source", label: "Source" } as const
-const DEPENDENCIES_SECTION = {
-  id: "dependencies",
-  label: "Dependencies",
-} as const
 
 export default async function ComponentPage({
   params,
@@ -65,11 +63,12 @@ export default async function ComponentPage({
   const previousComponent = componentDocs[componentIndex - 1]
   const nextComponent = componentDocs[componentIndex + 1]
 
-  // A component with no dependencies has no section to point at.
+  // Guidance sections sit between the first example and the API, and a
+  // component that needs none contributes none.
   const sections = [
-    ...BASE_SECTIONS,
-    ...(component.dependencies.length > 0 ? [DEPENDENCIES_SECTION] : []),
-    SOURCE_SECTION,
+    ...INSTALL_SECTIONS,
+    ...component.sections.map(({ id, title }) => ({ id, label: title })),
+    ...CLOSING_SECTIONS,
   ]
 
   return (
@@ -149,12 +148,29 @@ export default async function ComponentPage({
             npmImport={component.npmImport}
             slug={component.slug}
           />
+          {component.dependencies.length > 0 ? (
+            <div className="install-dependencies">
+              <span>Also installs</span>
+              <ul className="dependency-tags">
+                {component.dependencies.map((dependency) => (
+                  <li key={dependency}>{dependency}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </section>
 
         <section className="docs-section" id="usage">
           <h2>Usage</h2>
           <CodeBlock code={component.usage} />
         </section>
+
+        {component.sections.map((section) => (
+          <section className="docs-section" id={section.id} key={section.id}>
+            <h2>{section.title}</h2>
+            <DocBlocks blocks={section.blocks} />
+          </section>
+        ))}
 
         <section className="docs-section" id="api">
           <h2>API</h2>
@@ -171,32 +187,31 @@ export default async function ComponentPage({
               </div>
             ))}
           </div>
+
+          {component.types.map((type) => (
+            <div className="props-type" key={type.name}>
+              <h3>{type.name}</h3>
+              {type.description ? <p>{type.description}</p> : null}
+              <div
+                className="props-table"
+                role="table"
+                aria-label={`${type.name} fields`}
+              >
+                {type.rows.map(([name, fieldType, description]) => (
+                  <div className="props-row" role="row" key={name}>
+                    <code>{name}</code>
+                    <code>{fieldType}</code>
+                    <span>{description}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </section>
 
         <section className="docs-section" id="accessibility">
           <h2>Accessibility</h2>
           <p>{component.accessibility}</p>
-        </section>
-
-        {component.dependencies.length > 0 ? (
-          <section className="docs-section" id="dependencies">
-            <h2>Dependencies</h2>
-            <ul className="dependency-tags">
-              {component.dependencies.map((dependency) => (
-                <li key={dependency}>{dependency}</li>
-              ))}
-            </ul>
-          </section>
-        ) : null}
-
-        <section className="docs-section detail-footer" id="source">
-          <div>
-            <h2>Source</h2>
-            <p>Read it, change it, and keep the parts that fit your project.</p>
-          </div>
-          <ExternalLink href={componentSourceUrl(component.slug)}>
-            View source on GitHub
-          </ExternalLink>
         </section>
       </article>
 

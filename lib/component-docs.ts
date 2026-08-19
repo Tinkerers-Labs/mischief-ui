@@ -1,5 +1,33 @@
 import { packageImport, registryInstallCommand } from "@/site.config"
 
+/**
+ * An ordered piece of a guidance section. Sections exist for concerns a
+ * component genuinely has -- a coordinate system, a worker URL, a data shape --
+ * and a component without one carries no sections at all.
+ */
+export type DocBlock =
+  | { kind: "text"; text: string }
+  | { kind: "code"; code: string; caption?: string }
+  | { kind: "list"; items: readonly string[] }
+  | {
+      kind: "table"
+      headers: readonly string[]
+      rows: readonly (readonly string[])[]
+    }
+
+export type DocSection = {
+  id: string
+  title: string
+  blocks: readonly DocBlock[]
+}
+
+/** A table for a type the component exports besides its own props. */
+export type DocTypeTable = {
+  name: string
+  description?: string
+  rows: readonly (readonly [string, string, string])[]
+}
+
 const entries = [
   {
     slug: "magnetic-tabs",
@@ -267,6 +295,65 @@ export function PageIndex() {
 export function Search() {
   return <CommandPalette items={items} onSelect={(item) => open(item.id)} />
 }`,
+    sections: [
+      {
+        id: "ranking",
+        title: "How matches are ranked",
+        blocks: [
+          {
+            kind: "text",
+            text: "Everything is matched case-insensitively against the trimmed query, and each item is scored by the strongest thing it matched. Lower wins, and ties are broken alphabetically by label, so the order never depends on the order you passed items in.",
+          },
+          {
+            kind: "table",
+            headers: ["Rank", "Match"],
+            rows: [
+              ["0", "The label is exactly the query"],
+              ["1", "The label starts with the query"],
+              ["2", "The label contains the query"],
+              ["3", "The group contains the query"],
+              ["4", "A keyword contains the query"],
+              ["5", "The description contains the query"],
+            ],
+          },
+          {
+            kind: "text",
+            text: "An item matching none of these is dropped rather than ranked last. Use keywords for the words people actually type that are not in the label -- the old name for a thing, a synonym, the noun rather than the verb.",
+          },
+          {
+            kind: "code",
+            code: `const items = [
+  {
+    id: "redaction",
+    label: "Redaction",
+    group: "Documents",
+    description: "Mark regions to black out",
+    keywords: ["privacy", "black bar", "hide", "gdpr"],
+  },
+]`,
+            caption:
+              "Typing privacy finds this even though the label never says it.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "CommandItem",
+        rows: [
+          ["id", "string", "Unique within the set."],
+          ["label", "string", "What is shown and matched first."],
+          ["description", "string", "A second line, matched last."],
+          ["group", "string", "Heading the item is listed under, and matched."],
+          [
+            "keywords",
+            "string[]",
+            "Words that should find the item but are not shown.",
+          ],
+          ["icon", "ReactNode", "Placed before the label."],
+        ],
+      },
+    ],
     props: [
       [
         "items",
@@ -785,6 +872,99 @@ export function Starters() {
 export function Clarify() {
   return <Questionnaire questions={questions} onSubmit={start} />
 }`,
+    sections: [
+      {
+        id: "answers",
+        title: "The answer shape",
+        blocks: [
+          {
+            kind: "text",
+            text: "Answers are a record of question id to an array of strings, whatever the question. A single-choice question holds one entry, a multiple-choice question holds several, and a freeform answer is the typed text itself. One shape means reading the result never depends on how the question was configured.",
+          },
+          {
+            kind: "code",
+            code: `{
+  "scope": ["invoices"],
+  "fields": ["total", "tax", "due-date"],
+  "notes": ["Skip anything before 2024"]
+}`,
+          },
+          {
+            kind: "text",
+            text: "A question with required set is not satisfied until its array is non-empty, and submission stays blocked until every required question is.",
+          },
+        ],
+      },
+      {
+        id: "freeform",
+        title: "Freeform answers",
+        blocks: [
+          {
+            kind: "text",
+            text: "Every question offers an open text answer by default, because the moment the choices do not cover the case, a fixed list forces a wrong answer. Turn it off for the whole set with freeform={false}, or per question, when the choices really are exhaustive.",
+          },
+          {
+            kind: "code",
+            code: `<Questionnaire
+  questions={questions}
+  freeform={false}
+  onSubmit={start}
+/>`,
+            caption:
+              "A question may still opt back in with freeform on itself.",
+          },
+        ],
+      },
+      {
+        id: "shortcuts",
+        title: "Keyboard",
+        blocks: [
+          {
+            kind: "list",
+            items: [
+              "Number keys pick the matching choice, and are ignored while a text field has focus.",
+              "Tab reaches every choice and the freeform field in order.",
+              "Enter submits once the required questions are answered.",
+            ],
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "Question",
+        rows: [
+          ["id", "string", "Key this question's answer is stored under."],
+          ["prompt", "ReactNode", "The question itself."],
+          ["description", "ReactNode", "A clarifying line beneath the prompt."],
+          [
+            "choices",
+            "QuestionChoice[]",
+            "Offered answers. Omit for a purely open question.",
+          ],
+          ["multiple", "boolean", "Allows more than one choice."],
+          [
+            "freeform",
+            "boolean",
+            "Overrides the set-wide setting for this question.",
+          ],
+          [
+            "freeformLabel, freeformPlaceholder",
+            "string, string",
+            "Wording for the open answer.",
+          ],
+          ["required", "boolean", "Blocks submission until answered."],
+        ],
+      },
+      {
+        name: "QuestionChoice",
+        rows: [
+          ["id", "string", "What lands in the answer array."],
+          ["label", "ReactNode", "The choice as shown."],
+          ["description", "ReactNode", "A second line under the choice."],
+        ],
+      },
+    ],
     props: [
       [
         "questions",
@@ -1127,6 +1307,86 @@ export function Answer() {
 export function Invoice() {
   return <BoundingBoxes src="/page-1.png" alt="Invoice, page 1" boxes={boxes} />
 }`,
+    sections: [
+      {
+        id: "coordinates",
+        title: "Coordinate system",
+        blocks: [
+          {
+            kind: "text",
+            text: "Boxes are positioned in fractions of the image, not pixels. x and y are the top-left corner, width and height run from there, and every value is between 0 and 1. That is what lets the same box survive the image being resized, zoomed, or rendered at a different density.",
+          },
+          {
+            kind: "code",
+            code: `// Bottom-right quarter of the image, whatever size it renders at.
+const box = { id: "total", x: 0.5, y: 0.5, width: 0.5, height: 0.5 }`,
+          },
+          {
+            kind: "text",
+            text: "Values outside the range are clamped rather than rejected, so a box that runs past an edge is drawn to the edge instead of spilling out of the frame.",
+          },
+          {
+            kind: "text",
+            text: "Detection models rarely hand you fractions. Divide by the page dimensions the model reported, not by the dimensions you are displaying at.",
+          },
+          {
+            kind: "code",
+            code: `const boxes = predictions.map((prediction) => ({
+  id: prediction.id,
+  label: prediction.field,
+  x: prediction.left / page.width,
+  y: prediction.top / page.height,
+  width: prediction.width / page.width,
+  height: prediction.height / page.height,
+}))`,
+            caption: "Converting pixel output from a document model.",
+          },
+        ],
+      },
+      {
+        id: "tones",
+        title: "Tones",
+        blocks: [
+          {
+            kind: "text",
+            text: "Each box takes a tone, which sets its border and fill. Tone is decoration: the label carries the meaning, so a box never depends on colour to be understood.",
+          },
+          {
+            kind: "table",
+            headers: ["Tone", "Reads as"],
+            rows: [
+              ["default", "An ordinary extraction."],
+              ["accent", "Something confirmed, or the field in hand."],
+              ["warning", "Low confidence, or a value that needs a human."],
+            ],
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "BoundingBox",
+        rows: [
+          ["id", "string", "Unique within the set. Drives selection."],
+          ["label", "string", "Shown on the box, and read as its name."],
+          [
+            "tone",
+            '"default" | "accent" | "warning"',
+            'Border and fill. Defaults to "default".',
+          ],
+          [
+            "x, y",
+            "number",
+            "Top-left corner as a fraction of the image, from 0 to 1.",
+          ],
+          [
+            "width, height",
+            "number",
+            "Size as a fraction of the image, from 0 to 1.",
+          ],
+        ],
+      },
+    ],
     props: [
       ["src, alt", "string", "The page image and its description."],
       [
@@ -1315,6 +1575,82 @@ export function Invoice() {
 export function Files() {
   return <FileTree nodes={nodes} onSelect={openFile} />
 }`,
+    sections: [
+      {
+        id: "shape",
+        title: "Building the tree",
+        blocks: [
+          {
+            kind: "text",
+            text: "Nodes nest through children. A node is treated as a folder when it has a children array -- including an empty one -- so an empty folder is spelled children: [] rather than left out. Set kind explicitly when you want a folder that has not loaded its contents yet to still look like a folder.",
+          },
+          {
+            kind: "code",
+            code: `const nodes = [
+  {
+    id: "app",
+    name: "app",
+    children: [
+      { id: "app/page.tsx", name: "page.tsx", meta: "2.4 kB" },
+      { id: "app/api", name: "api", children: [] },
+    ],
+  },
+  { id: "README.md", name: "README.md" },
+]`,
+          },
+          {
+            kind: "text",
+            text: "Ids must be unique across the whole tree, not just among siblings, because expansion and selection are tracked by id. Paths make good ids for that reason.",
+          },
+        ],
+      },
+      {
+        id: "loading",
+        title: "Loading children on demand",
+        blocks: [
+          {
+            kind: "text",
+            text: "The component renders the nodes it is given and does not fetch anything. To fill a folder when it opens, control expansion and replace that node's children as the answer arrives.",
+          },
+          {
+            kind: "code",
+            code: `const [expandedIds, setExpandedIds] = useState<string[]>([])
+
+async function onExpandedChange(ids: string[]) {
+  const opened = ids.find((id) => !expandedIds.includes(id))
+  setExpandedIds(ids)
+
+  if (opened && !loaded.has(opened)) {
+    setNodes(await withChildren(opened, await listDirectory(opened)))
+  }
+}`,
+            caption:
+              "Give the folder a spinner in meta while its request is in flight.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "FileTreeNode",
+        rows: [
+          ["id", "string", "Unique across the whole tree. Paths work well."],
+          ["name", "string", "The label."],
+          [
+            "kind",
+            '"file" | "folder"',
+            "Overrides the guess made from children.",
+          ],
+          [
+            "children",
+            "FileTreeNode[]",
+            "Present, even empty, means a folder.",
+          ],
+          ["meta", "ReactNode", "Trailing detail such as a size or a status."],
+          ["icon", "ReactNode", "Replaces the default file or folder mark."],
+        ],
+      },
+    ],
     props: [
       [
         "nodes",
@@ -1508,6 +1844,44 @@ export function Files() {
     usage: `export function Contract({ file }: { file: File }) {
   return <DocxViewer source={file} />
 }`,
+    sections: [
+      {
+        id: "rendering",
+        title: "What actually reaches the page",
+        blocks: [
+          {
+            kind: "text",
+            text: "mammoth converts a .docx into an HTML string. That string is never handed to the browser as markup. It is parsed, walked, and rebuilt as React elements, keeping only tags on an allowlist and only attributes allowed for each of those tags, so a document from someone else cannot introduce script, styling, or event handlers into your page.",
+          },
+          {
+            kind: "list",
+            items: [
+              "Elements outside the allowlist are dropped, and script and style subtrees are dropped whole rather than unwrapped.",
+              "href values are checked, and javascript: links are stripped.",
+              "Whitespace-only text between structural tags is discarded, so tables and lists do not inherit stray gaps.",
+            ],
+          },
+          {
+            kind: "text",
+            text: "Widen or narrow the allowlist with allowedTags when your documents need something more, and keep it as small as the documents allow.",
+          },
+        ],
+      },
+      {
+        id: "fidelity",
+        title: "Fidelity",
+        blocks: [
+          {
+            kind: "text",
+            text: "This is a structural view, not a page-faithful one. Headings, lists, tables, links, and emphasis survive; page geometry does not. Fonts, margins, columns, headers and footers, page breaks, and anything positioned absolutely are lost, because the source markup does not carry them.",
+          },
+          {
+            kind: "text",
+            text: "When the layout is the point -- a contract that must look like the signed copy -- convert to PDF on the server and use the PDF Viewer instead.",
+          },
+        ],
+      },
+    ],
     props: [
       ["source", "ArrayBuffer | Blob", "The document to convert."],
       [
@@ -1543,6 +1917,70 @@ export function Files() {
     usage: `export function Contract() {
   return <PdfViewer source="/agreement.pdf" workerSrc={workerUrl} />
 }`,
+    sections: [
+      {
+        id: "worker",
+        title: "The worker",
+        blocks: [
+          {
+            kind: "text",
+            text: "pdf.js renders on a background worker, and it cannot find that worker on its own once your code has been bundled. This is the one thing that reliably goes wrong: without workerSrc the viewer fails at the first document, usually with a message about a missing or mismatched worker.",
+          },
+          {
+            kind: "text",
+            text: "Point it at a copy of the worker you serve yourself. Copy the file out of pdfjs-dist at build time rather than linking a CDN, so the worker version can never drift from the library version.",
+          },
+          {
+            kind: "code",
+            code: `// scripts/copy-pdf-worker.mjs
+import { copyFile } from "node:fs/promises"
+import { createRequire } from "node:module"
+
+const require = createRequire(import.meta.url)
+const worker = require.resolve("pdfjs-dist/build/pdf.worker.min.mjs")
+
+await copyFile(worker, "public/pdf.worker.min.mjs")`,
+            caption:
+              'Run it from your build script, then pass workerSrc="/pdf.worker.min.mjs".',
+          },
+        ],
+      },
+      {
+        id: "loader",
+        title: "Bringing your own loader",
+        blocks: [
+          {
+            kind: "text",
+            text: "pdfjs-dist is an optional peer, imported dynamically the first time a document opens. Supply loader and it is never imported at all, which is how you swap in your own renderer, reuse a document you already have open, or keep the dependency out of the build entirely.",
+          },
+          {
+            kind: "code",
+            code: `<PdfViewer
+  document={openedElsewhere}
+  loader={async (source) => myPdfLibrary.open(source)}
+/>`,
+          },
+          {
+            kind: "text",
+            text: "Pass document when you already hold an open handle. The loader is skipped and the viewer renders straight from it.",
+          },
+        ],
+      },
+      {
+        id: "text",
+        title: "What a canvas cannot do",
+        blocks: [
+          {
+            kind: "text",
+            text: "Pages are painted to a canvas, so the words in them are pixels. Nothing on the page can be selected, copied, searched with find-in-page, or read by a screen reader, and no amount of ARIA changes that.",
+          },
+          {
+            kind: "text",
+            text: "When the text has to be reachable, pair the viewer with something that carries it: a text layer positioned over the canvas, an extracted transcript beside it, or a link to download the original. Treat this as a requirement rather than an enhancement if the document is the content of your page.",
+          },
+        ],
+      },
+    ],
     props: [
       ["source", "string | ArrayBuffer", "The document to open."],
       [
@@ -1731,6 +2169,44 @@ export function WorkGallery() {
     />
   )
 }`,
+    sections: [
+      {
+        id: "highlighting",
+        title: "On syntax highlighting",
+        blocks: [
+          {
+            kind: "text",
+            text: "There is none, and that is deliberate. Every highlighter worth using is larger than this entire library, and one baked in would be paid for by everyone who only wanted a copy button. The component is a place to put code, not an opinion about how code should be coloured.",
+          },
+          {
+            kind: "text",
+            text: "When you do want it, highlight on the server and pass the result as children of your own pre, or reach for shiki or Prism directly. The language prop is a label rather than an instruction -- nothing reads it but the header.",
+          },
+        ],
+      },
+      {
+        id: "long",
+        title: "Long code",
+        blocks: [
+          {
+            kind: "text",
+            text: "maxLines collapses anything past a point behind a toggle that says how much is hidden, and the copy button always copies the whole source rather than the visible part. Combine it with wrappable when lines are long as well as many, so the reader can choose between scrolling sideways and reading wrapped.",
+          },
+          {
+            kind: "code",
+            code: `<CodeBlock
+  code={source}
+  filename="server.ts"
+  showLineNumbers
+  highlightLines={[12, 13]}
+  maxLines={20}
+  wrappable
+/>`,
+            caption: "highlightLines is one-based, matching the gutter.",
+          },
+        ],
+      },
+    ],
     props: [
       [
         "code",
@@ -1794,6 +2270,94 @@ export function WorkGallery() {
     />
   )
 }`,
+    sections: [
+      {
+        id: "algorithm",
+        title: "How the diff is computed",
+        blocks: [
+          {
+            kind: "text",
+            text: "Diffing happens by line, and only when you do not supply hunks yourself. Matching lines at the start and end are peeled off first, so an edit to one line of a long file only ever costs the length of that file. What is left in the middle goes through a longest-common-subsequence table.",
+          },
+          {
+            kind: "text",
+            text: "That table is quadratic, so it is capped: past two million cells the two middles are reported as one wholesale replacement instead of a line-by-line match. You will only meet this with two large and almost entirely different files, and the output stays correct -- it simply stops being minimal.",
+          },
+          {
+            kind: "text",
+            text: "diffLines and toHunks are exported, so you can run the same diff outside the component -- to count what changed before deciding whether to show anything at all.",
+          },
+          {
+            kind: "code",
+            code: `import { diffLines, toHunks } from "mischief-ui/diff-view"
+
+const lines = diffLines(before, after)
+const changed = lines.filter((line) => line.kind !== "context")
+
+if (changed.length > 0) {
+  show(toHunks(lines, 3))
+}`,
+          },
+        ],
+      },
+      {
+        id: "hunks",
+        title: "Bringing your own hunks",
+        blocks: [
+          {
+            kind: "text",
+            text: "Pass hunks and the built-in diff is skipped entirely. This is the path to take when something upstream has already done the work and done it better -- git, a language server, or a model that returned a patch -- or when you want word-level detail the line diff cannot produce.",
+          },
+          {
+            kind: "code",
+            code: `<DiffView
+  filename="lib/total.ts"
+  hunks={parseUnifiedDiff(patch)}
+/>`,
+            caption:
+              "Supplied hunks win over before and after, which may then be omitted.",
+          },
+          {
+            kind: "text",
+            text: "Line numbers come from beforeNumber and afterNumber on each line rather than being counted, so a hunk starting at line 400 reads as line 400.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "DiffLine",
+        rows: [
+          [
+            "kind",
+            '"context" | "add" | "remove"',
+            "What happened to this line.",
+          ],
+          ["text", "string", "The line, without its ending."],
+          [
+            "beforeNumber",
+            "number",
+            "Line number on the old side. Absent on an addition.",
+          ],
+          [
+            "afterNumber",
+            "number",
+            "Line number on the new side. Absent on a removal.",
+          ],
+        ],
+      },
+      {
+        name: "DiffHunk",
+        rows: [
+          [
+            "header",
+            "string",
+            "The band above the hunk. Generated when omitted.",
+          ],
+          ["lines", "DiffLine[]", "The lines in order, context included."],
+        ],
+      },
+    ],
     props: [
       [
         "before, after",
@@ -1855,6 +2419,62 @@ export function WorkGallery() {
     />
   )
 }`,
+    sections: [
+      {
+        id: "streaming",
+        title: "Streaming output",
+        blocks: [
+          {
+            kind: "text",
+            text: "Append to the array as lines arrive and the log grows. Keep running true until the command settles, then pass its exit code -- that is what turns the running indicator into a result.",
+          },
+          {
+            kind: "code",
+            code: `const [lines, setLines] = useState<TerminalLine[]>([])
+const [exitCode, setExitCode] = useState<number>()
+
+for await (const chunk of process.stdout) {
+  setLines((current) => [...current, { text: chunk }])
+}`,
+          },
+          {
+            kind: "text",
+            text: "Send stderr through with stream set, rather than merging both into one string, so failures stay distinguishable after the fact.",
+          },
+        ],
+      },
+      {
+        id: "following",
+        title: "Following, and when it stops",
+        blocks: [
+          {
+            kind: "text",
+            text: "The log sticks to the newest line while it is already at the bottom. The moment the reader scrolls up it stops following, and it resumes when they come back within a couple of dozen pixels of the end. Reading back through output is therefore never interrupted by more of it arriving.",
+          },
+          {
+            kind: "text",
+            text: "ANSI escape sequences are stripped rather than rendered, so colour codes from a shell do not appear as noise. Colour is not reconstructed: stderr is distinguished, and nothing else is.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "TerminalLine",
+        rows: [
+          [
+            "text",
+            "string",
+            "One line, without its ending. ANSI escapes are stripped.",
+          ],
+          [
+            "stream",
+            '"stdout" | "stderr"',
+            'Which stream it came from. Defaults to "stdout".',
+          ],
+        ],
+      },
+    ],
     props: [
       [
         "output",
@@ -1953,6 +2573,67 @@ export function WorkGallery() {
     usage: `export function Header() {
   return <ThemeToggle modes={["light", "dark", "system"]} />
 }`,
+    sections: [
+      {
+        id: "flash",
+        title: "Stopping the flash",
+        blocks: [
+          {
+            kind: "text",
+            text: "The toggle cannot prevent a flash of the wrong theme on the first paint, and no component can. The server has no way to know what the reader chose, so the page ships in one theme and corrects itself once React takes over -- which is late enough to see.",
+          },
+          {
+            kind: "text",
+            text: "Fixing it means setting the class before the page paints, with a small blocking script in the document head. This runs once, before anything is rendered, and matches what applyTheme does afterwards.",
+          },
+          {
+            kind: "code",
+            code: `// app/layout.tsx
+const setTheme = \`(() => {
+  try {
+    const stored = localStorage.getItem("theme")
+    const dark = stored
+      ? stored === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches
+    document.documentElement.classList.toggle("dark", dark)
+    document.documentElement.style.colorScheme = dark ? "dark" : "light"
+  } catch {}
+})()\`
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: setTheme }} />
+      </head>
+      <body>{children}</body>
+    </html>
+  )
+}`,
+            caption:
+              "Keep the storage key and class in step with the props you pass the toggle.",
+          },
+          {
+            kind: "text",
+            text: "suppressHydrationWarning belongs on the html element because the script has changed it before React compares. It applies to that element only, not to your tree.",
+          },
+        ],
+      },
+      {
+        id: "modes",
+        title: "Modes",
+        blocks: [
+          {
+            kind: "text",
+            text: "The default is a plain light and dark switch. Include system and the toggle gains a third state that clears the stored choice and hands the decision back to the operating system, tracking later changes to it while the page is open.",
+          },
+          {
+            kind: "text",
+            text: "With nothing stored, the toggle starts on system when system is one of its modes. The first click therefore moves to whatever follows system in your list, not to the first mode in it.",
+          },
+        ],
+      },
+    ],
     props: [
       [
         "modes",
@@ -2209,6 +2890,60 @@ export function WorkGallery() {
     />
   )
 }`,
+    sections: [
+      {
+        id: "describing",
+        title: "Describing the models",
+        blocks: [
+          {
+            kind: "text",
+            text: "The reason to use a listbox rather than a select element is the room it gives you: a sentence about what each model is for, and a few tags for what it can do. Write the description for someone deciding, not for someone who already knows -- speed, depth, and cost are what people are actually choosing between.",
+          },
+          {
+            kind: "code",
+            code: `const models = [
+  {
+    id: "opus",
+    name: "Opus",
+    description: "The deepest reasoning, for work worth the wait.",
+    badges: ["reasoning", "vision"],
+  },
+  {
+    id: "haiku",
+    name: "Haiku",
+    description: "Quick answers where latency matters more than depth.",
+    badges: ["fast"],
+  },
+  { id: "legacy", name: "Legacy", disabled: true },
+]`,
+          },
+          {
+            kind: "text",
+            text: "Keep a retired model in the list with disabled rather than removing it, so a stored preference still resolves to a name instead of falling back to the placeholder. Disabled models are skipped by the arrow keys, not merely dimmed.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "Model",
+        rows: [
+          ["id", "string", "What onValueChange reports and value matches."],
+          ["name", "string", "Shown on the trigger and in the list."],
+          ["description", "string", "A line beneath the name."],
+          [
+            "badges",
+            "string[]",
+            "Short capability tags, such as vision or fast.",
+          ],
+          [
+            "disabled",
+            "boolean",
+            "Listed but unchoosable, and skipped by the keyboard.",
+          ],
+        ],
+      },
+    ],
     props: [
       [
         "models",
@@ -2326,6 +3061,12 @@ export const componentDocs = entries.map((entry, index) => ({
   ...entry,
   number: String(index + 1).padStart(2, "0"),
   featured: "featured" in entry && entry.featured === true,
+  // Normalised here so every consumer reads the same shape, whether or not the
+  // entry declared them.
+  sections: ("sections" in entry
+    ? entry.sections
+    : []) as readonly DocSection[],
+  types: ("types" in entry ? entry.types : []) as readonly DocTypeTable[],
 }))
 
 /** Shown with a live demo on the home page. The rest are listed compactly. */

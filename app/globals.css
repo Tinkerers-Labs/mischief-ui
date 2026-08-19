@@ -1091,6 +1091,16 @@ a:focus-visible {
   margin-top: 1rem;
 }
 
+/* Blocks inside a guidance section follow one another, so every pairing needs
+   the gap, not only the one after the heading. */
+.docs-section > p + p,
+.docs-section > .doc-figure + p,
+.docs-section > .doc-list + p,
+.docs-section > .doc-table-scroll + p,
+.brand-notes p + p {
+  margin-top: 1rem;
+}
+
 .docs-section ul {
   padding-left: 1.25rem;
 }
@@ -1240,6 +1250,87 @@ pre:not([data-slot]) {
 
 .props-row span {
   color: var(--muted-foreground);
+}
+
+.props-type {
+  margin-top: 2rem;
+}
+
+.props-type h3 {
+  font-size: 0.95rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.props-type > p {
+  color: var(--muted-foreground);
+  font-size: 0.9rem;
+  margin-top: 0.35rem;
+}
+
+.install-dependencies {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.65rem;
+  margin-top: 0.9rem;
+}
+
+.install-dependencies > span {
+  color: var(--muted-foreground);
+  font-size: 0.78rem;
+}
+
+.doc-figure {
+  margin: 1.1rem 0 0;
+}
+
+.doc-figure figcaption {
+  color: var(--muted-foreground);
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.doc-list {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 1rem;
+  padding-left: 1.1rem;
+}
+
+.doc-table-scroll {
+  margin-top: 1.1rem;
+  overflow-x: auto;
+}
+
+.doc-table {
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 100%;
+  text-align: left;
+}
+
+.doc-table th {
+  border-bottom: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  padding: 0 1rem 0.55rem 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.doc-table td {
+  border-bottom: 1px solid var(--border);
+  color: var(--muted-foreground);
+  padding: 0.6rem 1rem 0.6rem 0;
+  vertical-align: top;
+}
+
+.doc-table td:first-child {
+  color: var(--foreground);
+  white-space: nowrap;
 }
 
 .detail-footer {
