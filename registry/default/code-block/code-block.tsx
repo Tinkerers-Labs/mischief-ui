@@ -40,7 +40,9 @@ export function CodeBlock({
   className,
   ...rootProps
 }: CodeBlockProps) {
-  const [copied, setCopied] = React.useState(false)
+  const [copyState, setCopyState] = React.useState<"idle" | "copied" | "error">(
+    "idle"
+  )
   const [expanded, setExpanded] = React.useState(false)
   const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -70,10 +72,15 @@ export function CodeBlock({
   const gutter = String(lines.length).length
 
   async function copy() {
-    await navigator.clipboard.writeText(code)
-    setCopied(true)
+    try {
+      await navigator.clipboard.writeText(code)
+      setCopyState("copied")
+    } catch {
+      // Denied permission, an insecure context, or a sandboxed frame.
+      setCopyState("error")
+    }
     if (timer.current) clearTimeout(timer.current)
-    timer.current = setTimeout(() => setCopied(false), 1400)
+    timer.current = setTimeout(() => setCopyState("idle"), 1400)
   }
 
   return (
@@ -115,11 +122,11 @@ export function CodeBlock({
               <button
                 type="button"
                 data-slot="code-block-copy"
-                aria-label={copied ? "Copied" : "Copy code"}
+                aria-label={copyState === "copied" ? "Copied" : "Copy code"}
                 className="text-muted-foreground hover:bg-card hover:text-foreground inline-flex size-8 items-center justify-center rounded-md transition-colors duration-150 motion-reduce:transition-none"
                 onClick={copy}
               >
-                {copied ? (
+                {copyState === "copied" ? (
                   <Check aria-hidden="true" size={14} />
                 ) : (
                   <Clipboard aria-hidden="true" size={14} />
@@ -208,7 +215,11 @@ export function CodeBlock({
       ) : null}
 
       <span aria-live="polite" className="sr-only">
-        {copied ? "Code copied to clipboard." : ""}
+        {copyState === "copied"
+          ? "Code copied to clipboard."
+          : copyState === "error"
+            ? "Code could not be copied."
+            : ""}
       </span>
     </div>
   )

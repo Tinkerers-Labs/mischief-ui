@@ -3951,7 +3951,7 @@ export function WorkGallery() {
       ["actions", "ReactNode", "Extra controls placed in the header."],
     ],
     accessibility:
-      "The code region is focusable so it can be scrolled from the keyboard. Copying announces itself through a polite live region, and the copy control renames itself once it succeeds. Line numbers and the diff-style gutter are aria-hidden, so a screen reader reads the source rather than the decoration. There is no syntax highlighting and no highlighting dependency.",
+      "The code region is focusable so it can be scrolled from the keyboard. Copying announces itself through a polite live region, and the copy control renames itself once it succeeds. A clipboard that refuses -- denied permission, an insecure context, a sandboxed frame -- is caught and reported rather than leaving the control looking like it worked. Line numbers and the diff-style gutter are aria-hidden, so a screen reader reads the source rather than the decoration. There is no syntax highlighting and no highlighting dependency.",
   },
   {
     slug: "diff-view",
@@ -4313,7 +4313,7 @@ for await (const chunk of process.stdout) {
       ["label", "string", "Names the group. Defaults to Response actions."],
     ],
     accessibility:
-      "The row is a labelled group of named buttons, so each one reads on its own. Ratings are toggles carrying aria-pressed, and choosing the current rating again clears it. Copying announces itself through a polite live region. The controls are 32px, matching the other compact toolbars in this set rather than the 44px targets used for primary actions; pass a className to enlarge them where this row is the main way to act.",
+      "The row is a labelled group of named buttons, so each one reads on its own. Ratings are toggles carrying aria-pressed, and choosing the current rating again clears it. Copying announces itself through a polite live region, and a refused clipboard is reported rather than silently doing nothing. The controls are 32px, matching the other compact toolbars in this set rather than the 44px targets used for primary actions; pass a className to enlarge them where this row is the main way to act.",
   },
   {
     slug: "theme-toggle",
@@ -4601,7 +4601,7 @@ return (
       ["frameClassName", "string", "Classes for the preview frame itself."],
     ],
     accessibility:
-      "The two views are a real tablist: Left and Right Arrow move between tabs, only the selected tab is in the tab order, and each panel is labelled by its tab. The preview panel is hidden rather than unmounted while the source shows, so anything set up in the example is still there on the way back. Copying announces itself through a polite live region.",
+      "The two views are a real tablist: Left and Right Arrow move between tabs, only the selected tab is in the tab order, and each panel is labelled by its tab. The preview panel is hidden rather than unmounted while the source shows, so anything set up in the example is still there on the way back. Copying announces itself through a polite live region, and a refused clipboard is reported rather than silently doing nothing.",
   },
   {
     slug: "kbd",

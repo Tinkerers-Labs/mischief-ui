@@ -55,7 +55,9 @@ export function CopyForAi({
   className,
   ...rootProps
 }: CopyForAiProps) {
-  const [copied, setCopied] = React.useState(false)
+  const [copyState, setCopyState] = React.useState<"idle" | "copied" | "error">(
+    "idle"
+  )
   const [open, setOpen] = React.useState(false)
   const rootRef = React.useRef<HTMLDivElement>(null)
 
@@ -82,10 +84,15 @@ export function CopyForAi({
   }, [open])
 
   const copy = async () => {
-    await navigator.clipboard.writeText(markdown)
-    setCopied(true)
+    try {
+      await navigator.clipboard.writeText(markdown)
+      setCopyState("copied")
+    } catch {
+      // Denied permission, an insecure context, or a sandboxed frame.
+      setCopyState("error")
+    }
     setOpen(false)
-    window.setTimeout(() => setCopied(false), 1400)
+    window.setTimeout(() => setCopyState("idle"), 1400)
   }
 
   const item =
@@ -104,12 +111,12 @@ export function CopyForAi({
         className="border-border bg-card hover:bg-muted focus-visible:ring-ring inline-flex min-h-8 items-center gap-2 rounded-l-[calc(var(--radius)-0.2rem)] border px-2.5 text-xs font-semibold transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none"
         onClick={copy}
       >
-        {copied ? (
+        {copyState === "copied" ? (
           <Check aria-hidden="true" size={13} />
         ) : (
           <Copy aria-hidden="true" size={13} />
         )}
-        {copied ? copiedLabel : copyLabel}
+        {copyState === "copied" ? copiedLabel : copyLabel}
       </button>
 
       <button
@@ -159,7 +166,7 @@ export function CopyForAi({
       ) : null}
 
       <span aria-live="polite" className="sr-only">
-        {copied ? "Page markdown copied." : ""}
+        {copyState === "copied" ? "Page markdown copied." : ""}
       </span>
     </div>
   )

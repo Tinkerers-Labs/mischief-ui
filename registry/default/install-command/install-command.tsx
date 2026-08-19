@@ -55,7 +55,9 @@ export function InstallCommand({
   const [mode, setMode] = React.useState<"run" | "add" | "prompt">(
     run ? "run" : add ? "add" : "prompt"
   )
-  const [copied, setCopied] = React.useState(false)
+  const [copyState, setCopyState] = React.useState<"idle" | "copied" | "error">(
+    "idle"
+  )
 
   // The chosen manager applies to both commands, so picking pnpm and then the
   // package option gives pnpm add rather than snapping back to the default.
@@ -67,9 +69,14 @@ export function InstallCommand({
         : `${runners[manager]} ${run ?? ""}`.trim()
 
   const copy = async () => {
-    await navigator.clipboard.writeText(value)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 1400)
+    try {
+      await navigator.clipboard.writeText(value)
+      setCopyState("copied")
+    } catch {
+      // Denied permission, an insecure context, or a sandboxed frame.
+      setCopyState("error")
+    }
+    window.setTimeout(() => setCopyState("idle"), 1400)
   }
 
   return (
@@ -146,11 +153,21 @@ export function InstallCommand({
           <button
             type="button"
             data-slot="install-command-copy"
-            aria-label={copied ? "Copied" : "Copy"}
+            aria-label={
+              copyState === "copied"
+                ? "Copied"
+                : copyState === "error"
+                  ? "Copy failed"
+                  : "Copy"
+            }
             className="text-muted-foreground hover:bg-card hover:text-foreground ml-auto inline-flex size-8 shrink-0 items-center justify-center rounded-md transition-colors duration-150 motion-reduce:transition-none"
             onClick={copy}
           >
-            {copied ? <Check size={14} /> : <Clipboard size={14} />}
+            {copyState === "copied" ? (
+              <Check size={14} />
+            ) : (
+              <Clipboard size={14} />
+            )}
           </button>
         </div>
 

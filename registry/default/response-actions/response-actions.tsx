@@ -31,7 +31,9 @@ export function ResponseActions({
   className,
   ...rootProps
 }: ResponseActionsProps) {
-  const [copied, setCopied] = React.useState(false)
+  const [copyState, setCopyState] = React.useState<"idle" | "copied" | "error">(
+    "idle"
+  )
   const [ownFeedback, setOwnFeedback] =
     React.useState<ResponseFeedback>(defaultFeedback)
   const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -49,10 +51,15 @@ export function ResponseActions({
 
   async function copy() {
     if (copyText === undefined) return
-    await navigator.clipboard.writeText(copyText)
-    setCopied(true)
+    try {
+      await navigator.clipboard.writeText(copyText)
+      setCopyState("copied")
+    } catch {
+      // Denied permission, an insecure context, or a sandboxed frame.
+      setCopyState("error")
+    }
     if (timer.current) clearTimeout(timer.current)
-    timer.current = setTimeout(() => setCopied(false), 1400)
+    timer.current = setTimeout(() => setCopyState("idle"), 1400)
   }
 
   function rate(next: Exclude<ResponseFeedback, null>) {
@@ -76,11 +83,11 @@ export function ResponseActions({
         <button
           type="button"
           data-slot="response-actions-copy"
-          aria-label={copied ? "Copied" : "Copy response"}
+          aria-label={copyState === "copied" ? "Copied" : "Copy response"}
           className={button}
           onClick={copy}
         >
-          {copied ? (
+          {copyState === "copied" ? (
             <Check aria-hidden="true" size={14} />
           ) : (
             <Clipboard aria-hidden="true" size={14} />
@@ -125,7 +132,11 @@ export function ResponseActions({
       {children}
 
       <span aria-live="polite" className="sr-only">
-        {copied ? "Response copied to clipboard." : ""}
+        {copyState === "copied"
+          ? "Response copied to clipboard."
+          : copyState === "error"
+            ? "Response could not be copied."
+            : ""}
       </span>
     </div>
   )

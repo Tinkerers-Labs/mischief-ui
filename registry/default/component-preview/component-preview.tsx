@@ -42,7 +42,9 @@ export function ComponentPreview({
 }: ComponentPreviewProps) {
   const id = React.useId()
   const [view, setView] = React.useState<View>(code ? defaultView : "preview")
-  const [copied, setCopied] = React.useState(false)
+  const [copyState, setCopyState] = React.useState<"idle" | "copied" | "error">(
+    "idle"
+  )
   const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
   React.useEffect(
@@ -58,10 +60,15 @@ export function ComponentPreview({
   async function copy() {
     if (!code) return
 
-    await navigator.clipboard.writeText(code)
-    setCopied(true)
+    try {
+      await navigator.clipboard.writeText(code)
+      setCopyState("copied")
+    } catch {
+      // Denied permission, an insecure context, or a sandboxed frame.
+      setCopyState("error")
+    }
     if (timer.current) clearTimeout(timer.current)
-    timer.current = setTimeout(() => setCopied(false), 1400)
+    timer.current = setTimeout(() => setCopyState("idle"), 1400)
   }
 
   // Arrow keys move between tabs, which is what a tablist is expected to do.
@@ -123,11 +130,11 @@ export function ComponentPreview({
           {code && copyable ? (
             <button
               type="button"
-              aria-label={copied ? "Copied" : "Copy code"}
+              aria-label={copyState === "copied" ? "Copied" : "Copy code"}
               className="text-muted-foreground hover:bg-card hover:text-foreground inline-flex size-8 items-center justify-center rounded-md transition-colors duration-150 motion-reduce:transition-none"
               onClick={copy}
             >
-              {copied ? (
+              {copyState === "copied" ? (
                 <Check aria-hidden="true" size={14} />
               ) : (
                 <Clipboard aria-hidden="true" size={14} />
@@ -173,7 +180,11 @@ export function ComponentPreview({
       ) : null}
 
       <span aria-live="polite" className="sr-only">
-        {copied ? "Code copied to clipboard." : ""}
+        {copyState === "copied"
+          ? "Code copied to clipboard."
+          : copyState === "error"
+            ? "Code could not be copied."
+            : ""}
       </span>
     </div>
   )

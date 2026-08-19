@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { afterEach, beforeEach, describe, expect, it } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { CopyForAi } from "../registry/default/copy-for-ai/copy-for-ai"
 import { InstallCommand } from "../registry/default/install-command/install-command"
@@ -190,5 +190,54 @@ describe("TableOfContents", () => {
 
     await waitFor(() => expect(current("Install")).toBe("location"))
     expect(current("Usage")).toBeNull()
+  })
+})
+
+describe("a clipboard that refuses", () => {
+  // Denied permission, an insecure context, or a sandboxed frame all reject.
+  function breakClipboard() {
+    const write = vi
+      .spyOn(navigator.clipboard, "writeText")
+      .mockRejectedValue(new Error("denied"))
+    return () => write.mockRestore()
+  }
+
+  it("InstallCommand says so instead of claiming success", async () => {
+    const user = userEvent.setup()
+    const restore = breakClipboard()
+
+    render(<InstallCommand add="my-lib" />)
+    await user.click(screen.getByRole("button", { name: "Copy" }))
+
+    expect(
+      await screen.findByRole("button", { name: "Copy failed" })
+    ).toBeInTheDocument()
+    restore()
+  })
+
+  it("CopyForAi does not announce a copy that never happened", async () => {
+    const user = userEvent.setup()
+    const restore = breakClipboard()
+
+    render(<CopyForAi markdown="# Tabs" />)
+    await user.click(screen.getByRole("button", { name: /copy page/i }))
+
+    expect(screen.queryByText("Copied")).not.toBeInTheDocument()
+    restore()
+  })
+
+  it("does not leave the rejection unhandled", async () => {
+    const user = userEvent.setup()
+    const restore = breakClipboard()
+    const unhandled = vi.fn()
+    process.on("unhandledRejection", unhandled)
+
+    render(<InstallCommand add="my-lib" />)
+    await user.click(screen.getByRole("button", { name: "Copy" }))
+    await new Promise((resolve) => setTimeout(resolve, 20))
+
+    expect(unhandled).not.toHaveBeenCalled()
+    process.off("unhandledRejection", unhandled)
+    restore()
   })
 })
