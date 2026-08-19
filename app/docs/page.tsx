@@ -48,6 +48,19 @@ export default function DocsPage() {
           />
           <CopyCommand label="Package" command={packageInstallCommand} />
         </div>
+        <p>
+          Installing from npm needs one more line. Tailwind does not scan{" "}
+          <code>node_modules</code>, so a package&rsquo;s utility classes are
+          never generated and components arrive unstyled. Point it at this one
+          in your CSS:
+        </p>
+        <pre>
+          <code>{`@import "tailwindcss";\n@source "../node_modules/mischief-ui";`}</code>
+        </pre>
+        <p>
+          The registry path copies source into your project, where it is scanned
+          already, so it needs nothing.
+        </p>
       </section>
 
       {componentFamilies.map((family) => (

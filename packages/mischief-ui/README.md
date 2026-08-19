@@ -27,6 +27,14 @@ Import `mischief-ui/styles.css` once in your Tailwind CSS entry file so Tailwind
 @import "mischief-ui/styles.css";
 ```
 
+Tailwind does not scan `node_modules`, so point it at this package or the
+components arrive with none of their classes generated:
+
+```css
+@import "tailwindcss";
+@source "../node_modules/mischief-ui";
+```
+
 Then import a component from its direct entry:
 
 ```tsx
