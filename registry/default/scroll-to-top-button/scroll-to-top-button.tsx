@@ -13,6 +13,8 @@ export interface ScrollToTopButtonProps extends Omit<
   behavior?: ScrollBehavior
   label?: string
   showAfter?: number
+  /** Replaces the default arrow. */
+  icon?: React.ReactNode
 }
 
 export const ScrollToTopButton = React.forwardRef<
@@ -24,6 +26,7 @@ export const ScrollToTopButton = React.forwardRef<
     className,
     container,
     containerRef,
+    icon,
     label = "Scroll to top",
     onClick,
     showAfter = 320,
@@ -89,12 +92,12 @@ export const ScrollToTopButton = React.forwardRef<
       type={type}
       {...buttonProps}
     >
-      <ArrowUpToLine
+      <span
         aria-hidden="true"
-        className="transition-transform duration-150 group-hover:-translate-y-0.5 motion-reduce:transition-none"
-        size={19}
-        strokeWidth={2}
-      />
+        className="inline-flex transition-transform duration-150 group-hover:-translate-y-0.5 motion-reduce:transition-none"
+      >
+        {icon ?? <ArrowUpToLine size={19} strokeWidth={2} />}
+      </span>
     </button>
   )
 })

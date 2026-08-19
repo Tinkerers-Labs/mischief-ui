@@ -771,6 +771,11 @@ export function Search() {
         '"auto" | "instant" | "smooth"',
         "The requested scroll behavior. Defaults to smooth.",
       ],
+      [
+        "icon",
+        "ReactNode",
+        "Replaces the default arrow. Keeps the hover lift.",
+      ],
       ["label", "string", "The accessible name and title."],
       ["className", "string", "Classes for placement and appearance."],
       ["...buttonProps", "ButtonHTMLAttributes", "Native button attributes."],
