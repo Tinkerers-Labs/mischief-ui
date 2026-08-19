@@ -232,6 +232,53 @@ export {
   type ResponseFeedback,
 } from "../../../registry/default/response-actions/response-actions"
 
+export {
+  ThemeToggle,
+  applyTheme,
+  type ThemeToggleProps,
+  type ThemeMode,
+} from "../../../registry/default/theme-toggle/theme-toggle"
+
+export {
+  Accordion,
+  type AccordionProps,
+  type AccordionItem,
+} from "../../../registry/default/accordion/accordion"
+
+export {
+  ComponentPreview,
+  type ComponentPreviewProps,
+} from "../../../registry/default/component-preview/component-preview"
+
+export { Kbd, type KbdProps } from "../../../registry/default/kbd/kbd"
+
+export {
+  StopGenerating,
+  type StopGeneratingProps,
+} from "../../../registry/default/stop-generating/stop-generating"
+
+export {
+  TokenMeter,
+  type TokenMeterProps,
+  type TokenSegment,
+} from "../../../registry/default/token-meter/token-meter"
+
+export {
+  ModelPicker,
+  type ModelPickerProps,
+  type Model,
+} from "../../../registry/default/model-picker/model-picker"
+
+export {
+  SourceCard,
+  type SourceCardProps,
+} from "../../../registry/default/source-card/source-card"
+
+export {
+  EmptyState,
+  type EmptyStateProps,
+} from "../../../registry/default/empty-state/empty-state"
+
 // Type-only, so these erase at build time and pull in no optional peer. They
 // give the declaration build one shared type graph, without which tsup walks
 // each entry separately and runs out of heap. The components themselves stay

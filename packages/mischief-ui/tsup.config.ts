@@ -70,6 +70,17 @@ export default defineConfig({
       "../../registry/default/terminal-output/terminal-output.tsx",
     "response-actions":
       "../../registry/default/response-actions/response-actions.tsx",
+    "theme-toggle": "../../registry/default/theme-toggle/theme-toggle.tsx",
+    accordion: "../../registry/default/accordion/accordion.tsx",
+    "component-preview":
+      "../../registry/default/component-preview/component-preview.tsx",
+    kbd: "../../registry/default/kbd/kbd.tsx",
+    "stop-generating":
+      "../../registry/default/stop-generating/stop-generating.tsx",
+    "token-meter": "../../registry/default/token-meter/token-meter.tsx",
+    "model-picker": "../../registry/default/model-picker/model-picker.tsx",
+    "source-card": "../../registry/default/source-card/source-card.tsx",
+    "empty-state": "../../registry/default/empty-state/empty-state.tsx",
   },
   format: ["esm", "cjs"],
   dts: true,

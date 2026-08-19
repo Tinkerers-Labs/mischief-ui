@@ -1940,6 +1940,386 @@ export function WorkGallery() {
     accessibility:
       "The row is a labelled group of named buttons, so each one reads on its own. Ratings are toggles carrying aria-pressed, and choosing the current rating again clears it. Copying announces itself through a polite live region. The controls are 32px, matching the other compact toolbars in this set rather than the 44px targets used for primary actions; pass a className to enlarge them where this row is the main way to act.",
   },
+  {
+    slug: "theme-toggle",
+    kind: "component",
+    name: "Theme Toggle",
+    family: "Controls",
+    summary:
+      "A light and dark switch that survives a reload, follows the system when asked, and stays in step across tabs.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("theme-toggle"),
+    npmImport: packageImport("ThemeToggle", "theme-toggle"),
+    usage: `export function Header() {
+  return <ThemeToggle modes={["light", "dark", "system"]} />
+}`,
+    props: [
+      [
+        "modes",
+        "ThemeMode[]",
+        'Modes to cycle through. Defaults to ["light", "dark"].',
+      ],
+      [
+        "storageKey",
+        "string",
+        'Where the choice is remembered. Defaults to "theme".',
+      ],
+      [
+        "darkClass",
+        "string",
+        'Class placed on the root element. Defaults to "dark".',
+      ],
+      [
+        "onThemeChange",
+        "(mode: ThemeMode) => void",
+        "Called after the mode is applied.",
+      ],
+      [
+        "icons",
+        "Partial<Record<ThemeMode, ReactNode>>",
+        "Replaces the icon for any mode.",
+      ],
+      [
+        "labels",
+        "Partial<Record<ThemeMode, string>>",
+        "Renames a mode in the accessible label.",
+      ],
+    ],
+    accessibility:
+      "The button is named for what it will do next rather than the current state, so it never reads as a checkbox that lies. Reading the mode goes through useSyncExternalStore, so the server renders the first mode and the client corrects it on hydration without a flash of the wrong icon. Storage events keep other tabs in step, and the system preference is watched while system is one of the modes. Refusing storage in private browsing is caught, and the choice still holds for the page.",
+  },
+  {
+    slug: "accordion",
+    kind: "component",
+    name: "Accordion",
+    family: "Controls",
+    summary:
+      "A list of disclosures built on native details elements, so find-in-page and the browser do the work.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("accordion"),
+    npmImport: packageImport("Accordion", "accordion"),
+    usage: `export function Faq() {
+  return (
+    <Accordion
+      items={questions}
+      defaultOpen={["licence"]}
+    />
+  )
+}`,
+    props: [
+      ["items", "AccordionItem[]", "Each with an id, a title, and content."],
+      [
+        "exclusive",
+        "boolean",
+        "Keeps one panel open at a time. Defaults to true.",
+      ],
+      ["defaultOpen", "string[]", "Ids open on first render."],
+      [
+        "icon",
+        "ReactNode",
+        "Replaces the plus marker, which rotates when open.",
+      ],
+      [
+        "onToggle",
+        "(id: string, open: boolean) => void",
+        "Called whenever a panel opens or closes.",
+      ],
+    ],
+    accessibility:
+      "Open and closed state, keyboard handling, and expansion during find-in-page all come from the native disclosure element rather than scripted state, so the panel content stays searchable while collapsed. Exclusivity uses the shared name attribute for the same reason. Summaries are 44px targets with a visible focus ring, and the marker is decoration the screen reader skips.",
+  },
+  {
+    slug: "component-preview",
+    kind: "component",
+    name: "Component Preview",
+    family: "Docs",
+    summary:
+      "A framed example with a tab for the source beside it, and the live one still running when you switch back.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("component-preview"),
+    npmImport: packageImport("ComponentPreview", "component-preview"),
+    usage: `export function Example() {
+  return (
+    <ComponentPreview code={source} title="Hold Button">
+      <HoldButton onComplete={remove}>Delete</HoldButton>
+    </ComponentPreview>
+  )
+}`,
+    props: [
+      ["children", "ReactNode", "The living example."],
+      [
+        "code",
+        "string",
+        "Source for the second tab. Without it there is only the preview.",
+      ],
+      ["title", "ReactNode", "Shown at the start of the toolbar."],
+      [
+        "defaultView",
+        '"preview" | "code"',
+        'Which tab opens first. Defaults to "preview".',
+      ],
+      ["previewLabel, codeLabel", "string, string", "Renames the two tabs."],
+      [
+        "actions",
+        "ReactNode",
+        "Extra toolbar controls, such as a restart button.",
+      ],
+      ["align", '"center" | "start"', "How the example sits in its frame."],
+      ["frameClassName", "string", "Classes for the preview frame itself."],
+    ],
+    accessibility:
+      "The two views are a real tablist: Left and Right Arrow move between tabs, only the selected tab is in the tab order, and each panel is labelled by its tab. The preview panel is hidden rather than unmounted while the source shows, so anything set up in the example is still there on the way back. Copying announces itself through a polite live region.",
+  },
+  {
+    slug: "kbd",
+    kind: "component",
+    name: "Kbd",
+    family: "Docs",
+    summary:
+      "A keyboard chord rendered with the right glyphs for the reader's platform, and spoken in words.",
+    dependencies: [],
+    install: registryInstallCommand("kbd"),
+    npmImport: packageImport("Kbd", "kbd"),
+    usage: `export function Hint() {
+  return (
+    <p>
+      Press <Kbd keys="Mod+K" /> to search.
+    </p>
+  )
+}`,
+    props: [
+      [
+        "keys",
+        "string | string[]",
+        'A chord such as "Mod+K", or the keys already split apart.',
+      ],
+      [
+        "platform",
+        '"auto" | "mac" | "other"',
+        "Overrides detection. Defaults to auto.",
+      ],
+      ["separator", "ReactNode", "Placed between keys. Omitted by default."],
+    ],
+    accessibility:
+      'Glyphs are decoration: the chord is also written out for a screen reader, so it hears "Command plus K" rather than a symbol it cannot pronounce. Detection runs through useSyncExternalStore, so the server renders the portable names and the client swaps in the Mac glyphs on hydration. Mod resolves to Command on Apple platforms and Control everywhere else.',
+  },
+  {
+    slug: "stop-generating",
+    kind: "component",
+    name: "Stop Generating",
+    family: "Agent UI",
+    summary:
+      "The control that interrupts a running answer, with the time it has been going and Escape wired up.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("stop-generating"),
+    npmImport: packageImport("StopGenerating", "stop-generating"),
+    usage: `export function Composer() {
+  return (
+    <StopGenerating
+      running={streaming}
+      startedAt={startedAt}
+      onStop={abort}
+    />
+  )
+}`,
+    props: [
+      [
+        "onStop",
+        "() => void",
+        "Called on click, and on Escape while the shortcut is on.",
+      ],
+      ["running", "boolean", "Renders nothing while false. Defaults to true."],
+      [
+        "startedAt",
+        "number",
+        "Epoch milliseconds. Drives the live elapsed reading.",
+      ],
+      [
+        "showElapsed",
+        "boolean",
+        "Shows the elapsed seconds. Defaults to true.",
+      ],
+      ["shortcut", "boolean", "Binds Escape while running. Defaults to true."],
+      ["label", "string", 'Names the control. Defaults to "Stop generating".'],
+    ],
+    accessibility:
+      "The control disappears rather than dimming when there is nothing to stop, so it is never a button that does nothing. Escape is bound only while running and unbound as soon as it stops. The latest handler is read through a ref, so a changing callback never rebinds the key or leaves a stale one behind. The elapsed reading is decoration beside the name, not the name itself.",
+  },
+  {
+    slug: "token-meter",
+    kind: "component",
+    name: "Token Meter",
+    family: "Agent UI",
+    summary:
+      "How much of the context window is gone, split by what spent it, and a warning before it runs out.",
+    dependencies: [],
+    install: registryInstallCommand("token-meter"),
+    npmImport: packageImport("TokenMeter", "token-meter"),
+    usage: `export function Usage() {
+  return (
+    <TokenMeter
+      limit={200_000}
+      segments={[
+        { label: "System", value: 4_200 },
+        { label: "History", value: 96_000 },
+      ]}
+    />
+  )
+}`,
+    props: [
+      ["limit", "number", "The window. Values at or past it read as full."],
+      ["used", "number", "Total consumed. Ignored when segments are given."],
+      [
+        "segments",
+        "TokenSegment[]",
+        "Named parts that sum to the total, each with its own colour.",
+      ],
+      [
+        "warnAt",
+        "number",
+        "Fraction of the limit that reads as tight. Defaults to 0.8.",
+      ],
+      [
+        "format",
+        "(value: number) => string",
+        "Formats both numbers. Defaults to a compact form.",
+      ],
+      ["label", "string", 'Names the meter. Defaults to "Context used".'],
+      ["showLegend", "boolean", "Shows the segment key. Defaults to true."],
+    ],
+    accessibility:
+      "The bar carries meter semantics with its real minimum, maximum, and current value, plus text saying the same thing in words and a percentage, so it is never read by colour alone. Segment colours are repeated in a written key. The bar animates its width and stops doing so under reduced motion.",
+  },
+  {
+    slug: "model-picker",
+    kind: "component",
+    name: "Model Picker",
+    family: "Agent UI",
+    summary:
+      "A model chooser that has room for what each one is good at, and full keyboard control.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("model-picker"),
+    npmImport: packageImport("ModelPicker", "model-picker"),
+    usage: `export function Chooser() {
+  return (
+    <ModelPicker
+      models={models}
+      defaultValue="opus"
+      onValueChange={setModel}
+    />
+  )
+}`,
+    props: [
+      [
+        "models",
+        "Model[]",
+        "Each with an id, a name, and optional description, badges, and disabled.",
+      ],
+      [
+        "value, defaultValue",
+        "string, string",
+        "Controlled and uncontrolled selection.",
+      ],
+      [
+        "onValueChange",
+        "(id: string) => void",
+        "Called with the chosen model's id.",
+      ],
+      ["label", "string", 'Names the control. Defaults to "Model".'],
+      ["placeholder", "string", "Shown until something is chosen."],
+      ["disabled", "boolean", "Disables the trigger."],
+    ],
+    accessibility:
+      "The trigger declares that it opens a listbox and whether it is open, and names the current model. The list takes focus and drives selection through aria-activedescendant, so the active option is announced without focus leaving the list. Arrow keys move, Home and End jump, Enter and Space choose, Escape closes, and focus returns to the trigger either way. Disabled models are skipped by the keyboard rather than merely dimmed. Pointer events outside close it.",
+  },
+  {
+    slug: "source-card",
+    kind: "component",
+    name: "Source Card",
+    family: "Agent UI",
+    summary:
+      "One retrieved passage: where it came from, what it said, and how well it matched.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("source-card"),
+    npmImport: packageImport("SourceCard", "source-card"),
+    usage: `export function Sources() {
+  return results.map((result, index) => (
+    <SourceCard
+      key={result.id}
+      index={index + 1}
+      title={result.title}
+      url={result.url}
+      snippet={result.text}
+      score={result.score}
+    />
+  ))
+}`,
+    props: [
+      [
+        "title",
+        "ReactNode",
+        "The heading. Becomes a link when a url is given.",
+      ],
+      ["url", "string", "Opens in a new tab, with the host shown underneath."],
+      ["snippet", "ReactNode", "The retrieved passage."],
+      [
+        "source",
+        "ReactNode",
+        "Where it came from. Falls back to the host of the url.",
+      ],
+      ["index", "number", "Position in the result list, shown as a marker."],
+      [
+        "score",
+        "number",
+        "Relevance from 0 to 1, shown as a bar and a percentage.",
+      ],
+      [
+        "icon, footer",
+        "ReactNode, ReactNode",
+        "A leading mark, and a row beneath the passage.",
+      ],
+    ],
+    accessibility:
+      "Each card is an article with a real heading, so a list of them can be navigated by heading. Links say they open in a new tab and carry rel=noreferrer noopener. The relevance bar is decoration with the percentage written beside it, so the score never depends on seeing the bar. A malformed url degrades to no host rather than throwing.",
+  },
+  {
+    slug: "empty-state",
+    kind: "block",
+    name: "Empty State",
+    family: "Blocks",
+    summary:
+      "What to show when there is nothing yet: what this place is for, and the way to fill it.",
+    dependencies: [],
+    install: registryInstallCommand("empty-state"),
+    npmImport: packageImport("EmptyState", "empty-state"),
+    usage: `export function NoFiles() {
+  return (
+    <EmptyState
+      icon={<FileText size={18} />}
+      title="No documents yet"
+      description="Upload a PDF to get started."
+      actions={<button type="button">Upload</button>}
+    />
+  )
+}`,
+    props: [
+      ["title", "ReactNode", "The one line saying what is missing."],
+      [
+        "description",
+        "ReactNode",
+        "A sentence of context, held to a readable measure.",
+      ],
+      ["icon", "ReactNode", "Placed in a ring above the title."],
+      [
+        "actions",
+        "ReactNode",
+        "Controls beneath, such as the way to add the first item.",
+      ],
+      ["size", '"sm" | "md"', "Vertical room. Use sm inside a panel."],
+    ],
+    accessibility:
+      "The icon is decoration the screen reader skips, so the title carries the meaning. The description is capped at a readable measure rather than stretching across a wide panel. Nothing here traps focus or announces itself; it is a static region, and the action inside it is your own control with your own semantics.",
+  },
 ] as const
 
 export const componentDocs = entries.map((entry, index) => ({

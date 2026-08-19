@@ -4,6 +4,15 @@ import { CodeBlockDemo } from "@/components/demos/code-block-demo"
 import { DiffViewDemo } from "@/components/demos/diff-view-demo"
 import { ResponseActionsDemo } from "@/components/demos/response-actions-demo"
 import { TerminalOutputDemo } from "@/components/demos/terminal-output-demo"
+import { AccordionDemo } from "@/components/demos/accordion-demo"
+import { ComponentPreviewDemo } from "@/components/demos/component-preview-demo"
+import { EmptyStateDemo } from "@/components/demos/empty-state-demo"
+import { KbdDemo } from "@/components/demos/kbd-demo"
+import { ModelPickerDemo } from "@/components/demos/model-picker-demo"
+import { SourceCardDemo } from "@/components/demos/source-card-demo"
+import { StopGeneratingDemo } from "@/components/demos/stop-generating-demo"
+import { ThemeToggleDemo } from "@/components/demos/theme-toggle-demo"
+import { TokenMeterDemo } from "@/components/demos/token-meter-demo"
 import { AgentChecklistDemo } from "@/components/demos/agent-checklist-demo"
 import { BoundingBoxesDemo } from "@/components/demos/bounding-boxes-demo"
 import { CsvViewerDemo } from "@/components/demos/csv-viewer-demo"
@@ -67,6 +76,21 @@ export const componentDemos: Record<string, ComponentDemo> = {
   "streaming-text": { Demo: StreamingTextDemo, frameClassName: "p-6 md:p-10" },
   "thinking-state": { Demo: ThinkingStateDemo, frameClassName: "p-6 md:p-10" },
   "tool-call": { Demo: ToolCallDemo, frameClassName: "p-6 md:p-10" },
+  "theme-toggle": { Demo: ThemeToggleDemo, frameClassName: "p-6 md:p-10" },
+  accordion: { Demo: AccordionDemo, frameClassName: "p-6 md:p-10" },
+  "component-preview": {
+    Demo: ComponentPreviewDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  kbd: { Demo: KbdDemo, frameClassName: "p-6 md:p-10" },
+  "stop-generating": {
+    Demo: StopGeneratingDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "token-meter": { Demo: TokenMeterDemo, frameClassName: "p-6 md:p-10" },
+  "model-picker": { Demo: ModelPickerDemo, frameClassName: "p-6 md:p-10" },
+  "source-card": { Demo: SourceCardDemo, frameClassName: "p-6 md:p-10" },
+  "empty-state": { Demo: EmptyStateDemo, frameClassName: "p-6 md:p-10" },
   "code-block": { Demo: CodeBlockDemo, frameClassName: "p-6 md:p-10" },
   "diff-view": { Demo: DiffViewDemo, frameClassName: "p-6 md:p-10" },
   "terminal-output": {

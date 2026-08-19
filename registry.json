@@ -632,6 +632,138 @@
       ],
       "categories": ["ai", "chat", "agent", "feedback"],
       "registryDependencies": ["utils"]
+    },
+    {
+      "name": "theme-toggle",
+      "type": "registry:ui",
+      "title": "Theme Toggle",
+      "description": "A light and dark switch that survives a reload, follows the system when asked, and stays in step across tabs.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/theme-toggle/theme-toggle.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["theme", "dark-mode", "control"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "Accordion",
+      "description": "A list of disclosures built on native details elements.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/accordion/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["disclosure", "faq", "control"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "component-preview",
+      "type": "registry:ui",
+      "title": "Component Preview",
+      "description": "A framed example with a tab for the source beside it.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/component-preview/component-preview.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["docs", "preview", "tabs"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "A keyboard chord rendered with the right glyphs for the reader's platform.",
+      "files": [
+        {
+          "path": "registry/default/kbd/kbd.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["docs", "keyboard", "hint"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "stop-generating",
+      "type": "registry:ui",
+      "title": "Stop Generating",
+      "description": "The control that interrupts a running answer.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/stop-generating/stop-generating.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "streaming"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "token-meter",
+      "type": "registry:ui",
+      "title": "Token Meter",
+      "description": "How much of the context window is gone, split by what spent it.",
+      "files": [
+        {
+          "path": "registry/default/token-meter/token-meter.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "usage", "meter"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "model-picker",
+      "type": "registry:ui",
+      "title": "Model Picker",
+      "description": "A model chooser with room for what each one is good at.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/model-picker/model-picker.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "listbox", "select"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "source-card",
+      "type": "registry:ui",
+      "title": "Source Card",
+      "description": "One retrieved passage: where it came from, what it said, and how well it matched.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/source-card/source-card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "rag", "citation"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "title": "Empty State",
+      "description": "What to show when there is nothing yet.",
+      "files": [
+        {
+          "path": "registry/default/empty-state/empty-state.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["empty", "block", "layout"],
+      "registryDependencies": ["utils"]
     }
   ]
 }

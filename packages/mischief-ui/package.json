@@ -1,6 +1,6 @@
 {
   "name": "mischief-ui",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Playful, production-ready React components for shadcn projects.",
   "license": "MIT",
   "type": "module",
@@ -229,6 +229,51 @@
       "types": "./dist/response-actions.d.ts",
       "import": "./dist/response-actions.js",
       "require": "./dist/response-actions.cjs"
+    },
+    "./theme-toggle": {
+      "types": "./dist/theme-toggle.d.ts",
+      "import": "./dist/theme-toggle.js",
+      "require": "./dist/theme-toggle.cjs"
+    },
+    "./accordion": {
+      "types": "./dist/accordion.d.ts",
+      "import": "./dist/accordion.js",
+      "require": "./dist/accordion.cjs"
+    },
+    "./component-preview": {
+      "types": "./dist/component-preview.d.ts",
+      "import": "./dist/component-preview.js",
+      "require": "./dist/component-preview.cjs"
+    },
+    "./kbd": {
+      "types": "./dist/kbd.d.ts",
+      "import": "./dist/kbd.js",
+      "require": "./dist/kbd.cjs"
+    },
+    "./stop-generating": {
+      "types": "./dist/stop-generating.d.ts",
+      "import": "./dist/stop-generating.js",
+      "require": "./dist/stop-generating.cjs"
+    },
+    "./token-meter": {
+      "types": "./dist/token-meter.d.ts",
+      "import": "./dist/token-meter.js",
+      "require": "./dist/token-meter.cjs"
+    },
+    "./model-picker": {
+      "types": "./dist/model-picker.d.ts",
+      "import": "./dist/model-picker.js",
+      "require": "./dist/model-picker.cjs"
+    },
+    "./source-card": {
+      "types": "./dist/source-card.d.ts",
+      "import": "./dist/source-card.js",
+      "require": "./dist/source-card.cjs"
+    },
+    "./empty-state": {
+      "types": "./dist/empty-state.d.ts",
+      "import": "./dist/empty-state.js",
+      "require": "./dist/empty-state.cjs"
     }
   },
   "scripts": {
