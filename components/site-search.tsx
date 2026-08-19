@@ -6,6 +6,7 @@ import { Search } from "lucide-react"
 
 import { componentDocs } from "@/lib/component-docs"
 import { CommandPalette } from "@/registry/default/command-palette/command-palette"
+import { Kbd } from "@/registry/default/kbd/kbd"
 
 const items = componentDocs.map((component) => ({
   id: component.slug,
@@ -33,9 +34,7 @@ export function SiteSearch() {
         <span className="bg-muted/70 text-muted-foreground group-hover:bg-muted group-hover:text-foreground inline-flex h-8 items-center gap-1.5 rounded-full px-2.5 text-xs font-medium transition-colors duration-150 motion-reduce:transition-none">
           <Search aria-hidden="true" size={13} className="shrink-0" />
           <span className="hidden sm:inline">Search</span>
-          <kbd className="border-border/70 text-muted-foreground/80 ml-0.5 hidden rounded border px-1 font-[family-name:var(--font-mono),monospace] text-[0.6rem] leading-[1.35] lg:inline">
-            ⌘K
-          </kbd>
+          <Kbd className="ml-0.5 hidden lg:inline-flex" keys="Mod+K" />
         </span>
       </button>
 

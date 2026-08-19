@@ -5,6 +5,7 @@ import { Search } from "lucide-react"
 
 import { componentDocs } from "@/lib/component-docs"
 import { CommandPalette } from "@/registry/default/command-palette/command-palette"
+import { Kbd } from "@/registry/default/kbd/kbd"
 
 const items = componentDocs.slice(0, 12).map((component) => ({
   id: component.slug,
@@ -26,9 +27,7 @@ export function CommandPaletteDemo() {
       >
         <Search aria-hidden="true" size={14} />
         Open the palette
-        <kbd className="border-border text-muted-foreground rounded border px-1 font-[family-name:var(--font-mono),monospace] text-[0.65rem]">
-          ⌘K
-        </kbd>
+        <Kbd keys="Mod+J" />
       </button>
 
       <p className="text-muted-foreground text-center text-xs">
@@ -37,11 +36,14 @@ export function CommandPaletteDemo() {
           : "Type to filter, arrows to move, Enter to pick."}
       </p>
 
+      {/* The site's own search already owns Mod+K, so this one takes its
+          own chord rather than fighting for it. */}
       <CommandPalette
         items={items}
         label="Search components"
         open={open}
         placeholder="Search components…"
+        shortcut="j"
         onOpenChange={setOpen}
         onSelect={(item) => setChosen(item.label)}
       />

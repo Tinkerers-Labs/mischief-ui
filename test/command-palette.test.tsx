@@ -142,3 +142,35 @@ describe("CommandPalette", () => {
     expect(screen.getAllByRole("option")).toHaveLength(3)
   })
 })
+
+describe("two palettes on one page", () => {
+  const other: CommandItem[] = [{ id: "docs", label: "Search the docs" }]
+
+  it("opens one of them, not both", async () => {
+    render(
+      <>
+        <CommandPalette items={items} label="Components" />
+        <CommandPalette items={other} label="Docs" />
+      </>
+    )
+
+    fireEvent.keyDown(window, { key: "k", metaKey: true })
+
+    const listboxes = await screen.findAllByRole("listbox")
+    expect(listboxes).toHaveLength(1)
+  })
+
+  it("leaves a palette on its own chord alone", async () => {
+    render(
+      <>
+        <CommandPalette items={items} label="Components" />
+        <CommandPalette items={other} label="Docs" shortcut="j" />
+      </>
+    )
+
+    fireEvent.keyDown(window, { key: "j", metaKey: true })
+
+    const listbox = await screen.findByRole("listbox")
+    expect(listbox).toHaveAccessibleName("Docs")
+  })
+})

@@ -599,6 +599,31 @@ export function Search() {
           },
         ],
       },
+      {
+        id: "one-per-chord",
+        title: "One palette per chord",
+        blocks: [
+          {
+            kind: "text",
+            text: "The shortcut is bound to the window, so every palette on the page hears it. Two of them on the same chord used to open two stacked dialogs from a single keypress, which is how this page found the bug: the site's own search already owns Mod+K.",
+          },
+          {
+            kind: "text",
+            text: "A palette now ignores a keypress something else has already claimed, so the first listener wins and nobody gets a stack of modals. That is a guard against a mistake rather than a licence to make it, because which palette wins depends on mount order. Give the second one its own chord.",
+          },
+          {
+            kind: "code",
+            code: `<CommandPalette items={pages} />
+<CommandPalette items={actions} shortcut="j" />
+<CommandPalette items={help} shortcut={false} />`,
+            caption: "Mod+K, Mod+J, and one opened from your own code.",
+          },
+          {
+            kind: "text",
+            text: "The same holds for a chord your page handles itself: if your listener calls preventDefault, the palette leaves that keypress alone.",
+          },
+        ],
+      },
     ],
     types: [
       {

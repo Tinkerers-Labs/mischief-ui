@@ -114,6 +114,10 @@ export function CommandPalette({
     if (shortcut === false) return
 
     const onKeyDown = (event: KeyboardEvent) => {
+      // Another palette, or the page itself, may already have claimed this
+      // chord. Without the check every listener bound to it opens, and the
+      // reader gets a stack of modals from one keypress.
+      if (event.defaultPrevented) return
       if (event.key.toLowerCase() !== shortcut.toLowerCase()) return
       if (!event.metaKey && !event.ctrlKey) return
 
