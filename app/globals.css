@@ -1252,6 +1252,87 @@ pre:not([data-slot]) {
   color: var(--muted-foreground);
 }
 
+.install-manual {
+  margin-top: 1.6rem;
+}
+
+.install-manual > p {
+  color: var(--muted-foreground);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  max-width: 46rem;
+}
+
+.install-manual code {
+  font-size: 0.82em;
+}
+
+.component-preview-source {
+  align-items: center;
+  color: var(--muted-foreground);
+  display: inline-flex;
+  font-size: 0.75rem;
+  gap: 0.35rem;
+  padding: 0 0.5rem;
+}
+
+.component-preview-source:hover {
+  color: var(--foreground);
+}
+
+.component-pager {
+  border-top: 1px solid var(--border);
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 2.75rem;
+  padding-top: 1.75rem;
+}
+
+.component-pager-link {
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 0.15rem);
+  color: inherit;
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.85rem 1rem;
+  text-decoration: none;
+  transition: border-color 150ms var(--ease-out);
+}
+
+.component-pager-link:hover {
+  border-color: var(--muted-foreground);
+}
+
+.component-pager-link > span {
+  align-items: center;
+  color: var(--muted-foreground);
+  display: inline-flex;
+  font-size: 0.72rem;
+  gap: 0.3rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.component-pager-link > strong {
+  font-size: 0.95rem;
+  font-weight: 650;
+}
+
+.component-pager-link.next {
+  text-align: right;
+}
+
+.component-pager-link.next > span {
+  justify-content: flex-end;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .component-pager-link {
+    transition: none;
+  }
+}
+
 .props-type {
   margin-top: 2rem;
 }

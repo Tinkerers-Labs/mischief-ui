@@ -3,15 +3,19 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
-import { ComponentPreview } from "@/components/component-preview"
 import { CodeBlock } from "@/components/code-block"
+import { DocsPreview } from "@/components/docs-preview"
+import { SourceBlock } from "@/components/source-block"
 import { DocBlocks } from "@/components/doc-blocks"
 import { CopyPageButton } from "@/components/copy-page-button"
 import { DocsToc } from "@/components/docs-toc"
 import { agentInstallPrompt } from "@/lib/agent-prompt"
 import { componentMarkdown } from "@/lib/component-markdown"
-import { ExternalLink } from "@/components/external-link"
-import { GitHubIcon } from "@/components/github-icon"
+import {
+  componentSource,
+  componentSourcePath,
+  demoSource,
+} from "@/lib/component-source"
 import { InstallPanel } from "@/components/install-panel"
 import { componentDocs, getComponentDoc } from "@/lib/component-docs"
 import { componentSourceUrl, siteConfig } from "@/site.config"
@@ -127,18 +131,11 @@ export default async function ComponentPage({
 
         <p className="docs-lead">{component.summary}</p>
 
-        <div className="component-preview-panel">
-          <div className="component-preview-toolbar">
-            <span>Live preview</span>
-            <ExternalLink href={componentSourceUrl(component.slug)}>
-              <GitHubIcon aria-hidden="true" size={15} />
-              Source
-            </ExternalLink>
-          </div>
-          <div className="demo-frame docs-preview">
-            <ComponentPreview slug={component.slug} />
-          </div>
-        </div>
+        <DocsPreview
+          code={await demoSource(component.slug)}
+          slug={component.slug}
+          sourceUrl={componentSourceUrl(component.slug)}
+        />
 
         <section className="docs-section" id="installation">
           <h2>Installation</h2>
@@ -158,6 +155,18 @@ export default async function ComponentPage({
               </ul>
             </div>
           ) : null}
+
+          <div className="install-manual">
+            <p>
+              Or paste it in yourself. The source imports the shared{" "}
+              <code>cn</code> helper from <code>@/lib/utils</code>, so point
+              that at your own copy.
+            </p>
+            <SourceBlock
+              code={await componentSource(component.slug)}
+              filename={componentSourcePath(component.slug)}
+            />
+          </div>
         </section>
 
         <section className="docs-section" id="usage">
@@ -213,6 +222,36 @@ export default async function ComponentPage({
           <h2>Accessibility</h2>
           <p>{component.accessibility}</p>
         </section>
+
+        <nav aria-label="Nearby components" className="component-pager">
+          {previousComponent ? (
+            <Link
+              className="component-pager-link"
+              href={`/docs/components/${previousComponent.slug}`}
+            >
+              <span>
+                <ArrowLeft aria-hidden="true" size={13} /> Previous
+              </span>
+              <strong>{previousComponent.name}</strong>
+            </Link>
+          ) : (
+            <span />
+          )}
+
+          {nextComponent ? (
+            <Link
+              className="component-pager-link next"
+              href={`/docs/components/${nextComponent.slug}`}
+            >
+              <span>
+                Next <ArrowRight aria-hidden="true" size={13} />
+              </span>
+              <strong>{nextComponent.name}</strong>
+            </Link>
+          ) : (
+            <span />
+          )}
+        </nav>
       </article>
 
       <DocsToc sections={sections} />
