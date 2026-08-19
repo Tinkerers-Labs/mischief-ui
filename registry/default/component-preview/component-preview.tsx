@@ -98,7 +98,7 @@ export function ComponentPreview({
           role="tablist"
           aria-label="Example view"
           onKeyDown={onKeyDown}
-          className="flex min-w-0 items-center gap-0.5"
+          className="bg-muted/70 inline-flex min-w-0 items-center gap-0.5 rounded-lg p-0.5"
         >
           {views.map((entry) => (
             <button
@@ -109,7 +109,7 @@ export function ComponentPreview({
               aria-selected={current === entry}
               aria-controls={`${id}-${entry}-panel`}
               tabIndex={current === entry ? 0 : -1}
-              className="text-muted-foreground hover:text-foreground aria-selected:border-border aria-selected:bg-card aria-selected:text-foreground min-h-8 rounded-md border border-transparent px-2.5 text-xs transition-colors duration-150 motion-reduce:transition-none"
+              className="text-muted-foreground hover:text-foreground aria-selected:bg-card aria-selected:text-foreground min-h-7 rounded-md px-2.5 text-xs font-medium transition-colors duration-150 aria-selected:shadow-sm motion-reduce:transition-none"
               onClick={() => setView(entry)}
             >
               {entry === "preview" ? previewLabel : codeLabel}
@@ -163,6 +163,7 @@ export function ComponentPreview({
           hidden={current !== "code"}
         >
           <pre
+            data-slot="component-preview-code"
             tabIndex={0}
             className="text-foreground m-0 max-h-96 overflow-auto rounded-none bg-transparent px-3 py-2.5 font-[family-name:var(--font-mono),monospace] text-xs leading-relaxed"
           >

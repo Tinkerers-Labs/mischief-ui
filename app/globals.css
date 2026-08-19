@@ -88,8 +88,12 @@
   --ring: oklch(0.72 0.185 32);
 }
 
-* {
-  border-color: var(--border);
+/* In the base layer so a component can still choose its own border colour.
+   Unlayered, this beat every utility, and border-transparent never applied. */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
 }
 
 html {
