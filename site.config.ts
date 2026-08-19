@@ -61,8 +61,6 @@ export const siteConfig = {
   markdown: {
     /** Every component page is also served as markdown at its own address. */
     path: (slug: string) => `/docs/components/${slug}.md`,
-    /** The address before the pages moved. Still written, still served. */
-    legacyPath: (slug: string) => `/md/${slug}.md`,
     index: "/llms.txt",
     full: "/llms-full.txt",
   },
