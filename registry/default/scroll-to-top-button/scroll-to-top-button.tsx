@@ -67,14 +67,20 @@ export const ScrollToTopButton = React.forwardRef<
     window.scrollTo({ top: 0, behavior: scrollBehavior })
   }
 
-  if (!visible) return null
-
+  // Kept in the page so it can fade rather than appear, and made completely
+  // inert while hidden: not clickable, not focusable, not announced.
   return (
     <button
+      aria-hidden={!visible || undefined}
       aria-label={label}
       data-slot="scroll-to-top-button"
+      data-visible={visible || undefined}
+      tabIndex={visible ? undefined : -1}
       className={cn(
-        "group bg-foreground text-background fixed right-6 bottom-6 z-40 inline-flex size-12 items-center justify-center rounded-full shadow-lg transition-transform duration-150 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97] motion-reduce:transition-none",
+        "group bg-foreground text-background fixed right-6 bottom-6 z-40 inline-flex size-12 items-center justify-center rounded-full shadow-lg transition-[opacity,transform] duration-200 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97] motion-reduce:transition-none",
+        visible
+          ? "translate-y-0 opacity-100"
+          : "pointer-events-none translate-y-2 opacity-0",
         className
       )}
       onClick={scrollToTop}

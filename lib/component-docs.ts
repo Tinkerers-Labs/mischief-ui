@@ -692,12 +692,34 @@ export function Search() {
 }`,
     sections: [
       {
+        id: "own-scroller",
+        title: "When the page has its own scroller",
+        blocks: [
+          {
+            kind: "text",
+            text: "Smooth-scroll libraries such as Lenis take the page's scrolling away from the browser, and a native scrollTo either fights them or does nothing. Claim the click and do it yourself: onClick runs first, and calling preventDefault stops the built-in scroll.",
+          },
+          {
+            kind: "code",
+            code: `<ScrollToTopButton
+  showAfter={720}
+  onClick={(event) => {
+    event.preventDefault()
+    lenis.scrollTo(0, { immediate: prefersReducedMotion })
+  }}
+/>`,
+            caption:
+              "The same hook works for a virtualised list, or any scroller you own.",
+          },
+        ],
+      },
+      {
         id: "appearing",
         title: "When it appears",
         blocks: [
           {
             kind: "text",
-            text: "The button stays out of the way until the reader is showAfter pixels down, so a short page never grows a control for a journey nobody took. It is removed from the page rather than hidden, so it is not a stop on the way through with the keyboard while there is nothing to go back to.",
+            text: "The button stays out of the way until the reader is showAfter pixels down, so a short page never grows a control for a journey nobody took. It fades in and out rather than appearing, and while hidden it is completely inert: not clickable, not focusable, and not announced.",
           },
           {
             kind: "text",
@@ -754,7 +776,7 @@ export function Search() {
       ["...buttonProps", "ButtonHTMLAttributes", "Native button attributes."],
     ],
     accessibility:
-      "The control is a named native button with a 48px target. It stays out of the tab order until the page has moved down, uses immediate scrolling when reduced motion is requested, and leaves keyboard navigation unchanged.",
+      "The control is a named native button with a 48px target. While there is nothing to scroll back from it is hidden from assistive technology and taken out of the tab order, so it is never a stop on the way through the page. Scrolling is immediate when reduced motion is requested, and the fade stops with it.",
   },
   {
     slug: "install-command",
