@@ -43,6 +43,12 @@ export const siteConfig = {
     name: "Aman",
     url: "https://amankumar.ai/",
   },
+  /** The rest of what we make, shown as a row across the foot of the site. */
+  elsewhere: [
+    { label: "Fetchbean", href: "https://fetchbean.com/" },
+    { label: "Tinkerers Labs", href: "https://tinkererslabs.com/" },
+    { label: "amankumar.ai", href: "https://amankumar.ai/" },
+  ],
   repository: {
     path: repositoryPath,
     url: repositoryUrl,

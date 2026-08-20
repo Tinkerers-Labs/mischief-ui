@@ -87,6 +87,13 @@ export function SiteFooter() {
           </Link>
         )
       }}
+      related={{
+        label: "Also from us",
+        links: siteConfig.elsewhere.map((item) => ({
+          ...item,
+          external: true,
+        })),
+      }}
       brand={<BrandLogo />}
       meta={
         <p className="max-w-2xl leading-relaxed text-[color-mix(in_oklab,currentColor_60%,transparent)]">
