@@ -3663,18 +3663,74 @@ export function Layout() {
     usage: `export function Footer() {
   return (
     <SignatureFooter
-      eyebrow="One last useful thought"
-      heading="Make the ending memorable."
-      description="Keep the links practical. Let the wordmark do the rest."
-      action={<a href="/work">See our work</a>}
-      navigation={<nav aria-label="Footer">...</nav>}
-      brand={<a href="/">Northstar</a>}
-      meta={<span>Independent and curious.</span>}
-      wordmark="Northstar"
+      heading={<Logo />}
+      description="Short links and file sharing with real-time analytics."
+      columns={[
+        { label: "Product", links: [{ label: "Pricing", href: "/pricing" }] },
+        { label: "Company", links: [{ label: "Docs", href: docsUrl, external: true }] },
+      ]}
+      related={{
+        label: "Other products",
+        links: otherProducts,
+      }}
+      renderLink={({ href, label }) => <Link href={href}>{label}</Link>}
+      brand={<span>© 2026 Northstar</span>}
+      legal={<LegalLinks />}
+      status={<SystemStatus />}
+      wordmark="northstar"
     />
   )
 }`,
     sections: [
+      {
+        id: "columns",
+        title: "Links, and who renders them",
+        blocks: [
+          {
+            kind: "text",
+            text: "Pass columns and the footer lays out the labelled groups and styles the links itself, so a directory of thirty links is a data structure rather than thirty lines of markup. Pass navigation instead when the shape is unusual enough that you would rather build it.",
+          },
+          {
+            kind: "text",
+            text: "Links are plain anchors unless you say otherwise. renderLink hands each one back to you, which is how a framework's own link component gets used without the footer knowing anything about it.",
+          },
+          {
+            kind: "code",
+            code: `renderLink={({ href, label, external }) =>
+  external ? (
+    <a href={href} target="_blank" rel="noreferrer noopener">{label}</a>
+  ) : (
+    <Link href={href}>{label}</Link>
+  )
+}`,
+            caption:
+              "Styling comes back to you as well, so keep it consistent if you take this over.",
+          },
+          {
+            kind: "text",
+            text: "related is the same shape as a column but laid out as a wrapping row above the closing line, set off by a dashed rule. It is for the links that are not part of this product -- a sister site, the rest of a portfolio -- and its label is yours to name.",
+          },
+        ],
+      },
+      {
+        id: "ground",
+        title: "Dark or light",
+        blocks: [
+          {
+            kind: "text",
+            text: "The default is the page's foreground colour as a ground, which reads as a dark slab under a light site. Every shade inside is mixed from the footer's own text colour rather than a theme token, so setting a different background and text colour on the element is all it takes to move it to a light ground.",
+          },
+          {
+            kind: "code",
+            code: `<SignatureFooter
+  className="bg-card text-card-foreground border-border border-t"
+  ...
+/>`,
+            caption:
+              "The rules, the muted copy, and the wordmark all follow the text colour.",
+          },
+        ],
+      },
       {
         id: "wordmark",
         title: "The wordmark",
@@ -3714,18 +3770,83 @@ export function Layout() {
       },
     ],
     props: [
-      ["heading", "ReactNode", "The footer's main invitation."],
-      ["wordmark", "string", "The oversized closing brand name."],
+      [
+        "wordmark",
+        "string",
+        "The oversized closing brand name. The only required prop.",
+      ],
+      [
+        "columns",
+        "FooterColumn[]",
+        "Labelled link columns. Wins over navigation.",
+      ],
+      [
+        "related",
+        "FooterColumn",
+        "A wrapping row of links set apart above the closing row.",
+      ],
+      [
+        "renderLink",
+        "(link: FooterLink) => ReactNode",
+        "Renders every link, for your framework's link component.",
+      ],
+      ["heading", "ReactNode", "A line to lead with, or a logo. Optional."],
       ["eyebrow", "ReactNode", "A short label above the heading."],
-      ["description", "ReactNode", "Supporting copy below the heading."],
+      [
+        "description",
+        "ReactNode",
+        "Supporting copy, held to about 36 characters a line.",
+      ],
+      ["social", "ReactNode", "A row of icon links under the description."],
       ["action", "ReactNode", "A primary link or button."],
-      ["navigation", "ReactNode", "Product, company, or social links."],
-      ["brand", "ReactNode", "The compact logo or home link."],
-      ["meta", "ReactNode", "License, location, or ownership details."],
-      ["className", "string", "Classes for the footer element."],
+      [
+        "navigation",
+        "ReactNode",
+        "Your own markup, when the columns do not fit.",
+      ],
+      [
+        "brand, meta",
+        "ReactNode, ReactNode",
+        "Open the closing row: ownership and small print.",
+      ],
+      [
+        "legal, status",
+        "ReactNode, ReactNode",
+        "Close it: terms in the middle, a status on the right.",
+      ],
+      [
+        "className",
+        "string",
+        "Classes for the footer element. Set the ground here.",
+      ],
+    ],
+    types: [
+      {
+        name: "FooterColumn",
+        rows: [
+          [
+            "label",
+            "ReactNode",
+            "The small uppercase heading. Omit for an unlabelled group.",
+          ],
+          ["links", "FooterLink[]", "The links in the column, in order."],
+        ],
+      },
+      {
+        name: "FooterLink",
+        rows: [
+          ["label", "ReactNode", "The link text."],
+          ["href", "string", "Where it goes."],
+          [
+            "external",
+            "boolean",
+            "Opens in a new tab, and says so to a screen reader.",
+          ],
+        ],
+      },
     ],
     accessibility:
-      "The component uses a semantic footer and heading. Navigation, links, and labels remain yours, so their names stay specific to your site. The repeated oversized wordmark is decorative and hidden from assistive technology.",
+      "A semantic footer element, and a real heading when you give it one rather than an empty one when you do not. A link marked external opens in a new tab, carries rel=noreferrer noopener, and says so in its accessible name -- led by a comma, because a leading space is dropped when that name is computed. Column labels are plain text rather than headings, so a long directory does not litter the page outline. The oversized wordmark is decoration and hidden from assistive technology.",
   },
   {
     slug: "image-gallery",
