@@ -2,6 +2,7 @@ import { Plus } from "lucide-react"
 import Link from "next/link"
 
 import { ExternalLink } from "@/components/external-link"
+import { Accordion } from "@/registry/default/accordion/accordion"
 import { siteConfig } from "@/site.config"
 
 const questions = [
@@ -96,17 +97,23 @@ export function FaqSection() {
         </p>
       </div>
 
-      <div className="faq-list">
-        {questions.map(({ question, answer }) => (
-          <details className="faq-item" key={question} name="mischief-faq">
-            <summary>
-              <span>{question}</span>
-              <Plus aria-hidden="true" size={20} strokeWidth={1.8} />
-            </summary>
-            <div className="faq-answer">{answer}</div>
-          </details>
-        ))}
-      </div>
+      {/* Our own Accordion, dressed for this page: the default is a card, and
+          this list is typographic. */}
+      <Accordion
+        className="faq-list"
+        classNames={{
+          item: "faq-item bg-transparent open:bg-transparent",
+          trigger: "faq-summary",
+          content: "faq-answer",
+          marker: "faq-marker",
+        }}
+        icon={<Plus aria-hidden="true" size={20} strokeWidth={1.8} />}
+        items={questions.map(({ question, answer }) => ({
+          id: question,
+          title: question,
+          content: answer,
+        }))}
+      />
     </section>
   )
 }

@@ -1,3 +1,4 @@
+import type { Route } from "next"
 import Link from "next/link"
 import {
   ArrowRight,
@@ -10,13 +11,44 @@ import {
 import { BrandLogo } from "@/components/brand-logo"
 import { ExternalLink } from "@/components/external-link"
 import { GitHubIcon } from "@/components/github-icon"
-import { SignatureFooter } from "@/registry/default/signature-footer/signature-footer"
+import {
+  SignatureFooter,
+  type FooterColumn,
+} from "@/registry/default/signature-footer/signature-footer"
 import { type ExternalLinkId, siteConfig } from "@/site.config"
 
 const externalIcons: Record<ExternalLinkId, LucideIcon> = {
   npm: Package,
   github: GitHubIcon,
 }
+
+const columns: FooterColumn[] = [
+  {
+    label: "Explore",
+    links: siteConfig.footerNavigation.map(({ href, label }) => ({
+      href,
+      label,
+    })),
+  },
+  {
+    label: "Elsewhere",
+    links: siteConfig.externalLinks.map((item) => {
+      const Icon = externalIcons[item.id]
+
+      return {
+        href: item.href,
+        external: true,
+        label: (
+          <>
+            <Icon aria-hidden="true" size={16} strokeWidth={1.9} />
+            {item.label}
+            <ArrowUpRight aria-hidden="true" size={13} className="opacity-60" />
+          </>
+        ),
+      }
+    }),
+  },
+]
 
 export function SiteFooter() {
   return (
@@ -39,62 +71,25 @@ export function SiteFooter() {
           <ArrowRight aria-hidden="true" size={18} />
         </Link>
       }
-      navigation={
-        <nav
-          className="grid content-end gap-10 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2"
-          aria-label="Footer navigation"
-        >
-          <div>
-            <p className="text-background/45 text-xs font-bold tracking-[0.08em] uppercase">
-              Explore
-            </p>
-            <ul className="mt-4 grid gap-1">
-              {siteConfig.footerNavigation.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    className="hover:text-primary inline-flex min-h-11 items-center text-lg font-semibold no-underline transition-colors duration-150"
-                    href={item.href}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+      columns={columns}
+      renderLink={({ href, label, external }) => {
+        const className =
+          "hover:text-primary inline-flex min-h-11 items-center gap-2.5 text-sm font-medium text-[color-mix(in_oklab,currentColor_70%,transparent)] no-underline transition-colors duration-150 motion-reduce:transition-none"
 
-          <div>
-            <p className="text-background/45 text-xs font-bold tracking-[0.08em] uppercase">
-              Elsewhere
-            </p>
-            <ul className="mt-4 grid gap-1">
-              {siteConfig.externalLinks.map((item) => {
-                const Icon = externalIcons[item.id]
-
-                return (
-                  <li key={item.id}>
-                    <ExternalLink
-                      className="hover:text-primary inline-flex min-h-11 items-center gap-3 text-lg font-semibold no-underline transition-colors duration-150"
-                      href={item.href}
-                      aria-label={item.accessibleLabel}
-                    >
-                      <Icon aria-hidden="true" size={18} strokeWidth={1.9} />
-                      {item.label}
-                      <ArrowUpRight
-                        className="text-background/45"
-                        aria-hidden="true"
-                        size={15}
-                      />
-                    </ExternalLink>
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
-        </nav>
-      }
+        return external ? (
+          <ExternalLink className={className} href={href}>
+            {label}
+          </ExternalLink>
+        ) : (
+          // The component's href is a plain string; typed routes want their own.
+          <Link className={className} href={href as Route}>
+            {label}
+          </Link>
+        )
+      }}
       brand={<BrandLogo />}
       meta={
-        <p className="text-background/55 max-w-2xl leading-relaxed">
+        <p className="max-w-2xl leading-relaxed text-[color-mix(in_oklab,currentColor_60%,transparent)]">
           <span>
             A product by{" "}
             <ExternalLink

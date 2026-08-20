@@ -735,15 +735,14 @@ a:focus-visible {
   text-underline-offset: 0.25rem;
 }
 
+/* The accordion ships as a bordered card; this list is a set of rules. */
 .faq-list {
-  border-top: 1px solid var(--border);
+  border: 0;
+  border-block: 1px solid var(--border);
+  border-radius: 0;
 }
 
-.faq-item {
-  border-bottom: 1px solid var(--border);
-}
-
-.faq-item summary {
+.faq-summary {
   align-items: center;
   cursor: pointer;
   display: grid;
@@ -782,6 +781,7 @@ a:focus-visible {
 
 .faq-answer {
   color: var(--muted-foreground);
+  font-size: 1rem;
   line-height: 1.7;
   max-width: 42rem;
   padding: 0 4.25rem 1.75rem 0;

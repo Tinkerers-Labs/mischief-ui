@@ -1,10 +1,10 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 
-import { CopyCommand } from "@/components/copy-command"
+import { InstallCommand } from "@/registry/default/install-command/install-command"
 import { componentFamilies } from "@/lib/component-docs"
-import { addCommand, defaultPackageManager } from "@/lib/package-commands"
-import { registryInstallCommand, siteConfig } from "@/site.config"
+import { defaultPackageManager } from "@/lib/package-commands"
+import { registryInstallArgs, siteConfig } from "@/site.config"
 
 export const metadata: Metadata = {
   title: `Documentation | ${siteConfig.name}`,
@@ -12,11 +12,6 @@ export const metadata: Metadata = {
     "Install Mischief UI components through the shadcn registry or npm, then adapt the source for your React project.",
   alternates: { canonical: "/docs" },
 }
-
-const packageInstallCommand = addCommand(
-  defaultPackageManager,
-  siteConfig.package.installArgs
-)
 
 export default function DocsPage() {
   return (
@@ -41,13 +36,11 @@ export default function DocsPage() {
           recommended path. The npm package is useful when you want ordinary
           dependency updates or a quick look at the exported API.
         </p>
-        <div className="install-options">
-          <CopyCommand
-            label="Source"
-            command={registryInstallCommand("magnetic-tabs")}
-          />
-          <CopyCommand label="Package" command={packageInstallCommand} />
-        </div>
+        <InstallCommand
+          add={siteConfig.package.installArgs}
+          defaultManager={defaultPackageManager}
+          run={registryInstallArgs("magnetic-tabs")}
+        />
         <p>
           Installing from npm needs one more line. Tailwind does not scan{" "}
           <code>node_modules</code>, so a package&rsquo;s utility classes are

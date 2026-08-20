@@ -205,3 +205,38 @@ describe("ComponentPreview", () => {
     expect(await navigator.clipboard.readText()).toBe("const a = 1")
   })
 })
+
+describe("Accordion slot classes", () => {
+  const items = [{ id: "one", title: "First", content: "First answer" }]
+
+  it("adds to each part rather than replacing it", () => {
+    const { container } = render(
+      <Accordion
+        items={items}
+        classNames={{
+          item: "faq-item",
+          trigger: "faq-summary",
+          marker: "faq-marker",
+          content: "faq-answer",
+        }}
+      />
+    )
+
+    const details = container.querySelector("details")!
+    expect(details.className).toContain("faq-item")
+    expect(details.className).toContain("group")
+
+    expect(container.querySelector("summary")!.className).toContain(
+      "faq-summary"
+    )
+    expect(
+      container.querySelector('[data-slot="accordion-content"]')!.className
+    ).toContain("faq-answer")
+  })
+
+  it("leaves the parts alone when none are given", () => {
+    const { container } = render(<Accordion items={items} />)
+
+    expect(container.querySelector("summary")!.className).toContain("min-h-11")
+  })
+})

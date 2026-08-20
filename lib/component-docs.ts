@@ -4626,6 +4626,11 @@ export default function RootLayout({ children }) {
         "boolean",
         "Keeps one panel open at a time. Defaults to true.",
       ],
+      [
+        "classNames",
+        "{ item, trigger, marker, content }",
+        "Classes added to the parts inside, for a list that is not a card.",
+      ],
       ["defaultOpen", "string[]", "Ids open on first render."],
       [
         "icon",
@@ -4639,7 +4644,7 @@ export default function RootLayout({ children }) {
       ],
     ],
     accessibility:
-      "Open and closed state, keyboard handling, and expansion during find-in-page all come from the native disclosure element rather than scripted state, so the panel content stays searchable while collapsed. Exclusivity uses the shared name attribute for the same reason. Summaries are 44px targets with a visible focus ring, and the marker is decoration the screen reader skips.",
+      "The default look is a bordered card, and classNames reaches the parts inside so a page that wants a typographic list can have one without rebuilding the disclosure. Open and closed state, keyboard handling, and expansion during find-in-page all come from the native disclosure element rather than scripted state, so the panel content stays searchable while collapsed. Exclusivity uses the shared name attribute for the same reason. Summaries are 44px targets with a visible focus ring, and the marker is decoration the screen reader skips.",
   },
   {
     slug: "component-preview",

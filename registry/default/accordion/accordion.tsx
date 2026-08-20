@@ -22,6 +22,16 @@ export type AccordionProps = Omit<
   defaultOpen?: readonly string[]
   icon?: React.ReactNode
   onToggle?: (id: string, open: boolean) => void
+  /**
+   * Classes for the parts inside. The shape here is a sensible default, not a
+   * design: a disclosure list belongs to the page it sits on.
+   */
+  classNames?: {
+    item?: string
+    trigger?: string
+    marker?: string
+    content?: string
+  }
 }
 
 /**
@@ -36,6 +46,7 @@ export function Accordion({
   defaultOpen,
   icon,
   onToggle,
+  classNames,
   className,
   ...rootProps
 }: AccordionProps) {
@@ -57,7 +68,7 @@ export function Accordion({
           data-slot="accordion-item"
           name={exclusive ? groupName : undefined}
           open={open.has(item.id) || undefined}
-          className="group bg-card/40 open:bg-card"
+          className={cn("group bg-card/40 open:bg-card", classNames?.item)}
           onToggle={(event) =>
             onToggle?.(
               item.id,
@@ -67,12 +78,18 @@ export function Accordion({
         >
           <summary
             data-slot="accordion-trigger"
-            className="text-foreground hover:bg-muted/60 flex min-h-11 cursor-pointer list-none items-center gap-3 px-4 py-3 text-sm transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-inset motion-reduce:transition-none [&::-webkit-details-marker]:hidden"
+            className={cn(
+              "text-foreground hover:bg-muted/60 flex min-h-11 cursor-pointer list-none items-center gap-3 px-4 py-3 text-sm transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-inset motion-reduce:transition-none [&::-webkit-details-marker]:hidden",
+              classNames?.trigger
+            )}
           >
             <span className="min-w-0 flex-1">{item.title}</span>
             <span
               aria-hidden="true"
-              className="text-muted-foreground shrink-0 transition-transform duration-200 group-open:rotate-45 motion-reduce:transition-none"
+              className={cn(
+                "text-muted-foreground shrink-0 transition-transform duration-200 group-open:rotate-45 motion-reduce:transition-none",
+                classNames?.marker
+              )}
             >
               {icon ?? <Plus size={18} strokeWidth={1.8} />}
             </span>
@@ -80,7 +97,10 @@ export function Accordion({
 
           <div
             data-slot="accordion-content"
-            className="text-muted-foreground px-4 pb-4 text-sm leading-relaxed"
+            className={cn(
+              "text-muted-foreground px-4 pb-4 text-sm leading-relaxed",
+              classNames?.content
+            )}
           >
             {item.content}
           </div>
