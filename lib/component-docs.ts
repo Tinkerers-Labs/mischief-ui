@@ -5229,9 +5229,9 @@ return (
   },
   {
     slug: "empty-state",
-    kind: "block",
+    kind: "component",
     name: "Empty State",
-    family: "Blocks",
+    family: "Feedback",
     summary:
       "What to show when there is nothing yet: what this place is for, and the way to fill it.",
     dependencies: [],
@@ -5485,7 +5485,7 @@ return (
     slug: "empty-row",
     kind: "component",
     name: "Empty Row",
-    family: "Blocks",
+    family: "Feedback",
     summary:
       "One line saying a list came back empty, for a table, a list, or a popover.",
     dependencies: [],
@@ -5544,9 +5544,9 @@ return (
   },
   {
     slug: "not-found",
-    kind: "block",
+    kind: "component",
     name: "Not Found",
-    family: "Blocks",
+    family: "Feedback",
     summary:
       "The page-scale empty state: a status, a heading you can read across a room, and somewhere to go.",
     dependencies: [],
@@ -5795,6 +5795,235 @@ return (
     accessibility:
       "It takes the same image shape Image Grid takes, written out here rather than imported, so neither has to be installed for the other. A real dialog: focus is trapped while it is open, the page behind it does not scroll, Escape closes it, and focus returns to finalFocus afterwards. The image's alt is the dialog's accessible name, and its position in the set is the description, so a screen reader hears which of how many it is. Arrow keys move; the previous and next controls are absent rather than disabled when there is nowhere to go.",
   },
+  {
+    slug: "spinner",
+    kind: "component",
+    name: "Spinner",
+    family: "Feedback",
+    summary:
+      "The smallest way to say something is happening, for a control that is working.",
+    dependencies: [],
+    install: registryInstallCommand("spinner"),
+    npmImport: packageImport("Spinner", "spinner"),
+    usage: `export function Save({ saving }) {
+  return (
+    <button disabled={saving}>
+      {saving ? <Spinner size={14} /> : null}
+      {saving ? "Saving" : "Save"}
+    </button>
+  )
+}`,
+    props: [
+      ["size", "number", "Width and height in pixels. Defaults to 16."],
+      [
+        "label",
+        "string",
+        "Announced while it turns. Without one it is decoration.",
+      ],
+      [
+        "className",
+        "string",
+        "Classes for the element. Colour comes from currentColor.",
+      ],
+    ],
+    sections: [
+      {
+        id: "which",
+        title: "Spinner or skeleton",
+        blocks: [
+          {
+            kind: "text",
+            text: "A spinner says work is under way. A skeleton says content has not arrived and holds its place. Reach for the spinner when something you pressed is working, and for the skeleton when a region is filling in -- a spinner in the middle of an empty page tells someone to wait without telling them what for.",
+          },
+          {
+            kind: "text",
+            text: "Give it a label only when nothing beside it already says what is happening. Two announcements of the same wait is one too many.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "With a label it is a status region and announces itself once; without one it is hidden from assistive technology, which is right when the text beside it already says what is happening. It draws in currentColor, so it inherits whatever it sits in. Reduced motion stops the turn and leaves the ring, so a control still reads as busy rather than as an unexplained circle.",
+  },
+  {
+    slug: "skeleton",
+    kind: "component",
+    name: "Skeleton",
+    family: "Feedback",
+    summary:
+      "A placeholder the shape of what is coming, so the page does not jump when it arrives.",
+    dependencies: [],
+    install: registryInstallCommand("skeleton"),
+    npmImport: packageImport("Skeleton", "skeleton"),
+    usage: `export function Card({ article }) {
+  if (!article) {
+    return (
+      <div aria-busy="true" className="grid gap-3">
+        <Skeleton className="h-40" />
+        <Skeleton lines={3} />
+      </div>
+    )
+  }
+
+  return <Article {...article} />
+}`,
+    props: [
+      [
+        "lines",
+        "number",
+        "Render this many bars, the last one short, as text would be.",
+      ],
+      ["className", "string", "The shape: a height, a width, a radius."],
+    ],
+    sections: [
+      {
+        id: "shape",
+        title: "Shaped like the thing it stands in for",
+        blocks: [
+          {
+            kind: "text",
+            text: "A skeleton earns its place by taking the room the content will take. One that is the wrong size moves the page twice: once when it appears and again when it is replaced, which is worse than an empty space that fills in.",
+          },
+          {
+            kind: "text",
+            text: "So give it the height you know: the avatar is a circle of a fixed size, the card is as tall as a card. Where the length is genuinely unknown, lines renders a block of bars with a short last one, which is what a paragraph looks like from across the room.",
+          },
+          {
+            kind: "code",
+            code: `<Skeleton className="size-10 rounded-full" />
+<Skeleton className="h-40" />
+<Skeleton lines={3} />`,
+          },
+        ],
+      },
+      {
+        id: "busy",
+        title: "Saying it out loud",
+        blocks: [
+          {
+            kind: "text",
+            text: "The bars are hidden from assistive technology, because a screen reader has nothing to gain from a description of grey rectangles. That means the waiting is invisible unless you say so: mark the region aria-busy while it loads, and the reader is told to wait rather than hearing an empty container.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "Hidden from assistive technology, because a shape standing in for content is not content. Put aria-busy on the region that is filling, so the wait is announced once by the thing that knows about it rather than by every bar. The pulse stops under reduced motion.",
+  },
+  {
+    slug: "status-pill",
+    kind: "component",
+    name: "Status Pill",
+    family: "Feedback",
+    summary: "A dot and a few words: operational, degraded, closed.",
+    dependencies: [],
+    install: registryInstallCommand("status-pill"),
+    npmImport: packageImport("StatusPill", "status-pill"),
+    usage: `export function Health({ status }) {
+  return (
+    <StatusPill href="/status" tone={status.tone}>
+      {status.label}
+    </StatusPill>
+  )
+}`,
+    props: [
+      [
+        "children",
+        "ReactNode",
+        "The words. They carry the state, not the dot.",
+      ],
+      [
+        "tone",
+        '"ok" | "warn" | "down" | "idle"',
+        'The dot colour. Defaults to "ok".',
+      ],
+      [
+        "href",
+        "string",
+        "Makes it a link, for a status page or a health check.",
+      ],
+      ["plain", "boolean", "A quiet line rather than a bordered pill."],
+    ],
+    sections: [
+      {
+        id: "words",
+        title: "The words do the work",
+        blocks: [
+          {
+            kind: "text",
+            text: "The dot is decoration and the label is the state. That is not only for colour blindness: a green dot alone says nothing about whether the thing is up, degraded, or simply not open yet, and the reader has to know your palette to guess.",
+          },
+          {
+            kind: "text",
+            text: "Write the label as the state rather than as a category. All systems operational reads better than Status: OK, and Market closed says more than Idle.",
+          },
+          {
+            kind: "code",
+            code: `<StatusPill>All systems operational</StatusPill>
+<StatusPill tone="warn">Degraded: search is slow</StatusPill>
+<StatusPill tone="idle" plain>Market closed</StatusPill>`,
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The dot is hidden from assistive technology and the label is read as ordinary text, so the state never depends on seeing a colour. With an href it becomes a link and inherits link semantics; without one it is a plain span rather than a control, because a status is something to read, not something to press. The tone is exposed as a data attribute for styling and for tests.",
+  },
+  {
+    slug: "copy-button",
+    kind: "component",
+    name: "Copy Button",
+    family: "Controls",
+    summary:
+      "Copies a value and says whether it worked, including when the clipboard refuses.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("copy-button"),
+    npmImport: packageImport("CopyButton", "copy-button"),
+    usage: `export function Key({ apiKey }) {
+  return (
+    <CopyButton value={apiKey} onCopied={() => track("key_copied")}>
+      Copy key
+    </CopyButton>
+  )
+}`,
+    props: [
+      ["value", "string", "What lands on the clipboard."],
+      ["children", "ReactNode", "Shown beside the icon. Omit for icon only."],
+      [
+        "label, copiedLabel, errorLabel",
+        "string",
+        "The three things it can say.",
+      ],
+      [
+        "onCopied",
+        "(value: string) => void",
+        "Called after a copy that worked.",
+      ],
+      [
+        "onCopyError",
+        "(error: unknown) => void",
+        "Called when the clipboard refused.",
+      ],
+    ],
+    sections: [
+      {
+        id: "refusal",
+        title: "When the clipboard refuses",
+        blocks: [
+          {
+            kind: "text",
+            text: "navigator.clipboard.writeText rejects more often than it looks: a page served over http, a sandboxed frame, a browser that wants a user gesture it did not see, a permission that was denied. Left unhandled the button does nothing, says nothing, and leaves an unhandled rejection behind.",
+          },
+          {
+            kind: "text",
+            text: "This one catches it, says so, and tells you through onCopyError. Reach for that when there is somewhere better to put the failure -- a toast, or a field the reader can select from by hand.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The outcome is announced through a polite live region whether or not the label is visible, so an icon-only button is not silent. With no visible text it takes the current wording as its accessible name, which changes to say what happened. Copying is one press, and nothing about it depends on hovering.",
+  },
 ] as const
 
 export const componentDocs = entries.map((entry, index) => ({
@@ -5828,6 +6057,10 @@ const familyOrder = [
     "Reading a file someone uploaded, marking it up, cutting it into pieces, and pulling structure out of it.",
   ],
   ["Files", "Getting a file in, and showing what arrived."],
+  [
+    "Feedback",
+    "What the page says while it waits, and when there is nothing to show.",
+  ],
   [
     "Controls",
     "Familiar inputs with more feedback than usual, and none of it required to operate them.",

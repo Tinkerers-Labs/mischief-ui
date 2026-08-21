@@ -868,6 +868,63 @@
       ],
       "categories": ["media", "gallery", "dialog"],
       "registryDependencies": ["utils"]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "The smallest way to say something is happening, for a control that is working.",
+      "files": [
+        {
+          "path": "registry/default/spinner/spinner.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["feedback", "loading"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "A placeholder the shape of what is coming, so the page does not jump when it arrives.",
+      "files": [
+        {
+          "path": "registry/default/skeleton/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["feedback", "loading", "layout"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "status-pill",
+      "type": "registry:ui",
+      "title": "Status Pill",
+      "description": "A dot and a few words: operational, degraded, closed.",
+      "files": [
+        {
+          "path": "registry/default/status-pill/status-pill.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["feedback", "status"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "copy-button",
+      "type": "registry:ui",
+      "title": "Copy Button",
+      "description": "Copies a value and says whether it worked, including when the clipboard refuses.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/copy-button/copy-button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["clipboard", "control"],
+      "registryDependencies": ["utils"]
     }
   ]
 }

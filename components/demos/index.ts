@@ -20,6 +20,10 @@ import { EmptyRowDemo } from "@/components/demos/empty-row-demo"
 import { NotFoundDemo } from "@/components/demos/not-found-demo"
 import { ImageGridDemo } from "@/components/demos/image-grid-demo"
 import { LightboxDemo } from "@/components/demos/lightbox-demo"
+import { SpinnerDemo } from "@/components/demos/spinner-demo"
+import { SkeletonDemo } from "@/components/demos/skeleton-demo"
+import { StatusPillDemo } from "@/components/demos/status-pill-demo"
+import { CopyButtonDemo } from "@/components/demos/copy-button-demo"
 import { AgentChecklistDemo } from "@/components/demos/agent-checklist-demo"
 import { BoundingBoxesDemo } from "@/components/demos/bounding-boxes-demo"
 import { CsvViewerDemo } from "@/components/demos/csv-viewer-demo"
@@ -83,6 +87,10 @@ export const componentDemos: Record<string, ComponentDemo> = {
   "streaming-text": { Demo: StreamingTextDemo, frameClassName: "p-6 md:p-10" },
   "thinking-state": { Demo: ThinkingStateDemo, frameClassName: "p-6 md:p-10" },
   "tool-call": { Demo: ToolCallDemo, frameClassName: "p-6 md:p-10" },
+  spinner: { Demo: SpinnerDemo, frameClassName: "p-6 md:p-10" },
+  skeleton: { Demo: SkeletonDemo, frameClassName: "p-6 md:p-10" },
+  "status-pill": { Demo: StatusPillDemo, frameClassName: "p-6 md:p-10" },
+  "copy-button": { Demo: CopyButtonDemo, frameClassName: "p-6 md:p-10" },
   "image-grid": { Demo: ImageGridDemo, frameClassName: "p-6 md:p-10" },
   lightbox: { Demo: LightboxDemo, frameClassName: "p-6 md:p-10" },
   "empty-row": { Demo: EmptyRowDemo, frameClassName: "p-6 md:p-10" },

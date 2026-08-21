@@ -316,6 +316,27 @@ export {
   type ImageGridLayout,
 } from "../../../registry/default/image-grid/image-grid"
 
+export {
+  Spinner,
+  type SpinnerProps,
+} from "../../../registry/default/spinner/spinner"
+
+export {
+  Skeleton,
+  type SkeletonProps,
+} from "../../../registry/default/skeleton/skeleton"
+
+export {
+  StatusPill,
+  type StatusPillProps,
+  type StatusTone,
+} from "../../../registry/default/status-pill/status-pill"
+
+export {
+  CopyButton,
+  type CopyButtonProps,
+} from "../../../registry/default/copy-button/copy-button"
+
 // Type-only, so these erase at build time and pull in no optional peer. They
 // give the declaration build one shared type graph, without which tsup walks
 // each entry separately and runs out of heap. The components themselves stay
