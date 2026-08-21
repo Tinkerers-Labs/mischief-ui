@@ -889,6 +889,28 @@ useEffect(() => {
         ],
       },
       {
+        id: "own-tabs",
+        title: "When it is not an install",
+        blocks: [
+          {
+            kind: "text",
+            text: "The package managers are the common case, not the only one. A block that offers a skill, a server config, and a curl call is the same thing -- a few labelled snippets and one copy button -- but none of them is npm install. Pass tabs and they replace the managers entirely.",
+          },
+          {
+            kind: "code",
+            code: `<InstallCommand
+  tabs={[
+    { id: "skill", label: "skill", value: skillCommand },
+    { id: "mcp", label: "mcp", value: serverConfig, wrap: true },
+    { id: "curl", label: "curl", value: curlCall },
+  ]}
+/>`,
+            caption:
+              "wrap suits anything that is not one line, such as a JSON block.",
+          },
+        ],
+      },
+      {
         id: "prompt",
         title: "The agent option",
         blocks: [
@@ -913,6 +935,16 @@ useEffect(() => {
     ],
     props: [
       [
+        "tabs",
+        "InstallTab[]",
+        "Your own tabs, which replace the package managers entirely.",
+      ],
+      [
+        "defaultTab",
+        "string",
+        "Which of those opens first. Defaults to the first.",
+      ],
+      [
         "run",
         "string",
         "Arguments for a one-off runner, such as shadcn@latest add tabs.",
@@ -933,6 +965,21 @@ useEffect(() => {
         "string, string, ReactNode",
         "Copy for the two extra options and the line beneath.",
       ],
+    ],
+    types: [
+      {
+        name: "InstallTab",
+        rows: [
+          ["id", "string", "Unique within the set. What defaultTab names."],
+          ["label", "string", "The tab as shown."],
+          ["value", "string", "What is displayed and copied."],
+          [
+            "wrap",
+            "boolean",
+            "Wrap rather than scroll, for more than one line.",
+          ],
+        ],
+      },
     ],
     accessibility:
       "The options are a labelled group of toggle buttons reporting their pressed state, so the current choice is announced rather than shown only by a border. Running a package and adding a dependency are separate verbs, so they come from separate tables instead of one being derived from the other by rewriting a string. Only the options you supply are rendered, and a prompt wraps rather than scrolling sideways.",
@@ -5464,6 +5511,135 @@ return (
     ],
     accessibility:
       "Hidden from assistive technology and taken out of the selection, because it is a texture rather than a name. The tint is mixed from the surrounding text colour, so it stays faint on a light ground and on a dark one without being restyled.",
+  },
+  {
+    slug: "empty-row",
+    kind: "component",
+    name: "Empty Row",
+    family: "Blocks",
+    summary:
+      "One line saying a list came back empty, for a table, a list, or a popover.",
+    dependencies: [],
+    install: registryInstallCommand("empty-row"),
+    npmImport: packageImport("EmptyRow", "empty-row"),
+    usage: `export function Results({ rows }) {
+  if (rows.length === 0) {
+    return <EmptyRow>No funds match these filters.</EmptyRow>
+  }
+
+  return <FundsTable rows={rows} />
+}`,
+    props: [
+      ["children", "ReactNode", 'The line itself. Defaults to "No matches."'],
+      ["colSpan", "number", "Renders a table row spanning this many columns."],
+      ["className", "string", "Classes for the element."],
+    ],
+    sections: [
+      {
+        id: "scale",
+        title: "The smallest of three",
+        blocks: [
+          {
+            kind: "text",
+            text: "Empty Row is a line inside something. Empty State fills a panel with a title, a sentence, and a way forward. Not Found fills a page. They are separate components rather than sizes of one, because a filtered table wants a line and a blank page wants a heading, and a component that tries to be both is wrong at one end.",
+          },
+          {
+            kind: "text",
+            text: "Reach for this one where the surrounding thing already explains itself: a table under its own heading, a search popover, a filter pane. There is nothing to introduce, only a result to report.",
+          },
+        ],
+      },
+      {
+        id: "tables",
+        title: "Inside a table",
+        blocks: [
+          {
+            kind: "text",
+            text: "A paragraph is not valid inside a table body, and a row that does not span the columns leaves the message wedged under the first one. Pass colSpan and the component renders the row and the cell for you.",
+          },
+          {
+            kind: "code",
+            code: `<tbody>
+  {rows.length === 0 ? (
+    <EmptyRow colSpan={columns.length}>Nothing filed yet.</EmptyRow>
+  ) : (
+    rows.map((row) => <Row key={row.id} {...row} />)
+  )}
+</tbody>`,
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "A row inside a table is a real table row spanning every column, so the table's shape stays intact and a screen reader reads the message once rather than as a stray cell. Elsewhere it is a paragraph, announced by whatever region already holds the list. It is not a live region: put it in one only if the list can empty while someone is reading it.",
+  },
+  {
+    slug: "not-found",
+    kind: "block",
+    name: "Not Found",
+    family: "Blocks",
+    summary:
+      "The page-scale empty state: a status, a heading you can read across a room, and somewhere to go.",
+    dependencies: [],
+    install: registryInstallCommand("not-found"),
+    npmImport: packageImport("NotFound", "not-found"),
+    usage: `export default function NotFoundPage() {
+  return (
+    <NotFound
+      code="404"
+      title="That page moved, or never existed."
+      description="If you followed a link, the page may have been renamed."
+      actions={<Link href="/docs">Browse the docs</Link>}
+    >
+      <PopularPages />
+    </NotFound>
+  )
+}`,
+    props: [
+      [
+        "title",
+        "ReactNode",
+        "The line that carries it. The only required prop.",
+      ],
+      ["code", "ReactNode", 'The status above the title, such as "404".'],
+      [
+        "description",
+        "ReactNode",
+        "What likely happened, held to a readable measure.",
+      ],
+      ["actions", "ReactNode", "Where to go instead."],
+      [
+        "children",
+        "ReactNode",
+        "Anything more: a search, a list of likely destinations.",
+      ],
+    ],
+    sections: [
+      {
+        id: "writing",
+        title: "Saying what happened",
+        blocks: [
+          {
+            kind: "text",
+            text: "A 404 is the one page nobody chose to visit, so it should spend its words on what to do rather than on apology. Say what probably happened -- a renamed page, a stale link -- and offer the one or two places most people actually wanted.",
+          },
+          {
+            kind: "list",
+            items: [
+              "Name the likely cause; a bare Not Found tells someone only what they already know.",
+              "Offer a way onward that does not require guessing a URL.",
+              "Keep the status as a code above the title rather than as the title itself, so the sentence is the thing read first.",
+            ],
+          },
+          {
+            kind: "text",
+            text: "The same shape suits any dead end with a page to itself: a deleted record, an expired invitation, a region you cannot serve. The heading changes, the structure does not.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The title is the page's h1, because on a page whose only content is this, it is the heading. The status code sits above it as plain text rather than as part of the heading, so the sentence is what a screen reader announces first. Nothing here traps focus or announces itself; the controls inside are your own, with your own semantics.",
   },
 ] as const
 

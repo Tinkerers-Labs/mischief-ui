@@ -299,6 +299,16 @@ export {
   type FooterWordmarkProps,
 } from "../../../registry/default/footer-wordmark/footer-wordmark"
 
+export {
+  EmptyRow,
+  type EmptyRowProps,
+} from "../../../registry/default/empty-row/empty-row"
+
+export {
+  NotFound,
+  type NotFoundProps,
+} from "../../../registry/default/not-found/not-found"
+
 // Type-only, so these erase at build time and pull in no optional peer. They
 // give the declaration build one shared type graph, without which tsup walks
 // each entry separately and runs out of heap. The components themselves stay

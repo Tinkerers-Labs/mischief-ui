@@ -86,6 +86,8 @@ export default defineConfig({
     "footer-row": "../../registry/default/footer-row/footer-row.tsx",
     "footer-wordmark":
       "../../registry/default/footer-wordmark/footer-wordmark.tsx",
+    "empty-row": "../../registry/default/empty-row/empty-row.tsx",
+    "not-found": "../../registry/default/not-found/not-found.tsx",
   },
   format: ["esm", "cjs"],
   dts: true,

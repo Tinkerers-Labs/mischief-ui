@@ -289,6 +289,16 @@
       "types": "./dist/footer-wordmark.d.ts",
       "import": "./dist/footer-wordmark.js",
       "require": "./dist/footer-wordmark.cjs"
+    },
+    "./empty-row": {
+      "types": "./dist/empty-row.d.ts",
+      "import": "./dist/empty-row.js",
+      "require": "./dist/empty-row.cjs"
+    },
+    "./not-found": {
+      "types": "./dist/not-found.d.ts",
+      "import": "./dist/not-found.js",
+      "require": "./dist/not-found.cjs"
     }
   },
   "scripts": {

@@ -6,10 +6,26 @@ import { cn } from "@/lib/utils"
 
 export type PackageManager = "npm" | "pnpm" | "yarn" | "bun"
 
+/** A labelled thing to copy, when the built-in verbs do not fit. */
+export type InstallTab = {
+  id: string
+  label: string
+  value: string
+  /** Wrap rather than scroll, for anything that is not one line. */
+  wrap?: boolean
+}
+
 export type InstallCommandProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
   "children"
 > & {
+  /**
+   * Your own tabs, which replace the package managers entirely. For a block
+   * that offers a skill, a server config, and a curl call rather than an
+   * install.
+   */
+  tabs?: readonly InstallTab[]
+  defaultTab?: string
   /** Arguments for a one-off runner, such as "shadcn@latest add tabs". */
   run?: string
   /** Packages to add as a dependency, such as "my-lib". */
@@ -40,6 +56,8 @@ const installers: Record<PackageManager, string> = {
 const DEFAULT_MANAGERS = ["npm", "pnpm", "yarn", "bun"] as const
 
 export function InstallCommand({
+  tabs,
+  defaultTab,
   run,
   add,
   prompt,
@@ -51,18 +69,25 @@ export function InstallCommand({
   className,
   ...rootProps
 }: InstallCommandProps) {
+  const custom = tabs && tabs.length > 0 ? tabs : undefined
+
   const [manager, setManager] = React.useState<PackageManager>(defaultManager)
   const [mode, setMode] = React.useState<"run" | "add" | "prompt">(
     run ? "run" : add ? "add" : "prompt"
   )
+  const [tabId, setTabId] = React.useState(
+    () => defaultTab ?? custom?.[0]?.id ?? ""
+  )
+  const activeTab = custom?.find((tab) => tab.id === tabId) ?? custom?.[0]
   const [copyState, setCopyState] = React.useState<"idle" | "copied" | "error">(
     "idle"
   )
 
   // The chosen manager applies to both commands, so picking pnpm and then the
   // package option gives pnpm add rather than snapping back to the default.
-  const value =
-    mode === "prompt" && prompt
+  const value = activeTab
+    ? activeTab.value
+    : mode === "prompt" && prompt
       ? prompt
       : mode === "add" && add
         ? `${installers[manager]} ${add}`
@@ -102,7 +127,21 @@ export function InstallCommand({
             aria-label="Install command"
             className="flex min-w-0 flex-wrap items-center gap-0.5"
           >
-            {run
+            {custom
+              ? custom.map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    aria-pressed={activeTab?.id === tab.id}
+                    className="text-muted-foreground hover:text-foreground aria-pressed:border-border aria-pressed:bg-card aria-pressed:text-foreground min-h-8 rounded-md border border-transparent px-2 font-[family-name:var(--font-mono),monospace] text-xs transition-colors duration-150 motion-reduce:transition-none"
+                    onClick={() => setTabId(tab.id)}
+                  >
+                    {tab.label}
+                  </button>
+                ))
+              : null}
+
+            {!custom && run
               ? managers.map((entry) => (
                   <button
                     key={entry}
@@ -119,7 +158,7 @@ export function InstallCommand({
                 ))
               : null}
 
-            {add ? (
+            {!custom && add ? (
               <>
                 {run ? (
                   <span
@@ -138,7 +177,7 @@ export function InstallCommand({
               </>
             ) : null}
 
-            {prompt ? (
+            {!custom && prompt ? (
               <button
                 type="button"
                 aria-pressed={mode === "prompt"}
@@ -173,10 +212,12 @@ export function InstallCommand({
 
         <pre
           data-slot="install-command-value"
-          data-mode={mode}
+          data-mode={activeTab ? activeTab.id : mode}
           className={cn(
             "text-foreground m-0 overflow-x-auto rounded-none bg-transparent px-3 py-2.5 font-[family-name:var(--font-mono),monospace] text-xs leading-relaxed",
-            mode === "prompt" ? "whitespace-pre-wrap" : "whitespace-pre"
+            (activeTab ? activeTab.wrap : mode === "prompt")
+              ? "whitespace-pre-wrap"
+              : "whitespace-pre"
           )}
         >
           <code>{value}</code>

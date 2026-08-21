@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react"
 
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
+import { NotFound as NotFoundBlock } from "@/registry/default/not-found/not-found"
 import { componentDocs, featuredComponents } from "@/lib/component-docs"
 import { siteConfig } from "@/site.config"
 
@@ -17,27 +18,33 @@ export default function NotFound() {
     <main>
       <SiteHeader />
 
-      <section className="not-found">
-        <p className="eyebrow">404</p>
-        <h1>
-          That page moved,
-          <span className="text-primary block">or never existed.</span>
-        </h1>
-        <p className="not-found-lead">
-          Component pages live under <code>/docs/components</code>. If you
-          followed a link from somewhere, the component may have been renamed.
-        </p>
-
-        <div className="not-found-actions">
-          <Link className="not-found-primary" href={siteConfig.routes.docs}>
-            Browse the docs
-            <ArrowRight aria-hidden="true" size={17} />
-          </Link>
-          <Link className="detail-link" href={siteConfig.routes.home}>
-            Go home
-          </Link>
-        </div>
-
+      <NotFoundBlock
+        className="not-found"
+        code="404"
+        title={
+          <>
+            That page moved,
+            <span className="text-primary block">or never existed.</span>
+          </>
+        }
+        description={
+          <>
+            Component pages live under <code>/docs/components</code>. If you
+            followed a link from somewhere, the component may have been renamed.
+          </>
+        }
+        actions={
+          <>
+            <Link className="not-found-primary" href={siteConfig.routes.docs}>
+              Browse the docs
+              <ArrowRight aria-hidden="true" size={17} />
+            </Link>
+            <Link className="detail-link" href={siteConfig.routes.home}>
+              Go home
+            </Link>
+          </>
+        }
+      >
         <div className="not-found-suggestions">
           <p className="sidebar-label">
             {componentDocs.length} components, starting with
@@ -52,7 +59,7 @@ export default function NotFound() {
             ))}
           </ul>
         </div>
-      </section>
+      </NotFoundBlock>
 
       <SiteFooter />
     </main>

@@ -811,6 +811,34 @@
       ],
       "categories": ["footer", "brand", "type"],
       "registryDependencies": ["utils"]
+    },
+    {
+      "name": "empty-row",
+      "type": "registry:ui",
+      "title": "Empty Row",
+      "description": "One line saying a list came back empty, for a table, a list, or a popover.",
+      "files": [
+        {
+          "path": "registry/default/empty-row/empty-row.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["empty", "table", "list"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "not-found",
+      "type": "registry:ui",
+      "title": "Not Found",
+      "description": "The page-scale empty state: a status, a heading you can read across a room, and somewhere to go.",
+      "files": [
+        {
+          "path": "registry/default/not-found/not-found.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["empty", "page", "404"],
+      "registryDependencies": ["utils"]
     }
   ]
 }

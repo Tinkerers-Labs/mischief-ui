@@ -241,3 +241,57 @@ describe("a clipboard that refuses", () => {
     restore()
   })
 })
+
+describe("InstallCommand with tabs of its own", () => {
+  const tabs = [
+    { id: "skill", label: "skill", value: "npx skills add acme/tools" },
+    { id: "mcp", label: "mcp", value: '{\n  "command": "npx"\n}', wrap: true },
+    { id: "curl", label: "curl", value: "curl https://api.acme.dev" },
+  ]
+
+  it("offers those instead of the package managers", () => {
+    render(<InstallCommand tabs={tabs} run="shadcn@latest add tabs" />)
+
+    expect(screen.getByRole("button", { name: "skill" })).toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: "npm" })).toBeNull()
+    expect(screen.queryByRole("button", { name: "package" })).toBeNull()
+  })
+
+  it("shows the first tab, then whichever is chosen", async () => {
+    const user = userEvent.setup()
+
+    render(<InstallCommand tabs={tabs} />)
+
+    expect(screen.getByRole("code")).toHaveTextContent("npx skills add")
+
+    await user.click(screen.getByRole("button", { name: "curl" }))
+    expect(screen.getByRole("code")).toHaveTextContent(
+      "curl https://api.acme.dev"
+    )
+  })
+
+  it("opens on the tab it was told to", () => {
+    render(<InstallCommand tabs={tabs} defaultTab="curl" />)
+
+    expect(screen.getByRole("code")).toHaveTextContent("curl")
+  })
+
+  it("copies the tab that is showing", async () => {
+    const user = userEvent.setup()
+
+    render(<InstallCommand tabs={tabs} />)
+
+    await user.click(screen.getByRole("button", { name: "curl" }))
+    await user.click(screen.getByRole("button", { name: "Copy" }))
+
+    expect(await navigator.clipboard.readText()).toBe(
+      "curl https://api.acme.dev"
+    )
+  })
+
+  it("leaves the package managers alone when no tabs are given", () => {
+    render(<InstallCommand run="shadcn@latest add tabs" />)
+
+    expect(screen.getByRole("button", { name: "npm" })).toBeInTheDocument()
+  })
+})
