@@ -1,12 +1,20 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
-import {
-  FOOTER_LABEL,
-  FooterLinkItem,
-  type FooterLink,
-  type FooterLinkRenderer,
-} from "@/registry/default/footer-columns/footer-columns"
+
+/** The same shapes Footer Columns uses, so the two interchange. */
+export type FooterLink = {
+  label: React.ReactNode
+  href: string
+  external?: boolean
+}
+
+export type FooterLinkRenderer = (link: FooterLink) => React.ReactNode
+
+const LABEL = "text-[0.6875rem] font-medium tracking-[0.09em] uppercase"
+
+const LINK =
+  "text-[color-mix(in_oklab,currentColor_70%,transparent)] text-sm no-underline transition-colors duration-150 hover:text-current motion-reduce:transition-none"
 
 export type FooterRowProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -43,11 +51,28 @@ export function FooterRow({
       )}
       {...rootProps}
     >
-      {label && <p className={cn(FOOTER_LABEL, "text-current")}>{label}</p>}
+      {label && <p className={cn(LABEL, "text-current")}>{label}</p>}
       <ul className={cn("flex flex-wrap gap-x-6 gap-y-2.5", label && "mt-4")}>
         {links.map((link, index) => (
           <li key={`${link.href}-${index}`}>
-            <FooterLinkItem link={link} renderLink={renderLink} />
+            {renderLink ? (
+              renderLink(link)
+            ) : (
+              <a
+                href={link.href}
+                {...(link.external
+                  ? { target: "_blank", rel: "noreferrer noopener" }
+                  : {})}
+                className={LINK}
+              >
+                {link.label}
+                {/* Punctuation-led: a leading space is dropped when the
+                    accessible name is computed. */}
+                {link.external ? (
+                  <span className="sr-only">, opens in a new tab</span>
+                ) : null}
+              </a>
+            )}
           </li>
         ))}
       </ul>

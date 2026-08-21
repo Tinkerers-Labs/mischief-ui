@@ -3,6 +3,7 @@ import path from "node:path"
 
 import { describe, expect, it } from "vitest"
 
+import { componentDocs } from "../lib/component-docs"
 import registry from "../registry.json"
 import packageJson from "../packages/mischief-ui/package.json"
 
@@ -213,4 +214,23 @@ describe.skipIf(built)("published entry isolation", () => {
       "packages"
     )
   })
+})
+
+describe("what an install pulls", () => {
+  const blocks = new Set(
+    componentDocs.filter((doc) => doc.kind === "block").map((doc) => doc.slug)
+  )
+
+  it.each(registry.items)(
+    "$name only reaches for other components if it is a block",
+    (item) => {
+      const parts = (item.registryDependencies ?? []).filter(
+        (name) => name !== "utils"
+      )
+
+      // A component is one thing you install. Only a block, which is openly an
+      // assembly, may pull others in behind it.
+      if (parts.length > 0) expect(blocks).toContain(item.name)
+    }
+  )
 })

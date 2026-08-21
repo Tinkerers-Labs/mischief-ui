@@ -5439,7 +5439,7 @@ return (
       },
     ],
     accessibility:
-      "The row is a list, so its length is announced before its contents. The label is plain text rather than a heading, and the rule above it is a border rather than a separator element, so neither adds noise to the page outline.",
+      "Nothing else has to be installed for it: the link shapes it takes are the same ones Footer Columns takes, written out here rather than imported, so the two interchange without either depending on the other. The row is a list, so its length is announced before its contents. The label is plain text rather than a heading, and the rule above it is a border rather than a separator element, so neither adds noise to the page outline.",
   },
   {
     slug: "footer-wordmark",
@@ -5793,7 +5793,7 @@ return (
       },
     ],
     accessibility:
-      "A real dialog: focus is trapped while it is open, the page behind it does not scroll, Escape closes it, and focus returns to finalFocus afterwards. The image's alt is the dialog's accessible name, and its position in the set is the description, so a screen reader hears which of how many it is. Arrow keys move; the previous and next controls are absent rather than disabled when there is nowhere to go.",
+      "It takes the same image shape Image Grid takes, written out here rather than imported, so neither has to be installed for the other. A real dialog: focus is trapped while it is open, the page behind it does not scroll, Escape closes it, and focus returns to finalFocus afterwards. The image's alt is the dialog's accessible name, and its position in the set is the description, so a screen reader hears which of how many it is. Arrow keys move; the previous and next controls are absent rather than disabled when there is nowhere to go.",
   },
 ] as const
 

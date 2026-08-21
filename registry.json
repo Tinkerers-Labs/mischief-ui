@@ -796,7 +796,7 @@
         }
       ],
       "categories": ["footer", "links", "layout"],
-      "registryDependencies": ["utils", "footer-columns"]
+      "registryDependencies": ["utils"]
     },
     {
       "name": "footer-wordmark",
@@ -867,7 +867,7 @@
         }
       ],
       "categories": ["media", "gallery", "dialog"],
-      "registryDependencies": ["utils", "image-grid"]
+      "registryDependencies": ["utils"]
     }
   ]
 }

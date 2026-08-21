@@ -32,6 +32,14 @@ Button must never be asked for a PDF parser.
   neither install it nor warn when it is missing. `react` and `react-dom` are
   the only required peers. `clsx`, `tailwind-merge`, and `lucide-react` stay
   ordinary dependencies because they are small and nearly universal here.
+- **Blocks are composed; components are not.** A block -- Signature Footer,
+  Image Gallery -- is openly an assembly, so it is built from components that
+  are worth installing on their own: Image Grid drops Base UI entirely, and
+  Footer Columns is useful without a wordmark. A component stays one file even
+  when it is long, because `shadcn add file-upload` pulling two more items
+  before anything renders is a worse trade than six hundred lines. Length is
+  not a reason to split; ask instead whether the part would be installed by
+  itself.
 - **Subpath exports keep the code apart.** Every component is its own build
   entry, so `mischief-ui/hold-button` never reaches the code behind
   `mischief-ui/pdf-viewer`.

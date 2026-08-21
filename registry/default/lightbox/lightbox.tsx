@@ -7,9 +7,19 @@ import { Dialog } from "@base-ui/react/dialog"
 import { ChevronLeft, ChevronRight, Download, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import type { GalleryImage } from "@/registry/default/image-grid/image-grid"
 
-export type { GalleryImage }
+/** Structurally the same shape Image Grid uses, so the two interchange. */
+export interface GalleryImage {
+  id: string
+  src: string
+  alt: string
+  width?: number
+  height?: number
+  caption?: React.ReactNode
+  description?: React.ReactNode
+  downloadUrl?: string
+  loading?: "eager" | "lazy"
+}
 
 export interface LightboxProps {
   images: readonly GalleryImage[]
