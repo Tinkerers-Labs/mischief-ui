@@ -3881,31 +3881,6 @@ export function Layout() {
         "Classes for the footer element. Set the ground here.",
       ],
     ],
-    types: [
-      {
-        name: "FooterColumn",
-        rows: [
-          [
-            "label",
-            "ReactNode",
-            "The small uppercase heading. Omit for an unlabelled group.",
-          ],
-          ["links", "FooterLink[]", "The links in the column, in order."],
-        ],
-      },
-      {
-        name: "FooterLink",
-        rows: [
-          ["label", "ReactNode", "The link text."],
-          ["href", "string", "Where it goes."],
-          [
-            "external",
-            "boolean",
-            "Opens in a new tab, and says so to a screen reader.",
-          ],
-        ],
-      },
-    ],
     accessibility:
       "A semantic footer element, and a real heading when you give it one rather than an empty one when you do not. A link marked external opens in a new tab, carries rel=noreferrer noopener, and says so in its accessible name -- led by a comma, because a leading space is dropped when that name is computed. Column labels are plain text rather than headings, so a long directory does not litter the page outline. The oversized wordmark is decoration and hidden from assistive technology.",
   },
@@ -5311,6 +5286,184 @@ return (
     ],
     accessibility:
       "The icon is decoration the screen reader skips, so the title carries the meaning. The description is capped at a readable measure rather than stretching across a wide panel. Nothing here traps focus or announces itself; it is a static region, and the action inside it is your own control with your own semantics.",
+  },
+  {
+    slug: "footer-columns",
+    kind: "component",
+    name: "Footer Columns",
+    family: "Blocks",
+    summary:
+      "Labelled columns of links, with the column count and the link rendering left to you.",
+    dependencies: [],
+    install: registryInstallCommand("footer-columns"),
+    npmImport: packageImport("FooterColumns", "footer-columns"),
+    usage: `export function Links() {
+  return (
+    <FooterColumns
+      columnCount={4}
+      columns={groups}
+      renderLink={({ href, label }) => <Link href={href}>{label}</Link>}
+    />
+  )
+}`,
+    props: [
+      [
+        "columns",
+        "FooterColumn[]",
+        "The groups, each with an optional label and its links.",
+      ],
+      ["columnCount", "number", "Columns at the widest size. Defaults to 3."],
+      [
+        "renderLink",
+        "(link: FooterLink) => ReactNode",
+        "Renders every link, for your framework's link component.",
+      ],
+    ],
+    sections: [
+      {
+        id: "count",
+        title: "How many columns",
+        blocks: [
+          {
+            kind: "text",
+            text: "One column below the small breakpoint, two above it, and columnCount at the widest. Six groups in a three-column grid is a different footer from six groups in a row, and only you know which one you meant.",
+          },
+          {
+            kind: "text",
+            text: "The count travels as a custom property rather than a class, because a class assembled from a variable is never generated: Tailwind reads class names as literal text.",
+          },
+          {
+            kind: "code",
+            code: `<FooterColumns columnCount={6} columns={groups} />`,
+          },
+        ],
+      },
+      {
+        id: "links",
+        title: "Who renders the links",
+        blocks: [
+          {
+            kind: "text",
+            text: "Links are plain anchors unless you say otherwise, and one marked external opens in a new tab, carries rel=noreferrer noopener, and says so in its accessible name. renderLink hands each one back instead, which is how a framework's link gets used without this component knowing about it -- along with the styling, which then becomes yours to keep consistent.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "FooterColumn",
+        rows: [
+          [
+            "label",
+            "ReactNode",
+            "The small uppercase heading. Omit for an unlabelled group.",
+          ],
+          ["links", "FooterLink[]", "The links in the column, in order."],
+        ],
+      },
+      {
+        name: "FooterLink",
+        rows: [
+          ["label", "ReactNode", "The link text."],
+          ["href", "string", "Where it goes."],
+          [
+            "external",
+            "boolean",
+            "Opens in a new tab, and says so to a screen reader.",
+          ],
+        ],
+      },
+    ],
+    accessibility:
+      "Each group is a list, so a screen reader announces how many links it holds before reading them. Labels are plain text rather than headings, so a long directory does not litter the page outline. An external link says where it goes in its accessible name, led by a comma because a leading space is dropped when that name is computed.",
+  },
+  {
+    slug: "footer-row",
+    kind: "component",
+    name: "Footer Row",
+    family: "Blocks",
+    summary:
+      "A wrapping row of links under its own label, set apart by a dashed rule.",
+    dependencies: [],
+    install: registryInstallCommand("footer-row"),
+    npmImport: packageImport("FooterRow", "footer-row"),
+    usage: `export function OtherProducts() {
+  return <FooterRow label="Other products" links={products} />
+}`,
+    props: [
+      ["links", "FooterLink[]", "The links, laid out as a wrapping row."],
+      ["label", "ReactNode", "The small uppercase heading. Optional."],
+      [
+        "renderLink",
+        "(link: FooterLink) => ReactNode",
+        "Renders every link, as in Footer Columns.",
+      ],
+      ["rule", "boolean", "The dashed rule above. Defaults to true."],
+    ],
+    sections: [
+      {
+        id: "when",
+        title: "A row rather than a column",
+        blocks: [
+          {
+            kind: "text",
+            text: "Some footer links are a list rather than a category: sister products, a legal strip, an A to Z index. A column would give each of them a heading they do not need and a height they do not fill.",
+          },
+          {
+            kind: "text",
+            text: "Nothing is rendered when there are no links, so a row driven by data that happens to be empty leaves no stray rule behind.",
+          },
+          {
+            kind: "code",
+            code: `<FooterRow label="Other products" links={products} />
+<FooterRow links={legal} rule={false} />`,
+            caption: "Turn the rule off where the row already sits under one.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The row is a list, so its length is announced before its contents. The label is plain text rather than a heading, and the rule above it is a border rather than a separator element, so neither adds noise to the page outline.",
+  },
+  {
+    slug: "footer-wordmark",
+    kind: "component",
+    name: "Footer Wordmark",
+    family: "Blocks",
+    summary:
+      "The oversized brand word that closes a page, drawn as texture rather than content.",
+    dependencies: [],
+    install: registryInstallCommand("footer-wordmark"),
+    npmImport: packageImport("FooterWordmark", "footer-wordmark"),
+    usage: `export function Close() {
+  return <FooterWordmark>northstar</FooterWordmark>
+}`,
+    props: [
+      ["children", "string", "One short word. It is set never to wrap."],
+      [
+        "className",
+        "string",
+        "Classes for the element, to change its size or tint.",
+      ],
+    ],
+    sections: [
+      {
+        id: "texture",
+        title: "Texture, not a heading",
+        blocks: [
+          {
+            kind: "text",
+            text: "It is drawn at seven percent of the surrounding text colour and clipped by the edge of the page, which is why it is hidden from assistive technology and unselectable: a screen reader announcing an enormous brand name at the end of every page is noise, and a word that is half off-screen is not something anyone should be selecting.",
+          },
+          {
+            kind: "text",
+            text: "Keep it to one short word. It scales with the viewport and never wraps, so anything long is cut off rather than reflowed, and the name you want read belongs in the text above it.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "Hidden from assistive technology and taken out of the selection, because it is a texture rather than a name. The tint is mixed from the surrounding text colour, so it stays faint on a light ground and on a dark one without being restyled.",
   },
 ] as const
 

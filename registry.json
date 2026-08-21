@@ -59,7 +59,12 @@
         }
       ],
       "categories": ["layout", "footer", "branding"],
-      "registryDependencies": ["utils"]
+      "registryDependencies": [
+        "utils",
+        "footer-columns",
+        "footer-row",
+        "footer-wordmark"
+      ]
     },
     {
       "name": "impossible-checkbox",
@@ -763,6 +768,48 @@
         }
       ],
       "categories": ["empty", "block", "layout"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "footer-columns",
+      "type": "registry:ui",
+      "title": "Footer Columns",
+      "description": "Labelled columns of links, with the column count and the link rendering left to you.",
+      "files": [
+        {
+          "path": "registry/default/footer-columns/footer-columns.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["footer", "links", "layout"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "footer-row",
+      "type": "registry:ui",
+      "title": "Footer Row",
+      "description": "A wrapping row of links under its own label, set apart by a dashed rule.",
+      "files": [
+        {
+          "path": "registry/default/footer-row/footer-row.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["footer", "links", "layout"],
+      "registryDependencies": ["utils", "footer-columns"]
+    },
+    {
+      "name": "footer-wordmark",
+      "type": "registry:ui",
+      "title": "Footer Wordmark",
+      "description": "The oversized brand word that closes a page, drawn as texture rather than content.",
+      "files": [
+        {
+          "path": "registry/default/footer-wordmark/footer-wordmark.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["footer", "brand", "type"],
       "registryDependencies": ["utils"]
     }
   ]

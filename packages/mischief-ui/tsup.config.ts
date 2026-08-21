@@ -81,6 +81,11 @@ export default defineConfig({
     "model-picker": "../../registry/default/model-picker/model-picker.tsx",
     "source-card": "../../registry/default/source-card/source-card.tsx",
     "empty-state": "../../registry/default/empty-state/empty-state.tsx",
+    "footer-columns":
+      "../../registry/default/footer-columns/footer-columns.tsx",
+    "footer-row": "../../registry/default/footer-row/footer-row.tsx",
+    "footer-wordmark":
+      "../../registry/default/footer-wordmark/footer-wordmark.tsx",
   },
   format: ["esm", "cjs"],
   dts: true,

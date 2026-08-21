@@ -279,6 +279,26 @@ export {
   type EmptyStateProps,
 } from "../../../registry/default/empty-state/empty-state"
 
+export {
+  FooterColumns,
+  FooterLinkItem,
+  FOOTER_LABEL,
+  type FooterColumnsProps,
+  type FooterColumn,
+  type FooterLink,
+  type FooterLinkRenderer,
+} from "../../../registry/default/footer-columns/footer-columns"
+
+export {
+  FooterRow,
+  type FooterRowProps,
+} from "../../../registry/default/footer-row/footer-row"
+
+export {
+  FooterWordmark,
+  type FooterWordmarkProps,
+} from "../../../registry/default/footer-wordmark/footer-wordmark"
+
 // Type-only, so these erase at build time and pull in no optional peer. They
 // give the declaration build one shared type graph, without which tsup walks
 // each entry separately and runs out of heap. The components themselves stay

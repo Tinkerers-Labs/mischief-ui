@@ -94,22 +94,59 @@ describe.skipIf(!built || entries.length === 0)(
       expect(leaked).toEqual([])
     })
 
-    it("shares nothing between entries beyond the cn helper", () => {
-      const counts = new Map<string, number>()
+    it("shares code only with the components it declares", () => {
+      // A block is allowed to be built from other components, but only ones it
+      // names in registryDependencies. Anything else sharing a chunk is two
+      // entries quietly reaching into each other.
+      const reachedBy = new Map<string, Set<string>>()
 
       for (const item of entries) {
         for (const file of graphOf(`${item.name}.js`)) {
           if (!file.startsWith("chunk-")) continue
-          counts.set(file, (counts.get(file) ?? 0) + 1)
+          reachedBy.set(file, (reachedBy.get(file) ?? new Set()).add(item.name))
         }
       }
 
-      const shared = [...counts].filter(([, count]) => count > 1)
-
-      expect(shared).toHaveLength(1)
-      expect(readFileSync(path.join(DIST, shared[0]![0]), "utf8")).toContain(
-        "function cn("
+      const declared = new Map(
+        registry.items.map((item) => [
+          item.name,
+          (item.registryDependencies ?? []).filter((name) => name !== "utils"),
+        ])
       )
+
+      function dependsOn(
+        name: string,
+        target: string,
+        seen = new Set<string>()
+      ): boolean {
+        if (seen.has(name)) return false
+        seen.add(name)
+
+        return (declared.get(name) ?? []).some(
+          (dependency) =>
+            dependency === target || dependsOn(dependency, target, seen)
+        )
+      }
+
+      const undeclared = [...reachedBy]
+        .filter(([, names]) => names.size > 1)
+        .filter(
+          ([file]) =>
+            !readFileSync(path.join(DIST, file), "utf8").includes(
+              "function cn("
+            )
+        )
+        .filter(([, names]) => {
+          const sharers = [...names]
+
+          // One of them owns the chunk; every other must declare it.
+          return !sharers.some((owner) =>
+            sharers.every((name) => name === owner || dependsOn(name, owner))
+          )
+        })
+        .map(([file, names]) => `${file}: ${[...names].join(", ")}`)
+
+      expect(undeclared).toEqual([])
     })
 
     it("offers a root import that needs no optional peer", () => {

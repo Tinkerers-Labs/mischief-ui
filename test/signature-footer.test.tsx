@@ -155,3 +155,33 @@ describe("SignatureFooter", () => {
     expect(description?.className).toContain("currentColor")
   })
 })
+
+describe("the block and its parts", () => {
+  it("keeps its own slot names, so styling that targets them still matches", () => {
+    const { container } = render(
+      <SignatureFooter
+        related={{ label: "Also", links: [{ label: "Kagaz", href: "/k" }] }}
+        wordmark="northstar"
+      />
+    )
+
+    expect(
+      container.querySelector('[data-slot="signature-footer-wordmark"]')
+    ).toBeInTheDocument()
+    expect(
+      container.querySelector('[data-slot="signature-footer-related"]')
+    ).toBeInTheDocument()
+  })
+
+  it("passes the column count through to the columns", () => {
+    const { container } = render(
+      <SignatureFooter columns={columns} columnCount={6} wordmark="n" />
+    )
+
+    const grid = container.querySelector(
+      '[data-slot="footer-columns"]'
+    ) as HTMLElement
+
+    expect(grid.style.getPropertyValue("--footer-columns")).toBe("6")
+  })
+})
