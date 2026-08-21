@@ -24,6 +24,9 @@ import { SpinnerDemo } from "@/components/demos/spinner-demo"
 import { SkeletonDemo } from "@/components/demos/skeleton-demo"
 import { StatusPillDemo } from "@/components/demos/status-pill-demo"
 import { CopyButtonDemo } from "@/components/demos/copy-button-demo"
+import { SecretFieldDemo } from "@/components/demos/secret-field-demo"
+import { PaginationDemo } from "@/components/demos/pagination-demo"
+import { SidePanelDemo } from "@/components/demos/side-panel-demo"
 import { AgentChecklistDemo } from "@/components/demos/agent-checklist-demo"
 import { BoundingBoxesDemo } from "@/components/demos/bounding-boxes-demo"
 import { CsvViewerDemo } from "@/components/demos/csv-viewer-demo"
@@ -87,6 +90,9 @@ export const componentDemos: Record<string, ComponentDemo> = {
   "streaming-text": { Demo: StreamingTextDemo, frameClassName: "p-6 md:p-10" },
   "thinking-state": { Demo: ThinkingStateDemo, frameClassName: "p-6 md:p-10" },
   "tool-call": { Demo: ToolCallDemo, frameClassName: "p-6 md:p-10" },
+  "secret-field": { Demo: SecretFieldDemo, frameClassName: "p-6 md:p-10" },
+  pagination: { Demo: PaginationDemo, frameClassName: "p-6 md:p-10" },
+  "side-panel": { Demo: SidePanelDemo, frameClassName: "p-6 md:p-10" },
   spinner: { Demo: SpinnerDemo, frameClassName: "p-6 md:p-10" },
   skeleton: { Demo: SkeletonDemo, frameClassName: "p-6 md:p-10" },
   "status-pill": { Demo: StatusPillDemo, frameClassName: "p-6 md:p-10" },

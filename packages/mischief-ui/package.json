@@ -1,6 +1,6 @@
 {
   "name": "mischief-ui",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Playful, production-ready React components for shadcn projects.",
   "license": "MIT",
   "type": "module",
@@ -329,6 +329,21 @@
       "types": "./dist/copy-button.d.ts",
       "import": "./dist/copy-button.js",
       "require": "./dist/copy-button.cjs"
+    },
+    "./secret-field": {
+      "types": "./dist/secret-field.d.ts",
+      "import": "./dist/secret-field.js",
+      "require": "./dist/secret-field.cjs"
+    },
+    "./pagination": {
+      "types": "./dist/pagination.d.ts",
+      "import": "./dist/pagination.js",
+      "require": "./dist/pagination.cjs"
+    },
+    "./side-panel": {
+      "types": "./dist/side-panel.d.ts",
+      "import": "./dist/side-panel.js",
+      "require": "./dist/side-panel.cjs"
     }
   },
   "scripts": {

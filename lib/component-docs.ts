@@ -600,6 +600,33 @@ export function Search() {
         ],
       },
       {
+        id: "ranking-of-your-own",
+        title: "Ranking it yourself",
+        blocks: [
+          {
+            kind: "text",
+            text: "The built-in tiers suit labels and keywords. When they do not -- fuzzy matching, a field the component knows nothing about, a weighting that puts recent things first -- pass rank and score the items yourself. Lower is a better match, and false drops one.",
+          },
+          {
+            kind: "code",
+            code: `import { rankCommandItem } from "mischief-ui/command-palette"
+
+<CommandPalette
+  items={items}
+  rank={(item, query) =>
+    item.pinned ? -1 : rankCommandItem(item, query)
+  }
+/>`,
+            caption:
+              "The built-in ranker is exported, so yours can defer to it rather than reproduce it.",
+          },
+          {
+            kind: "text",
+            text: "The query arrives as it was typed rather than lowercased, so a ranker of your own can be case-sensitive. Turn filtering off entirely with filter={false} when the ordering is already someone else's decision.",
+          },
+        ],
+      },
+      {
         id: "remote",
         title: "Results from a server",
         blocks: [
@@ -723,6 +750,11 @@ useEffect(() => {
         "filter",
         "boolean",
         "Rank and filter here. Turn off when the server already did.",
+      ],
+      [
+        "rank",
+        "(item, query) => number | false",
+        "Score items yourself. Lower is better; false drops one.",
       ],
       [
         "placeholder, label, emptyMessage",
@@ -6023,6 +6055,289 @@ return (
     ],
     accessibility:
       "The outcome is announced through a polite live region whether or not the label is visible, so an icon-only button is not silent. With no visible text it takes the current wording as its accessible name, which changes to say what happened. Copying is one press, and nothing about it depends on hovering.",
+  },
+  {
+    slug: "secret-field",
+    kind: "component",
+    name: "Secret Field",
+    family: "Controls",
+    summary:
+      "An API key or token: hidden until asked for, copied whole either way.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("secret-field"),
+    npmImport: packageImport("SecretField", "secret-field"),
+    usage: `export function Key({ apiKey }) {
+  return (
+    <SecretField
+      label="API key"
+      value={apiKey}
+      visiblePrefix={7}
+      onCopied={() => track("key_copied")}
+    />
+  )
+}`,
+    props: [
+      [
+        "value",
+        "string",
+        "The secret. Copied in full whether or not it is showing.",
+      ],
+      [
+        "visiblePrefix, visibleSuffix",
+        "number, number",
+        "Characters left readable at each end. Default 0 and 4.",
+      ],
+      [
+        "masked, defaultMasked",
+        "boolean, boolean",
+        "Controlled and uncontrolled hiding.",
+      ],
+      [
+        "onMaskedChange",
+        "(masked: boolean) => void",
+        "Called when it is shown or hidden.",
+      ],
+      [
+        "revealable",
+        "boolean",
+        "Drop the reveal control for a value that must never be shown.",
+      ],
+      ["copyable", "boolean", "Show the copy control. Defaults to true."],
+      [
+        "onCopied",
+        "(value: string) => void",
+        "Called after a copy that worked.",
+      ],
+      [
+        "label",
+        "string",
+        'Names the thing, in every control. Defaults to "Secret".',
+      ],
+    ],
+    sections: [
+      {
+        id: "masking",
+        title: "What stays readable",
+        blocks: [
+          {
+            kind: "text",
+            text: "A fully masked key is hard to tell apart from another fully masked key, which matters the moment someone has more than one. Leaving the prefix and the last few characters visible makes them distinguishable at a glance without giving the secret away -- sk_live_••••1a2b is recognisably not sk_test_••••9f3c.",
+          },
+          {
+            kind: "code",
+            code: `<SecretField value={key} visiblePrefix={8} visibleSuffix={4} />`,
+            caption:
+              "The run of dots is capped, so a long token does not stretch the row.",
+          },
+          {
+            kind: "text",
+            text: "Copying takes the whole value either way. Someone reaching for the copy button has decided already, and making them reveal it first only puts the secret on screen.",
+          },
+        ],
+      },
+      {
+        id: "care",
+        title: "The part this cannot do",
+        blocks: [
+          {
+            kind: "text",
+            text: "Masking is a courtesy to whoever is stood behind the reader. The value is in the page either way, so it is in the DOM, in the memory of the tab, and in anything that screenshots or records it. This component keeps a secret off the screen; it does not keep it out of the browser.",
+          },
+          {
+            kind: "list",
+            items: [
+              "Send the secret only to someone entitled to it; masking is not authorisation.",
+              "Show a key in full once, at creation, and store only a prefix and a hash.",
+              "Where it must never be shown again, pass revealable={false} and leave copy as the only way to use it.",
+            ],
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "While hidden, the run of dots is taken out of the accessibility tree and replaced with a spoken state, because a screen reader announcing forty bullets is worse than useless. The reveal control carries aria-pressed, so its state is known without seeing the icon. Copying announces its outcome through a polite live region, and a clipboard that refuses is reported rather than passing as success.",
+  },
+  {
+    slug: "pagination",
+    kind: "component",
+    name: "Pagination",
+    family: "Wayfinding",
+    summary:
+      "Page numbers with gaps where the run is broken, as buttons or as your own links.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("pagination"),
+    npmImport: packageImport("Pagination", "pagination"),
+    usage: `export function Results({ page, pageCount }) {
+  return (
+    <Pagination
+      page={page}
+      pageCount={pageCount}
+      onPageChange={setPage}
+    />
+  )
+}`,
+    props: [
+      ["page", "number", "The current page, counting from one."],
+      [
+        "pageCount",
+        "number",
+        "How many there are. One or fewer renders nothing.",
+      ],
+      [
+        "onPageChange",
+        "(page: number) => void",
+        "Called with the page that was chosen.",
+      ],
+      [
+        "siblingCount",
+        "number",
+        "Pages either side of the current one. Defaults to 1.",
+      ],
+      ["boundaryCount", "number", "Pages kept at each end. Defaults to 1."],
+      [
+        "renderLink",
+        "(link: PaginationLink) => ReactNode",
+        "Renders every page as your own link.",
+      ],
+      ["label", "string", 'Names the navigation. Defaults to "Pagination".'],
+    ],
+    sections: [
+      {
+        id: "links",
+        title: "Buttons, or addresses",
+        blocks: [
+          {
+            kind: "text",
+            text: "Buttons suit a list whose page lives in component state. Where the page belongs in the URL -- and on a page anyone might share, bookmark, or let a search engine index, it does -- render real links instead. renderLink hands you the page number and the classes, and you decide what an anchor to it looks like.",
+          },
+          {
+            kind: "code",
+            code: `<Pagination
+  page={page}
+  pageCount={pageCount}
+  renderLink={({ page, children, className, ...rest }) => (
+    <Link href={\`?page=\${page}\`} className={className} {...rest}>
+      {children}
+    </Link>
+  )}
+/>`,
+            caption:
+              "Spread the rest: it carries the label and, on the current page, aria-current.",
+          },
+        ],
+      },
+      {
+        id: "range",
+        title: "Where the gaps fall",
+        blocks: [
+          {
+            kind: "text",
+            text: "Ends are always shown, the current page keeps siblingCount neighbours, and everything between collapses to an ellipsis. A gap costs a slot of its own, so a run short enough to draw whole is drawn whole rather than replaced by something no shorter.",
+          },
+          {
+            kind: "text",
+            text: "paginationRange is exported, so the same numbers can be worked out without rendering anything -- for a summary line, or for a test.",
+          },
+          {
+            kind: "code",
+            code: `paginationRange({ page: 7, pageCount: 20 })
+// [1, "gap", 6, 7, 8, "gap", 20]`,
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "A navigation landmark with a name, so it can be jumped to and told apart from other navigation on the page. Every page is named in full rather than by its digit alone, and the current one carries aria-current so it is announced as where you are rather than as somewhere to go. The ellipsis is decoration and hidden. Previous and next are absent at the ends rather than present and disabled.",
+  },
+  {
+    slug: "side-panel",
+    kind: "component",
+    name: "Side Panel",
+    family: "Wayfinding",
+    summary:
+      "A pane that comes in from the side: an inspector, a filter set, a row's detail.",
+    dependencies: ["@base-ui/react", "lucide-react"],
+    install: registryInstallCommand("side-panel"),
+    npmImport: packageImport("SidePanel", "side-panel"),
+    usage: `export function Inspector({ row, onClose }) {
+  return (
+    <SidePanel
+      open={row !== null}
+      onOpenChange={(open) => !open && onClose()}
+      title={row?.name}
+      description="Everything we hold about this record."
+      footer={<button onClick={onClose}>Done</button>}
+    >
+      <RecordDetail row={row} />
+    </SidePanel>
+  )
+}`,
+    props: [
+      ["open", "boolean", "Whether it is showing. The state is yours."],
+      [
+        "onOpenChange",
+        "(open: boolean) => void",
+        "Called on Escape, on the backdrop, and by the close control.",
+      ],
+      [
+        "side",
+        '"left" | "right"',
+        'Which edge it comes from. Defaults to "right".',
+      ],
+      ["title", "ReactNode", "Names the panel, and the dialog."],
+      [
+        "description",
+        "ReactNode",
+        "A line under the title, and the dialog's description.",
+      ],
+      [
+        "toolbar",
+        "ReactNode",
+        "Pinned above the body: filters, a search, tabs.",
+      ],
+      [
+        "footer",
+        "ReactNode",
+        "Pinned below it: the actions that apply or close.",
+      ],
+      [
+        "width",
+        "string",
+        'Width from the medium breakpoint up. Defaults to "28rem".',
+      ],
+    ],
+    sections: [
+      {
+        id: "layout",
+        title: "What moves and what stays",
+        blocks: [
+          {
+            kind: "text",
+            text: "The header, the toolbar, and the footer are pinned; only the body scrolls. That is the difference between a panel and a long page pushed sideways: the thing you opened it to do stays reachable however far down you read.",
+          },
+          {
+            kind: "text",
+            text: "Below the medium breakpoint it takes the full width, because a 28rem pane on a phone is a modal with a stripe of unusable backdrop beside it.",
+          },
+        ],
+      },
+      {
+        id: "modal",
+        title: "It is a dialog",
+        blocks: [
+          {
+            kind: "text",
+            text: "Focus is trapped while it is open, the page behind does not scroll, Escape closes it, and focus returns to whatever opened it. That is Base UI's dialog rather than anything written here, which is also the honest description of the trade: this is a panel that takes over, not an inspector you can work beside.",
+          },
+          {
+            kind: "text",
+            text: "Where the two have to be used together -- a list you keep clicking while the panel stays open -- you want a pane in the layout rather than an overlay, and this is the wrong component for it.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "A real dialog: the title names it, the description is read after that name, focus is trapped and restored, and Escape closes it. The panel slides from its edge and stops sliding under reduced motion, arriving in place instead. The close control is named and is the first thing reached after the heading, so leaving never means hunting.",
   },
 ] as const
 

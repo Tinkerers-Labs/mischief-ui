@@ -3,6 +3,11 @@ import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 
 import { CopyButton } from "../registry/default/copy-button/copy-button"
+import {
+  Pagination,
+  paginationRange,
+} from "../registry/default/pagination/pagination"
+import { SecretField } from "../registry/default/secret-field/secret-field"
 import { Skeleton } from "../registry/default/skeleton/skeleton"
 import { Spinner } from "../registry/default/spinner/spinner"
 import { StatusPill } from "../registry/default/status-pill/status-pill"
@@ -125,5 +130,135 @@ describe("CopyButton", () => {
     // The live region carries the outcome; the visible label does not change.
     expect(button).toHaveTextContent("Copy key")
     expect(button).toHaveTextContent("Copied")
+  })
+})
+
+describe("SecretField", () => {
+  const key = "sk_live_7f3a91c2b8e04d5aa1c6e2"
+
+  it("hides the value but keeps the ends readable", () => {
+    const { container } = render(
+      <SecretField value={key} visiblePrefix={8} visibleSuffix={4} />
+    )
+
+    const shown = container.querySelector(
+      '[data-slot="secret-field-value"]'
+    )!.textContent!
+
+    expect(shown.startsWith("sk_live_")).toBe(true)
+    expect(shown.endsWith("c6e2")).toBe(true)
+    expect(shown).not.toBe(key)
+    expect(shown).toContain("•")
+  })
+
+  it("does not read a row of bullets out loud", () => {
+    const { container } = render(<SecretField label="API key" value={key} />)
+
+    expect(
+      container.querySelector('[data-slot="secret-field-value"]')
+    ).toHaveAttribute("aria-hidden", "true")
+    expect(screen.getByText("API key hidden")).toBeInTheDocument()
+  })
+
+  it("shows the whole value once revealed", async () => {
+    const user = userEvent.setup()
+    const { container } = render(<SecretField value={key} />)
+
+    await user.click(screen.getByRole("button", { name: /show secret/i }))
+
+    expect(
+      container.querySelector('[data-slot="secret-field-value"]')
+    ).toHaveTextContent(key)
+    expect(
+      screen.getByRole("button", { name: /hide secret/i })
+    ).toHaveAttribute("aria-pressed", "true")
+  })
+
+  it("copies the whole value while it is still hidden", async () => {
+    const user = userEvent.setup()
+
+    render(<SecretField value={key} />)
+    await user.click(screen.getByRole("button", { name: /copy secret/i }))
+
+    expect(await navigator.clipboard.readText()).toBe(key)
+  })
+
+  it("drops the reveal control when it must never be shown", () => {
+    render(<SecretField revealable={false} value={key} />)
+
+    expect(screen.queryByRole("button", { name: /show/i })).toBeNull()
+    expect(screen.getByRole("button", { name: /copy/i })).toBeInTheDocument()
+  })
+})
+
+describe("Pagination", () => {
+  it("draws a short run whole", () => {
+    expect(paginationRange({ page: 2, pageCount: 5 })).toEqual([1, 2, 3, 4, 5])
+  })
+
+  it("breaks a long run at both ends", () => {
+    expect(paginationRange({ page: 7, pageCount: 20 })).toEqual([
+      1,
+      "gap",
+      6,
+      7,
+      8,
+      "gap",
+      20,
+    ])
+  })
+
+  it("keeps the ends attached when the page is near one", () => {
+    const range = paginationRange({ page: 1, pageCount: 20 })
+
+    expect(range[0]).toBe(1)
+    expect(range).not.toContain(0)
+    expect(range.at(-1)).toBe(20)
+  })
+
+  it("renders nothing when there is one page", () => {
+    const { container } = render(<Pagination page={1} pageCount={1} />)
+
+    expect(container.querySelector("nav")).toBeNull()
+  })
+
+  it("marks where you are, not where to go", () => {
+    render(<Pagination page={3} pageCount={9} onPageChange={vi.fn()} />)
+
+    expect(screen.getByRole("button", { name: "Page 3" })).toHaveAttribute(
+      "aria-current",
+      "page"
+    )
+    expect(screen.getByRole("button", { name: "Page 4" })).not.toHaveAttribute(
+      "aria-current"
+    )
+  })
+
+  it("leaves previous out on the first page", () => {
+    render(<Pagination page={1} pageCount={9} onPageChange={vi.fn()} />)
+
+    expect(screen.queryByRole("button", { name: "Previous page" })).toBeNull()
+    expect(
+      screen.getByRole("button", { name: "Next page" })
+    ).toBeInTheDocument()
+  })
+
+  it("hands every page to your own link", () => {
+    render(
+      <Pagination
+        page={2}
+        pageCount={9}
+        renderLink={({ page, children, className, ...rest }) => (
+          <a href={`?page=${page}`} className={className} {...rest}>
+            {children}
+          </a>
+        )}
+      />
+    )
+
+    expect(screen.getByRole("link", { name: "Page 3" })).toHaveAttribute(
+      "href",
+      "?page=3"
+    )
   })
 })

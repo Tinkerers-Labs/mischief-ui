@@ -4,6 +4,7 @@ import { beforeAll, describe, expect, it, vi } from "vitest"
 
 import {
   CommandPalette,
+  rankCommandItem,
   type CommandItem,
 } from "../registry/default/command-palette/command-palette"
 
@@ -240,5 +241,50 @@ describe("results fetched elsewhere", () => {
     )
 
     expect(screen.getByRole("status")).toHaveTextContent("Asking the server…")
+  })
+})
+
+describe("ranking of your own", () => {
+  it("uses the ranker it is given", async () => {
+    const user = userEvent.setup()
+
+    // Match only on the group, which the built-in ranks far below the label.
+    render(
+      <CommandPalette
+        items={items}
+        defaultOpen
+        rank={(item, query) =>
+          item.group?.toLowerCase().includes(query.toLowerCase()) ? 0 : false
+        }
+      />
+    )
+
+    await user.type(screen.getByRole("combobox"), "documents")
+
+    expect(screen.getAllByRole("option")).toHaveLength(1)
+    expect(screen.getByRole("option")).toHaveTextContent("Redaction")
+  })
+
+  it("lets a ranker fall back to the built-in one", async () => {
+    const user = userEvent.setup()
+    const boost = vi.fn((item, query) =>
+      item.id === "tabs" ? -1 : rankCommandItem(item, query)
+    )
+
+    render(<CommandPalette items={items} defaultOpen rank={boost} />)
+    await user.type(screen.getByRole("combobox"), "hold")
+
+    // Magnetic Tabs does not match "hold", but the ranker pulled it to the top.
+    expect(screen.getAllByRole("option")[0]).toHaveTextContent("Magnetic Tabs")
+    expect(boost).toHaveBeenCalled()
+  })
+
+  it("drops an item the ranker refuses", async () => {
+    const user = userEvent.setup()
+
+    render(<CommandPalette items={items} defaultOpen rank={() => false} />)
+    await user.type(screen.getByRole("combobox"), "hold")
+
+    expect(screen.queryByRole("option")).not.toBeInTheDocument()
   })
 })

@@ -925,6 +925,51 @@
       ],
       "categories": ["clipboard", "control"],
       "registryDependencies": ["utils"]
+    },
+    {
+      "name": "secret-field",
+      "type": "registry:ui",
+      "title": "Secret Field",
+      "description": "An API key or token: hidden until asked for, copied whole either way.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/secret-field/secret-field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["security", "clipboard", "control"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "Pagination",
+      "description": "Page numbers with gaps where the run is broken, as buttons or as your own links.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/pagination/pagination.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["navigation", "list"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "side-panel",
+      "type": "registry:ui",
+      "title": "Side Panel",
+      "description": "A pane that comes in from the side: an inspector, a filter set, a row's detail.",
+      "dependencies": ["@base-ui/react@^1.0.0", "lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/side-panel/side-panel.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["overlay", "layout", "dialog"],
+      "registryDependencies": ["utils"]
     }
   ]
 }

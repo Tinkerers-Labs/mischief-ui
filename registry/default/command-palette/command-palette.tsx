@@ -38,10 +38,26 @@ export type CommandPaletteProps = Omit<
    * matched and ordered, so a server's ranking is not overruled.
    */
   filter?: boolean
+  /**
+   * Score an item against the query yourself: fuzzy matching, a field we do
+   * not know about, a weighting of your own. Lower is a better match, and
+   * false or nothing drops the item.
+   */
+  rank?: CommandRanker
 }
 
-/** Lower is a better match. Infinity means it does not match at all. */
-function rank(item: CommandItem, query: string) {
+export type CommandRanker = (
+  item: CommandItem,
+  query: string
+) => number | false | null | undefined
+
+/**
+ * Lower is a better match; Infinity, false, or nothing means no match. It is
+ * exported so a ranker of your own can fall back to it rather than reproduce
+ * it.
+ */
+export function rankCommandItem(item: CommandItem, rawQuery: string) {
+  const query = rawQuery.trim().toLowerCase()
   const label = item.label.toLowerCase()
 
   if (label === query) return 0
@@ -69,6 +85,7 @@ export function CommandPalette({
   loading = false,
   loadingMessage = "Searching…",
   filter = true,
+  rank = rankCommandItem,
   maxResults = 8,
   className,
   ...dialogProps
@@ -87,19 +104,24 @@ export function CommandPalette({
     // Already matched and ordered by whoever fetched them.
     if (!filter) return items.slice(0, maxResults)
 
-    const trimmed = query.trim().toLowerCase()
+    // The ranker is handed the query as typed, so one of your own can be
+    // case-sensitive if it wants to be. The built-in lowercases internally.
+    const trimmed = query.trim()
 
     if (!trimmed) return items.slice(0, maxResults)
 
     return items
       .map((item) => ({ item, score: rank(item, trimmed) }))
-      .filter(({ score }) => Number.isFinite(score))
+      .filter(
+        (entry): entry is { item: CommandItem; score: number } =>
+          typeof entry.score === "number" && Number.isFinite(entry.score)
+      )
       .sort(
         (a, b) => a.score - b.score || a.item.label.localeCompare(b.item.label)
       )
       .slice(0, maxResults)
       .map(({ item }) => item)
-  }, [items, query, maxResults, filter])
+  }, [items, query, maxResults, filter, rank])
 
   const active = results[Math.min(highlighted, results.length - 1)]
 

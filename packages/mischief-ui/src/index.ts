@@ -182,6 +182,7 @@ export {
 
 export {
   CommandPalette,
+  rankCommandItem,
   type CommandPaletteProps,
   type CommandItem,
 } from "../../../registry/default/command-palette/command-palette"
@@ -336,6 +337,18 @@ export {
   CopyButton,
   type CopyButtonProps,
 } from "../../../registry/default/copy-button/copy-button"
+
+export {
+  SecretField,
+  type SecretFieldProps,
+} from "../../../registry/default/secret-field/secret-field"
+
+export {
+  Pagination,
+  paginationRange,
+  type PaginationProps,
+  type PaginationLink,
+} from "../../../registry/default/pagination/pagination"
 
 // Type-only, so these erase at build time and pull in no optional peer. They
 // give the declaration build one shared type graph, without which tsup walks
