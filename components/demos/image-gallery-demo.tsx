@@ -2,7 +2,7 @@
 
 import { ImageGallery } from "@/registry/default/image-gallery/image-gallery"
 
-const images = [
+export const galleryImages = [
   {
     id: "shift-button",
     src: "/demo/gallery/shift-button.png",
@@ -60,5 +60,5 @@ const images = [
 ]
 
 export function ImageGalleryDemo() {
-  return <ImageGallery images={images} title="From the archive" />
+  return <ImageGallery images={galleryImages} title="From the archive" />
 }

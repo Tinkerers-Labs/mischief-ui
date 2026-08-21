@@ -309,6 +309,13 @@ export {
   type NotFoundProps,
 } from "../../../registry/default/not-found/not-found"
 
+export {
+  ImageGrid,
+  type ImageGridProps,
+  type GalleryImage,
+  type ImageGridLayout,
+} from "../../../registry/default/image-grid/image-grid"
+
 // Type-only, so these erase at build time and pull in no optional peer. They
 // give the declaration build one shared type graph, without which tsup walks
 // each entry separately and runs out of heap. The components themselves stay
@@ -329,6 +336,8 @@ export type {
 } from "../../../registry/default/floating-index/floating-index"
 
 export type { ShiftButtonProps } from "../../../registry/default/shift-button/shift-button"
+
+export type { LightboxProps } from "../../../registry/default/lightbox/lightbox"
 
 export type {
   ImageGalleryItem,

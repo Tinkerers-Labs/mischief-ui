@@ -18,6 +18,8 @@ import { FooterRowDemo } from "@/components/demos/footer-row-demo"
 import { FooterWordmarkDemo } from "@/components/demos/footer-wordmark-demo"
 import { EmptyRowDemo } from "@/components/demos/empty-row-demo"
 import { NotFoundDemo } from "@/components/demos/not-found-demo"
+import { ImageGridDemo } from "@/components/demos/image-grid-demo"
+import { LightboxDemo } from "@/components/demos/lightbox-demo"
 import { AgentChecklistDemo } from "@/components/demos/agent-checklist-demo"
 import { BoundingBoxesDemo } from "@/components/demos/bounding-boxes-demo"
 import { CsvViewerDemo } from "@/components/demos/csv-viewer-demo"
@@ -81,6 +83,8 @@ export const componentDemos: Record<string, ComponentDemo> = {
   "streaming-text": { Demo: StreamingTextDemo, frameClassName: "p-6 md:p-10" },
   "thinking-state": { Demo: ThinkingStateDemo, frameClassName: "p-6 md:p-10" },
   "tool-call": { Demo: ToolCallDemo, frameClassName: "p-6 md:p-10" },
+  "image-grid": { Demo: ImageGridDemo, frameClassName: "p-6 md:p-10" },
+  lightbox: { Demo: LightboxDemo, frameClassName: "p-6 md:p-10" },
   "empty-row": { Demo: EmptyRowDemo, frameClassName: "p-6 md:p-10" },
   "not-found": { Demo: NotFoundDemo, frameClassName: "p-6 md:p-10" },
   "footer-columns": { Demo: FooterColumnsDemo, frameClassName: "p-6 md:p-10" },

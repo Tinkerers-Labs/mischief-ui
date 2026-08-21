@@ -116,7 +116,7 @@
       "type": "registry:block",
       "title": "Image Gallery",
       "description": "A responsive image collection with grid and masonry layouts and an accessible lightbox.",
-      "dependencies": ["@base-ui/react@^1.7.0", "lucide-react@^1.31.0"],
+      "dependencies": ["lucide-react@^1.31.0"],
       "files": [
         {
           "path": "registry/default/image-gallery/image-gallery.tsx",
@@ -124,7 +124,7 @@
         }
       ],
       "categories": ["gallery", "images", "dialog", "layout"],
-      "registryDependencies": ["utils"]
+      "registryDependencies": ["utils", "image-grid", "lightbox"]
     },
     {
       "name": "scroll-to-top-button",
@@ -839,6 +839,35 @@
       ],
       "categories": ["empty", "page", "404"],
       "registryDependencies": ["utils"]
+    },
+    {
+      "name": "image-grid",
+      "type": "registry:ui",
+      "title": "Image Grid",
+      "description": "Thumbnails in even cells or masonry columns, with nothing but React behind them.",
+      "files": [
+        {
+          "path": "registry/default/image-grid/image-grid.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["media", "gallery", "layout"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "lightbox",
+      "type": "registry:ui",
+      "title": "Lightbox",
+      "description": "One image at a time, full bleed, with the rest of the set a key away.",
+      "dependencies": ["@base-ui/react@^1.0.0", "lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/lightbox/lightbox.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["media", "gallery", "dialog"],
+      "registryDependencies": ["utils", "image-grid"]
     }
   ]
 }

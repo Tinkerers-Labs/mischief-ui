@@ -88,6 +88,8 @@ export default defineConfig({
       "../../registry/default/footer-wordmark/footer-wordmark.tsx",
     "empty-row": "../../registry/default/empty-row/empty-row.tsx",
     "not-found": "../../registry/default/not-found/not-found.tsx",
+    "image-grid": "../../registry/default/image-grid/image-grid.tsx",
+    lightbox: "../../registry/default/lightbox/lightbox.tsx",
   },
   format: ["esm", "cjs"],
   dts: true,

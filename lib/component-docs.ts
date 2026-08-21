@@ -3990,37 +3990,6 @@ export function WorkGallery() {
         ],
       },
     ],
-    types: [
-      {
-        name: "ImageGalleryItem",
-        rows: [
-          ["id", "string", "Unique within the set."],
-          ["src", "string", "The image."],
-          [
-            "alt",
-            "string",
-            "What the image shows. Empty only if it is decorative.",
-          ],
-          [
-            "width, height",
-            "number",
-            "Intrinsic size, to reserve space before it loads.",
-          ],
-          [
-            "caption",
-            "ReactNode",
-            "Shown under the image and in the lightbox.",
-          ],
-          ["description", "ReactNode", "Longer text, shown in the lightbox."],
-          ["downloadUrl", "string", "Offers the original for download."],
-          [
-            "loading",
-            '"eager" | "lazy"',
-            "Defaults to lazy. Eager for the first row.",
-          ],
-        ],
-      },
-    ],
     props: [
       [
         "images",
@@ -5640,6 +5609,191 @@ return (
     ],
     accessibility:
       "The title is the page's h1, because on a page whose only content is this, it is the heading. The status code sits above it as plain text rather than as part of the heading, so the sentence is what a screen reader announces first. Nothing here traps focus or announces itself; the controls inside are your own, with your own semantics.",
+  },
+  {
+    slug: "image-grid",
+    kind: "component",
+    name: "Image Grid",
+    family: "Blocks",
+    summary:
+      "Thumbnails in even cells or masonry columns, with nothing but React behind them.",
+    dependencies: [],
+    install: registryInstallCommand("image-grid"),
+    npmImport: packageImport("ImageGrid", "image-grid"),
+    usage: `export function Shots() {
+  return (
+    <ImageGrid
+      images={shots}
+      layout="masonry"
+      onSelect={(image) => open(image.id)}
+    />
+  )
+}`,
+    props: [
+      ["images", "GalleryImage[]", "The thumbnails, in order."],
+      [
+        "layout",
+        '"grid" | "masonry"',
+        'Even cells, or each image at its own height. Defaults to "grid".',
+      ],
+      [
+        "onSelect",
+        "(image, event) => void",
+        "Makes every tile a button. Without it the grid is not interactive.",
+      ],
+      [
+        "renderImage",
+        "(image: GalleryImage) => ReactNode",
+        "Replaces the img, for a framework's image component.",
+      ],
+      [
+        "emptyState",
+        "ReactNode",
+        "Shown in place of the grid when there is nothing.",
+      ],
+    ],
+    sections: [
+      {
+        id: "interactive",
+        title: "A grid, or a set of buttons",
+        blocks: [
+          {
+            kind: "text",
+            text: "Without onSelect the tiles are plain elements: a grid of pictures is not a set of controls, and making it one puts a stop on every image for anyone moving through the page by keyboard. Give it onSelect and each tile becomes a named button, which is what you want when choosing one opens something.",
+          },
+          {
+            kind: "text",
+            text: "onSelect hands back the event as well as the image, so you can keep the element that was clicked and return focus to it when whatever you opened closes.",
+          },
+          {
+            kind: "code",
+            code: `const trigger = useRef<HTMLButtonElement>(null)
+
+<ImageGrid
+  images={images}
+  onSelect={(image, event) => {
+    trigger.current = event.currentTarget
+    setOpenId(image.id)
+  }}
+/>
+<Lightbox images={images} openId={openId} finalFocus={trigger} onOpenIdChange={setOpenId} />`,
+          },
+        ],
+      },
+      {
+        id: "layouts",
+        title: "Grid or masonry",
+        blocks: [
+          {
+            kind: "text",
+            text: "The grid gives every image the same cell, which suits a set that should be compared. Masonry uses CSS columns and lets each keep its own height, which suits a mixed set where cropping would lose something.",
+          },
+          {
+            kind: "text",
+            text: "Masonry fills one column top to bottom before starting the next, so the reading order runs down rather than across. Where the order carries meaning, use the grid.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "GalleryImage",
+        rows: [
+          ["id", "string", "Unique within the set."],
+          ["src", "string", "The image."],
+          ["alt", "string", "What it shows. Empty only if it is decorative."],
+          [
+            "width, height",
+            "number",
+            "Intrinsic size, to reserve space before it loads.",
+          ],
+          ["caption", "ReactNode", "Shown over the foot of the tile."],
+          ["description", "ReactNode", "Longer text, used by Lightbox."],
+          ["downloadUrl", "string", "Offers the original, used by Lightbox."],
+          [
+            "loading",
+            '"eager" | "lazy"',
+            "Defaults to lazy. Eager for the first row.",
+          ],
+        ],
+      },
+    ],
+    accessibility:
+      "Tiles are only buttons when choosing one does something, so a decorative grid does not fill the tab order. Each button is named for the image it opens. Captions are rendered as text over the image rather than as its accessible name, so alt still describes the picture. Width and height reserve space before the image arrives, which keeps the grid from reflowing under the reader.",
+  },
+  {
+    slug: "lightbox",
+    kind: "component",
+    name: "Lightbox",
+    family: "Blocks",
+    summary:
+      "One image at a time, full bleed, with the rest of the set a key away.",
+    dependencies: ["@base-ui/react", "lucide-react"],
+    install: registryInstallCommand("lightbox"),
+    npmImport: packageImport("Lightbox", "lightbox"),
+    usage: `export function Viewer() {
+  const [openId, setOpenId] = useState<string | null>(null)
+
+  return (
+    <Lightbox images={images} openId={openId} onOpenIdChange={setOpenId} />
+  )
+}`,
+    props: [
+      [
+        "images",
+        "GalleryImage[]",
+        "The whole set, so it can move through them.",
+      ],
+      ["openId", "string | null", "The image being shown. Null closes it."],
+      [
+        "onOpenIdChange",
+        "(id: string | null) => void",
+        "Called to move, and with null to close.",
+      ],
+      [
+        "renderImage",
+        "(image: GalleryImage) => ReactNode",
+        "Replaces the img.",
+      ],
+      [
+        "finalFocus",
+        "RefObject<HTMLElement>",
+        "Where focus lands on close, usually the tile that opened it.",
+      ],
+      ["closeLabel", "string", 'Names the close control. Defaults to "Close".'],
+    ],
+    sections: [
+      {
+        id: "state",
+        title: "It holds nothing",
+        blocks: [
+          {
+            kind: "text",
+            text: "Which image is showing is yours: openId in, onOpenIdChange out, including the null that closes it. That is what lets the same lightbox be opened from a grid, from a table row, or from a link somewhere else on the page, and what lets the open image live in the URL if you want it to.",
+          },
+          {
+            kind: "text",
+            text: "Moving through the set is the component's job. Left and Right Arrow wrap around the ends, and the controls are hidden entirely when there is only one image, rather than shown doing nothing.",
+          },
+        ],
+      },
+      {
+        id: "dialog",
+        title: "What Base UI is doing here",
+        blocks: [
+          {
+            kind: "text",
+            text: "The focus trap, the scroll lock, Escape, the backdrop, and returning focus on close all come from Base UI's dialog rather than from anything written here, which is why this is the only part of a gallery that needs it. Image Grid needs nothing but React.",
+          },
+          {
+            kind: "text",
+            text: "Pass finalFocus so focus returns to the tile that opened the image rather than to the top of the page.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "A real dialog: focus is trapped while it is open, the page behind it does not scroll, Escape closes it, and focus returns to finalFocus afterwards. The image's alt is the dialog's accessible name, and its position in the set is the description, so a screen reader hears which of how many it is. Arrow keys move; the previous and next controls are absent rather than disabled when there is nowhere to go.",
   },
 ] as const
 

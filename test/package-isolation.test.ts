@@ -68,14 +68,28 @@ const barrelExports = new Set(
 
 const built = existsSync(DIST)
 
+const byName = new Map(registry.items.map((item) => [item.name, item]))
+
+/** Its own packages, plus those of the components it is built from. */
+function declaredPackages(name: string, seen = new Set<string>()): string[] {
+  const item = byName.get(name)
+  if (!item || seen.has(name)) return []
+  seen.add(name)
+
+  return [
+    ...(item.dependencies ?? []).map((entry) =>
+      entry.replace(/@[\^~>=<\d].*$/, "")
+    ),
+    ...(item.registryDependencies ?? []).flatMap((dependency) =>
+      declaredPackages(dependency, seen)
+    ),
+  ]
+}
+
 const entries = registry.items
   .map((item) => ({
     name: item.name,
-    declared: new Set(
-      (item.dependencies ?? []).map((entry) =>
-        entry.replace(/@[\^~>=<\d].*$/, "")
-      )
-    ),
+    declared: new Set(declaredPackages(item.name)),
   }))
   .filter((item) => existsSync(path.join(DIST, `${item.name}.js`)))
 

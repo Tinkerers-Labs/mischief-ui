@@ -1,6 +1,6 @@
 {
   "name": "mischief-ui",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Playful, production-ready React components for shadcn projects.",
   "license": "MIT",
   "type": "module",
@@ -299,6 +299,16 @@
       "types": "./dist/not-found.d.ts",
       "import": "./dist/not-found.js",
       "require": "./dist/not-found.cjs"
+    },
+    "./image-grid": {
+      "types": "./dist/image-grid.d.ts",
+      "import": "./dist/image-grid.js",
+      "require": "./dist/image-grid.cjs"
+    },
+    "./lightbox": {
+      "types": "./dist/lightbox.d.ts",
+      "import": "./dist/lightbox.js",
+      "require": "./dist/lightbox.cjs"
     }
   },
   "scripts": {
