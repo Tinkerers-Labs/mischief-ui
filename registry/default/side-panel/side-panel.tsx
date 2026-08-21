@@ -11,6 +11,20 @@ export type SidePanelSide = "left" | "right"
 export type SidePanelProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
+  /**
+   * true traps focus and locks the page. "trap-focus" keeps the page usable
+   * behind it, for an inspector you work beside rather than instead of.
+   */
+  modal?: boolean | "trap-focus"
+  /** Close when the backdrop is pressed. Defaults to true. */
+  dismissible?: boolean
+  /** Close on Escape. Turn it off where there is unsaved work. */
+  closeOnEscape?: boolean
+  hideBackdrop?: boolean
+  /** How far a panel opened inside another sits from the edge. */
+  stackOffset?: string
+  /** Milliseconds the slide takes. Defaults to 250. */
+  duration?: number
   /** Which edge it comes from. Defaults to the right. */
   side?: SidePanelSide
   title: React.ReactNode
@@ -32,9 +46,18 @@ export type SidePanelProps = {
  * of the row you clicked. Base UI supplies the dialog, so the focus trap, the
  * scroll lock, Escape, and focus restoration are not ours to get wrong.
  */
+/** Panels opened inside a panel stack, each one further from the edge. */
+const SidePanelDepth = React.createContext(0)
+
 export function SidePanel({
   open,
   onOpenChange,
+  modal = true,
+  dismissible = true,
+  closeOnEscape = true,
+  hideBackdrop = false,
+  stackOffset = "1.75rem",
+  duration = 250,
   side = "right",
   title,
   description,
@@ -45,13 +68,30 @@ export function SidePanel({
   className,
   width = "28rem",
 }: SidePanelProps) {
+  const depth = React.useContext(SidePanelDepth)
+
   return (
-    <Dialog.Root open={open} onOpenChange={onOpenChange}>
+    <Dialog.Root
+      open={open}
+      modal={modal}
+      disablePointerDismissal={!dismissible}
+      onOpenChange={(next, details) => {
+        // Escape is the browser's, so refusing it has to be done here.
+        if (!next && !closeOnEscape && details.reason === "escape-key") {
+          details.cancel()
+          return
+        }
+
+        onOpenChange(next)
+      }}
+    >
       <Dialog.Portal>
-        <Dialog.Backdrop
-          data-slot="side-panel-backdrop"
-          className="bg-foreground/40 fixed inset-0 z-[100] transition-opacity duration-200 data-[closed]:pointer-events-none data-[ending-style]:opacity-0 data-[starting-style]:opacity-0 motion-reduce:transition-none"
-        />
+        {!hideBackdrop && (
+          <Dialog.Backdrop
+            data-slot="side-panel-backdrop"
+            className="bg-foreground/40 fixed inset-0 z-[100] transition-opacity duration-200 data-[closed]:pointer-events-none data-[ending-style]:opacity-0 data-[starting-style]:opacity-0 motion-reduce:transition-none"
+          />
+        )}
         <Dialog.Viewport
           data-slot="side-panel-viewport"
           className={cn(
@@ -62,9 +102,19 @@ export function SidePanel({
           <Dialog.Popup
             data-slot="side-panel"
             data-side={side}
-            style={{ ["--side-panel-width" as string]: width }}
+            data-depth={depth || undefined}
+            style={
+              {
+                "--side-panel-width": width,
+                "--side-panel-duration": `${duration}ms`,
+                // Each panel opened inside another sits this much further from
+                // the edge, so the ones behind stay visible as strips.
+                [side === "right" ? "marginRight" : "marginLeft"]:
+                  depth > 0 ? `calc(${stackOffset} * ${depth})` : undefined,
+              } as React.CSSProperties
+            }
             className={cn(
-              "bg-card text-card-foreground border-border flex h-full w-screen flex-col shadow-2xl transition-[opacity,translate] duration-250 md:w-[var(--side-panel-width)]",
+              "bg-card text-card-foreground border-border flex h-full w-screen flex-col shadow-2xl transition-[opacity,translate] duration-[var(--side-panel-duration)] md:w-[var(--side-panel-width)]",
               side === "right"
                 ? "border-l data-[ending-style]:translate-x-full data-[starting-style]:translate-x-full"
                 : "border-r data-[ending-style]:-translate-x-full data-[starting-style]:-translate-x-full",
@@ -108,7 +158,9 @@ export function SidePanel({
               data-slot="side-panel-body"
               className="min-h-0 flex-1 overflow-y-auto px-4 py-4"
             >
-              {children}
+              <SidePanelDepth.Provider value={depth + 1}>
+                {children}
+              </SidePanelDepth.Provider>
             </div>
 
             {footer && (

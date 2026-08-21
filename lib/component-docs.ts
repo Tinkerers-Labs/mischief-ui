@@ -6301,6 +6301,28 @@ return (
         "Pinned below it: the actions that apply or close.",
       ],
       [
+        "modal",
+        'boolean | "trap-focus"',
+        "trap-focus keeps the page usable behind it.",
+      ],
+      [
+        "dismissible",
+        "boolean",
+        "Close when the backdrop is pressed. Defaults to true.",
+      ],
+      [
+        "closeOnEscape",
+        "boolean",
+        "Close on Escape. Turn off where there is unsaved work.",
+      ],
+      ["hideBackdrop", "boolean", "Leave the scrim out."],
+      [
+        "stackOffset",
+        "string",
+        "How far a panel opened inside another sits from the edge.",
+      ],
+      ["duration", "number", "Milliseconds the slide takes. Defaults to 250."],
+      [
         "width",
         "string",
         'Width from the medium breakpoint up. Defaults to "28rem".',
@@ -6323,21 +6345,67 @@ return (
       },
       {
         id: "modal",
-        title: "It is a dialog",
+        title: "Taking over, or sitting beside",
         blocks: [
           {
             kind: "text",
-            text: "Focus is trapped while it is open, the page behind does not scroll, Escape closes it, and focus returns to whatever opened it. That is Base UI's dialog rather than anything written here, which is also the honest description of the trade: this is a panel that takes over, not an inspector you can work beside.",
+            text: "By default it is a modal: focus is trapped, the page behind does not scroll, Escape closes it, and focus returns to whatever opened it. That suits a panel you finish with before carrying on.",
           },
           {
             kind: "text",
-            text: "Where the two have to be used together -- a list you keep clicking while the panel stays open -- you want a pane in the layout rather than an overlay, and this is the wrong component for it.",
+            text: 'For an inspector you work beside -- a list you keep clicking while the panel stays open -- pass modal="trap-focus". The page behind stays scrollable and clickable, and focus is still kept inside the panel so tabbing does not wander off into it. Pair it with hideBackdrop, since a scrim over a page you can still use is a lie.',
+          },
+          {
+            kind: "code",
+            code: `<SidePanel
+  modal="trap-focus"
+  hideBackdrop
+  open={open}
+  title="Inspector"
+  onOpenChange={setOpen}
+/>`,
+          },
+        ],
+      },
+      {
+        id: "stacking",
+        title: "A panel from a panel",
+        blocks: [
+          {
+            kind: "text",
+            text: "Render a Side Panel inside another and it sets itself in from the edge by stackOffset, so the one behind stays visible as a strip rather than disappearing under it. Depth is counted for you: nothing has to be passed down, and a panel three levels in knows where it is.",
+          },
+          {
+            kind: "code",
+            code: `<SidePanel open={open} title="Customer" onOpenChange={setOpen}>
+  <button onClick={() => setInvoice(true)}>Open the invoice</button>
+
+  <SidePanel open={invoice} title="Invoice" onOpenChange={setInvoice}>
+    ...
+  </SidePanel>
+</SidePanel>`,
+            caption:
+              "Each level is a dialog of its own, so Escape closes the top one first.",
+          },
+        ],
+      },
+      {
+        id: "dismissal",
+        title: "Refusing to close",
+        blocks: [
+          {
+            kind: "text",
+            text: "A panel holding a half-finished form should not vanish because someone pressed Escape or clicked past it. closeOnEscape={false} and dismissible={false} take those away, leaving the close control and whatever you put in the footer as the ways out.",
+          },
+          {
+            kind: "text",
+            text: "Take them away only when there is something to lose. A panel that cannot be dismissed and has no obvious way out is a trap, so keep the close control visible whenever you do.",
           },
         ],
       },
     ],
     accessibility:
-      "A real dialog: the title names it, the description is read after that name, focus is trapped and restored, and Escape closes it. The panel slides from its edge and stops sliding under reduced motion, arriving in place instead. The close control is named and is the first thing reached after the heading, so leaving never means hunting.",
+      "A real dialog: the title names it, the description is read after that name, focus is trapped and restored, and Escape closes it unless you have said otherwise. The panel slides from its edge and stops sliding under reduced motion, arriving in place instead. The close control is named and is the first thing reached after the heading, so leaving never means hunting.",
   },
 ] as const
 

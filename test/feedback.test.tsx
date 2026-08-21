@@ -8,6 +8,7 @@ import {
   paginationRange,
 } from "../registry/default/pagination/pagination"
 import { SecretField } from "../registry/default/secret-field/secret-field"
+import { SidePanel } from "../registry/default/side-panel/side-panel"
 import { Skeleton } from "../registry/default/skeleton/skeleton"
 import { Spinner } from "../registry/default/spinner/spinner"
 import { StatusPill } from "../registry/default/status-pill/status-pill"
@@ -260,5 +261,82 @@ describe("Pagination", () => {
       "href",
       "?page=3"
     )
+  })
+})
+
+describe("SidePanel", () => {
+  it("refuses Escape where there is unsaved work", async () => {
+    const user = userEvent.setup()
+    const onOpenChange = vi.fn()
+
+    render(
+      <SidePanel
+        closeOnEscape={false}
+        open
+        title="Edit"
+        onOpenChange={onOpenChange}
+      >
+        body
+      </SidePanel>
+    )
+
+    await user.keyboard("{Escape}")
+
+    expect(onOpenChange).not.toHaveBeenCalled()
+  })
+
+  it("closes on Escape by default", async () => {
+    const user = userEvent.setup()
+    const onOpenChange = vi.fn()
+
+    render(
+      <SidePanel open title="Edit" onOpenChange={onOpenChange}>
+        body
+      </SidePanel>
+    )
+
+    await user.keyboard("{Escape}")
+
+    expect(onOpenChange).toHaveBeenCalledWith(false)
+  })
+
+  it("leaves the backdrop out when asked", () => {
+    const { baseElement, rerender } = render(
+      <SidePanel open title="Edit" onOpenChange={vi.fn()}>
+        body
+      </SidePanel>
+    )
+
+    expect(
+      baseElement.querySelector('[data-slot="side-panel-backdrop"]')
+    ).toBeInTheDocument()
+
+    rerender(
+      <SidePanel hideBackdrop open title="Edit" onOpenChange={vi.fn()}>
+        body
+      </SidePanel>
+    )
+    expect(
+      baseElement.querySelector('[data-slot="side-panel-backdrop"]')
+    ).toBeNull()
+  })
+
+  it("sets a panel opened inside another in from the edge", () => {
+    const { baseElement } = render(
+      <SidePanel open title="Outer" onOpenChange={vi.fn()}>
+        <SidePanel open title="Inner" onOpenChange={vi.fn()}>
+          inner
+        </SidePanel>
+      </SidePanel>
+    )
+
+    const panels = [
+      ...baseElement.querySelectorAll('[data-slot="side-panel"]'),
+    ] as HTMLElement[]
+
+    expect(panels).toHaveLength(2)
+    expect(panels[0]).not.toHaveAttribute("data-depth")
+    expect(panels[1]).toHaveAttribute("data-depth", "1")
+    expect(panels[1]!.style.marginRight).toContain("1.75rem")
   })
 })
