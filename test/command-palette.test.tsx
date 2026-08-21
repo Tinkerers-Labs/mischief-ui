@@ -174,3 +174,71 @@ describe("two palettes on one page", () => {
     expect(listbox).toHaveAccessibleName("Docs")
   })
 })
+
+describe("results fetched elsewhere", () => {
+  it("reports the query as it is typed", async () => {
+    const user = userEvent.setup()
+    const onQueryChange = vi.fn()
+
+    render(
+      <CommandPalette items={items} defaultOpen onQueryChange={onQueryChange} />
+    )
+
+    await user.type(screen.getByRole("combobox"), "red")
+
+    expect(onQueryChange).toHaveBeenLastCalledWith("red")
+  })
+
+  it("leaves the order alone when filtering is off", async () => {
+    const user = userEvent.setup()
+
+    render(<CommandPalette items={items} defaultOpen filter={false} />)
+
+    // "zzzz" matches nothing, yet server-supplied items must still show.
+    await user.type(screen.getByRole("combobox"), "zzzz")
+
+    expect(screen.getAllByRole("option")).toHaveLength(items.length)
+    expect(screen.getAllByRole("option")[0]).toHaveTextContent("Hold Button")
+  })
+
+  it("still ranks by default", async () => {
+    const user = userEvent.setup()
+
+    render(<CommandPalette items={items} defaultOpen />)
+    await user.type(screen.getByRole("combobox"), "zzzz")
+
+    expect(screen.queryByRole("option")).not.toBeInTheDocument()
+  })
+
+  it("says it is searching rather than claiming nothing matched", () => {
+    render(<CommandPalette items={[]} defaultOpen loading filter={false} />)
+
+    expect(screen.getByRole("status")).toHaveTextContent("Searching…")
+    expect(screen.queryByText(/Nothing matches/)).not.toBeInTheDocument()
+  })
+
+  it("marks the list busy while results are on their way", () => {
+    const { rerender } = render(
+      <CommandPalette items={[]} defaultOpen loading filter={false} />
+    )
+
+    expect(screen.getByRole("listbox")).toHaveAttribute("aria-busy", "true")
+
+    rerender(<CommandPalette items={items} defaultOpen filter={false} />)
+    expect(screen.getByRole("listbox")).not.toHaveAttribute("aria-busy")
+  })
+
+  it("takes its own wording for the wait", () => {
+    render(
+      <CommandPalette
+        items={[]}
+        defaultOpen
+        loading
+        loadingMessage="Asking the server…"
+        filter={false}
+      />
+    )
+
+    expect(screen.getByRole("status")).toHaveTextContent("Asking the server…")
+  })
+})

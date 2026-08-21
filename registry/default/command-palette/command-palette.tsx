@@ -28,6 +28,16 @@ export type CommandPaletteProps = Omit<
   label?: string
   emptyMessage?: (query: string) => React.ReactNode
   maxResults?: number
+  /** Called as the query changes, for fetching the results yourself. */
+  onQueryChange?: (query: string) => void
+  /** Says results are on their way. Pair it with onQueryChange. */
+  loading?: boolean
+  loadingMessage?: React.ReactNode
+  /**
+   * Rank and filter the items here. Turn it off when they arrive already
+   * matched and ordered, so a server's ranking is not overruled.
+   */
+  filter?: boolean
 }
 
 /** Lower is a better match. Infinity means it does not match at all. */
@@ -55,6 +65,10 @@ export function CommandPalette({
   placeholder = "Search…",
   label = "Search",
   emptyMessage = (query) => `Nothing matches “${query}”.`,
+  onQueryChange,
+  loading = false,
+  loadingMessage = "Searching…",
+  filter = true,
   maxResults = 8,
   className,
   ...dialogProps
@@ -70,6 +84,9 @@ export function CommandPalette({
   const isOpen = open ?? uncontrolledOpen
 
   const results = React.useMemo(() => {
+    // Already matched and ordered by whoever fetched them.
+    if (!filter) return items.slice(0, maxResults)
+
     const trimmed = query.trim().toLowerCase()
 
     if (!trimmed) return items.slice(0, maxResults)
@@ -82,7 +99,7 @@ export function CommandPalette({
       )
       .slice(0, maxResults)
       .map(({ item }) => item)
-  }, [items, query, maxResults])
+  }, [items, query, maxResults, filter])
 
   const active = results[Math.min(highlighted, results.length - 1)]
 
@@ -177,6 +194,7 @@ export function CommandPalette({
             onChange={(event) => {
               setQuery(event.target.value)
               setHighlighted(0)
+              onQueryChange?.(event.target.value)
             }}
             onKeyDown={(event) => {
               if (event.key === "ArrowDown") {
@@ -198,6 +216,7 @@ export function CommandPalette({
         <ul
           id={listId}
           role="listbox"
+          aria-busy={loading || undefined}
           aria-label={label}
           className="m-0 grid max-h-[22rem] list-none overflow-y-auto overscroll-contain p-1.5"
         >
@@ -244,7 +263,17 @@ export function CommandPalette({
           ))}
         </ul>
 
-        {results.length === 0 ? (
+        {/* While results are coming, say so rather than claiming there are
+            none: an empty list mid-flight is not an answer. */}
+        {loading ? (
+          <p
+            data-slot="command-palette-loading"
+            role="status"
+            className="text-muted-foreground px-4 py-5 text-sm"
+          >
+            {loadingMessage}
+          </p>
+        ) : results.length === 0 ? (
           <p
             data-slot="command-palette-empty"
             role="status"

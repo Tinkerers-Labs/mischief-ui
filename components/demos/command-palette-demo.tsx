@@ -17,6 +17,29 @@ const items = componentDocs.slice(0, 12).map((component) => ({
 export function CommandPaletteDemo() {
   const [open, setOpen] = React.useState(false)
   const [chosen, setChosen] = React.useState<string>()
+  const [query, setQuery] = React.useState("")
+  const [applied, setApplied] = React.useState({ query: "", hits: items })
+
+  // Loading is the gap between what was typed and what has been answered, so
+  // nothing has to be set at the moment the effect runs.
+  const loading = open && query.trim() !== applied.query
+
+  // Stands in for a search endpoint: the wait is real, the results are local.
+  React.useEffect(() => {
+    if (!open) return
+
+    const needle = query.trim().toLowerCase()
+    const timer = setTimeout(() => {
+      setApplied({
+        query: query.trim(),
+        hits: needle
+          ? items.filter((item) => item.label.toLowerCase().includes(needle))
+          : items,
+      })
+    }, 350)
+
+    return () => clearTimeout(timer)
+  }, [query, open])
 
   return (
     <div className="grid w-full max-w-sm justify-items-center gap-3">
@@ -38,13 +61,18 @@ export function CommandPaletteDemo() {
 
       {/* The site's own search already owns Mod+K, so this one takes its
           own chord rather than fighting for it. */}
+      {/* The results arrive from somewhere else, so the palette does not
+          rank them again and says it is searching while they are in flight. */}
       <CommandPalette
-        items={items}
+        items={applied.hits}
+        filter={false}
         label="Search components"
+        loading={loading}
         open={open}
         placeholder="Search components…"
         shortcut="j"
         onOpenChange={setOpen}
+        onQueryChange={setQuery}
         onSelect={(item) => setChosen(item.label)}
       />
     </div>

@@ -600,6 +600,47 @@ export function Search() {
         ],
       },
       {
+        id: "remote",
+        title: "Results from a server",
+        blocks: [
+          {
+            kind: "text",
+            text: "The palette filters and ranks whatever array it is given, which is right when the whole set is already in the browser. Once results come from a search endpoint, two things change: you need to know what was typed, and the palette must stop re-ranking what the server already ordered.",
+          },
+          {
+            kind: "code",
+            code: `const [query, setQuery] = useState("")
+const [hits, setHits] = useState([])
+const [loading, setLoading] = useState(false)
+
+useEffect(() => {
+  if (!query) return setHits([])
+  const controller = new AbortController()
+
+  setLoading(true)
+  search(query, { signal: controller.signal })
+    .then(setHits)
+    .finally(() => setLoading(false))
+
+  return () => controller.abort()
+}, [query])
+
+<CommandPalette
+  items={hits}
+  filter={false}
+  loading={loading}
+  onQueryChange={setQuery}
+/>`,
+            caption:
+              "Debouncing and aborting stay yours: only you know what the endpoint costs.",
+          },
+          {
+            kind: "text",
+            text: "While loading, the palette says it is searching rather than reporting that nothing matched, because an empty list mid-flight is not an answer. The listbox is marked busy at the same time, so a screen reader is told to wait instead of hearing an empty set.",
+          },
+        ],
+      },
+      {
         id: "one-per-chord",
         title: "One palette per chord",
         blocks: [
@@ -663,6 +704,26 @@ export function Search() {
         'Key used with Meta or Control. Defaults to "k". Pass false to bind nothing.',
       ],
       ["maxResults", "number", "How many matches to show. Defaults to 8."],
+      [
+        "onQueryChange",
+        "(query: string) => void",
+        "Called as the query changes, for fetching results yourself.",
+      ],
+      [
+        "loading",
+        "boolean",
+        "Says results are on their way. Pair it with onQueryChange.",
+      ],
+      [
+        "loadingMessage",
+        "ReactNode",
+        'Shown while waiting. Defaults to "Searching…".',
+      ],
+      [
+        "filter",
+        "boolean",
+        "Rank and filter here. Turn off when the server already did.",
+      ],
       [
         "placeholder, label, emptyMessage",
         "string, string, (query) => ReactNode",
