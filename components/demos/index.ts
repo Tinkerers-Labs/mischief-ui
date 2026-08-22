@@ -66,6 +66,36 @@ import { StreamingTextDemo } from "@/components/demos/streaming-text-demo"
 import { ThinkingStateDemo } from "@/components/demos/thinking-state-demo"
 import { ToolCallDemo } from "@/components/demos/tool-call-demo"
 
+import { RenderSurfaceDemo } from "@/components/demos/render-surface-demo"
+import { AuroraFieldDemo } from "@/components/demos/aurora-field-demo"
+import { GrainOverlayDemo } from "@/components/demos/grain-overlay-demo"
+import { SpotlightCardDemo } from "@/components/demos/spotlight-card-demo"
+import { ConstellationFieldDemo } from "@/components/demos/constellation-field-demo"
+import { BurstDemo } from "@/components/demos/burst-demo"
+import { ShaderSurfaceDemo } from "@/components/demos/shader-surface-demo"
+import { DisplacementImageDemo } from "@/components/demos/displacement-image-demo"
+import { SceneHeroDemo } from "@/components/demos/scene-hero-demo"
+
+import { ScrollSceneDemo } from "@/components/demos/scroll-scene-demo"
+import { RevealDemo } from "@/components/demos/reveal-demo"
+import { SplitTextDemo } from "@/components/demos/split-text-demo"
+import { NumberTickerDemo } from "@/components/demos/number-ticker-demo"
+import { TiltCardDemo } from "@/components/demos/tilt-card-demo"
+import { CursorTrailDemo } from "@/components/demos/cursor-trail-demo"
+import { MetaballsDemo } from "@/components/demos/metaballs-demo"
+import { DitherImageDemo } from "@/components/demos/dither-image-demo"
+import { AsciiImageDemo } from "@/components/demos/ascii-image-demo"
+import { WireframeGlobeDemo } from "@/components/demos/wireframe-globe-demo"
+import { PresenceFieldDemo } from "@/components/demos/presence-field-demo"
+import { StreamGlowDemo } from "@/components/demos/stream-glow-demo"
+import { OtpInputDemo } from "@/components/demos/otp-input-demo"
+import { TagInputDemo } from "@/components/demos/tag-input-demo"
+import { SortableListDemo } from "@/components/demos/sortable-list-demo"
+import { ResizablePanelsDemo } from "@/components/demos/resizable-panels-demo"
+import { StepperDemo } from "@/components/demos/stepper-demo"
+import { AvatarStackDemo } from "@/components/demos/avatar-stack-demo"
+import { TimelineDemo } from "@/components/demos/timeline-demo"
+
 export type ComponentDemo = {
   Demo: ComponentType
   frameClassName?: string
@@ -199,5 +229,118 @@ export const componentDemos: Record<string, ComponentDemo> = {
     Demo: ImageGalleryDemo,
     frameClassName: "items-start",
     tileClassName: "lg:col-span-12",
+  },
+  "render-surface": { Demo: RenderSurfaceDemo, frameClassName: "p-6 md:p-10" },
+  "aurora-field": {
+    Demo: AuroraFieldDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-6",
+  },
+  "grain-overlay": { Demo: GrainOverlayDemo, frameClassName: "p-6 md:p-10" },
+  "spotlight-card": {
+    Demo: SpotlightCardDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-6",
+  },
+  "constellation-field": {
+    Demo: ConstellationFieldDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-6",
+  },
+  burst: { Demo: BurstDemo, frameClassName: "p-6 md:p-10" },
+  "shader-surface": {
+    Demo: ShaderSurfaceDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-6",
+  },
+  "displacement-image": {
+    Demo: DisplacementImageDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "scene-hero": {
+    Demo: SceneHeroDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-6",
+  },
+  "scroll-scene": {
+    Demo: ScrollSceneDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  reveal: {
+    Demo: RevealDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "split-text": {
+    Demo: SplitTextDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-6",
+  },
+  "number-ticker": {
+    Demo: NumberTickerDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "tilt-card": {
+    Demo: TiltCardDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "cursor-trail": {
+    Demo: CursorTrailDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  metaballs: {
+    Demo: MetaballsDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-6",
+  },
+  "dither-image": {
+    Demo: DitherImageDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "ascii-image": {
+    Demo: AsciiImageDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "wireframe-globe": {
+    Demo: WireframeGlobeDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-6",
+  },
+  "presence-field": {
+    Demo: PresenceFieldDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-6",
+  },
+  "stream-glow": {
+    Demo: StreamGlowDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "otp-input": {
+    Demo: OtpInputDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "tag-input": {
+    Demo: TagInputDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "sortable-list": {
+    Demo: SortableListDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "resizable-panels": {
+    Demo: ResizablePanelsDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-6",
+  },
+  stepper: {
+    Demo: StepperDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "avatar-stack": {
+    Demo: AvatarStackDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  timeline: {
+    Demo: TimelineDemo,
+    frameClassName: "p-6 md:p-10",
   },
 }

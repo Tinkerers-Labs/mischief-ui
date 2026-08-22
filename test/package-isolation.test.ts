@@ -221,11 +221,19 @@ describe("what an install pulls", () => {
     componentDocs.filter((doc) => doc.kind === "block").map((doc) => doc.slug)
   )
 
+  /**
+   * Machinery components sit on rather than interface they assemble. Both hold
+   * behaviour that has to be identical everywhere and is expensive to get
+   * wrong, so they are shared instead of copied into each component that needs
+   * them. Nothing may join this set because it is merely reused.
+   */
+  const INFRASTRUCTURE = new Set(["utils", "render-surface"])
+
   it.each(registry.items)(
     "$name only reaches for other components if it is a block",
     (item) => {
       const parts = (item.registryDependencies ?? []).filter(
-        (name) => name !== "utils"
+        (name) => !INFRASTRUCTURE.has(name)
       )
 
       // A component is one thing you install. Only a block, which is openly an
@@ -233,4 +241,12 @@ describe("what an install pulls", () => {
       if (parts.length > 0) expect(blocks).toContain(item.name)
     }
   )
+
+  it("keeps infrastructure out of the interface it serves", () => {
+    const surface = registry.items.find(
+      (item) => item.name === "render-surface"
+    )
+
+    expect(surface?.registryDependencies ?? []).toEqual(["utils"])
+  })
 })

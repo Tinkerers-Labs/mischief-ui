@@ -9,13 +9,23 @@ Mischief is a small collection of production-ready React components for interfac
 Every component must meet the same bar:
 
 1. It solves a familiar interface problem.
-2. Its personality comes from behavior, timing, and detail, not decoration piled on top.
+2. Its personality comes from behavior, timing, and detail. Where decoration is the job, it obeys the same physics: a clear cause, an honest resting state, and a still frame when motion is reduced.
 3. It remains clear with motion reduced or disabled.
 4. It works with a keyboard, touch, pointer, and screen reader where applicable.
 5. It uses the host application's shadcn theme tokens by default.
 6. Its public API stays small enough to understand from one example.
 
 The collection should feel edited. A component is included because it is useful and unusually well made, not because a category needs another entry.
+
+## Drawn components
+
+Some components draw rather than arrange: a backdrop, a texture, a lit object. They meet the same bar, and two rules keep them from drifting away from the rest of the collection.
+
+**Escalate rendering only when the tier below cannot do it.** CSS and SVG, then a two dimensional canvas, then a single shader, then a full renderer. A component that asks for a dependency the size of three has to show that geometry, lighting, or depth is the point of it and not a shortcut.
+
+**A drawn component still reads its colors from the theme.** Baking a palette into a shader is what makes a library's components look like the library instead of like the application. Custom properties are resolved from the mounted element and read again when the theme changes, so the same component arrives dark in a dark application and light in a light one. `render-surface` supplies the helper that does this.
+
+Decoration is never the only carrier of meaning. When a drawn moment says something, such as a burst on a completed payment, that sentence also reaches a reader who will not see it.
 
 ## Voice
 

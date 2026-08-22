@@ -97,6 +97,42 @@ export default defineConfig({
     "secret-field": "../../registry/default/secret-field/secret-field.tsx",
     pagination: "../../registry/default/pagination/pagination.tsx",
     "side-panel": "../../registry/default/side-panel/side-panel.tsx",
+    "render-surface":
+      "../../registry/default/render-surface/render-surface.tsx",
+    "aurora-field": "../../registry/default/aurora-field/aurora-field.tsx",
+    "grain-overlay": "../../registry/default/grain-overlay/grain-overlay.tsx",
+    "spotlight-card":
+      "../../registry/default/spotlight-card/spotlight-card.tsx",
+    "constellation-field":
+      "../../registry/default/constellation-field/constellation-field.tsx",
+    burst: "../../registry/default/burst/burst.tsx",
+    "shader-surface":
+      "../../registry/default/shader-surface/shader-surface.tsx",
+    "displacement-image":
+      "../../registry/default/displacement-image/displacement-image.tsx",
+    "scene-hero": "../../registry/default/scene-hero/scene-hero.tsx",
+    "scroll-scene": "../../registry/default/scroll-scene/scroll-scene.tsx",
+    reveal: "../../registry/default/reveal/reveal.tsx",
+    "split-text": "../../registry/default/split-text/split-text.tsx",
+    "number-ticker": "../../registry/default/number-ticker/number-ticker.tsx",
+    "tilt-card": "../../registry/default/tilt-card/tilt-card.tsx",
+    "cursor-trail": "../../registry/default/cursor-trail/cursor-trail.tsx",
+    metaballs: "../../registry/default/metaballs/metaballs.tsx",
+    "dither-image": "../../registry/default/dither-image/dither-image.tsx",
+    "ascii-image": "../../registry/default/ascii-image/ascii-image.tsx",
+    "wireframe-globe":
+      "../../registry/default/wireframe-globe/wireframe-globe.tsx",
+    "presence-field":
+      "../../registry/default/presence-field/presence-field.tsx",
+    "stream-glow": "../../registry/default/stream-glow/stream-glow.tsx",
+    "otp-input": "../../registry/default/otp-input/otp-input.tsx",
+    "tag-input": "../../registry/default/tag-input/tag-input.tsx",
+    "sortable-list": "../../registry/default/sortable-list/sortable-list.tsx",
+    "resizable-panels":
+      "../../registry/default/resizable-panels/resizable-panels.tsx",
+    stepper: "../../registry/default/stepper/stepper.tsx",
+    "avatar-stack": "../../registry/default/avatar-stack/avatar-stack.tsx",
+    timeline: "../../registry/default/timeline/timeline.tsx",
   },
   format: ["esm", "cjs"],
   dts: true,
@@ -121,5 +157,6 @@ export default defineConfig({
     "pdfjs-dist",
     "react-markdown",
     "remark-gfm",
+    "three",
   ],
 })

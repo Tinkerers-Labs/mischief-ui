@@ -55,6 +55,25 @@ Object.defineProperty(globalThis, "ResizeObserver", {
   value: ResizeObserverStub,
 })
 
+class IntersectionObserverStub {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+  takeRecords() {
+    return []
+  }
+}
+
+Object.defineProperty(window, "IntersectionObserver", {
+  configurable: true,
+  value: IntersectionObserverStub,
+})
+
+Object.defineProperty(globalThis, "IntersectionObserver", {
+  configurable: true,
+  value: IntersectionObserverStub,
+})
+
 window.requestAnimationFrame = (callback) =>
   window.setTimeout(() => callback(performance.now()), 0)
 window.cancelAnimationFrame = (handle) => window.clearTimeout(handle)

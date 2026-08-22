@@ -384,3 +384,154 @@ export type {
   MarkdownBlock,
   MarkdownBlockKind,
 } from "../../../registry/default/markdown-blocks/markdown-blocks"
+
+export {
+  RenderSurface,
+  createQuadProgram,
+  resolveColor,
+  useThemeColors,
+  colorOf,
+  type RenderSurfaceProps,
+  type SurfaceArgs,
+  type SurfaceColor,
+  type SurfaceContextType,
+  type SurfaceSize,
+  type QuadProgram,
+} from "../../../registry/default/render-surface/render-surface"
+
+export {
+  AuroraField,
+  type AuroraFieldProps,
+} from "../../../registry/default/aurora-field/aurora-field"
+
+export {
+  GrainOverlay,
+  type GrainOverlayProps,
+} from "../../../registry/default/grain-overlay/grain-overlay"
+
+export {
+  SpotlightCard,
+  type SpotlightCardProps,
+} from "../../../registry/default/spotlight-card/spotlight-card"
+
+export {
+  ConstellationField,
+  type ConstellationFieldProps,
+} from "../../../registry/default/constellation-field/constellation-field"
+
+export {
+  Burst,
+  type BurstHandle,
+  type BurstOptions,
+  type BurstProps,
+} from "../../../registry/default/burst/burst"
+
+export {
+  ShaderSurface,
+  type ShaderSurfaceProps,
+  type ShaderSurfaceVariant,
+} from "../../../registry/default/shader-surface/shader-surface"
+
+export {
+  DisplacementImage,
+  type DisplacementImageProps,
+} from "../../../registry/default/displacement-image/displacement-image"
+
+export {
+  ScrollScene,
+  type ScrollSceneProps,
+  type ScrollRange,
+} from "../../../registry/default/scroll-scene/scroll-scene"
+
+export {
+  Reveal,
+  type RevealProps,
+  type RevealDirection,
+} from "../../../registry/default/reveal/reveal"
+
+export {
+  SplitText,
+  type SplitTextProps,
+  type SplitBy,
+  type SplitAnimation,
+} from "../../../registry/default/split-text/split-text"
+
+export {
+  NumberTicker,
+  type NumberTickerProps,
+} from "../../../registry/default/number-ticker/number-ticker"
+
+export {
+  TiltCard,
+  type TiltCardProps,
+} from "../../../registry/default/tilt-card/tilt-card"
+
+export {
+  CursorTrail,
+  type CursorTrailProps,
+} from "../../../registry/default/cursor-trail/cursor-trail"
+
+export {
+  Metaballs,
+  type MetaballsProps,
+} from "../../../registry/default/metaballs/metaballs"
+
+export {
+  DitherImage,
+  type DitherImageProps,
+} from "../../../registry/default/dither-image/dither-image"
+
+export {
+  AsciiImage,
+  type AsciiImageProps,
+} from "../../../registry/default/ascii-image/ascii-image"
+
+export {
+  PresenceField,
+  type PresenceFieldProps,
+  type AgentPresence,
+} from "../../../registry/default/presence-field/presence-field"
+
+export {
+  StreamGlow,
+  type StreamGlowProps,
+} from "../../../registry/default/stream-glow/stream-glow"
+
+export {
+  OtpInput,
+  type OtpInputProps,
+} from "../../../registry/default/otp-input/otp-input"
+
+export {
+  TagInput,
+  type TagInputProps,
+} from "../../../registry/default/tag-input/tag-input"
+
+export {
+  SortableList,
+  type SortableListProps,
+} from "../../../registry/default/sortable-list/sortable-list"
+
+export {
+  ResizablePanels,
+  type ResizablePanelsProps,
+} from "../../../registry/default/resizable-panels/resizable-panels"
+
+export {
+  Stepper,
+  type StepperProps,
+  type Step,
+} from "../../../registry/default/stepper/stepper"
+
+export {
+  AvatarStack,
+  type AvatarStackProps,
+  type Person,
+} from "../../../registry/default/avatar-stack/avatar-stack"
+
+export {
+  Timeline,
+  type TimelineProps,
+  type TimelineEntry,
+  type TimelineTone,
+} from "../../../registry/default/timeline/timeline"

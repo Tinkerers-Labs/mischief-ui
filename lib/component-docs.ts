@@ -6407,6 +6407,2255 @@ return (
     accessibility:
       "A real dialog: the title names it, the description is read after that name, focus is trapped and restored, and Escape closes it unless you have said otherwise. The panel slides from its edge and stops sliding under reduced motion, arriving in place instead. The close control is named and is the first thing reached after the heading, so leaving never means hunting.",
   },
+  {
+    slug: "render-surface",
+    kind: "component",
+    name: "Render Surface",
+    family: "Scenes",
+    summary:
+      "The canvas the other scenes are drawn on. It stays the size of its box, sleeps when nobody is looking at it, and holds still when motion is reduced.",
+    dependencies: [],
+    install: registryInstallCommand("render-surface"),
+    npmImport: packageImport("RenderSurface", "render-surface"),
+    usage: `export function Dots() {
+  return (
+    <RenderSurface
+      setup={({ size }) => makeDots(size)}
+      draw={({ context, size, state, delta }) => {
+        context.setTransform(size.dpr, 0, 0, size.dpr, 0, 0)
+        context.clearRect(0, 0, size.width, size.height)
+        for (const dot of state) step(context, dot, delta)
+      }}
+    />
+  )
+}`,
+    props: [
+      [
+        "setup",
+        "(args) => TState",
+        "Builds whatever the drawing needs. Runs again after a resize, and after a lost GPU context comes back.",
+      ],
+      [
+        "draw",
+        "(args) => void",
+        "Called once per frame with the state, the size, the seconds elapsed, and the seconds since the last frame.",
+      ],
+      ["teardown", "(state) => void", "Releases anything setup acquired."],
+      [
+        "contextType",
+        '"2d" | "webgl" | "none"',
+        'Which context to ask the canvas for. "none" hands you the bare canvas for a library that wants to attach its own renderer.',
+      ],
+      [
+        "maxDpr",
+        "number",
+        "Highest backing store scale. Defaults to 2, because above that the cost climbs faster than the result improves.",
+      ],
+      [
+        "rebuildOnResize",
+        "boolean",
+        "Whether a resize runs setup again. Defaults to true.",
+      ],
+      [
+        "revision",
+        "string | number",
+        "Change it to ask for one more frame. Needed by anything whose content arrives late.",
+      ],
+      ["paused", "boolean", "Stops the loop without unmounting the canvas."],
+      [
+        "label",
+        "string",
+        "Announces the canvas as an image with this description. Without one it is hidden from assistive technology as decoration.",
+      ],
+    ],
+    sections: [
+      {
+        id: "sleeping",
+        title: "What it refuses to do",
+        blocks: [
+          {
+            kind: "text",
+            text: "A canvas that animates forever is a battery that empties forever. This one stops on its own in three situations, and none of them need anything from the component drawing on it.",
+          },
+          {
+            kind: "list",
+            items: [
+              "Scrolled out of view. An IntersectionObserver with a 128 pixel margin stops the loop just after the surface leaves the screen and starts it again just before it returns.",
+              "Tab hidden. The loop stops on visibilitychange rather than relying on the browser to throttle it.",
+              "Reduced motion. One frame is painted and no loop is started at all.",
+            ],
+          },
+          {
+            kind: "text",
+            text: "That last one is the important one. A reduced motion setting is not a request for a blank rectangle, so the surface still draws -- it draws the scene at rest and leaves it there.",
+          },
+          {
+            kind: "text",
+            text: "One frame is enough for a scene that has everything it needs at the moment it mounts, and not enough for one waiting on a picture that has not arrived. That is what revision is for: change it when the late thing turns up and the surface paints once more. Sleeping and waking never rebuild the canvas, because resizing a backing store clears it, and a surface that had painted once would be wiped by the act of stopping.",
+          },
+        ],
+      },
+      {
+        id: "time",
+        title: "Time that does not jump",
+        blocks: [
+          {
+            kind: "text",
+            text: "draw receives both time and delta in seconds. Time counts only the frames that were actually drawn, so a scene that was paused for a minute resumes where it stopped rather than skipping a minute forward.",
+          },
+          {
+            kind: "text",
+            text: "delta is clamped to a fifteenth of a second. Physics integrated against an unclamped delta after a long stall will throw every particle out of the box in a single step, and clamping is cheaper than discovering that on a slow machine.",
+          },
+        ],
+      },
+      {
+        id: "resize",
+        title: "When a resize should not rebuild",
+        blocks: [
+          {
+            kind: "text",
+            text: "By default a resize runs setup again, which is what a particle field wants: the count depends on the area. A setup that acquires something scarce should not do this. A browser allows only a handful of WebGL contexts at once, so a renderer rebuilt on every resize will exhaust them during a single drag of the window edge.",
+          },
+          {
+            kind: "code",
+            code: `<RenderSurface
+  contextType="none"
+  rebuildOnResize={false}
+  setup={({ canvas, size }) => makeRenderer(canvas, size)}
+  draw={({ size, state }) => {
+    if (size.width !== state.width) resizeRenderer(state, size)
+    state.renderer.render(state.scene, state.camera)
+  }}
+/>`,
+            caption:
+              "With rebuildOnResize off, the canvas is still resized for you. Only setup is skipped.",
+          },
+        ],
+      },
+      {
+        id: "colors",
+        title: "Reading the theme",
+        blocks: [
+          {
+            kind: "text",
+            text: "useThemeColors reads custom properties off a mounted element and returns them as plain channels between zero and one, which is the form a shader uniform or a canvas fill wants. It re-reads when the theme changes, so a scene recolours itself when someone switches to dark.",
+          },
+          {
+            kind: "code",
+            code: `const ref = React.useRef(null)
+const colors = useThemeColors(ref, ["--primary", "--background"])
+
+// colors["--primary"] is [r, g, b], each 0 to 1`,
+          },
+          {
+            kind: "text",
+            text: "The conversion is done by painting one pixel and reading it back, rather than by parsing the value. shadcn themes are written in oklch and often in color-mix, and letting the browser resolve them is the only approach that stays correct as CSS gains more colour spaces.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The canvas is hidden from assistive technology unless you pass a label, because most scenes are decoration and announcing them is noise. With a label it becomes an image with that description. Reduced motion is honoured by the surface itself, so no component drawing on it can forget to.",
+  },
+  {
+    slug: "aurora-field",
+    kind: "component",
+    name: "Aurora Field",
+    family: "Scenes",
+    featured: true,
+    summary:
+      "A drifting gradient backdrop for a hero or an empty state, built from the colours already in your theme rather than from a palette it brought with it.",
+    dependencies: [],
+    install: registryInstallCommand("aurora-field"),
+    npmImport: packageImport("AuroraField", "aurora-field"),
+    usage: `export function Hero() {
+  return (
+    <AuroraField className="rounded-xl">
+      <div className="px-8 py-16 text-center">
+        <h1>Ship the interface you sketched</h1>
+      </div>
+    </AuroraField>
+  )
+}`,
+    props: [
+      [
+        "colors",
+        "string[]",
+        'Theme custom properties or CSS colours. Defaults to ["--primary"].',
+      ],
+      ["blobs", "number", "How many drifting shapes to draw. Defaults to 5."],
+      ["speed", "number", "Multiplies the drift. Defaults to 1."],
+      [
+        "spread",
+        "number",
+        "How much of the box each shape covers, as a fraction of the longest edge. Defaults to 0.55.",
+      ],
+      ["opacity", "number", "Strength of each shape. Defaults to 0.85."],
+      ["paused", "boolean", "Holds the field still."],
+      [
+        "children",
+        "ReactNode",
+        "Rendered above the field. The field itself sits behind on its own layer and ignores the pointer.",
+      ],
+    ],
+    sections: [
+      {
+        id: "one-color",
+        title: "Why one colour is the default",
+        blocks: [
+          {
+            kind: "text",
+            text: "Most gradient backdrops ship with a palette, which means they look like the library they came from rather than like your application. This one takes --primary and derives the rest by rotating its hue, so a blue product gets a blue aurora and an orange one gets an orange aurora without being configured.",
+          },
+          {
+            kind: "text",
+            text: "Pass more colours when you want them. Any entry that is not a custom property is used as a plain CSS colour, and if there are fewer colours than shapes the remainder are derived from the ones you gave.",
+          },
+          {
+            kind: "code",
+            code: `<AuroraField colors={["--primary", "--ring"]} blobs={6} />`,
+          },
+        ],
+      },
+      {
+        id: "cost",
+        title: "What it costs to run",
+        blocks: [
+          {
+            kind: "text",
+            text: "The field is drawn at a single device pixel per CSS pixel and then blurred by CSS. Blurring in the compositor is far cheaper than blurring in the canvas, and since the result is soft in every direction there is nothing for the extra resolution to show.",
+          },
+          {
+            kind: "text",
+            text: "It also stops drawing as soon as it scrolls off screen, so a field behind a hero costs nothing once the reader has moved past it.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The field is decoration and is hidden from assistive technology. Children are ordinary markup above it, so a heading inside one is read exactly as it would be anywhere else. Under reduced motion the shapes are painted once and stop, which keeps the colour without the drift.",
+  },
+  {
+    slug: "grain-overlay",
+    kind: "component",
+    name: "Grain Overlay",
+    family: "Scenes",
+    summary:
+      "Film grain for any positioned box, which incidentally fixes the banding a wide gradient shows on a good monitor.",
+    dependencies: [],
+    install: registryInstallCommand("grain-overlay"),
+    npmImport: packageImport("GrainOverlay", "grain-overlay"),
+    usage: `export function Panel() {
+  return (
+    <div className="relative isolate overflow-hidden">
+      <div className="bg-gradient-to-br from-primary to-background p-12">
+        <h2>Reel one, take four</h2>
+      </div>
+      <GrainOverlay />
+    </div>
+  )
+}`,
+    props: [
+      [
+        "frequency",
+        "number",
+        "Higher is finer. Around 0.65 reads as film and 0.2 as coarse paper. Defaults to 0.65.",
+      ],
+      ["opacity", "number", "Strength of the grain. Defaults to 0.22."],
+      [
+        "blend",
+        '"overlay" | "soft-light" | "multiply" | "screen" | "normal"',
+        'How the grain mixes with what is underneath. Defaults to "overlay".',
+      ],
+      [
+        "animated",
+        "boolean",
+        "Shifts between four grains about eight times a second, the way projected film does. Off by default.",
+      ],
+    ],
+    sections: [
+      {
+        id: "banding",
+        title: "The practical reason to use it",
+        blocks: [
+          {
+            kind: "text",
+            text: "A gradient across a wide screen has fewer available steps than it has pixels, so it arrives in visible bands. Adding noise breaks the boundary between one step and the next, and the eye stops finding the edges. This is the same trick print has used for a century, and it is the reason to reach for grain even when you do not want the texture.",
+          },
+          {
+            kind: "text",
+            text: "It sits above the content and ignores the pointer, so it can be dropped into a card or a hero without changing anything underneath it. The parent needs a positioning context and, usually, overflow hidden.",
+          },
+        ],
+      },
+      {
+        id: "static",
+        title: "Still by default",
+        blocks: [
+          {
+            kind: "text",
+            text: "Animated grain is a full repaint several times a second for an effect most readers will not consciously notice, so it is off unless you ask. When it is on it stops entirely under reduced motion, because a texture that crawls is exactly the kind of movement that setting exists to remove.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "Hidden from assistive technology and transparent to the pointer. The animated variant does nothing at all when reduced motion is set.",
+  },
+  {
+    slug: "spotlight-card",
+    kind: "component",
+    name: "Spotlight Card",
+    family: "Scenes",
+    summary:
+      "A card that catches a light following the pointer, and can light every card in its grid from the same pointer at once.",
+    dependencies: [],
+    install: registryInstallCommand("spotlight-card"),
+    npmImport: packageImport("SpotlightCard", "spotlight-card"),
+    usage: `export function Plans({ plans }) {
+  return (
+    <div className="grid gap-3 sm:grid-cols-3">
+      {plans.map((plan) => (
+        <SpotlightCard key={plan.name} followGroup className="p-5">
+          <p>{plan.name}</p>
+        </SpotlightCard>
+      ))}
+    </div>
+  )
+}`,
+    props: [
+      [
+        "color",
+        "string",
+        'A theme custom property or a CSS colour for the light. Defaults to "--primary".',
+      ],
+      ["size", "number", "Radius of the light in pixels. Defaults to 320."],
+      [
+        "followGroup",
+        "boolean",
+        "Lights every sibling spotlight card from the same pointer, so a grid reads as one surface under one lamp.",
+      ],
+    ],
+    sections: [
+      {
+        id: "no-state",
+        title: "Nothing re-renders",
+        blocks: [
+          {
+            kind: "text",
+            text: "The pointer position is written to custom properties on the element itself, not to React state. Moving across a grid of twelve of these updates twelve style properties and renders nothing, which is the difference between a smooth grid and a grid that stutters on a laptop.",
+          },
+          {
+            kind: "text",
+            text: "It also means the card is an ordinary element. Wrap it in a link, put a form in it, or give it your own background, and none of that interferes with the light.",
+          },
+        ],
+      },
+      {
+        id: "group",
+        title: "One lamp over a grid",
+        blocks: [
+          {
+            kind: "text",
+            text: "With followGroup on, a card that receives the pointer writes the position to every sibling spotlight card as well. Each one converts the same page coordinate against its own rectangle, so the light lands where it would if a single lamp were held above the whole grid rather than one lamp per card.",
+          },
+          {
+            kind: "text",
+            text: "The effect is quiet and worth the trouble: cards near the pointer glow slightly even though the pointer is not on them, which is what a real light does.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The light is decoration drawn behind the content and never carries meaning, so nothing is announced. It fades rather than jumps, and that fade is removed under reduced motion. Because the effect is driven by the pointer rather than by a timer, there is nothing moving for a reader who is not moving.",
+  },
+  {
+    slug: "constellation-field",
+    kind: "component",
+    name: "Constellation Field",
+    family: "Scenes",
+    summary:
+      "Drifting points joined by lines when they come close, brightening and swelling around the pointer.",
+    dependencies: [],
+    install: registryInstallCommand("constellation-field"),
+    npmImport: packageImport("ConstellationField", "constellation-field"),
+    usage: `export function Backdrop() {
+  return (
+    <ConstellationField className="rounded-xl border">
+      <div className="px-8 py-16 text-center">
+        <h2>Move your pointer across it</h2>
+      </div>
+    </ConstellationField>
+  )
+}`,
+    props: [
+      [
+        "density",
+        "number",
+        "Points per ten thousand square pixels, so the field looks the same after a resize. Defaults to 5.",
+      ],
+      ["speed", "number", "Multiplies the drift. Defaults to 1."],
+      [
+        "linkDistance",
+        "number",
+        "Points closer together than this are joined. Defaults to 120.",
+      ],
+      [
+        "pointerRadius",
+        "number",
+        "How far the pointer reaches, in pixels. Zero turns the reaction off. Defaults to 160.",
+      ],
+      [
+        "color",
+        "string",
+        'A theme custom property or a CSS colour for the points and lines. Defaults to "--foreground".',
+      ],
+      ["paused", "boolean", "Holds the field still."],
+    ],
+    sections: [
+      {
+        id: "density",
+        title: "Density, not count",
+        blocks: [
+          {
+            kind: "text",
+            text: "A fixed number of points looks crowded in a narrow column and empty across a wide hero. Density is given per unit of area instead, so the field is rebuilt with the right number of points whenever the box changes and looks the same at every width.",
+          },
+        ],
+      },
+      {
+        id: "cost",
+        title: "Where the time goes",
+        blocks: [
+          {
+            kind: "text",
+            text: "Linking compares every pair of points, so the work grows with the square of the count. At the default density a panel of ordinary size holds a few dozen points and the comparison is not worth optimising. A full page backdrop at high density is a different matter, and the honest fix there is to lower the density rather than to make the loop cleverer.",
+          },
+          {
+            kind: "text",
+            text: "Setting pointerRadius to zero removes the reaction and lets the field sit behind content that should receive the pointer instead.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "Decoration, hidden from assistive technology, and behind its children on its own layer. Under reduced motion the points are painted once where they started and the drift never begins, so the pattern remains without any movement.",
+  },
+  {
+    slug: "burst",
+    kind: "component",
+    name: "Burst",
+    family: "Scenes",
+    summary:
+      "A short burst of pieces for the moment something finally completes. It draws nothing until it is fired and stops as soon as the last piece falls out of the box.",
+    dependencies: [],
+    install: registryInstallCommand("burst"),
+    npmImport: packageImport("Burst", "burst"),
+    usage: `export function Invoice() {
+  const burst = React.useRef(null)
+
+  return (
+    <div className="relative isolate overflow-hidden">
+      <Burst ref={burst} announce="Invoice paid" />
+      <button onClick={() => burst.current?.fire()}>Mark as paid</button>
+    </div>
+  )
+}`,
+    props: [
+      [
+        "colors",
+        "string[]",
+        'Theme custom properties or CSS colours. Defaults to ["--primary", "--foreground"].',
+      ],
+      ["count", "number", "Pieces per burst. Defaults to 60."],
+      [
+        "velocity",
+        "number",
+        "Pixels per second the pieces leave at. Defaults to 420.",
+      ],
+      ["gravity", "number", "Pixels per second squared. Defaults to 900."],
+      [
+        "announce",
+        "string",
+        "Announced once when a burst is fired. Leave it out when the burst is decorating something already announced elsewhere.",
+      ],
+    ],
+    types: [
+      {
+        name: "BurstHandle",
+        description: "What the ref gives you.",
+        rows: [
+          [
+            "fire",
+            "(options?: BurstOptions) => void",
+            "Starts a burst. Without options it comes from the centre of the box.",
+          ],
+        ],
+      },
+      {
+        name: "BurstOptions",
+        rows: [
+          ["x", "number", "Pixels from the left of the box."],
+          ["y", "number", "Pixels from the top of the box."],
+          ["count", "number", "Overrides the piece count for this burst."],
+        ],
+      },
+    ],
+    sections: [
+      {
+        id: "idle",
+        title: "It costs nothing while it waits",
+        blocks: [
+          {
+            kind: "text",
+            text: "Most celebration components animate a canvas continuously and simply draw nothing most of the time. This one keeps its loop paused until fire is called and pauses it again on the first frame where no piece is left alive, so a page holding one of these is running no animation at all until the moment it matters.",
+          },
+        ],
+      },
+      {
+        id: "reduced",
+        title: "What happens under reduced motion",
+        blocks: [
+          {
+            kind: "text",
+            text: "fire draws nothing. A burst is pure movement, and a still frame of one is a pile of rectangles that means nothing to anybody.",
+          },
+          {
+            kind: "text",
+            text: "The announcement still happens. That is the point of the announce prop: the information a burst carries -- this worked -- reaches a reader who is not going to see it, whether they turned motion off or are using a screen reader.",
+          },
+        ],
+      },
+      {
+        id: "placement",
+        title: "Where to put it",
+        blocks: [
+          {
+            kind: "text",
+            text: "It covers its nearest positioned ancestor and ignores the pointer, so it belongs inside the region you want the pieces to fall through rather than at the root of the page. Give that ancestor a positioning context, and overflow hidden if you would rather the pieces did not spill.",
+          },
+          {
+            kind: "code",
+            code: `<Burst ref={burst} announce="Plan upgraded" count={90} velocity={520} />`,
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The canvas is decoration and is hidden. The announce prop puts the meaning of the burst into a polite live region, which is what a reader using a screen reader or a reader with motion turned off actually receives. Nothing about the burst is required to operate anything.",
+  },
+  {
+    slug: "shader-surface",
+    kind: "component",
+    name: "Shader Surface",
+    family: "Scenes",
+    featured: true,
+    summary:
+      "Four shader backdrops -- caustics, metal, plasma and ripple -- each taking its two colours from your theme, so the same surface arrives dark in a dark application and light in a light one.",
+    dependencies: [],
+    install: registryInstallCommand("shader-surface"),
+    npmImport: packageImport("ShaderSurface", "shader-surface"),
+    usage: `export function Hero() {
+  return (
+    <ShaderSurface variant="caustics" className="rounded-xl">
+      <div className="px-8 py-16 text-center">
+        <h1>Caustics</h1>
+      </div>
+    </ShaderSurface>
+  )
+}`,
+    props: [
+      [
+        "variant",
+        '"caustics" | "metal" | "plasma" | "ripple"',
+        'Which shader to run. Defaults to "plasma", the quietest of the four.',
+      ],
+      [
+        "base",
+        "string",
+        'The colour the surface settles to. Defaults to "--background".',
+      ],
+      [
+        "tint",
+        "string",
+        'The colour the light in it takes. Defaults to "--primary".',
+      ],
+      ["speed", "number", "Multiplies time. Defaults to 1."],
+      [
+        "scale",
+        "number",
+        "Size of the pattern. Larger is busier. Defaults to 3.",
+      ],
+      ["paused", "boolean", "Holds the surface still."],
+    ],
+    sections: [
+      {
+        id: "two-colors",
+        title: "Two colours is the whole palette",
+        blocks: [
+          {
+            kind: "text",
+            text: "Every variant mixes between exactly two colours, both read from the theme. That constraint is what lets one component cover four quite different looks without any of them fighting the application they were installed into. The default pair is --background and --primary, which means the surface already matches the page before it is configured.",
+          },
+          {
+            kind: "text",
+            text: "Because the colours are read rather than compiled in, switching the application to dark mode recolours the shader on the next frame. There is no second set of values to keep in step.",
+          },
+          {
+            kind: "code",
+            code: `<ShaderSurface variant="metal" base="--card" tint="--ring" scale={5} />`,
+          },
+        ],
+      },
+      {
+        id: "variants",
+        title: "Choosing between them",
+        blocks: [
+          {
+            kind: "list",
+            items: [
+              "caustics: light through moving water. Busy, and best behind very little text.",
+              "metal: slow bands with a sharp highlight. Reads as a material rather than as weather.",
+              "plasma: soft blended cloud. The quietest of the four, the safest behind a paragraph, and the default for that reason.",
+              "ripple: rings leaving the centre. Directional, so it wants something at the middle to have come from.",
+            ],
+          },
+        ],
+      },
+      {
+        id: "webgl",
+        title: "When WebGL is not available",
+        blocks: [
+          {
+            kind: "text",
+            text: "If the context or the program cannot be created, the surface draws nothing and the box keeps its ordinary background and children. A shader that will not compile should cost a reader a plain panel, not a broken one.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The canvas is decoration and is hidden from assistive technology. Children sit above it as ordinary markup. Under reduced motion a single frame is drawn and time never advances, so the pattern is there and nothing in it moves.",
+  },
+  {
+    slug: "displacement-image",
+    kind: "component",
+    name: "Displacement Image",
+    family: "Scenes",
+    summary:
+      "Two images crossing by pushing their pixels through the same noise in opposite directions, with the first image also present as ordinary markup for anything that cannot run it.",
+    dependencies: [],
+    install: registryInstallCommand("displacement-image"),
+    npmImport: packageImport("DisplacementImage", "displacement-image"),
+    usage: `export function Card() {
+  return (
+    <DisplacementImage
+      from="/covers/before.jpg"
+      to="/covers/after.jpg"
+      alt="The studio before and after the rebuild"
+      className="aspect-[4/3] rounded-xl"
+    />
+  )
+}`,
+    props: [
+      ["from", "string", "The image shown at rest."],
+      ["to", "string", "The image crossed to."],
+      [
+        "alt",
+        "string",
+        "Describes the pair. Required, and used for both the fallback image and the canvas.",
+      ],
+      [
+        "intensity",
+        "number",
+        "How far the pixels are pushed during the crossing, as a fraction of the box. Defaults to 0.35.",
+      ],
+      ["duration", "number", "Seconds the crossing takes. Defaults to 0.7."],
+      [
+        "active",
+        "boolean",
+        "Drives the crossing yourself. Without it the crossing follows the pointer and focus.",
+      ],
+      [
+        "children",
+        "ReactNode",
+        "Rendered above the image, for a caption or the link that covers it.",
+      ],
+    ],
+    sections: [
+      {
+        id: "fallback",
+        title: "There is always a picture",
+        blocks: [
+          {
+            kind: "text",
+            text: "The first image is rendered as an ordinary img element underneath the canvas. If WebGL is unavailable, if the shader will not compile, or if the second image never loads, the reader sees a normal photograph rather than an empty grey box.",
+          },
+          {
+            kind: "text",
+            text: "This is also what the reader sees before the textures have finished uploading, which removes the flash of nothing that these effects usually open with.",
+          },
+        ],
+      },
+      {
+        id: "aspect",
+        title: "Two images, one box",
+        blocks: [
+          {
+            kind: "text",
+            text: "Each image is fitted to the box the way object-fit cover would fit it, using its own aspect ratio measured after it loads. A portrait and a landscape photograph can therefore be crossed against each other without either being stretched.",
+          },
+          {
+            kind: "text",
+            text: "Images from another origin need to permit it. The textures are requested anonymously, so a host that does not send the right header will refuse to be read and only the fallback will show.",
+          },
+        ],
+      },
+      {
+        id: "focus",
+        title: "Not only the pointer",
+        blocks: [
+          {
+            kind: "text",
+            text: "The crossing follows focus as well as the pointer, so putting a link or a button inside one means a keyboard reader gets the same behaviour. When you would rather drive it from something else -- a scroll position, a carousel index -- pass active and the internal handling steps aside.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The alt text describes the pair and is carried by both the fallback image and the canvas, so the picture is announced once whichever one is showing. The crossing responds to focus as well as hover. It is a transition between two images rather than a loop, so there is nothing running for a reader who is not interacting with it.",
+  },
+  {
+    slug: "scene-hero",
+    kind: "component",
+    name: "Scene Hero",
+    family: "Scenes",
+    summary:
+      "A lit three-dimensional object behind a headline, steered by the pointer and coloured by the theme. The one component here that asks for three.",
+    dependencies: ["three"],
+    install: registryInstallCommand("scene-hero"),
+    npmImport: packageImport("SceneHero", "scene-hero"),
+    usage: `export function Hero() {
+  return (
+    <SceneHero shape="torus-knot" className="rounded-xl">
+      <div className="px-8 py-20 text-center">
+        <h1>Built in the open</h1>
+      </div>
+    </SceneHero>
+  )
+}`,
+    props: [
+      [
+        "shape",
+        '"torus-knot" | "icosahedron" | "capsule" | "box" | "torus"',
+        'Which object to light. Defaults to "torus-knot".',
+      ],
+      ["color", "string", 'Colour of the object. Defaults to "--primary".'],
+      [
+        "rim",
+        "string",
+        'Colour of the light that rims it. Defaults to "--foreground".',
+      ],
+      ["metalness", "number", "Zero to one. Defaults to 0.55."],
+      ["roughness", "number", "Zero to one. Defaults to 0.25."],
+      ["speed", "number", "Turns per second at rest. Defaults to 0.12."],
+      [
+        "sway",
+        "number",
+        "How far it leans toward the pointer, in radians. Defaults to 0.35.",
+      ],
+      ["paused", "boolean", "Holds the object still."],
+    ],
+    sections: [
+      {
+        id: "peers",
+        title: "What it needs installed",
+        blocks: [
+          {
+            kind: "text",
+            text: "This is the only component in the collection that reaches for three, and it is an optional peer like every other heavy dependency here. Nothing else in Mischief pulls it in, and the package root does not export this component, because a barrel holding it would fail to resolve for everyone who had not installed three.",
+          },
+          {
+            kind: "code",
+            code: `npm install mischief-ui three`,
+            caption:
+              "Import it from its own entry: mischief-ui/scene-hero, not the package root.",
+          },
+          {
+            kind: "text",
+            text: "That is the trade. Around a hundred and fifty kilobytes for anyone who wants a lit object, and nothing at all for everyone else.",
+          },
+        ],
+      },
+      {
+        id: "earns",
+        title: "Why this one is allowed to be heavy",
+        blocks: [
+          {
+            kind: "text",
+            text: "Everything else in this family is drawn with CSS, a two dimensional canvas, or a single shader, because those were enough. Real geometry, a metal surface that responds to two lights, and depth that survives being rotated are not things a gradient can imitate, and that is the bar a component has to clear before it may ask for a renderer.",
+          },
+          {
+            kind: "text",
+            text: "The renderer is built once and survives a resize rather than being rebuilt, since a browser will only hand out a few GPU contexts and dragging a window edge should not spend them all.",
+          },
+        ],
+      },
+      {
+        id: "colors",
+        title: "Coloured by the page it is on",
+        blocks: [
+          {
+            kind: "text",
+            text: "The material takes --primary and the fill light takes --foreground, both read from the mounted element and both updated on the next frame when the theme changes. The background stays transparent, so whatever the section behind it is painted with shows through and the object appears to be standing in the page rather than in a window cut into it.",
+          },
+          {
+            kind: "code",
+            code: `<SceneHero shape="icosahedron" color="--ring" metalness={0.9} roughness={0.1} />`,
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The object is decoration and the canvas is hidden from assistive technology, so a headline placed inside is read exactly as a headline. The lean follows the pointer and returns to centre when it leaves. Under reduced motion one frame is drawn and the object neither turns nor leans.",
+  },
+  {
+    slug: "scroll-scene",
+    kind: "component",
+    name: "Scroll Scene",
+    family: "Scenes",
+    summary:
+      "Turns the scrolling of a tall element into a number between nought and one, published to a custom property and to a callback, without rendering the page to do it.",
+    dependencies: [],
+    install: registryInstallCommand("scroll-scene"),
+    npmImport: packageImport("ScrollScene", "scroll-scene"),
+    usage: `export function Scrubbed() {
+  const box = React.useRef(null)
+
+  return (
+    <ScrollScene className="h-[200vh]" sticky onProgress={(p) => {
+      if (box.current) box.current.style.opacity = String(p)
+    }}>
+      <div ref={box}>Held while the scene goes past</div>
+    </ScrollScene>
+  )
+}`,
+    props: [
+      [
+        "range",
+        '"cover" | "contain" | "enter" | "exit"',
+        'Which span of scrolling maps to nought through one. Defaults to "cover".',
+      ],
+      [
+        "onProgress",
+        "(progress: number) => void",
+        "Called on every frame the element is on screen.",
+      ],
+      [
+        "sticky",
+        "boolean",
+        "Pins the children to the viewport while the scene scrolls past them.",
+      ],
+    ],
+    sections: [
+      {
+        id: "no-render",
+        title: "Why this is not a piece of state",
+        blocks: [
+          {
+            kind: "text",
+            text: "The obvious shape for this component would be a hook returning a number. That number changes on every frame, so every frame would render the tree under it, and a scroll-linked effect built that way stutters on any machine that is also doing something else.",
+          },
+          {
+            kind: "text",
+            text: "So progress is published twice, and neither way renders anything. It is written to the element as the --scroll-progress custom property, which CSS can use directly, and it is handed to onProgress, which a canvas or a ref can use directly.",
+          },
+          {
+            kind: "code",
+            code: `.parallax {
+  translate: 0 calc(var(--scroll-progress) * -80px);
+  opacity: var(--scroll-progress);
+}`,
+            caption:
+              "No JavaScript at all on this side. The property is on the scene element, so anything inside it can read it.",
+          },
+        ],
+      },
+      {
+        id: "ranges",
+        title: "Choosing a range",
+        blocks: [
+          {
+            kind: "list",
+            items: [
+              "cover: nought when the element first appears at the bottom, one when it has completely gone past the top. The longest span, and the usual choice for a backdrop.",
+              "contain: the span during which the element is fully inside the viewport. Right for something that should finish while it is still being looked at.",
+              "enter: nought to one across the arrival alone.",
+              "exit: nought to one across the departure alone.",
+            ],
+          },
+          {
+            kind: "text",
+            text: "The loop runs only while the element is on screen, and takes one final reading on the way out so a scene left behind holds an end value rather than whatever it happened to have.",
+          },
+        ],
+      },
+      {
+        id: "reduced",
+        title: "Motion that is not the page's idea",
+        blocks: [
+          {
+            kind: "text",
+            text: "This keeps working when someone has asked for reduced motion, and that is deliberate. The movement here is the reader's own: it happens because they are scrolling, it stops when they stop, and it reverses when they go back. That is direct manipulation rather than something the page decided to do at them.",
+          },
+          {
+            kind: "text",
+            text: "What you drive with it is a different matter. If the progress is running an animation that would be uncomfortable, check the preference where you use it rather than expecting this component to guess.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The scene is an ordinary element and adds nothing to the accessibility tree. Content inside it is normal markup and is reached in normal order, including when sticky is on. Nothing here is required to read the page, so a reader who never scrolls it past has lost nothing.",
+  },
+  {
+    slug: "reveal",
+    kind: "component",
+    name: "Reveal",
+    family: "Motion",
+    summary:
+      "Moves its children in when they arrive on screen. It changes how something arrives and never whether it is there.",
+    dependencies: [],
+    install: registryInstallCommand("reveal"),
+    npmImport: packageImport("Reveal", "reveal"),
+    usage: `export function Features({ items }) {
+  return items.map((item, index) => (
+    <Reveal key={item.id} delay={index * 90}>
+      <Card {...item} />
+    </Reveal>
+  ))
+}`,
+    props: [
+      [
+        "from",
+        '"up" | "down" | "left" | "right" | "none"',
+        'Which way the content travels in from. Defaults to "up".',
+      ],
+      ["distance", "number", "Pixels travelled. Defaults to 16."],
+      [
+        "delay",
+        "number",
+        "Milliseconds before it starts. An index times a step staggers a list.",
+      ],
+      ["duration", "number", "Milliseconds. Defaults to 600."],
+      [
+        "threshold",
+        "number",
+        "How much has to be on screen before it starts. Defaults to 0.15.",
+      ],
+      [
+        "repeat",
+        "boolean",
+        "Plays again whenever it comes back. Off by default.",
+      ],
+    ],
+    sections: [
+      {
+        id: "present",
+        title: "The content is never withheld",
+        blocks: [
+          {
+            kind: "text",
+            text: "Scroll entrances are usually built by rendering nothing until an observer fires. That breaks the page for anyone whose browser did not run the observer, hides the text from anything reading the markup, and leaves a blank column if a script fails.",
+          },
+          {
+            kind: "text",
+            text: "Here the children are always rendered and always in the document. Only opacity and a small translation are animated, and both are removed outright under reduced motion, where the content is simply there from the first paint.",
+          },
+        ],
+      },
+      {
+        id: "stagger",
+        title: "Staggering without another component",
+        blocks: [
+          {
+            kind: "text",
+            text: "There is no group wrapper, because a group wrapper would only be multiplying an index by a number. Do that where you have the index.",
+          },
+          {
+            kind: "code",
+            code: `{rows.map((row, index) => (
+  <Reveal key={row.id} delay={index * 90}>{row.label}</Reveal>
+))}`,
+            caption:
+              "Around 60 to 120 milliseconds per step reads as a sequence. Much more and the last one feels late.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "Content is in the document and in normal order from the first paint, so nothing depends on the animation having run. Reduced motion removes the movement and the fade entirely rather than shortening them. Once played it stays played, unless repeat is on.",
+  },
+  {
+    slug: "split-text",
+    kind: "component",
+    name: "Split Text",
+    family: "Motion",
+    featured: true,
+    summary:
+      "A heading animated one character, word, or line at a time, and still announced as one sentence rather than as a pile of single letters.",
+    dependencies: [],
+    install: registryInstallCommand("split-text"),
+    npmImport: packageImport("SplitText", "split-text"),
+    usage: `export function Headline() {
+  return (
+    <h1 className="text-5xl font-semibold">
+      <SplitText by="character" animation="rise">
+        Good interfaces deserve a little mischief
+      </SplitText>
+    </h1>
+  )
+}`,
+    props: [
+      ["children", "string", "The text. A string, because it has to be split."],
+      [
+        "by",
+        '"character" | "word" | "line"',
+        'What each piece is. Defaults to "character".',
+      ],
+      [
+        "animation",
+        '"rise" | "fade" | "blur" | "scale"',
+        'How a piece arrives. Defaults to "rise".',
+      ],
+      [
+        "stagger",
+        "number",
+        "Milliseconds between one piece and the next. Defaults to 28.",
+      ],
+      ["delay", "number", "Milliseconds before the first piece."],
+      ["duration", "number", "Milliseconds for one piece. Defaults to 620."],
+      [
+        "trigger",
+        '"mount" | "view"',
+        'Whether it plays on arrival or once on screen. Defaults to "view".',
+      ],
+      [
+        "as",
+        '"span" | "h1" | "h2" | "h3" | "p"',
+        'The element rendered. Defaults to "span".',
+      ],
+    ],
+    sections: [
+      {
+        id: "announced",
+        title: "Announced as a sentence",
+        blocks: [
+          {
+            kind: "text",
+            text: "Splitting a heading into one element per letter is what makes this effect possible and is also what usually ruins it. A screen reader handed forty single-letter elements may read forty letters.",
+          },
+          {
+            kind: "text",
+            text: "So the whole string is set as the label on the element, and every piece inside is hidden from assistive technology. What is announced is the sentence you wrote. What is animated is the letters. Neither knows about the other.",
+          },
+        ],
+      },
+      {
+        id: "choosing",
+        title: "Which split to use",
+        blocks: [
+          {
+            kind: "text",
+            text: "Character is the showiest and the most expensive: a forty character heading is forty elements each with its own transition. It suits one large heading and does not suit a paragraph.",
+          },
+          {
+            kind: "text",
+            text: "Word is the one to reach for at body size. Line is for something already broken into lines, and splits on the newlines in the string rather than trying to work out where the browser wrapped it.",
+          },
+          {
+            kind: "text",
+            text: "Whitespace is never animated, whichever split you choose, so a gap between two words does not fade in and change the measure while the rest arrives.",
+          },
+        ],
+      },
+      {
+        id: "stagger",
+        title: "Getting the timing right",
+        blocks: [
+          {
+            kind: "text",
+            text: "The total is the stagger times the number of pieces plus the duration of one piece. At the default stagger a forty character heading takes a little over a second and a half, which is about as long as an entrance can be before it stops feeling like an entrance.",
+          },
+          {
+            kind: "code",
+            code: `<SplitText by="word" stagger={60} animation="blur">
+  Long enough to read while it arrives
+</SplitText>`,
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The full string is the element's label and every piece is hidden, so the text is announced once, as written. Under reduced motion every piece is at rest from the first paint and nothing moves, fades, or blurs. The text is in the document whether or not the animation ever runs.",
+  },
+  {
+    slug: "number-ticker",
+    kind: "component",
+    name: "Number Ticker",
+    family: "Motion",
+    summary:
+      "Counts to a number rather than replacing it, in whatever currency or format you asked for.",
+    dependencies: [],
+    install: registryInstallCommand("number-ticker"),
+    npmImport: packageImport("NumberTicker", "number-ticker"),
+    usage: `export function Stat({ revenue }) {
+  return (
+    <NumberTicker
+      value={revenue}
+      format={{ style: "currency", currency: "USD" }}
+    />
+  )
+}`,
+    props: [
+      ["value", "number", "Where it is counting to."],
+      ["from", "number", "Where it counts from the first time. Defaults to 0."],
+      ["duration", "number", "Milliseconds. Defaults to 1400."],
+      [
+        "format",
+        "Intl.NumberFormatOptions",
+        "Passed straight through, so currency, percent, and compact all work.",
+      ],
+      ["locale", "string", "Passed to Intl.NumberFormat."],
+      [
+        "startOnView",
+        "boolean",
+        "Waits until it is on screen before counting. On by default.",
+      ],
+    ],
+    sections: [
+      {
+        id: "announced",
+        title: "What gets read out",
+        blocks: [
+          {
+            kind: "text",
+            text: "The element is labelled with the final value the whole time, and the counting digits are hidden. A reader using a screen reader is told the number, once, rather than being read a blur of intermediate values or catching whatever it happened to be passing through.",
+          },
+          {
+            kind: "text",
+            text: "It also means the number is correct before the animation starts and correct if it never starts, which is what happens under reduced motion: the value is set straight away.",
+          },
+        ],
+      },
+      {
+        id: "changing",
+        title: "Counting from wherever it was",
+        blocks: [
+          {
+            kind: "text",
+            text: "When the value changes again the count starts from what was on screen, not from the original starting point. A figure that updates while someone is looking at it moves from the old number to the new one, which is the only reading of it that means anything.",
+          },
+          {
+            kind: "text",
+            text: "The digits are tabular, so the width does not jump about while it counts.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The final value is the element's label from the first paint, and the animating digits are hidden. Reduced motion sets the number immediately. Nothing here is a live region, so a page of these does not interrupt anybody.",
+  },
+  {
+    slug: "tilt-card",
+    kind: "component",
+    name: "Tilt Card",
+    family: "Scenes",
+    summary:
+      "A card that leans toward the pointer as though it were a physical object lying on the page.",
+    dependencies: [],
+    install: registryInstallCommand("tilt-card"),
+    npmImport: packageImport("TiltCard", "tilt-card"),
+    usage: `export function Pass() {
+  return (
+    <TiltCard glare className="p-6">
+      <p>Reykjavik</p>
+      <p>Seat 4A</p>
+    </TiltCard>
+  )
+}`,
+    props: [
+      ["maxTilt", "number", "Furthest it leans, in degrees. Defaults to 9."],
+      [
+        "lift",
+        "number",
+        "How far it comes toward the pointer, in pixels. Defaults to 6.",
+      ],
+      ["glare", "boolean", "Adds a sheen that moves against the lean."],
+      [
+        "perspective",
+        "number",
+        "Pixels. Lower is a stronger effect. Defaults to 900.",
+      ],
+    ],
+    sections: [
+      {
+        id: "restraint",
+        title: "Nine degrees, not thirty",
+        blocks: [
+          {
+            kind: "text",
+            text: "The default lean is small on purpose. A card that swings twenty or thirty degrees stops reading as a card catching the light and starts reading as a card being thrown around, and text on it becomes genuinely harder to read at the far corner.",
+          },
+          {
+            kind: "text",
+            text: "The lean is written to custom properties on the element rather than to state, so a grid of these renders nothing while the pointer crosses it.",
+          },
+        ],
+      },
+      {
+        id: "pairs",
+        title: "With a spotlight",
+        blocks: [
+          {
+            kind: "text",
+            text: "Tilt moves the card and a spotlight moves the light on it. Together they are the usual bento card, and each is still useful without the other.",
+          },
+          {
+            kind: "code",
+            code: `<TiltCard>
+  <SpotlightCard followGroup className="p-5">
+    <p>Studio</p>
+  </SpotlightCard>
+</TiltCard>`,
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The lean is decoration and nothing is announced. Under reduced motion the card does not lean at all, rather than leaning more slowly. Because the effect is driven entirely by the pointer, nothing moves for a reader who is not moving one, and a keyboard reader gets an ordinary card.",
+  },
+  {
+    slug: "cursor-trail",
+    kind: "component",
+    name: "Cursor Trail",
+    family: "Scenes",
+    summary:
+      "A fading mark behind the pointer, drawn only inside its own box and only while the pointer is in it.",
+    dependencies: [],
+    install: registryInstallCommand("cursor-trail"),
+    npmImport: packageImport("CursorTrail", "cursor-trail"),
+    usage: `export function Panel() {
+  return (
+    <CursorTrail className="rounded-xl border p-12">
+      <p>Move the pointer through here</p>
+    </CursorTrail>
+  )
+}`,
+    props: [
+      [
+        "color",
+        "string",
+        'A theme property or CSS colour. Defaults to "--primary".',
+      ],
+      ["size", "number", "Widest the trail gets, in pixels. Defaults to 26."],
+      ["life", "number", "Seconds a mark takes to fade. Defaults to 0.7."],
+    ],
+    sections: [
+      {
+        id: "scoped",
+        title: "Inside its box, not on the page",
+        blocks: [
+          {
+            kind: "text",
+            text: "A trail attached to the whole window follows people into forms, over text they are trying to read, and across every other part of the interface. This one covers the element you put it on and nothing else, which makes it something you can use in one place without it becoming the personality of the entire site.",
+          },
+          {
+            kind: "text",
+            text: "It also stops. The loop runs while the pointer is over the box and for as long afterwards as it takes the last mark to fade, then pauses. A page holding one of these is running no animation until somebody points at it.",
+          },
+        ],
+      },
+      {
+        id: "reduced",
+        title: "Under reduced motion",
+        blocks: [
+          {
+            kind: "text",
+            text: "No marks are made at all. A trail is nothing but movement, and a frozen one is a row of dots that means nothing.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The canvas is decoration, hidden from assistive technology, and transparent to the pointer, so anything underneath stays clickable. Nothing is drawn under reduced motion. Nothing here carries meaning, so there is nothing to miss.",
+  },
+  {
+    slug: "metaballs",
+    kind: "component",
+    name: "Metaballs",
+    family: "Scenes",
+    summary:
+      "Blobs that swell into one another as they meet, taking their two colours from your theme.",
+    dependencies: [],
+    install: registryInstallCommand("metaballs"),
+    npmImport: packageImport("Metaballs", "metaballs"),
+    usage: `export function Hero() {
+  return (
+    <Metaballs count={7} className="rounded-xl">
+      <div className="px-8 py-20 text-center">
+        <h1>Gooey</h1>
+      </div>
+    </Metaballs>
+  )
+}`,
+    props: [
+      ["count", "number", "How many blobs. Up to twelve. Defaults to 7."],
+      ["base", "string", 'The background. Defaults to "--background".'],
+      ["tint", "string", 'The blobs. Defaults to "--primary".'],
+      ["speed", "number", "Multiplies the drift. Defaults to 1."],
+      [
+        "radius",
+        "number",
+        "Size of each blob, as a fraction of the shorter edge. Defaults to 0.16.",
+      ],
+      [
+        "edge",
+        "number",
+        "How sharply a blob ends. Lower is gooier. Defaults to 0.35.",
+      ],
+    ],
+    sections: [
+      {
+        id: "field",
+        title: "How they merge",
+        blocks: [
+          {
+            kind: "text",
+            text: "Each blob contributes a value to every pixel that falls away with the square of the distance to it. The colour changes where the total crosses a threshold. Nothing decides that two blobs are touching: they merge because their contributions add up, the same way two drops of water do.",
+          },
+          {
+            kind: "text",
+            text: "The count is capped at twelve because every blob is another term evaluated at every pixel, and past a dozen the shape stops being readable long before the frame rate does.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "Decoration, hidden from assistive technology, behind its children on its own layer. Under reduced motion one frame is drawn and the blobs never move. If WebGL is unavailable the box keeps its ordinary background and its children.",
+  },
+  {
+    slug: "dither-image",
+    kind: "component",
+    name: "Dither Image",
+    family: "Scenes",
+    summary:
+      "A photograph reduced to two theme colours through an ordered dither, the way a newspaper reduced one to ink and paper.",
+    dependencies: [],
+    install: registryInstallCommand("dither-image"),
+    npmImport: packageImport("DitherImage", "dither-image"),
+    usage: `export function Portrait() {
+  return (
+    <DitherImage
+      src="/team/ada.jpg"
+      alt="Ada at her desk"
+      cell={4}
+      className="aspect-[3/2] rounded-xl"
+    />
+  )
+}`,
+    props: [
+      ["src", "string", "The picture."],
+      [
+        "alt",
+        "string",
+        "Describes it. Required, and used by both the fallback and the canvas.",
+      ],
+      [
+        "cell",
+        "number",
+        "Size of one dot in pixels. Larger is coarser. Defaults to 4.",
+      ],
+      [
+        "levels",
+        "number",
+        "How many tones survive. Two is a pure halftone. Defaults to 2.",
+      ],
+      ["base", "string", 'The paper. Defaults to "--background".'],
+      ["tint", "string", 'The ink. Defaults to "--foreground".'],
+      ["contrast", "number", "Applied before the dither. Defaults to 1.15."],
+    ],
+    sections: [
+      {
+        id: "ordered",
+        title: "Ordered, not random",
+        blocks: [
+          {
+            kind: "text",
+            text: "The threshold each pixel is measured against comes from a repeating four by four matrix rather than from a random number. That is what gives the result its woven, printed look instead of the sandy look of noise, and it is also why the picture is stable: the same pixel gets the same threshold on every frame, so nothing crawls.",
+          },
+          {
+            kind: "text",
+            text: "Because both colours come from the theme, the same photograph arrives as dark ink on pale paper in a light application and the other way round in a dark one.",
+          },
+        ],
+      },
+      {
+        id: "fallback",
+        title: "There is always a picture",
+        blocks: [
+          {
+            kind: "text",
+            text: "The original is rendered as an ordinary image underneath. If WebGL is missing, if the shader will not compile, or if the picture comes from a host that refuses to let it be read, the reader gets the photograph rather than an empty box.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The alt text is carried by both the fallback image and the canvas, so the picture is described once whichever is showing. Nothing moves, so there is nothing for reduced motion to remove.",
+  },
+  {
+    slug: "ascii-image",
+    kind: "component",
+    name: "ASCII Image",
+    family: "Scenes",
+    summary:
+      "A photograph redrawn as characters. The grid is worked out once and kept, so each frame is a single copy rather than thousands of letters measured again.",
+    dependencies: [],
+    install: registryInstallCommand("ascii-image"),
+    npmImport: packageImport("AsciiImage", "ascii-image"),
+    usage: `export function Portrait() {
+  return (
+    <AsciiImage
+      src="/team/ada.jpg"
+      alt="Ada at her desk"
+      cell={7}
+      className="aspect-square"
+    />
+  )
+}`,
+    props: [
+      ["src", "string", "The picture."],
+      ["alt", "string", "Describes it. Required."],
+      [
+        "cell",
+        "number",
+        "Width of one character cell in pixels. Defaults to 8.",
+      ],
+      [
+        "ramp",
+        "string",
+        'The characters, darkest first. Defaults to "@%#*+=-:. ".',
+      ],
+      ["color", "string", 'The characters. Defaults to "--foreground".'],
+      ["background", "string", 'Behind them. Defaults to "--background".'],
+      ["contrast", "number", "Applied before the ramp. Defaults to 1.2."],
+    ],
+    sections: [
+      {
+        id: "still",
+        title: "Worked out once",
+        blocks: [
+          {
+            kind: "text",
+            text: "A grid of this size is several thousand characters, each of which has to be measured and drawn. Doing that every frame to produce an identical result would be the most expensive component here by a wide margin.",
+          },
+          {
+            kind: "text",
+            text: "So the grid is drawn once into a canvas kept aside, and every frame after that is a single copy of it. It is worked out again only when something it is made of changes: the picture arrived, the box was resized, the theme was switched, a prop moved. Everything else costs one copy.",
+          },
+          {
+            kind: "text",
+            text: "The surface underneath still sleeps whenever it is off screen or its tab is hidden, so a page holding one of these is doing nothing at all while it is out of sight.",
+          },
+        ],
+      },
+      {
+        id: "ramp",
+        title: "Choosing the characters",
+        blocks: [
+          {
+            kind: "text",
+            text: "The ramp runs from the character used for the darkest part of the picture to the one used for the lightest, and the last entry is usually a space. Shorter ramps are more graphic and longer ones hold more detail.",
+          },
+          {
+            kind: "code",
+            code: `<AsciiImage src="/team/ada.jpg" alt="Ada" ramp="#+-. " cell={10} />`,
+            caption:
+              "Cells are drawn a little taller than they are wide, because that is the shape of a character.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The canvas is announced as an image with your alt text, so the picture is described exactly as an ordinary one would be. Nothing animates at any setting.",
+  },
+  {
+    slug: "wireframe-globe",
+    kind: "component",
+    name: "Wireframe Globe",
+    family: "Scenes",
+    summary:
+      "A wireframe world with places marked on it, arcs between them, and the same places written out underneath as text.",
+    dependencies: ["three"],
+    install: registryInstallCommand("wireframe-globe"),
+    npmImport: packageImport("WireframeGlobe", "wireframe-globe"),
+    usage: `export function Regions() {
+  return (
+    <WireframeGlobe
+      markers={[
+        { id: "lhr", lat: 51.47, lng: -0.45, label: "London" },
+        { id: "sin", lat: 1.36, lng: 103.99, label: "Singapore" },
+      ]}
+      className="aspect-square"
+    />
+  )
+}`,
+    props: [
+      ["markers", "GlobeMarker[]", "Places to mark."],
+      ["arcs", "GlobeArc[]", "Lines drawn between two places."],
+      ["color", "string", 'The sphere. Defaults to "--border".'],
+      ["accent", "string", 'The markers and arcs. Defaults to "--primary".'],
+      ["speed", "number", "Turns per second. Defaults to 0.06."],
+      ["interactive", "boolean", "Lets the pointer spin it. On by default."],
+    ],
+    types: [
+      {
+        name: "GlobeMarker",
+        rows: [
+          ["lat", "number", "Degrees north."],
+          ["lng", "number", "Degrees east."],
+          [
+            "label",
+            "string",
+            "What the place is called. Required, and used in the text list.",
+          ],
+          ["id", "string", "Optional key."],
+        ],
+      },
+      {
+        name: "GlobeArc",
+        rows: [
+          ["from", "{ lat, lng }", "Where the line starts."],
+          ["to", "{ lat, lng }", "Where it ends."],
+        ],
+      },
+    ],
+    sections: [
+      {
+        id: "text",
+        title: "The list is not optional",
+        blocks: [
+          {
+            kind: "text",
+            text: "A globe is usually showing something real: where the regions are, where the customers are, where the incident is. That information cannot live only in a canvas, so the markers are also rendered as a plain list for anything that does not read one.",
+          },
+          {
+            kind: "text",
+            text: "This is why label is required rather than optional. A marker without a name is a dot on a sphere and there is nothing to say about it.",
+          },
+        ],
+      },
+      {
+        id: "peers",
+        title: "What it needs installed",
+        blocks: [
+          {
+            kind: "text",
+            text: "Along with the scene hero, this is one of the two components that ask for three, and it is an optional peer. The package root does not export it, because a barrel holding it would fail to resolve for everyone who had not installed three.",
+          },
+          {
+            kind: "code",
+            code: `npm install mischief-ui three`,
+            caption:
+              "Import it from its own entry: mischief-ui/wireframe-globe, not the package root.",
+          },
+        ],
+      },
+      {
+        id: "spin",
+        title: "Turning it",
+        blocks: [
+          {
+            kind: "text",
+            text: "It turns slowly on its own and can be dragged, and a drag carries a little momentum before the steady turn takes over again. Set interactive to false when the globe sits behind something else that should be receiving the pointer.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The canvas is decoration and the markers are a real list, so the places are read out in order whether or not anything renders. Under reduced motion one frame is drawn and the globe neither turns nor drifts, though it can still be dragged, because that movement is the reader's own.",
+  },
+  {
+    slug: "presence-field",
+    kind: "component",
+    name: "Presence Field",
+    family: "Agent UI",
+    featured: true,
+    summary:
+      "An ambient backdrop that carries what the assistant is doing. It changes colour and pace with the state, and settles into each one rather than snapping to it.",
+    dependencies: [],
+    install: registryInstallCommand("presence-field"),
+    npmImport: packageImport("PresenceField", "presence-field"),
+    usage: `export function Thread({ status }) {
+  return (
+    <PresenceField state={status} className="rounded-xl">
+      <Conversation>{/* messages */}</Conversation>
+      <ThinkingState status={status} />
+    </PresenceField>
+  )
+}`,
+    props: [
+      [
+        "state",
+        '"idle" | "thinking" | "streaming" | "done" | "error"',
+        'What the assistant is doing. Defaults to "idle".',
+      ],
+      [
+        "base",
+        "string",
+        'The colour it settles to. Defaults to "--background".',
+      ],
+      ["active", "string", 'While it is working. Defaults to "--primary".'],
+      [
+        "fault",
+        "string",
+        'When something went wrong. Defaults to "--destructive".',
+      ],
+      [
+        "quiet",
+        "string",
+        'While it is idle. Defaults to "--muted-foreground".',
+      ],
+      [
+        "activity",
+        "number",
+        "Nought to one, for how much is arriving. Only read while streaming.",
+      ],
+    ],
+    sections: [
+      {
+        id: "second-channel",
+        title: "A second channel, never the only one",
+        blocks: [
+          {
+            kind: "text",
+            text: "This is the one rule that matters here. A colour behind a thread is not a status: it cannot be read out, it is invisible to anyone who cannot distinguish the two colours you chose, and it says nothing at all to a reader who has motion turned off.",
+          },
+          {
+            kind: "text",
+            text: "Put it behind a thread whose state is already written down. The thinking state component says what is happening in words; this says the same thing in the room around it. Take the words away and you have a page that changes colour for no stated reason.",
+          },
+          {
+            kind: "code",
+            code: `<PresenceField state={status}>
+  <Conversation>{messages}</Conversation>
+  <ThinkingState status={status} />
+</PresenceField>`,
+            caption: "The field decorates the state. It does not report it.",
+          },
+        ],
+      },
+      {
+        id: "settles",
+        title: "It settles rather than switches",
+        blocks: [
+          {
+            kind: "text",
+            text: "Both the colour and the pace are eased toward whatever the current state calls for, on every frame, rather than being set when the state changes. A thread that finishes drifts down to rest over about a second instead of cutting to a new colour.",
+          },
+          {
+            kind: "text",
+            text: "That easing is why the states are not simply four different shaders. There is one field, and the state moves it.",
+          },
+          {
+            kind: "table",
+            headers: ["State", "Pace", "Colour"],
+            rows: [
+              ["idle", "Very slow", "The quiet colour"],
+              ["thinking", "Steady", "The active colour"],
+              [
+                "streaming",
+                "Quickest, and quicker again with activity",
+                "The active colour",
+              ],
+              ["done", "Almost still", "The active colour, faint"],
+              ["error", "Unsettled", "The fault colour"],
+            ],
+          },
+        ],
+      },
+      {
+        id: "readable",
+        title: "Keeping the middle quiet",
+        blocks: [
+          {
+            kind: "text",
+            text: "The field is brightest at the edges and weakest in the middle, because the middle is where the thread is. Text stays on an almost plain background while the movement happens around it.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The canvas is decoration and is hidden from assistive technology, deliberately: the state belongs to the component that states it in words. Under reduced motion one frame is drawn and the field never moves, which is exactly why it must not be the only signal. Children are ordinary markup above it.",
+  },
+  {
+    slug: "stream-glow",
+    kind: "component",
+    name: "Stream Glow",
+    family: "Agent UI",
+    summary:
+      "An edge that breathes along a region while tokens land in it, and stops the moment they do.",
+    dependencies: [],
+    install: registryInstallCommand("stream-glow"),
+    npmImport: packageImport("StreamGlow", "stream-glow"),
+    usage: `export function Answer({ streaming, tokensPerSecond }) {
+  return (
+    <StreamGlow active={streaming} rate={tokensPerSecond / 60} className="rounded-xl border p-6">
+      <Message>{/* the answer so far */}</Message>
+    </StreamGlow>
+  )
+}`,
+    props: [
+      ["active", "boolean", "Whether anything is arriving. Off by default."],
+      [
+        "rate",
+        "number",
+        "Nought to one. Faster arrival breathes faster and reaches further. Defaults to 0.5.",
+      ],
+      [
+        "color",
+        "string",
+        'A theme property or CSS colour. Defaults to "--primary".',
+      ],
+      ["spread", "number", "Thickness of the glow in pixels. Defaults to 22."],
+    ],
+    sections: [
+      {
+        id: "says",
+        title: "What it is allowed to mean",
+        blocks: [
+          {
+            kind: "text",
+            text: "Only that something is arriving. It cannot say what, or how far through, or whether it went wrong, so it belongs next to a stop control and a written status rather than standing in for either.",
+          },
+          {
+            kind: "text",
+            text: "It is CSS, not a canvas. There is nothing to draw here that a shadow and an opacity cannot do, and staying in CSS means it costs nothing and inherits the border radius of whatever you put it on.",
+          },
+        ],
+      },
+      {
+        id: "rate",
+        title: "Tying it to the throughput",
+        blocks: [
+          {
+            kind: "text",
+            text: "Rate changes both how quickly the edge breathes and how far it reaches, so a fast answer looks fast. Normalise your tokens per second into nought through one before passing it, and keep the value smoothed: a glow driven by a raw per-frame figure flickers.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The glow is a hidden decorative layer and announces nothing. Under reduced motion the breathing stops and a steady edge remains, so the region is still marked. As with any ambient signal, the words next to it are what actually reports the state.",
+  },
+  {
+    slug: "otp-input",
+    kind: "component",
+    name: "OTP Input",
+    family: "Controls",
+    summary:
+      "A one time code, one box per character, where pasting the whole code into any box fills the rest.",
+    dependencies: [],
+    install: registryInstallCommand("otp-input"),
+    npmImport: packageImport("OtpInput", "otp-input"),
+    usage: `export function Verify() {
+  const [code, setCode] = React.useState("")
+
+  return (
+    <OtpInput value={code} onChange={setCode} onComplete={submit} />
+  )
+}`,
+    props: [
+      ["length", "number", "How many boxes. Defaults to 6."],
+      ["value", "string", "Controlled value."],
+      ["defaultValue", "string", "Uncontrolled starting value."],
+      ["onChange", "(value: string) => void", "The code so far."],
+      [
+        "onComplete",
+        "(value: string) => void",
+        "Called once the last box is filled.",
+      ],
+      [
+        "pattern",
+        "RegExp",
+        "Which characters are allowed, tested one at a time. Digits by default.",
+      ],
+      [
+        "label",
+        "string",
+        'Names the group and each box. Defaults to "One time code".',
+      ],
+    ],
+    sections: [
+      {
+        id: "paste",
+        title: "Pasting is the normal case",
+        blocks: [
+          {
+            kind: "text",
+            text: "People do not type these codes. They copy the whole thing from a message and paste it, and they paste it into whichever box happens to have focus. So a paste is caught wherever it lands, filtered to the characters the pattern allows, spread across the boxes from that point, and focus is left on the first box still empty.",
+          },
+          {
+            kind: "text",
+            text: "The first box also carries the one time code autocomplete hint, which is what lets a phone offer the code straight from the message without anyone touching the clipboard at all.",
+          },
+        ],
+      },
+      {
+        id: "keys",
+        title: "The keys people actually press",
+        blocks: [
+          {
+            kind: "list",
+            items: [
+              "Backspace on a filled box clears it and stays. On an empty box it clears the one before and moves back, which is what people expect after overshooting.",
+              "Left and right arrows move between boxes without changing anything.",
+              "Typing into a filled box replaces its character rather than being ignored.",
+            ],
+          },
+          {
+            kind: "text",
+            text: "Every box is named as a character and its position, so moving between them announces where you are rather than repeating the same label six times.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The boxes are a named group and each is labelled with its position in it. The numeric keyboard is requested when the pattern is digits, and the first box carries the one time code hint so a phone can offer it. The filled state is shown with a border and a small change of scale rather than colour alone, and that scale change is removed under reduced motion.",
+  },
+  {
+    slug: "tag-input",
+    kind: "component",
+    name: "Tag Input",
+    family: "Controls",
+    summary:
+      "An input that turns what you typed into a removable tag, and gives the last one back when you press backspace on an empty field.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("tag-input"),
+    npmImport: packageImport("TagInput", "tag-input"),
+    usage: `export function Topics() {
+  const [tags, setTags] = React.useState(["design"])
+
+  return <TagInput value={tags} onChange={setTags} max={6} label="Topics" />
+}`,
+    props: [
+      ["value", "string[]", "Controlled tags."],
+      ["defaultValue", "string[]", "Uncontrolled starting tags."],
+      ["onChange", "(tags: string[]) => void", "The tags after a change."],
+      ["placeholder", "string", "Shown in the empty field."],
+      [
+        "separators",
+        "string[]",
+        'Keys that end a tag, besides Enter. Defaults to [",", "Enter"].',
+      ],
+      ["max", "number", "Most tags allowed. The field closes once reached."],
+      [
+        "allowDuplicates",
+        "boolean",
+        "Whether the same tag may be added twice. Off by default.",
+      ],
+      ["label", "string", 'Names the field. Defaults to "Tags".'],
+    ],
+    sections: [
+      {
+        id: "announced",
+        title: "Every change is said",
+        blocks: [
+          {
+            kind: "text",
+            text: "Adding a tag, removing one, and being refused a duplicate are all announced in a polite live region. Without that, a reader using a screen reader presses Enter and hears nothing, which is indistinguishable from the field being broken.",
+          },
+          {
+            kind: "text",
+            text: "Each remove control is named with the tag it removes rather than being six identical buttons called Remove.",
+          },
+        ],
+      },
+      {
+        id: "habits",
+        title: "The habits it expects",
+        blocks: [
+          {
+            kind: "list",
+            items: [
+              "Enter or a comma ends a tag. Whitespace around it is trimmed.",
+              "Backspace on an empty field takes the last tag back, so overshooting is recoverable without reaching for the pointer.",
+              "Leaving the field commits whatever was half typed, rather than throwing it away.",
+              "A duplicate clears the field and says so, instead of silently doing nothing.",
+            ],
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The field is labelled, described by its status region, and every change is announced politely. Remove controls name their own tag. Clicking the surrounding box focuses the field, and the whole control shows a focus ring when anything inside it has focus.",
+  },
+  {
+    slug: "sortable-list",
+    kind: "component",
+    name: "Sortable List",
+    family: "Controls",
+    featured: true,
+    summary:
+      "A list reordered by dragging a handle, or from the keyboard without one, where every move is announced.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("sortable-list"),
+    npmImport: packageImport("SortableList", "sortable-list"),
+    usage: `export function Tasks() {
+  const [tasks, setTasks] = React.useState(initial)
+
+  return (
+    <SortableList
+      items={tasks}
+      getKey={(task) => task.id}
+      getLabel={(task) => task.name}
+      onReorder={setTasks}
+      renderItem={(task) => <p>{task.name}</p>}
+    />
+  )
+}`,
+    props: [
+      ["items", "TItem[]", "The list, in its current order."],
+      ["getKey", "(item) => string", "A stable key for each item."],
+      ["onReorder", "(items) => void", "The list in its new order."],
+      ["renderItem", "(item, index) => ReactNode", "What each row shows."],
+      [
+        "getLabel",
+        "(item) => string",
+        "Names the item on its handle and in announcements. Worth passing.",
+      ],
+      ["label", "string", 'Names the list. Defaults to "Sortable list".'],
+    ],
+    sections: [
+      {
+        id: "keyboard",
+        title: "Reordering without a pointer",
+        blocks: [
+          {
+            kind: "text",
+            text: "Drag and drop is the version of this everyone builds and the version a keyboard cannot use. So the handle is a real button that can be focused, and the whole operation works from there.",
+          },
+          {
+            kind: "list",
+            items: [
+              "Space or Enter lifts the item, and says so along with what to do next.",
+              "Up and down arrows move it while it is lifted, announcing its new position each time.",
+              "Space or Enter drops it.",
+              "Escape puts the list back the way it was before the lift.",
+            ],
+          },
+          {
+            kind: "text",
+            text: "A lifted item is marked as pressed and ringed, so its state is visible as well as announced.",
+          },
+        ],
+      },
+      {
+        id: "announcing",
+        title: "Saying where things went",
+        blocks: [
+          {
+            kind: "text",
+            text: "Every move reports the item and its new position out of the total. A list that rearranges itself in silence is unusable to anyone not watching it, and that includes anyone who dragged something and looked away.",
+          },
+          {
+            kind: "code",
+            code: `getLabel={(task) => task.name}`,
+            caption:
+              "Without this the announcements can only say Item 3, which is true and useless.",
+          },
+        ],
+      },
+      {
+        id: "controlled",
+        title: "It owns no order of its own",
+        blocks: [
+          {
+            kind: "text",
+            text: "The list is whatever you passed and every change comes back through onReorder, including the ones made while a drag is still in progress. There is no internal copy to fall out of step with yours, and persisting the order is a matter of saving what you were handed.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "An ordered list whose handles are named buttons carrying the item's name. The full operation is available from the keyboard, with lifted state exposed as pressed, and every move and cancellation announced politely. Escape restores the order from before the lift.",
+  },
+  {
+    slug: "resizable-panels",
+    kind: "component",
+    name: "Resizable Panels",
+    family: "Blocks",
+    summary:
+      "Two panels and something to drag between them, where the divider is a real separator that also works from the keyboard.",
+    dependencies: [],
+    install: registryInstallCommand("resizable-panels"),
+    npmImport: packageImport("ResizablePanels", "resizable-panels"),
+    usage: `export function Workspace() {
+  return (
+    <ResizablePanels
+      defaultSize={38}
+      first={<FileTree />}
+      second={<Editor />}
+      className="h-96 rounded-xl border"
+    />
+  )
+}`,
+    props: [
+      ["first", "ReactNode", "The panel the size applies to."],
+      ["second", "ReactNode", "The panel that takes the rest."],
+      [
+        "direction",
+        '"horizontal" | "vertical"',
+        'Which way they sit. Defaults to "horizontal".',
+      ],
+      ["size", "number", "Controlled percentage for the first panel."],
+      [
+        "defaultSize",
+        "number",
+        "Uncontrolled starting percentage. Defaults to 50.",
+      ],
+      ["onSizeChange", "(size: number) => void", "The new percentage."],
+      ["min", "number", "Smallest percentage. Defaults to 15."],
+      ["max", "number", "Largest percentage. Defaults to 85."],
+      [
+        "step",
+        "number",
+        "Percentage points an arrow key moves. Defaults to 4.",
+      ],
+    ],
+    sections: [
+      {
+        id: "separator",
+        title: "A separator with a value",
+        blocks: [
+          {
+            kind: "text",
+            text: "The divider is a separator with a current value, a minimum, and a maximum, and it can be focused. That is what makes the split adjustable by anyone who cannot drag: arrow keys move it a step at a time, and Home and End take it to either limit.",
+          },
+          {
+            kind: "text",
+            text: "A one pixel line is also close to impossible to hit with a pointer, so the area that responds is considerably wider than the line that is drawn. The line stays thin and the target does not.",
+          },
+        ],
+      },
+      {
+        id: "bounds",
+        title: "Panels that cannot be lost",
+        blocks: [
+          {
+            kind: "text",
+            text: "The size is clamped between the minimum and maximum on every change, wherever it came from, so neither panel can be dragged down to nothing and become impossible to get back. Both panels scroll their own contents rather than pushing the split around.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "The divider is a separator with an orientation, a current value, and its limits, reachable in the tab order and driven by the arrow keys, Home, and End. Its grab area is far larger than the line it draws. Both panels are ordinary regions and their contents are reached in the order they are written.",
+  },
+  {
+    slug: "stepper",
+    kind: "component",
+    name: "Stepper",
+    family: "Controls",
+    summary:
+      "Where someone is in something with a beginning and an end, said in words as well as drawn.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("stepper"),
+    npmImport: packageImport("Stepper", "stepper"),
+    usage: `export function Setup({ step }) {
+  return (
+    <Stepper
+      current={step}
+      steps={[
+        { id: "account", label: "Account", description: "Name and email" },
+        { id: "workspace", label: "Workspace" },
+        { id: "done", label: "Done" },
+      ]}
+    />
+  )
+}`,
+    props: [
+      ["steps", "Step[]", "The steps, in order."],
+      ["current", "number", "Index of the step being worked on."],
+      [
+        "orientation",
+        '"horizontal" | "vertical"',
+        'Which way it runs. Defaults to "horizontal".',
+      ],
+      [
+        "onSelect",
+        "(index, step) => void",
+        "Makes finished steps revisitable. Without it they are not.",
+      ],
+      ["label", "string", 'Names the navigation. Defaults to "Progress".'],
+    ],
+    types: [
+      {
+        name: "Step",
+        rows: [
+          ["id", "string", "Identifies the step."],
+          ["label", "string", "What it is called."],
+          ["description", "string", "An optional line underneath."],
+        ],
+      },
+    ],
+    sections: [
+      {
+        id: "said",
+        title: "Progress that does not live in a colour",
+        blocks: [
+          {
+            kind: "text",
+            text: "A filled circle means finished and an outlined one means not started, and neither of those is available to a reader who cannot see them. So each step also carries its state as text: finished, in progress, or not started, read after its name.",
+          },
+          {
+            kind: "text",
+            text: "The current step is marked as the current step in the page, which is how assistive technology finds it without being told where to look.",
+          },
+        ],
+      },
+      {
+        id: "back",
+        title: "Going back only when there is somewhere to go",
+        blocks: [
+          {
+            kind: "text",
+            text: "Pass onSelect and finished steps become buttons that return to them. Leave it out and nothing in the stepper is interactive, which is the right default: most steppers report progress rather than offering navigation, and a control that looks pressable and is not is worse than no control.",
+          },
+          {
+            kind: "text",
+            text: "Steps ahead of the current one are never reachable, whether or not onSelect is passed.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "A navigation landmark holding an ordered list. Each step's state is written out after its name, the current step is marked as current, and the connecting lines are hidden. Revisitable steps are real buttons, named with where they go, and steps ahead are never among them.",
+  },
+  {
+    slug: "avatar-stack",
+    kind: "component",
+    name: "Avatar Stack",
+    family: "Blocks",
+    summary:
+      "Overlapping faces with a count for the rest, and the names underneath as a real list.",
+    dependencies: [],
+    install: registryInstallCommand("avatar-stack"),
+    npmImport: packageImport("AvatarStack", "avatar-stack"),
+    usage: `export function Editors({ people }) {
+  return <AvatarStack people={people} max={4} label="Editing now" />
+}`,
+    props: [
+      ["people", "Person[]", "Everyone, not only the ones shown."],
+      [
+        "max",
+        "number",
+        "How many faces before the rest become a count. Defaults to 4.",
+      ],
+      ["size", "number", "Pixels across. Defaults to 32."],
+      [
+        "spread",
+        "boolean",
+        "Fans the stack out under the pointer. On by default.",
+      ],
+      ["label", "string", 'Names the group. Defaults to "People".'],
+    ],
+    types: [
+      {
+        name: "Person",
+        rows: [
+          ["name", "string", "Used as the picture's alt text, or as initials."],
+          [
+            "src",
+            "string",
+            "Optional picture. Without one, initials are drawn.",
+          ],
+          ["id", "string", "Optional key."],
+        ],
+      },
+    ],
+    sections: [
+      {
+        id: "list",
+        title: "Faces on top of a list",
+        blocks: [
+          {
+            kind: "text",
+            text: "The stack is a named list and each face is an item in it, so the group is read as the people it contains rather than as a row of pictures. Someone without a picture gets their initials drawn, with their full name still carried underneath, because initials read aloud are not a name.",
+          },
+          {
+            kind: "text",
+            text: "The overflow count says how many more there are in words as well as showing a number, so it is announced as a quantity of people rather than as a plus sign and a digit.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "A named list whose items carry full names, whether shown as a picture or as initials. The overflow is announced as a number of further people. Under reduced motion the stack does not fan out, and nothing about the group depends on it having done so.",
+  },
+  {
+    slug: "timeline",
+    kind: "component",
+    name: "Timeline",
+    family: "Blocks",
+    summary:
+      "Things that happened, in the order they happened, with the state of each one said aloud rather than left in a coloured dot.",
+    dependencies: [],
+    install: registryInstallCommand("timeline"),
+    npmImport: packageImport("Timeline", "timeline"),
+    usage: `export function History({ events }) {
+  return <Timeline entries={events} label="Pull request history" />
+}`,
+    props: [
+      ["entries", "TimelineEntry[]", "The events, oldest first."],
+      ["label", "string", 'Names the list. Defaults to "Timeline".'],
+    ],
+    types: [
+      {
+        name: "TimelineEntry",
+        rows: [
+          ["id", "string", "Identifies the entry."],
+          ["title", "string", "What happened."],
+          ["time", "string", "When, already formatted."],
+          ["description", "ReactNode", "Anything further."],
+          [
+            "tone",
+            '"done" | "active" | "todo" | "problem"',
+            'Its state. Defaults to "done".',
+          ],
+        ],
+      },
+    ],
+    sections: [
+      {
+        id: "tone",
+        title: "The dot is not the only thing carrying it",
+        blocks: [
+          {
+            kind: "text",
+            text: "Each tone is drawn as a colour and also written out after the title: finished, happening now, not started, or went wrong. The colour is the quick version for anyone who can see it and the words are the actual record.",
+          },
+          {
+            kind: "text",
+            text: "Time is taken already formatted rather than as a date, because how a time should be written depends on the locale, the timezone, and whether it is worth showing a year -- none of which a timeline component can work out on your behalf.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "A named ordered list, so the sequence is conveyed as a sequence rather than as a column of text. Each entry's state is announced after its title, and the dots and connecting line are hidden. Nothing animates.",
+  },
 ] as const
 
 export const componentDocs = entries.map((entry, index) => ({
@@ -6456,6 +8705,14 @@ const familyOrder = [
   [
     "Blocks",
     "Larger pieces that compose several components into one part of a page.",
+  ],
+  [
+    "Scenes",
+    "Backdrops and moments where the drawing is the job, each one taking its colours from the theme it was installed into.",
+  ],
+  [
+    "Motion",
+    "Entrances and numbers that move, driven by arrival or by scrolling, and never by withholding the content.",
   ],
 ] as const
 

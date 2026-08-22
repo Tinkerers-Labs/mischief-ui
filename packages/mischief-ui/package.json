@@ -1,6 +1,6 @@
 {
   "name": "mischief-ui",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "description": "Playful, production-ready React components for shadcn projects.",
   "license": "MIT",
   "type": "module",
@@ -344,10 +344,150 @@
       "types": "./dist/side-panel.d.ts",
       "import": "./dist/side-panel.js",
       "require": "./dist/side-panel.cjs"
+    },
+    "./render-surface": {
+      "types": "./dist/render-surface.d.ts",
+      "import": "./dist/render-surface.js",
+      "require": "./dist/render-surface.cjs"
+    },
+    "./aurora-field": {
+      "types": "./dist/aurora-field.d.ts",
+      "import": "./dist/aurora-field.js",
+      "require": "./dist/aurora-field.cjs"
+    },
+    "./grain-overlay": {
+      "types": "./dist/grain-overlay.d.ts",
+      "import": "./dist/grain-overlay.js",
+      "require": "./dist/grain-overlay.cjs"
+    },
+    "./spotlight-card": {
+      "types": "./dist/spotlight-card.d.ts",
+      "import": "./dist/spotlight-card.js",
+      "require": "./dist/spotlight-card.cjs"
+    },
+    "./constellation-field": {
+      "types": "./dist/constellation-field.d.ts",
+      "import": "./dist/constellation-field.js",
+      "require": "./dist/constellation-field.cjs"
+    },
+    "./burst": {
+      "types": "./dist/burst.d.ts",
+      "import": "./dist/burst.js",
+      "require": "./dist/burst.cjs"
+    },
+    "./shader-surface": {
+      "types": "./dist/shader-surface.d.ts",
+      "import": "./dist/shader-surface.js",
+      "require": "./dist/shader-surface.cjs"
+    },
+    "./displacement-image": {
+      "types": "./dist/displacement-image.d.ts",
+      "import": "./dist/displacement-image.js",
+      "require": "./dist/displacement-image.cjs"
+    },
+    "./scene-hero": {
+      "types": "./dist/scene-hero.d.ts",
+      "import": "./dist/scene-hero.js",
+      "require": "./dist/scene-hero.cjs"
+    },
+    "./scroll-scene": {
+      "types": "./dist/scroll-scene.d.ts",
+      "import": "./dist/scroll-scene.js",
+      "require": "./dist/scroll-scene.cjs"
+    },
+    "./reveal": {
+      "types": "./dist/reveal.d.ts",
+      "import": "./dist/reveal.js",
+      "require": "./dist/reveal.cjs"
+    },
+    "./split-text": {
+      "types": "./dist/split-text.d.ts",
+      "import": "./dist/split-text.js",
+      "require": "./dist/split-text.cjs"
+    },
+    "./number-ticker": {
+      "types": "./dist/number-ticker.d.ts",
+      "import": "./dist/number-ticker.js",
+      "require": "./dist/number-ticker.cjs"
+    },
+    "./tilt-card": {
+      "types": "./dist/tilt-card.d.ts",
+      "import": "./dist/tilt-card.js",
+      "require": "./dist/tilt-card.cjs"
+    },
+    "./cursor-trail": {
+      "types": "./dist/cursor-trail.d.ts",
+      "import": "./dist/cursor-trail.js",
+      "require": "./dist/cursor-trail.cjs"
+    },
+    "./metaballs": {
+      "types": "./dist/metaballs.d.ts",
+      "import": "./dist/metaballs.js",
+      "require": "./dist/metaballs.cjs"
+    },
+    "./dither-image": {
+      "types": "./dist/dither-image.d.ts",
+      "import": "./dist/dither-image.js",
+      "require": "./dist/dither-image.cjs"
+    },
+    "./ascii-image": {
+      "types": "./dist/ascii-image.d.ts",
+      "import": "./dist/ascii-image.js",
+      "require": "./dist/ascii-image.cjs"
+    },
+    "./wireframe-globe": {
+      "types": "./dist/wireframe-globe.d.ts",
+      "import": "./dist/wireframe-globe.js",
+      "require": "./dist/wireframe-globe.cjs"
+    },
+    "./presence-field": {
+      "types": "./dist/presence-field.d.ts",
+      "import": "./dist/presence-field.js",
+      "require": "./dist/presence-field.cjs"
+    },
+    "./stream-glow": {
+      "types": "./dist/stream-glow.d.ts",
+      "import": "./dist/stream-glow.js",
+      "require": "./dist/stream-glow.cjs"
+    },
+    "./otp-input": {
+      "types": "./dist/otp-input.d.ts",
+      "import": "./dist/otp-input.js",
+      "require": "./dist/otp-input.cjs"
+    },
+    "./tag-input": {
+      "types": "./dist/tag-input.d.ts",
+      "import": "./dist/tag-input.js",
+      "require": "./dist/tag-input.cjs"
+    },
+    "./sortable-list": {
+      "types": "./dist/sortable-list.d.ts",
+      "import": "./dist/sortable-list.js",
+      "require": "./dist/sortable-list.cjs"
+    },
+    "./resizable-panels": {
+      "types": "./dist/resizable-panels.d.ts",
+      "import": "./dist/resizable-panels.js",
+      "require": "./dist/resizable-panels.cjs"
+    },
+    "./stepper": {
+      "types": "./dist/stepper.d.ts",
+      "import": "./dist/stepper.js",
+      "require": "./dist/stepper.cjs"
+    },
+    "./avatar-stack": {
+      "types": "./dist/avatar-stack.d.ts",
+      "import": "./dist/avatar-stack.js",
+      "require": "./dist/avatar-stack.cjs"
+    },
+    "./timeline": {
+      "types": "./dist/timeline.d.ts",
+      "import": "./dist/timeline.js",
+      "require": "./dist/timeline.cjs"
     }
   },
   "scripts": {
-    "build": "NODE_OPTIONS=--max-old-space-size=8192 tsup"
+    "build": "NODE_OPTIONS=--max-old-space-size=16384 tsup"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -363,7 +503,8 @@
     "mammoth": ">=1.9",
     "pdfjs-dist": ">=5",
     "react-markdown": ">=9",
-    "remark-gfm": ">=4"
+    "remark-gfm": ">=4",
+    "three": ">=0.160 <1"
   },
   "keywords": [
     "react",
@@ -403,6 +544,9 @@
       "optional": true
     },
     "remark-gfm": {
+      "optional": true
+    },
+    "three": {
       "optional": true
     }
   }

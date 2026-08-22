@@ -970,6 +970,403 @@
       ],
       "categories": ["overlay", "layout", "dialog"],
       "registryDependencies": ["utils"]
+    },
+    {
+      "name": "render-surface",
+      "type": "registry:ui",
+      "title": "Render Surface",
+      "description": "A canvas that sizes itself, sleeps when it is off screen, and holds still when motion is reduced.",
+      "files": [
+        {
+          "path": "registry/default/render-surface/render-surface.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["scene", "canvas", "motion", "primitive"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "aurora-field",
+      "type": "registry:ui",
+      "title": "Aurora Field",
+      "description": "A drifting gradient backdrop built from the colours already in your theme.",
+      "files": [
+        {
+          "path": "registry/default/aurora-field/aurora-field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["scene", "background", "gradient", "motion"],
+      "registryDependencies": ["utils", "render-surface"]
+    },
+    {
+      "name": "grain-overlay",
+      "type": "registry:ui",
+      "title": "Grain Overlay",
+      "description": "Film grain for any panel, which also hides the banding in a wide gradient.",
+      "files": [
+        {
+          "path": "registry/default/grain-overlay/grain-overlay.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["scene", "texture", "overlay"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "spotlight-card",
+      "type": "registry:ui",
+      "title": "Spotlight Card",
+      "description": "A card that catches a light following the pointer, across a whole grid at once.",
+      "files": [
+        {
+          "path": "registry/default/spotlight-card/spotlight-card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["scene", "card", "pointer", "hover"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "constellation-field",
+      "type": "registry:ui",
+      "title": "Constellation Field",
+      "description": "Drifting points joined by lines, brightening around the pointer.",
+      "files": [
+        {
+          "path": "registry/default/constellation-field/constellation-field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["scene", "background", "particles", "pointer"],
+      "registryDependencies": ["utils", "render-surface"]
+    },
+    {
+      "name": "burst",
+      "type": "registry:ui",
+      "title": "Burst",
+      "description": "A short burst of pieces for the moment something finally completes.",
+      "files": [
+        {
+          "path": "registry/default/burst/burst.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["scene", "feedback", "celebration", "canvas"],
+      "registryDependencies": ["utils", "render-surface"]
+    },
+    {
+      "name": "shader-surface",
+      "type": "registry:ui",
+      "title": "Shader Surface",
+      "description": "Four shader backdrops, each taking its two colours from your theme.",
+      "files": [
+        {
+          "path": "registry/default/shader-surface/shader-surface.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["scene", "background", "shader", "webgl"],
+      "registryDependencies": ["utils", "render-surface"]
+    },
+    {
+      "name": "displacement-image",
+      "type": "registry:ui",
+      "title": "Displacement Image",
+      "description": "Two images crossing by pushing their pixels through the same noise.",
+      "files": [
+        {
+          "path": "registry/default/displacement-image/displacement-image.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["scene", "media", "transition", "webgl"],
+      "registryDependencies": ["utils", "render-surface"]
+    },
+    {
+      "name": "scene-hero",
+      "type": "registry:ui",
+      "title": "Scene Hero",
+      "description": "A lit three-dimensional object behind a headline, steered by the pointer.",
+      "dependencies": ["three@^0.185.1"],
+      "files": [
+        {
+          "path": "registry/default/scene-hero/scene-hero.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["scene", "hero", "3d", "webgl"],
+      "registryDependencies": ["utils", "render-surface"]
+    },
+    {
+      "name": "scroll-scene",
+      "type": "registry:ui",
+      "title": "Scroll Scene",
+      "description": "Turns the scrolling of a tall element into a number, without rendering the page to do it.",
+      "files": [
+        {
+          "path": "registry/default/scroll-scene/scroll-scene.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["scene", "scroll", "motion", "progress"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "reveal",
+      "type": "registry:ui",
+      "title": "Reveal",
+      "description": "Moves its children in when they arrive on screen, and never decides whether they are there.",
+      "files": [
+        {
+          "path": "registry/default/reveal/reveal.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["motion", "scroll", "entrance"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "split-text",
+      "type": "registry:ui",
+      "title": "Split Text",
+      "description": "A heading animated one character, word, or line at a time, announced as one sentence.",
+      "files": [
+        {
+          "path": "registry/default/split-text/split-text.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["motion", "text", "typography", "entrance"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "number-ticker",
+      "type": "registry:ui",
+      "title": "Number Ticker",
+      "description": "Counts to a number rather than replacing it, in any currency or format.",
+      "files": [
+        {
+          "path": "registry/default/number-ticker/number-ticker.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["motion", "number", "statistic"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "tilt-card",
+      "type": "registry:ui",
+      "title": "Tilt Card",
+      "description": "A card that leans toward the pointer as though it were a physical object.",
+      "files": [
+        {
+          "path": "registry/default/tilt-card/tilt-card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["scene", "card", "pointer", "3d"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "cursor-trail",
+      "type": "registry:ui",
+      "title": "Cursor Trail",
+      "description": "A fading mark behind the pointer, drawn only inside its own box.",
+      "files": [
+        {
+          "path": "registry/default/cursor-trail/cursor-trail.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["scene", "pointer", "canvas"],
+      "registryDependencies": ["utils", "render-surface"]
+    },
+    {
+      "name": "metaballs",
+      "type": "registry:ui",
+      "title": "Metaballs",
+      "description": "Blobs that merge as they meet, taking their two colours from your theme.",
+      "files": [
+        {
+          "path": "registry/default/metaballs/metaballs.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["scene", "background", "shader", "webgl"],
+      "registryDependencies": ["utils", "render-surface"]
+    },
+    {
+      "name": "dither-image",
+      "type": "registry:ui",
+      "title": "Dither Image",
+      "description": "A photograph reduced to two theme colours through an ordered dither.",
+      "files": [
+        {
+          "path": "registry/default/dither-image/dither-image.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["scene", "media", "shader", "webgl"],
+      "registryDependencies": ["utils", "render-surface"]
+    },
+    {
+      "name": "ascii-image",
+      "type": "registry:ui",
+      "title": "ASCII Image",
+      "description": "A photograph redrawn as characters, painted once and then left alone.",
+      "files": [
+        {
+          "path": "registry/default/ascii-image/ascii-image.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["scene", "media", "ascii", "canvas"],
+      "registryDependencies": ["utils", "render-surface"]
+    },
+    {
+      "name": "wireframe-globe",
+      "type": "registry:ui",
+      "title": "Wireframe Globe",
+      "description": "A wireframe world with places marked on it, and the same places written out underneath.",
+      "dependencies": ["three@^0.185.1"],
+      "files": [
+        {
+          "path": "registry/default/wireframe-globe/wireframe-globe.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["scene", "3d", "globe", "data"],
+      "registryDependencies": ["utils", "render-surface"]
+    },
+    {
+      "name": "presence-field",
+      "type": "registry:ui",
+      "title": "Presence Field",
+      "description": "An ambient backdrop that carries what an assistant is doing, and settles rather than snaps.",
+      "files": [
+        {
+          "path": "registry/default/presence-field/presence-field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "scene", "status"],
+      "registryDependencies": ["utils", "render-surface"]
+    },
+    {
+      "name": "stream-glow",
+      "type": "registry:ui",
+      "title": "Stream Glow",
+      "description": "An edge that breathes along a region while tokens land in it.",
+      "files": [
+        {
+          "path": "registry/default/stream-glow/stream-glow.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "streaming", "feedback"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "otp-input",
+      "type": "registry:ui",
+      "title": "OTP Input",
+      "description": "A one time code, one box per character, where pasting the whole code works.",
+      "files": [
+        {
+          "path": "registry/default/otp-input/otp-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["form", "input", "auth", "otp"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "tag-input",
+      "type": "registry:ui",
+      "title": "Tag Input",
+      "description": "An input that turns what you typed into a removable tag.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/tag-input/tag-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["form", "input", "tags", "control"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "sortable-list",
+      "type": "registry:ui",
+      "title": "Sortable List",
+      "description": "A list reordered by dragging a handle, or from the keyboard without one.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/sortable-list/sortable-list.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["list", "drag", "reorder", "control"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "resizable-panels",
+      "type": "registry:ui",
+      "title": "Resizable Panels",
+      "description": "Two panels and a divider that can be dragged or driven from the keyboard.",
+      "files": [
+        {
+          "path": "registry/default/resizable-panels/resizable-panels.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["layout", "panel", "resize"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "stepper",
+      "type": "registry:ui",
+      "title": "Stepper",
+      "description": "Where someone is in something with a beginning and an end.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/stepper/stepper.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["navigation", "progress", "form", "wizard"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "avatar-stack",
+      "type": "registry:ui",
+      "title": "Avatar Stack",
+      "description": "Overlapping faces with a count for the rest, and the names underneath.",
+      "files": [
+        {
+          "path": "registry/default/avatar-stack/avatar-stack.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["people", "avatar", "layout"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "timeline",
+      "type": "registry:ui",
+      "title": "Timeline",
+      "description": "Things that happened, in the order they happened, with each state said aloud.",
+      "files": [
+        {
+          "path": "registry/default/timeline/timeline.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["timeline", "history", "layout", "status"],
+      "registryDependencies": ["utils"]
     }
   ]
 }
