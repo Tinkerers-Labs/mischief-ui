@@ -535,3 +535,12 @@ export {
   type TimelineEntry,
   type TimelineTone,
 } from "../../../registry/default/timeline/timeline"
+
+export {
+  DataTable,
+  type Column,
+  type DataTableProps,
+  type DataTableSort,
+  type SortDirection,
+  type SortValue,
+} from "../../../registry/default/data-table/data-table"

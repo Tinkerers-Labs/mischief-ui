@@ -1367,6 +1367,21 @@
       ],
       "categories": ["timeline", "history", "layout", "status"],
       "registryDependencies": ["utils"]
+    },
+    {
+      "name": "data-table",
+      "type": "registry:ui",
+      "title": "Data Table",
+      "description": "Typed rows with custom cells, column widths you set or the reader drags, sorting that is one property to switch on, and keyed selection.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/data-table/data-table.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["table", "data", "sort", "selection", "layout"],
+      "registryDependencies": ["utils"]
     }
   ]
 }

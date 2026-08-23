@@ -8656,6 +8656,325 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
     accessibility:
       "A named ordered list, so the sequence is conveyed as a sequence rather than as a column of text. Each entry's state is announced after its title, and the dots and connecting line are hidden. Nothing animates.",
   },
+  {
+    slug: "data-table",
+    kind: "component",
+    name: "Data Table",
+    family: "Blocks",
+    featured: true,
+    summary:
+      "Typed rows with cells you write, column widths you set or the reader drags, sorting that is one property to switch on, and selection kept in keys rather than positions.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("data-table"),
+    npmImport: packageImport("DataTable", "data-table"),
+    usage: `const columns: Column<Person>[] = [
+  { key: "name", header: "Name", sort: true },
+  { key: "email", header: "Email", cell: (p) => <a href={\`mailto:\${p.email}\`}>{p.email}</a> },
+  { key: "seats", header: "Seats", width: "6rem", align: "end", sort: true },
+]
+
+export function People({ people }) {
+  return (
+    <DataTable
+      rows={people}
+      columns={columns}
+      getKey={(person) => person.id}
+      label="People"
+    />
+  )
+}`,
+    props: [
+      ["rows", "TRow[]", "The data, in whatever order it arrived."],
+      ["columns", "Column<TRow>[]", "One entry per column."],
+      [
+        "getKey",
+        "(row) => string",
+        "Identity that survives sorting. Selection is kept in these.",
+      ],
+      [
+        "getLabel",
+        "(row) => string",
+        "Names a row, for the checkbox that selects it. Worth passing.",
+      ],
+      ["label", "string", "Names the table. Becomes its caption."],
+      [
+        "sort / defaultSort",
+        "DataTableSort | null",
+        "Which column, and which way.",
+      ],
+      ["onSortChange", "(sort) => void", "Called with the new sort, or null."],
+      [
+        "selected / defaultSelected",
+        "string[]",
+        "The keys that are selected. Passing any selection prop turns it on.",
+      ],
+      [
+        "onSelectionChange",
+        "(keys: string[]) => void",
+        "The keys after a change.",
+      ],
+      [
+        "resizable",
+        "boolean",
+        "Lets the reader drag the boundary between columns.",
+      ],
+      [
+        "onColumnResize",
+        "(key, width) => void",
+        "For persisting a width you were given.",
+      ],
+      [
+        "density",
+        '"comfortable" | "compact"',
+        'Row height. Defaults to "comfortable".',
+      ],
+      ["striped", "boolean", "Shades alternate rows."],
+      [
+        "loading",
+        "boolean",
+        "Shows placeholder rows shaped like the real ones.",
+      ],
+      ["loadingRows", "number", "How many placeholders. Defaults to 5."],
+      ["stickyHeader", "boolean", "Holds the header while the body scrolls."],
+      ["rowClassName", "(row, index) => string", "Classes for one row."],
+      [
+        "onRowClick",
+        "(row, index) => void",
+        "A pointer convenience. Never the only way to reach what it does.",
+      ],
+      ["empty", "ReactNode", "Shown instead of rows when there are none."],
+    ],
+    types: [
+      {
+        name: "Column<TRow>",
+        rows: [
+          [
+            "key",
+            "string",
+            "Identifies the column, and names the field read when there is no cell or value.",
+          ],
+          ["header", "ReactNode", "The heading."],
+          [
+            "cell",
+            "(row, index) => ReactNode",
+            "What the cell shows. Defaults to the field named by key.",
+          ],
+          [
+            "value",
+            "(row) => SortValue",
+            "What the column is worth when sorted. Defaults to the field named by key.",
+          ],
+          [
+            "width",
+            "string",
+            "Any CSS width. Columns without one share what is left over.",
+          ],
+          [
+            "minWidth",
+            "number",
+            "Narrowest it may be dragged, in pixels. Defaults to 64.",
+          ],
+          [
+            "align",
+            '"start" | "center" | "end"',
+            "End also sets tabular figures.",
+          ],
+          [
+            "sort",
+            "boolean | ((a, b) => number)",
+            "true for the built-in comparator, or your own. Absent means not sortable.",
+          ],
+          [
+            "resizable",
+            "boolean",
+            "Excludes one column while the rest stay resizable.",
+          ],
+          [
+            "maxWidth",
+            "number",
+            "Widest it may be dragged. Unbounded by default.",
+          ],
+          [
+            "pinned",
+            '"start"',
+            "Holds the column against the left edge while the rest scrolls past.",
+          ],
+          [
+            "wrap",
+            "boolean",
+            "Lets the cell run onto a second line instead of being cut short.",
+          ],
+          [
+            "footer",
+            "ReactNode | ((rows) => ReactNode)",
+            "A summary under the column. The function is given the rows in the order shown.",
+          ],
+          [
+            "sortFirst",
+            '"asc" | "desc"',
+            'Which way the first press sorts. Defaults to "asc".',
+          ],
+        ],
+      },
+    ],
+    sections: [
+      {
+        id: "sorting",
+        title: "Three levels of effort",
+        blocks: [
+          {
+            kind: "text",
+            text: "A column with no sort property is not sortable, and its heading is plain text rather than a button that looks pressable and does nothing.",
+          },
+          {
+            kind: "text",
+            text: "sort: true uses the built-in comparator against the column's value, which is the field named by key unless you gave it one. Numbers compare as numbers, dates as dates, and everything else by the reader's locale, so ten does not sort before nine and Ä does not sort after Z.",
+          },
+          {
+            kind: "code",
+            code: `{ key: "seats", header: "Seats", sort: true }
+{ key: "plan", header: "Plan", sort: (a, b) => RANK[a.plan] - RANK[b.plan] }`,
+            caption:
+              "Anything with an order that is not alphabetical brings its own comparator.",
+          },
+          {
+            kind: "text",
+            text: "Pressing a heading a third time clears the sort and returns the rows to the order they arrived in, which is often the order that meant something before anyone touched it.",
+          },
+          {
+            kind: "text",
+            text: "Empty cells sit at the bottom whichever way the column is pointing. A column of blanks at the top is never what was being asked for.",
+          },
+        ],
+      },
+      {
+        id: "widths",
+        title: "Widths, and dragging them",
+        blocks: [
+          {
+            kind: "text",
+            text: "The table is laid out with fixed columns and a colgroup, so a width is any CSS length you like. Columns without one share whatever is left over in equal parts, which is the behaviour you would reach for a fraction unit to get.",
+          },
+          {
+            kind: "code",
+            code: `{ key: "plan", header: "Plan", width: "8rem" }
+{ key: "name", header: "Name" }  // takes a share of the rest`,
+          },
+          {
+            kind: "text",
+            text: "With resizable on, every boundary between two columns can be dragged. The last column has no handle, because there is nothing to its right to trade width with. The first drag pins every column to the width it already had, so pulling one boundary does not make the others jump about, and a drag writes straight to the colgroup rather than into state, so moving a boundary renders nothing.",
+          },
+          {
+            kind: "text",
+            text: "Each handle is a separator that can be focused and moved with the arrow keys, because a table whose columns can only be adjusted by dragging cannot be adjusted by everybody. Double-clicking a handle returns that column to the width you declared, and no column can be dragged below its minimum and lost.",
+          },
+        ],
+      },
+      {
+        id: "selection",
+        title: "Selection is kept in keys",
+        blocks: [
+          {
+            kind: "text",
+            text: "Passing any of selected, defaultSelected, or onSelectionChange turns selection on. What is stored is whatever getKey returns, never a row position, so sorting the table does not silently change what is selected.",
+          },
+          {
+            kind: "text",
+            text: "Shift-clicking a checkbox extends from the last one touched, which is what people try first. The heading checkbox selects everything and shows the third, in-between state when only some rows are chosen -- a state that has to be set as a property rather than an attribute, which is why it is easy to leave out.",
+          },
+          {
+            kind: "text",
+            text: "Clicking a row never selects it. Only the checkbox does. That keeps onRowClick free to mean open this without the two gestures fighting, and keeps a link inside a cell working.",
+          },
+        ],
+      },
+      {
+        id: "pinning",
+        title: "Holding a column while the rest scrolls",
+        blocks: [
+          {
+            kind: "text",
+            text: "A wide table scrolls sideways, and the column saying which row you are looking at is the first thing to go. Pinning holds it against the left edge. The checkbox column is held with it whenever anything is pinned, because a column of checkboxes that has scrolled away from its rows is worse than no checkboxes at all.",
+          },
+          {
+            kind: "code",
+            code: `{ key: "name", header: "Name", pinned: "start", width: "11rem" }`,
+          },
+          {
+            kind: "text",
+            text: "Each held column's distance from the edge is written as a custom property rather than as a class, which is what lets the offsets follow a drag. Widen a held column and the ones after it move with it on the same frame, without anything re-rendering. Resizing and pinning are a pair: it is resizing that makes a table wide enough to need it.",
+          },
+        ],
+      },
+      {
+        id: "loading",
+        title: "Waiting, and not flashing while you do",
+        blocks: [
+          {
+            kind: "text",
+            text: "loading fills the body with placeholders shaped like the rows they stand in for: one per column, at the same density, so nothing shifts under the reader when the data lands.",
+          },
+          {
+            kind: "text",
+            text: "They are held back for a tenth of a second first. Most answers arrive faster than that, and a skeleton that appears and vanishes inside two frames reads as a flicker rather than as progress. The table marks itself busy while it waits, and the placeholders carry no text, so there is nothing for a screen reader to read out of them.",
+          },
+        ],
+      },
+      {
+        id: "footers",
+        title: "Totals",
+        blocks: [
+          {
+            kind: "text",
+            text: "A column with a footer gets one, and the table grows a foot only when at least one column has asked for it. The function is handed the rows in the order they are shown, so a total is the sum of what is in front of you.",
+          },
+          {
+            kind: "code",
+            code: `{
+  key: "seats",
+  header: "Seats",
+  align: "end",
+  sortFirst: "desc",
+  footer: (rows) => rows.reduce((total, row) => total + row.seats, 0),
+}`,
+            caption:
+              "sortFirst earns its place on a number: the first press of Seats nearly always means show me the biggest.",
+          },
+        ],
+      },
+      {
+        id: "composing",
+        title: "What it deliberately does not do",
+        blocks: [
+          {
+            kind: "text",
+            text: "There is no pagination, no filtering, and no toolbar in here. Mischief already has pagination, and an empty row for when a filter matches nothing, and they compose better as themselves than they would absorbed into this.",
+          },
+          {
+            kind: "code",
+            code: `<DataTable rows={page} columns={columns} getKey={byId} label="Invoices" />
+<Pagination page={page} pageCount={pages} onPageChange={setPage} />`,
+          },
+          {
+            kind: "text",
+            text: "There is no virtualisation either. It would change how every row is rendered, and a few hundred rows do not need it. Reach for a windowing library when you genuinely have thousands.",
+          },
+          {
+            kind: "text",
+            text: "Nor is there a menu for hiding columns, because there does not need to be. Columns are an array you own, so hiding one is filtering that array before you hand it over, and the widths, the sorting and the pinning all follow from that with nothing else to keep in step.",
+          },
+          {
+            kind: "code",
+            code: `const shown = columns.filter((column) => visible[column.key])
+
+<DataTable rows={rows} columns={shown} getKey={byId} label="Invoices" />`,
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "A real table with a caption, column headers scoped to their columns, and aria-sort on any column that can be sorted, so the current order is announced when a heading is reached. Sort controls are buttons with a touch-sized target. Resize handles are separators in the tab order, driven by the arrow keys. Every checkbox is named with the row it selects rather than being a column of boxes called Select, and the number chosen is kept in a polite live region. onRowClick is pointer only and is documented as never being the only route to what it does. While loading it marks itself busy, and the placeholders carry no text for anything to read out.",
+  },
 ] as const
 
 export const componentDocs = entries.map((entry, index) => ({

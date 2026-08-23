@@ -111,6 +111,7 @@ export default defineConfig({
     "displacement-image":
       "../../registry/default/displacement-image/displacement-image.tsx",
     "scene-hero": "../../registry/default/scene-hero/scene-hero.tsx",
+    "data-table": "../../registry/default/data-table/data-table.tsx",
     "scroll-scene": "../../registry/default/scroll-scene/scroll-scene.tsx",
     reveal: "../../registry/default/reveal/reveal.tsx",
     "split-text": "../../registry/default/split-text/split-text.tsx",

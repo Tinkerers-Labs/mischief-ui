@@ -1,6 +1,6 @@
 {
   "name": "mischief-ui",
-  "version": "0.8.6",
+  "version": "0.8.7",
   "description": "Playful, production-ready React components for shadcn projects.",
   "license": "MIT",
   "type": "module",
@@ -484,6 +484,11 @@
       "types": "./dist/timeline.d.ts",
       "import": "./dist/timeline.js",
       "require": "./dist/timeline.cjs"
+    },
+    "./data-table": {
+      "types": "./dist/data-table.d.ts",
+      "import": "./dist/data-table.js",
+      "require": "./dist/data-table.cjs"
     }
   },
   "scripts": {

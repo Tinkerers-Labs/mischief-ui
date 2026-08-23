@@ -96,6 +96,8 @@ import { StepperDemo } from "@/components/demos/stepper-demo"
 import { AvatarStackDemo } from "@/components/demos/avatar-stack-demo"
 import { TimelineDemo } from "@/components/demos/timeline-demo"
 
+import { DataTableDemo } from "@/components/demos/data-table-demo"
+
 export type ComponentDemo = {
   Demo: ComponentType
   frameClassName?: string
@@ -342,5 +344,10 @@ export const componentDemos: Record<string, ComponentDemo> = {
   timeline: {
     Demo: TimelineDemo,
     frameClassName: "p-6 md:p-10",
+  },
+  "data-table": {
+    Demo: DataTableDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-8",
   },
 }
