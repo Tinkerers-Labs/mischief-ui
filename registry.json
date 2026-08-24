@@ -365,7 +365,7 @@
       "type": "registry:ui",
       "title": "CSV Viewer",
       "description": "A sortable table for delimited data with a sticky header and a row cap.",
-      "dependencies": ["papaparse@^5.6.0", "lucide-react@^1.31.0"],
+      "dependencies": ["lucide-react@^1.31.0", "papaparse@^5.6.0"],
       "files": [
         {
           "path": "registry/default/csv-viewer/csv-viewer.tsx",
@@ -380,7 +380,7 @@
       "type": "registry:ui",
       "title": "DOCX Viewer",
       "description": "Renders a Word document as elements built through a tag and attribute allowlist.",
-      "dependencies": ["mammoth@^1.12.1", "lucide-react@^1.31.0"],
+      "dependencies": ["lucide-react@^1.31.0", "mammoth@^1.12.1"],
       "files": [
         {
           "path": "registry/default/docx-viewer/docx-viewer.tsx",
@@ -395,7 +395,7 @@
       "type": "registry:ui",
       "title": "PDF Viewer",
       "description": "Page-by-page PDF rendering on a canvas, with paging and zoom, over any loader.",
-      "dependencies": ["pdfjs-dist@^6.2.108", "lucide-react@^1.31.0"],
+      "dependencies": ["lucide-react@^1.31.0", "pdfjs-dist@^6.2.108"],
       "files": [
         {
           "path": "registry/default/pdf-viewer/pdf-viewer.tsx",
@@ -863,7 +863,7 @@
       "type": "registry:ui",
       "title": "Lightbox",
       "description": "One image at a time, full bleed, with the rest of the set a key away.",
-      "dependencies": ["@base-ui/react@^1.0.0", "lucide-react@^1.31.0"],
+      "dependencies": ["@base-ui/react@^1.7.0", "lucide-react@^1.31.0"],
       "files": [
         {
           "path": "registry/default/lightbox/lightbox.tsx",
@@ -965,7 +965,7 @@
       "type": "registry:ui",
       "title": "Side Panel",
       "description": "A pane that comes in from the side: an inspector, a filter set, a row's detail.",
-      "dependencies": ["@base-ui/react@^1.0.0", "lucide-react@^1.31.0"],
+      "dependencies": ["@base-ui/react@^1.7.0", "lucide-react@^1.31.0"],
       "files": [
         {
           "path": "registry/default/side-panel/side-panel.tsx",
@@ -1437,6 +1437,53 @@
       "registryDependencies": ["https://ui.tinkererslabs.com/r/accordion.json"]
     },
     {
+      "name": "agent-checklist-demo",
+      "type": "registry:example",
+      "title": "Agent Checklist Demo",
+      "description": "A worked example of Agent Checklist: A task list whose items change state as work proceeds, announcing what changed instead of re-reading the whole list.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "components/demos/agent-checklist-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/restart-button.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/use-scripted-timeline.ts",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/agent-checklist.json"
+      ]
+    },
+    {
+      "name": "annotation-layer-demo",
+      "type": "registry:example",
+      "title": "Annotation Layer Demo",
+      "description": "A worked example of Annotation Layer: Notes attached to regions of a page. Drag to add one, select to read it, and the coordinates stay relative to the page rather than the screen.",
+      "files": [
+        {
+          "path": "components/demos/annotation-layer-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/document-fixtures.ts",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/annotation-layer.json"
+      ]
+    },
+    {
       "name": "ascii-image-demo",
       "type": "registry:example",
       "title": "ASCII Image Demo",
@@ -1495,6 +1542,25 @@
       ]
     },
     {
+      "name": "bounding-boxes-demo",
+      "type": "registry:example",
+      "title": "Bounding Boxes Demo",
+      "description": "A worked example of Bounding Boxes: Selectable regions drawn over a page image from normalized coordinates, for showing an agent exactly where an answer came from.",
+      "files": [
+        {
+          "path": "components/demos/bounding-boxes-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/document-fixtures.ts",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/bounding-boxes.json"
+      ]
+    },
+    {
       "name": "burst-demo",
       "type": "registry:example",
       "title": "Burst Demo",
@@ -1506,6 +1572,23 @@
         }
       ],
       "registryDependencies": ["https://ui.tinkererslabs.com/r/burst.json"]
+    },
+    {
+      "name": "code-block-demo",
+      "type": "registry:example",
+      "title": "Code Block Demo",
+      "description": "A worked example of Code Block: A code panel with copy, optional line numbers, highlighted lines, and a collapse for anything long.",
+      "files": [
+        {
+          "path": "components/demos/code-block-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/code-block.json"]
     },
     {
       "name": "command-palette-demo",
@@ -1599,6 +1682,23 @@
       ]
     },
     {
+      "name": "csv-viewer-demo",
+      "type": "registry:example",
+      "title": "CSV Viewer Demo",
+      "description": "A worked example of CSV Viewer: A real table for delimited data, with sortable columns, a sticky header, and a row cap so a large file cannot lock the page.",
+      "files": [
+        {
+          "path": "components/demos/csv-viewer-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/document-fixtures.ts",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/csv-viewer.json"]
+    },
+    {
       "name": "cursor-trail-demo",
       "type": "registry:example",
       "title": "Cursor Trail Demo",
@@ -1625,6 +1725,28 @@
         }
       ],
       "registryDependencies": ["https://ui.tinkererslabs.com/r/data-table.json"]
+    },
+    {
+      "name": "diff-view-demo",
+      "type": "registry:example",
+      "title": "Diff View Demo",
+      "description": "A worked example of Diff View: A proposed change shown as a unified or side-by-side diff, with optional accept and reject controls.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "components/demos/diff-view-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/restart-button.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/diff-view.json"]
     },
     {
       "name": "displacement-image-demo",
@@ -1657,6 +1779,44 @@
       ]
     },
     {
+      "name": "document-splits-demo",
+      "type": "registry:example",
+      "title": "Document Splits Demo",
+      "description": "A worked example of Document Splits: Mark where one scanned batch becomes several documents. Splits are toggled between pages and the segments update as you go.",
+      "files": [
+        {
+          "path": "components/demos/document-splits-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/document-fixtures.ts",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/document-splits.json"
+      ]
+    },
+    {
+      "name": "docx-viewer-demo",
+      "type": "registry:example",
+      "title": "DOCX Viewer Demo",
+      "description": "A worked example of DOCX Viewer: Renders a Word document as elements built through an allowlist, so a file you did not write cannot bring its own scripts or links.",
+      "files": [
+        {
+          "path": "components/demos/docx-viewer-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/document-fixtures.ts",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/docx-viewer.json"
+      ]
+    },
+    {
       "name": "elastic-slider-demo",
       "type": "registry:example",
       "title": "Elastic Slider Demo",
@@ -1670,6 +1830,43 @@
       ],
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/elastic-slider.json"
+      ]
+    },
+    {
+      "name": "empty-row-demo",
+      "type": "registry:example",
+      "title": "Empty Row Demo",
+      "description": "A worked example of Empty Row: One line saying a list came back empty, for a table, a list, or a popover.",
+      "files": [
+        {
+          "path": "components/demos/empty-row-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/empty-row.json"]
+    },
+    {
+      "name": "empty-state-demo",
+      "type": "registry:example",
+      "title": "Empty State Demo",
+      "description": "A worked example of Empty State: What to show when there is nothing yet: what this place is for, and the way to fill it.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "components/demos/empty-state-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/empty-state.json"
       ]
     },
     {
@@ -1730,6 +1927,25 @@
       ],
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/floating-index.json"
+      ]
+    },
+    {
+      "name": "footer-columns-demo",
+      "type": "registry:example",
+      "title": "Footer Columns Demo",
+      "description": "A worked example of Footer Columns: Labelled columns of links, with the column count and the link rendering left to you.",
+      "files": [
+        {
+          "path": "components/demos/footer-columns-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/footer-columns.json"
       ]
     },
     {
@@ -1807,6 +2023,23 @@
       ]
     },
     {
+      "name": "image-grid-demo",
+      "type": "registry:example",
+      "title": "Image Grid Demo",
+      "description": "A worked example of Image Grid: Thumbnails in even cells or masonry columns, with nothing but React behind them.",
+      "files": [
+        {
+          "path": "components/demos/image-grid-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/image-gallery-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/image-grid.json"]
+    },
+    {
       "name": "impossible-checkbox-demo",
       "type": "registry:example",
       "title": "Impossible Checkbox Demo",
@@ -1863,6 +2096,23 @@
         }
       ],
       "registryDependencies": ["https://ui.tinkererslabs.com/r/kbd.json"]
+    },
+    {
+      "name": "lightbox-demo",
+      "type": "registry:example",
+      "title": "Lightbox Demo",
+      "description": "A worked example of Lightbox: One image at a time, full bleed, with the rest of the set a key away.",
+      "files": [
+        {
+          "path": "components/demos/lightbox-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/image-gallery-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/lightbox.json"]
     },
     {
       "name": "magnetic-tabs-demo",
@@ -1978,6 +2228,25 @@
       "registryDependencies": ["https://ui.tinkererslabs.com/r/otp-input.json"]
     },
     {
+      "name": "page-navigator-demo",
+      "type": "registry:example",
+      "title": "Page Navigator Demo",
+      "description": "A worked example of Page Navigator: A rail of page thumbnails for moving through a long document, with arrow-key navigation and a clear active page.",
+      "files": [
+        {
+          "path": "components/demos/page-navigator-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/document-fixtures.ts",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/page-navigator.json"
+      ]
+    },
+    {
       "name": "pagination-demo",
       "type": "registry:example",
       "title": "Pagination Demo",
@@ -1989,6 +2258,23 @@
         }
       ],
       "registryDependencies": ["https://ui.tinkererslabs.com/r/pagination.json"]
+    },
+    {
+      "name": "pdf-viewer-demo",
+      "type": "registry:example",
+      "title": "PDF Viewer Demo",
+      "description": "A worked example of PDF Viewer: Page-by-page PDF rendering on a canvas, with paging and zoom, over any loader you give it.",
+      "files": [
+        {
+          "path": "components/demos/pdf-viewer-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/document-fixtures.ts",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/pdf-viewer.json"]
     },
     {
       "name": "presence-field-demo",
@@ -2034,6 +2320,23 @@
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/questionnaire.json"
       ]
+    },
+    {
+      "name": "redaction-demo",
+      "type": "registry:example",
+      "title": "Redaction Demo",
+      "description": "A worked example of Redaction: Mark regions to black out before a document leaves the building, with a reveal that says plainly it is only a preview.",
+      "files": [
+        {
+          "path": "components/demos/redaction-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/document-fixtures.ts",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/redaction.json"]
     },
     {
       "name": "render-surface-demo",
@@ -2152,6 +2455,44 @@
       ]
     },
     {
+      "name": "secret-field-demo",
+      "type": "registry:example",
+      "title": "Secret Field Demo",
+      "description": "A worked example of Secret Field: An API key or token: hidden until asked for, copied whole either way.",
+      "files": [
+        {
+          "path": "components/demos/secret-field-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/secret-field.json"
+      ]
+    },
+    {
+      "name": "shader-surface-demo",
+      "type": "registry:example",
+      "title": "Shader Surface Demo",
+      "description": "A worked example of Shader Surface: Four shader backdrops -- caustics, metal, plasma and ripple -- each taking its two colours from your theme, so the same surface arrives dark in a dark application and light in a light one.",
+      "files": [
+        {
+          "path": "components/demos/shader-surface-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/shader-surface.json"
+      ]
+    },
+    {
       "name": "shift-button-demo",
       "type": "registry:example",
       "title": "Shift Button Demo",
@@ -2181,6 +2522,25 @@
       "registryDependencies": ["https://ui.tinkererslabs.com/r/side-panel.json"]
     },
     {
+      "name": "signature-footer-demo",
+      "type": "registry:example",
+      "title": "Signature Footer Demo",
+      "description": "A worked example of Signature Footer: A complete closing section with room for the useful links first and one oversized wordmark at the end.",
+      "files": [
+        {
+          "path": "components/demos/signature-footer-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/signature-footer.json"
+      ]
+    },
+    {
       "name": "signature-pad-demo",
       "type": "registry:example",
       "title": "Signature Pad Demo",
@@ -2194,6 +2554,23 @@
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/signature-pad.json"
       ]
+    },
+    {
+      "name": "skeleton-demo",
+      "type": "registry:example",
+      "title": "Skeleton Demo",
+      "description": "A worked example of Skeleton: A placeholder the shape of what is coming, so the page does not jump when it arrives.",
+      "files": [
+        {
+          "path": "components/demos/skeleton-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/skeleton.json"]
     },
     {
       "name": "sortable-list-demo",
@@ -2239,6 +2616,23 @@
       "registryDependencies": ["https://ui.tinkererslabs.com/r/spinner.json"]
     },
     {
+      "name": "split-text-demo",
+      "type": "registry:example",
+      "title": "Split Text Demo",
+      "description": "A worked example of Split Text: A heading animated one character, word, or line at a time, and still announced as one sentence rather than as a pile of single letters.",
+      "files": [
+        {
+          "path": "components/demos/split-text-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/split-text.json"]
+    },
+    {
       "name": "spotlight-card-demo",
       "type": "registry:example",
       "title": "Spotlight Card Demo",
@@ -2282,6 +2676,26 @@
       "registryDependencies": ["https://ui.tinkererslabs.com/r/stepper.json"]
     },
     {
+      "name": "stop-generating-demo",
+      "type": "registry:example",
+      "title": "Stop Generating Demo",
+      "description": "A worked example of Stop Generating: The control that interrupts a running answer, with the time it has been going and Escape wired up.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "components/demos/stop-generating-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/restart-button.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/stop-generating.json"
+      ]
+    },
+    {
       "name": "stream-glow-demo",
       "type": "registry:example",
       "title": "Stream Glow Demo",
@@ -2294,6 +2708,26 @@
       ],
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/stream-glow.json"
+      ]
+    },
+    {
+      "name": "streaming-text-demo",
+      "type": "registry:example",
+      "title": "Streaming Text Demo",
+      "description": "A worked example of Streaming Text: Text that arrives a piece at a time from an async source, with a cursor while it runs and sentence-level announcements for screen readers.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "components/demos/streaming-text-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/restart-button.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/streaming-text.json"
       ]
     },
     {
@@ -2341,6 +2775,77 @@
       "registryDependencies": ["https://ui.tinkererslabs.com/r/tag-input.json"]
     },
     {
+      "name": "terminal-output-demo",
+      "type": "registry:example",
+      "title": "Terminal Output Demo",
+      "description": "A worked example of Terminal Output: Streaming command output with stderr called out, an exit code, and scroll that follows without trapping you.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "components/demos/terminal-output-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/restart-button.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/terminal-output.json"
+      ]
+    },
+    {
+      "name": "theme-toggle-demo",
+      "type": "registry:example",
+      "title": "Theme Toggle Demo",
+      "description": "A worked example of Theme Toggle: A light and dark switch that survives a reload, follows the system when asked, and stays in step across tabs.",
+      "files": [
+        {
+          "path": "components/demos/theme-toggle-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/theme-toggle.json"
+      ]
+    },
+    {
+      "name": "thinking-state-demo",
+      "type": "registry:example",
+      "title": "Thinking State Demo",
+      "description": "A worked example of Thinking State: A status row for work in progress, with a live elapsed timer and optional reasoning behind a disclosure.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "components/demos/thinking-state-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/restart-button.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/use-scripted-timeline.ts",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/thinking-state.json"
+      ]
+    },
+    {
       "name": "tilt-card-demo",
       "type": "registry:example",
       "title": "Tilt Card Demo",
@@ -2365,6 +2870,51 @@
         }
       ],
       "registryDependencies": ["https://ui.tinkererslabs.com/r/timeline.json"]
+    },
+    {
+      "name": "token-meter-demo",
+      "type": "registry:example",
+      "title": "Token Meter Demo",
+      "description": "A worked example of Token Meter: How much of the context window is gone, split by what spent it, and a warning before it runs out.",
+      "files": [
+        {
+          "path": "components/demos/token-meter-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/token-meter.json"
+      ]
+    },
+    {
+      "name": "tool-call-demo",
+      "type": "registry:example",
+      "title": "Tool Call Demo",
+      "description": "A worked example of Tool Call: A compact record of one tool invocation: name, status, duration, and the input and output behind a disclosure.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "components/demos/tool-call-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/restart-button.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/use-scripted-timeline.ts",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/tool-call.json"]
     },
     {
       "name": "wireframe-globe-demo",

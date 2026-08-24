@@ -16,11 +16,10 @@ const FROM_UTILS = new Set(["clsx", "tailwind-merge"])
 
 const IMPORT = /(?:from\s+|import\s+|import\()"([^"]+)"/g
 
-function bareImportsOf(file: string) {
-  const source = readFileSync(path.join(ROOT, file), "utf8")
+function bareImportsOf(files: string[]) {
   const found = new Set<string>()
 
-  for (const [, specifier] of source.matchAll(IMPORT)) {
+  for (const [, specifier] of sourceOf(files).matchAll(IMPORT)) {
     if (!specifier || specifier.startsWith(".") || specifier.startsWith("@/")) {
       continue
     }
@@ -37,9 +36,16 @@ function bareImportsOf(file: string) {
   return found
 }
 
+/** An item ships its entry plus any fixtures it pulls in, so read them all. */
+function sourceOf(files: string[]) {
+  return files
+    .map((file) => readFileSync(path.join(ROOT, file), "utf8"))
+    .join("\n")
+}
+
 const items = registry.items.map((item) => ({
   name: item.name,
-  file: item.files[0]!.path,
+  files: item.files.map((file) => file.path),
   declared: new Set(
     (item.dependencies ?? []).map((entry) =>
       entry.replace(/@[\^~>=<\d].*$/, "")
@@ -54,7 +60,7 @@ describe("registry dependency declarations", () => {
   })
 
   it.each(items)("$name declares everything it imports", (item) => {
-    const missing = [...bareImportsOf(item.file)].filter(
+    const missing = [...bareImportsOf(item.files)].filter(
       (pkg) =>
         !item.declared.has(pkg) && !AMBIENT.has(pkg) && !FROM_UTILS.has(pkg)
     )
@@ -63,14 +69,14 @@ describe("registry dependency declarations", () => {
   })
 
   it.each(items)("$name imports everything it declares", (item) => {
-    const imported = bareImportsOf(item.file)
+    const imported = bareImportsOf(item.files)
     const unused = [...item.declared].filter((pkg) => !imported.has(pkg))
 
     expect(unused).toEqual([])
   })
 
   it.each(items)("$name depends on utils when it imports cn", (item) => {
-    const source = readFileSync(path.join(ROOT, item.file), "utf8")
+    const source = sourceOf(item.files)
 
     if (!source.includes('from "@/lib/utils"')) return
 

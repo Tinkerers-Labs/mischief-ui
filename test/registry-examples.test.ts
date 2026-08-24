@@ -21,16 +21,28 @@ const demoFiles = readdirSync(DEMOS).filter((file) =>
   file.endsWith("-demo.tsx")
 )
 
-/** A demo that reaches for another demo needs fixtures we do not publish. */
-function selfContained(file: string) {
-  const source = readFileSync(path.join(DEMOS, file), "utf8")
-  return !source.includes('from "@/components/demos/')
+/** The demo files an example reaches for, transitively. */
+function fixturesFor(entry: string, seen = new Set<string>()): string[] {
+  const source = readFileSync(path.join(DEMOS, entry), "utf8")
+  const found: string[] = []
+
+  for (const [, specifier] of source.matchAll(
+    /from "@\/components\/demos\/([^"]+)"/g
+  )) {
+    const file = [`${specifier}.tsx`, `${specifier}.ts`].find((candidate) =>
+      existsSync(path.join(DEMOS, candidate))
+    )
+    if (!file || seen.has(file)) continue
+    seen.add(file)
+    found.push(file, ...fixturesFor(file, seen))
+  }
+
+  return found
 }
 
 describe("published examples", () => {
-  it("covers every demo that stands on its own", () => {
+  it("covers every demo of a component", () => {
     const shouldPublish = demoFiles
-      .filter(selfContained)
       .map((file) => file.replace("-demo.tsx", ""))
       .filter((slug) => components.some((item) => item.name === slug))
 
@@ -39,20 +51,28 @@ describe("published examples", () => {
     expect(published.sort()).toEqual(shouldPublish.sort())
   })
 
-  it("publishes nothing that depends on another demo's fixtures", () => {
-    for (const example of examples) {
-      const file = `${example.name}.tsx`
+  /**
+   * An example that imports a fixture and does not ship it installs a file
+   * whose import resolves to nothing in the reader's project.
+   */
+  it.each(examples)("$name carries every fixture it reaches for", (example) => {
+    const shipped = new Set(
+      example.files!.map((file) => path.basename(file.path))
+    )
+
+    for (const fixture of fixturesFor(`${example.name}.tsx`)) {
       expect(
-        selfContained(file),
-        `${example.name} reaches for another demo`
+        shipped.has(fixture),
+        `${example.name} is missing ${fixture}`
       ).toBe(true)
     }
   })
 
-  it.each(examples)("$name has the file it points at", (example) => {
-    const file = example.files?.[0]?.path
-    expect(file).toBeDefined()
-    expect(existsSync(path.join(ROOT, file!))).toBe(true)
+  it.each(examples)("$name has every file it points at", (example) => {
+    expect(example.files?.length).toBeGreaterThan(0)
+    for (const file of example.files!) {
+      expect(existsSync(path.join(ROOT, file.path)), file.path).toBe(true)
+    }
   })
 
   it.each(examples)(
@@ -66,10 +86,9 @@ describe("published examples", () => {
   )
 
   it.each(examples)("$name declares what it imports", (example) => {
-    const source = readFileSync(
-      path.join(ROOT, example.files![0]!.path),
-      "utf8"
-    )
+    const source = example
+      .files!.map((file) => readFileSync(path.join(ROOT, file.path), "utf8"))
+      .join("\n")
     const declared = new Set(
       (example.dependencies ?? []).map((entry) =>
         entry.replace(/@[\^~>=<\d].*$/, "")
@@ -116,6 +135,32 @@ describe("published examples", () => {
       )
       expect(example.title).toBe(`${doc!.name} Demo`)
       expect(example.description).toContain(doc!.name)
+    }
+  })
+})
+
+describe("component keyframes", () => {
+  it("ships the keyframes a component animates by name", () => {
+    for (const item of components) {
+      const file = `registry/default/${item.name}/${item.name}.tsx`
+      const source = readFileSync(path.join(ROOT, file), "utf8")
+      const used = new Set(
+        [...source.matchAll(/animate-\[(mischief-[a-z-]+)/g)].map(
+          ([, name]) => name
+        )
+      )
+      const shipped = new Set(
+        Object.keys((item as { css?: Record<string, unknown> }).css ?? {})
+          .map((key) => key.match(/^@keyframes\s+(\S+)/)?.[1])
+          .filter(Boolean)
+      )
+
+      for (const name of used) {
+        expect(
+          shipped.has(name),
+          `${item.name} animates ${name} but does not ship its @keyframes`
+        ).toBe(true)
+      }
     }
   })
 })
