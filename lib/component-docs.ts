@@ -9056,17 +9056,31 @@ const familyOrder = [
 
 export type ComponentFamily = {
   name: string
+  slug: string
   description: string
   components: ComponentDoc[]
+}
+
+/** "Agent UI" as it appears in a URL. */
+export function familySlug(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
 }
 
 export const componentFamilies: ComponentFamily[] = familyOrder.map(
   ([name, description]) => ({
     name,
+    slug: familySlug(name),
     description,
     components: componentDocs.filter((component) => component.family === name),
   })
 )
+
+export function getComponentFamily(slug: string) {
+  return componentFamilies.find((family) => family.slug === slug)
+}
 
 /** Shown with a live demo on the home page. The rest are listed compactly. */
 export const featuredComponents = componentDocs.filter(

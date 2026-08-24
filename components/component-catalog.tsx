@@ -127,7 +127,7 @@ export function ComponentCatalog() {
         shown.map((entry) => (
           <section className="docs-section" key={entry.name}>
             <h2>
-              {entry.name}
+              <Link href={`/docs/families/${entry.slug}`}>{entry.name}</Link>
               <span className="docs-family-count">
                 {entry.components.length}
               </span>
