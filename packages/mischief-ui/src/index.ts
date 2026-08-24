@@ -264,6 +264,12 @@ export {
 } from "../../../registry/default/stop-generating/stop-generating"
 
 export {
+  VoiceInput,
+  type VoiceInputProps,
+  type VoiceInputStatus,
+} from "../../../registry/default/voice-input/voice-input"
+
+export {
   TokenMeter,
   type TokenMeterProps,
   type TokenSegment,

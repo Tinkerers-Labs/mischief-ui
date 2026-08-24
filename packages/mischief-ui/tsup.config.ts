@@ -78,6 +78,7 @@ export default defineConfig({
     kbd: "../../registry/default/kbd/kbd.tsx",
     "stop-generating":
       "../../registry/default/stop-generating/stop-generating.tsx",
+    "voice-input": "../../registry/default/voice-input/voice-input.tsx",
     "token-meter": "../../registry/default/token-meter/token-meter.tsx",
     "model-picker": "../../registry/default/model-picker/model-picker.tsx",
     "source-card": "../../registry/default/source-card/source-card.tsx",

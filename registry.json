@@ -717,6 +717,24 @@
       "registryDependencies": ["utils"]
     },
     {
+      "name": "voice-input",
+      "type": "registry:ui",
+      "title": "Voice Input",
+      "description": "A microphone that draws what it is hearing, so a live one is told apart from a dead one at a glance.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/voice-input/voice-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "chat", "input", "canvas", "media"],
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
+    },
+    {
       "name": "stop-generating",
       "type": "registry:ui",
       "title": "Stop Generating",
@@ -2984,6 +3002,21 @@
         }
       ],
       "registryDependencies": ["https://ui.tinkererslabs.com/r/tool-call.json"]
+    },
+    {
+      "name": "voice-input-demo",
+      "type": "registry:example",
+      "title": "Voice Input Demo",
+      "description": "A worked example of Voice Input: A microphone that draws what it is hearing, so a live one is told apart from a dead one at a glance.",
+      "files": [
+        {
+          "path": "components/demos/voice-input-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/voice-input.json"
+      ]
     },
     {
       "name": "wireframe-globe-demo",

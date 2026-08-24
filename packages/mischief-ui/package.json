@@ -260,6 +260,11 @@
       "import": "./dist/stop-generating.js",
       "require": "./dist/stop-generating.cjs"
     },
+    "./voice-input": {
+      "types": "./dist/voice-input.d.ts",
+      "import": "./dist/voice-input.js",
+      "require": "./dist/voice-input.cjs"
+    },
     "./token-meter": {
       "types": "./dist/token-meter.d.ts",
       "import": "./dist/token-meter.js",

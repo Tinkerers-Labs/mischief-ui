@@ -4981,6 +4981,142 @@ return (
       'Glyphs are decoration: the chord is also written out for a screen reader, so it hears "Command plus K" rather than a symbol it cannot pronounce. Detection runs through useSyncExternalStore, so the server renders the portable names and the client swaps in the Mac glyphs on hydration. Mod resolves to Command on Apple platforms and Control everywhere else.',
   },
   {
+    slug: "voice-input",
+    kind: "component",
+    name: "Voice Input",
+    family: "Agent UI",
+    summary:
+      "A microphone that draws what it is hearing, so a live one is told apart from a dead one at a glance.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("voice-input"),
+    npmImport: packageImport("VoiceInput", "voice-input"),
+    usage: `export function Composer() {
+  return (
+    <VoiceInput
+      maxDuration={60}
+      onResult={(recording) => transcribe(recording)}
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "no-transcription",
+        title: "It records; it does not transcribe",
+        blocks: [
+          {
+            kind: "text",
+            text: "Turning speech into text is a service, not a component. Putting one inside something you copy into your own project would decide your vendor, your billing and your privacy posture on your behalf, so this stops at the recording and hands it to you.",
+          },
+          {
+            kind: "code",
+            code: `<VoiceInput
+  onResult={async (recording) => {
+    const body = new FormData()
+    body.append("audio", recording, "speech.webm")
+    setText(await (await fetch("/api/transcribe", { method: "POST", body })).text())
+  }}
+/>`,
+            caption:
+              "The recording is a Blob, so it posts like any other file.",
+          },
+        ],
+      },
+      {
+        id: "trust",
+        title: "Why it draws",
+        blocks: [
+          {
+            kind: "text",
+            text: "A microphone button that only changes colour asks to be trusted. There is no way to tell a working microphone from a muted one, a wrong input device, or a permission that was granted to the page and then revoked by the operating system, until the recording comes back empty.",
+          },
+          {
+            kind: "text",
+            text: "Drawing the incoming samples settles it in the first half second: if the trace moves when you speak, the microphone the browser handed over is the one you are talking into.",
+          },
+          {
+            kind: "text",
+            text: "The trace is drawn on the shared render surface, so it takes its colour from your theme, stops when it is scrolled out of view, and survives a lost GPU context like every other surface here.",
+          },
+        ],
+      },
+      {
+        id: "states",
+        title: "The states it can be in",
+        blocks: [
+          {
+            kind: "text",
+            text: "A refusal, a missing device and a browser that cannot record are three different problems with three different remedies, so they are three different messages rather than one failure.",
+          },
+          {
+            kind: "table",
+            headers: ["Status", "What happened"],
+            rows: [
+              [
+                "unsupported",
+                "No MediaRecorder, so the control is disabled rather than dead",
+              ],
+              ["idle", "Ready, nothing held"],
+              ["requesting", "Waiting on the permission prompt"],
+              ["listening", "Recording, and drawing what it hears"],
+              ["denied", "Permission refused"],
+              ["error", "The device could not be started"],
+            ],
+          },
+          {
+            kind: "text",
+            text: "The status is also on the element as data-status, so a composer can style around it without lifting the state.",
+          },
+        ],
+      },
+      {
+        id: "letting-go",
+        title: "Letting go of the microphone",
+        blocks: [
+          {
+            kind: "text",
+            text: "The recording indicator staying lit after a component thinks it has stopped is the usual bug here, and it is a privacy one. Every track is stopped and the audio context is closed when recording ends, when the component unmounts, and when a start fails partway through.",
+          },
+        ],
+      },
+    ],
+    props: [
+      [
+        "onResult",
+        "(recording: Blob) => void",
+        "The audio, once recording stops.",
+      ],
+      ["onStart, onStop", "() => void", "Either end of a recording."],
+      [
+        "onStatusChange",
+        "(status: VoiceInputStatus) => void",
+        "Every state change, if you are mirroring it elsewhere.",
+      ],
+      [
+        "maxDuration",
+        "number",
+        "Seconds after which it stops on its own. Off by default.",
+      ],
+      [
+        "color",
+        "string",
+        'A theme token for the trace. Defaults to "--primary".',
+      ],
+      [
+        "mimeType",
+        "string",
+        "Preferred container. Ignored when the browser cannot honour it.",
+      ],
+      ["label", "string", "The button's accessible name when idle."],
+      [
+        "disabled",
+        "boolean",
+        "Turns the control off without changing its state.",
+      ],
+    ],
+    accessibility:
+      "The button carries aria-pressed, so the difference between recording and not is in the accessibility tree rather than only in the icon. Every state change is announced through a polite live region, and the visible message is marked aria-hidden because it is the same sentence: it is said once, not once on screen and once aloud. The trace is decoration and never carries meaning the words do not, which matters because under prefers-reduced-motion it is not drawn at all -- a single painted frame would sit frozen while the microphone was open, so the words and the elapsed time take over instead.",
+  },
+  {
     slug: "stop-generating",
     kind: "component",
     name: "Stop Generating",
