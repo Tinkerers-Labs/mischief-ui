@@ -12,7 +12,14 @@ const FROM_UTILS = new Set(["clsx", "tailwind-merge"])
 function optionalPeers() {
   const peers = new Set<string>()
 
-  for (const item of registry.items) {
+  // Components only. An example may reach for something to build its fixture
+  // that nobody installing the component would ever need, and naming it here
+  // would tell an agent to install a package for no reason.
+  const components = registry.items.filter(
+    (item) => item.type !== "registry:example"
+  )
+
+  for (const item of components) {
     for (const entry of item.dependencies ?? []) {
       const name = entry.replace(/@[\^~>=<\d].*$/, "")
       if (!FROM_UTILS.has(name)) peers.add(name)
@@ -60,6 +67,12 @@ ${familyRows()}
 - **Browse the catalog:** \`reference.md\` beside this file, or \`${siteConfig.url}skill-reference.md\` if you were handed this over the network. Every component grouped by family, one line each. Read it when you do not already know the name you want.
 - **One component in full:** \`${siteConfig.url}docs/components/<component>.md\` gives its whole documentation: install command, worked example, props, and accessibility behaviour. Read this before writing code against a component.
 - **Everything at once:** \`${siteConfig.url}llms-full.txt\`. Large. Only worth it when comparing many components in one pass.
+
+Most components also publish a worked example, installable as \`<component>-demo\`. Reach for it when you would otherwise be inventing the shape of the data a component expects: it arrives as ordinary source in the project, alongside the component it demonstrates.
+
+\`\`\`bash
+npx ${registryInstallArgs("data-table-demo")}
+\`\`\`
 
 ## Workflow
 

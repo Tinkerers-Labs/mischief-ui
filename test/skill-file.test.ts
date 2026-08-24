@@ -4,6 +4,11 @@ import { componentDocs, componentFamilies } from "../lib/component-docs"
 import { skillMarkdown, skillReference } from "../lib/skill-file"
 import registry from "../registry.json"
 
+/** Examples are installed beside a component; the catalog lists components. */
+const components = registry.items.filter(
+  (item) => item.type !== "registry:example"
+)
+
 const skill = skillMarkdown()
 const reference = skillReference()
 
@@ -39,9 +44,39 @@ describe("the skill an agent is given", () => {
     expect(skill).toContain("skill-reference.md")
   })
 
+  it("tells an agent that a worked example can be installed too", () => {
+    expect(skill).toContain("-demo")
+  })
+
+  it("does not send an agent after a package only a demo wanted", () => {
+    const componentPeers = new Set(
+      components.flatMap((item) =>
+        (item.dependencies ?? []).map((entry) =>
+          entry.replace(/@[\^~>=<\d].*$/, "")
+        )
+      )
+    )
+
+    const demoOnly = registry.items
+      .filter((item) => item.type === "registry:example")
+      .flatMap((item) =>
+        (item.dependencies ?? []).map((entry) =>
+          entry.replace(/@[\^~>=<\d].*$/, "")
+        )
+      )
+      .filter((pkg) => !componentPeers.has(pkg))
+
+    for (const pkg of demoOnly) {
+      expect(
+        skill,
+        `${pkg} is only a demo's, and should not be listed`
+      ).not.toContain(`\`${pkg}\``)
+    }
+  })
+
   it("names every optional peer any component actually asks for", () => {
     const declared = new Set<string>()
-    for (const item of registry.items) {
+    for (const item of components) {
       for (const entry of item.dependencies ?? []) {
         declared.add(entry.replace(/@[\^~>=<\d].*$/, ""))
       }
@@ -57,7 +92,7 @@ describe("the skill an agent is given", () => {
 })
 
 describe("the catalog the skill points at", () => {
-  it.each(registry.items)("lists $name", (item) => {
+  it.each(components)("lists $name", (item) => {
     expect(reference).toContain(`\`${item.name}\``)
   })
 

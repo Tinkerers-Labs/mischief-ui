@@ -29,6 +29,12 @@ Start from the family, then read only what you need. Do not guess a component na
 - **One component in full:** `https://ui.tinkererslabs.com/docs/components/<component>.md` gives its whole documentation: install command, worked example, props, and accessibility behaviour. Read this before writing code against a component.
 - **Everything at once:** `https://ui.tinkererslabs.com/llms-full.txt`. Large. Only worth it when comparing many components in one pass.
 
+Most components also publish a worked example, installable as `<component>-demo`. Reach for it when you would otherwise be inventing the shape of the data a component expects: it arrives as ordinary source in the project, alongside the component it demonstrates.
+
+```bash
+npx shadcn@latest add Tinkerers-Labs/mischief-ui/data-table-demo
+```
+
 ## Workflow
 
 1. Read `components.json` and the project's package manager before choosing a command.

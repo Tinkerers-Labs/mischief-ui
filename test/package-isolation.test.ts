@@ -69,7 +69,17 @@ const barrelExports = new Set(
 
 const built = existsSync(DIST)
 
-const byName = new Map(registry.items.map((item) => [item.name, item]))
+/**
+ * Examples are installed beside a component to show it working; they are not
+ * published to npm and are allowed to depend on the thing they demonstrate.
+ * Every rule below about entries, subpaths and reaching for other components
+ * is a rule about components.
+ */
+const components = registry.items.filter(
+  (item) => item.type !== "registry:example"
+)
+
+const byName = new Map(components.map((item) => [item.name, item]))
 
 /**
  * Our own items are declared as absolute URLs, so the CLI knows to come back
@@ -98,7 +108,7 @@ function declaredPackages(name: string, seen = new Set<string>()): string[] {
   ]
 }
 
-const entries = registry.items
+const entries = components
   .map((item) => ({
     name: item.name,
     declared: new Set(declaredPackages(item.name)),
@@ -109,7 +119,7 @@ describe.skipIf(!built || entries.length === 0)(
   "published entry isolation",
   () => {
     it("has a built entry for every registry item", () => {
-      expect(entries.length).toBe(registry.items.length)
+      expect(entries.length).toBe(components.length)
     })
 
     it.each(entries)("$name pulls only what it declares", (item) => {
@@ -134,7 +144,7 @@ describe.skipIf(!built || entries.length === 0)(
       }
 
       const declared = new Map(
-        registry.items.map((item) => [
+        components.map((item) => [
           item.name,
           (item.registryDependencies ?? [])
             .map(itemName)
@@ -202,7 +212,7 @@ describe.skipIf(!built || entries.length === 0)(
     })
 
     it("exports a subpath for every registry item", () => {
-      const missing = registry.items
+      const missing = components
         .map((item) => item.name)
         .filter((name) => !(`./${name}` in packageJson.exports))
 
@@ -242,7 +252,7 @@ describe("what an install pulls", () => {
    */
   const INFRASTRUCTURE = new Set(["utils", "render-surface"])
 
-  it.each(registry.items)(
+  it.each(components)(
     "$name only reaches for other components if it is a block",
     (item) => {
       const parts = (item.registryDependencies ?? [])
@@ -256,9 +266,7 @@ describe("what an install pulls", () => {
   )
 
   it("keeps infrastructure out of the interface it serves", () => {
-    const surface = registry.items.find(
-      (item) => item.name === "render-surface"
-    )
+    const surface = components.find((item) => item.name === "render-surface")
 
     expect(surface?.registryDependencies ?? []).toEqual(["utils"])
   })
@@ -269,7 +277,7 @@ describe("what an install pulls", () => {
    * the render surface uninstallable by either route.
    */
   it("never names one of its own items without saying where it lives", () => {
-    const own = new Set(registry.items.map((item) => item.name))
+    const own = new Set(components.map((item) => item.name))
     const bare = registry.items.flatMap((item) =>
       (item.registryDependencies ?? [])
         .filter((dependency) => own.has(dependency))
