@@ -107,12 +107,12 @@ export type ComponentDemo = {
 
 export const componentDemos: Record<string, ComponentDemo> = {
   "magnetic-tabs": { Demo: MagneticTabsDemo, tileClassName: "lg:col-span-7" },
-  "elastic-slider": { Demo: ElasticSliderDemo, tileClassName: "lg:col-span-5" },
-  "hold-button": { Demo: HoldButtonDemo, tileClassName: "lg:col-span-4" },
+  "elastic-slider": { Demo: ElasticSliderDemo, tileClassName: "lg:col-span-6" },
+  "hold-button": { Demo: HoldButtonDemo, tileClassName: "lg:col-span-6" },
   "shift-button": { Demo: ShiftButtonDemo },
   "impossible-checkbox": {
     Demo: ImpossibleCheckboxDemo,
-    tileClassName: "lg:col-span-4",
+    tileClassName: "lg:col-span-6",
   },
   "floating-index": { Demo: FloatingIndexDemo },
   "scroll-to-top-button": { Demo: ScrollToTopDemo },
@@ -191,7 +191,7 @@ export const componentDemos: Record<string, ComponentDemo> = {
   conversation: {
     Demo: ConversationDemo,
     frameClassName: "p-6 md:p-10",
-    tileClassName: "lg:col-span-4",
+    tileClassName: "lg:col-span-5",
   },
   message: { Demo: MessageDemo, frameClassName: "p-6 md:p-10" },
   "prompt-input": { Demo: PromptInputDemo, frameClassName: "p-6 md:p-10" },
@@ -203,7 +203,7 @@ export const componentDemos: Record<string, ComponentDemo> = {
   redaction: {
     Demo: RedactionDemo,
     frameClassName: "p-6 md:p-10",
-    tileClassName: "lg:col-span-5",
+    tileClassName: "lg:col-span-4",
   },
   questionnaire: {
     Demo: QuestionnaireDemo,
@@ -230,7 +230,7 @@ export const componentDemos: Record<string, ComponentDemo> = {
   "image-gallery": {
     Demo: ImageGalleryDemo,
     frameClassName: "items-start",
-    tileClassName: "lg:col-span-12",
+    tileClassName: "lg:col-span-8",
   },
   "render-surface": { Demo: RenderSurfaceDemo, frameClassName: "p-6 md:p-10" },
   "aurora-field": {
@@ -310,7 +310,7 @@ export const componentDemos: Record<string, ComponentDemo> = {
   "presence-field": {
     Demo: PresenceFieldDemo,
     frameClassName: "p-6 md:p-10",
-    tileClassName: "lg:col-span-6",
+    tileClassName: "lg:col-span-4",
   },
   "stream-glow": {
     Demo: StreamGlowDemo,

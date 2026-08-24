@@ -274,9 +274,14 @@ a:focus-visible {
   }
 
   /* A tile that never said how wide it wanted to be would otherwise take one
-     column of twelve and crush its contents to a word a line. */
-  .gallery-tile {
-    grid-column: span 6;
+     column of twelve and crush its contents to a word a line. This sits in
+     the base layer on purpose: unlayered CSS outranks every layer whatever
+     its specificity, so an unlayered fallback here would quietly beat the
+     col-span utility on any tile that did say. */
+  @layer base {
+    .gallery-tile {
+      grid-column: span 6;
+    }
   }
 }
 

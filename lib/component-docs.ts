@@ -31,7 +31,6 @@ export type DocTypeTable = {
 const entries = [
   {
     slug: "magnetic-tabs",
-    featured: true,
     kind: "component",
     name: "Magnetic Tabs",
     family: "Controls",
@@ -219,7 +218,6 @@ formatValue={(value) => \`\${(value / 100).toFixed(2)} s\`}`,
   },
   {
     slug: "hold-button",
-    featured: true,
     kind: "component",
     name: "Hold Button",
     family: "Controls",
@@ -6563,7 +6561,6 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
     kind: "component",
     name: "Aurora Field",
     family: "Scenes",
-    featured: true,
     summary:
       "A drifting gradient backdrop for a hero or an empty state, built from the colours already in your theme rather than from a palette it brought with it.",
     dependencies: [],
@@ -6950,7 +6947,6 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
     kind: "component",
     name: "Shader Surface",
     family: "Scenes",
-    featured: true,
     summary:
       "Four shader backdrops -- caustics, metal, plasma and ripple -- each taking its two colours from your theme, so the same surface arrives dark in a dark application and light in a light one.",
     dependencies: [],
@@ -7915,6 +7911,7 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
   },
   {
     slug: "wireframe-globe",
+    featured: true,
     kind: "component",
     name: "Wireframe Globe",
     family: "Scenes",
@@ -8329,7 +8326,6 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
     kind: "component",
     name: "Sortable List",
     family: "Controls",
-    featured: true,
     summary:
       "A list reordered by dragging a handle, or from the keyboard without one, where every move is announced.",
     dependencies: ["lucide-react"],
