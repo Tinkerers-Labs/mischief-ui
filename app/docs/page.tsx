@@ -1,8 +1,7 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 
+import { ComponentCatalog } from "@/components/component-catalog"
 import { InstallCommand } from "@/registry/default/install-command/install-command"
-import { componentFamilies } from "@/lib/component-docs"
 import { defaultPackageManager } from "@/lib/package-commands"
 import { registryInstallArgs, siteConfig } from "@/site.config"
 
@@ -56,29 +55,7 @@ export default function DocsPage() {
         </p>
       </section>
 
-      {componentFamilies.map((family) => (
-        <section className="docs-section" key={family.name}>
-          <h2>
-            {family.name}
-            <span className="docs-family-count">
-              {family.components.length}
-            </span>
-          </h2>
-          <p>{family.description}</p>
-          <div className="docs-component-list">
-            {family.components.map((component) => (
-              <Link
-                key={component.slug}
-                href={`/docs/components/${component.slug}`}
-              >
-                <span>{component.number}</span>
-                <strong>{component.name}</strong>
-                <p>{component.summary}</p>
-              </Link>
-            ))}
-          </div>
-        </section>
-      ))}
+      <ComponentCatalog />
 
       <section className="docs-section">
         <h2>Compatibility</h2>

@@ -3,10 +3,11 @@ import { ArrowUpRight } from "lucide-react"
 
 import { componentDemos } from "@/components/demos"
 import {
-  componentFamilies,
+  componentDocs,
   featuredComponents,
   type ComponentDoc,
 } from "@/lib/component-docs"
+import { siteConfig } from "@/site.config"
 
 function GalleryTile({ doc }: { doc: ComponentDoc }) {
   const demo = componentDemos[doc.slug]
@@ -34,37 +35,17 @@ export function ComponentGallery() {
         ))}
       </div>
 
-      <section
-        className="catalog"
-        id="catalog"
-        aria-labelledby="catalog-heading"
-      >
-        <h2 className="catalog-heading" id="catalog-heading">
-          All components
-        </h2>
-
-        {componentFamilies.map((family) => (
-          <div className="catalog-family" key={family.name}>
-            <h3>
-              <span>{family.name}</span>
-              <span className="catalog-count">{family.components.length}</span>
-            </h3>
-
-            <ul>
-              {family.components.map((doc) => (
-                <li key={doc.slug}>
-                  <Link
-                    href={`/docs/components/${doc.slug}`}
-                    title={doc.summary}
-                  >
-                    {doc.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </section>
+      <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 px-4 pb-[clamp(2rem,5vw,4rem)] text-center">
+        <Link
+          className="bg-foreground text-background inline-flex min-h-11 items-center rounded-full px-5 font-semibold no-underline transition-transform duration-150 hover:-translate-y-0.5 motion-reduce:transition-none"
+          href={siteConfig.routes.docs}
+        >
+          Browse all {componentDocs.length} components
+        </Link>
+        <p className="text-muted-foreground text-sm">
+          Filter by family, or search the lot.
+        </p>
+      </div>
     </div>
   )
 }

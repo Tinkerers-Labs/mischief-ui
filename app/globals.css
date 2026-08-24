@@ -272,6 +272,12 @@ a:focus-visible {
   .gallery-grid {
     grid-template-columns: repeat(12, minmax(0, 1fr));
   }
+
+  /* A tile that never said how wide it wanted to be would otherwise take one
+     column of twelve and crush its contents to a word a line. */
+  .gallery-tile {
+    grid-column: span 6;
+  }
 }
 
 .gallery-tile {

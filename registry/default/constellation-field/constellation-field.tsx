@@ -52,6 +52,26 @@ export function ConstellationField({
     [color]
   )
 
+  React.useEffect(() => {
+    if (pointerRadius <= 0) return
+
+    const move = (event: PointerEvent) => {
+      const box = rootRef.current?.getBoundingClientRect()
+      if (!box) return
+
+      const x = event.clientX - box.left
+      const y = event.clientY - box.top
+
+      pointer.current.active =
+        x >= 0 && x <= box.width && y >= 0 && y <= box.height
+      pointer.current.x = x
+      pointer.current.y = y
+    }
+
+    window.addEventListener("pointermove", move, { passive: true })
+    return () => window.removeEventListener("pointermove", move)
+  }, [pointerRadius])
+
   const resolved = useThemeColors(rootRef, tokens)
   const ink = color.startsWith("--") ? resolved[color] : undefined
   const ready = ink !== undefined
@@ -150,15 +170,6 @@ export function ConstellationField({
       ref={rootRef}
       data-slot="constellation-field"
       className={cn("relative isolate overflow-hidden", className)}
-      onPointerMove={(event) => {
-        const rect = event.currentTarget.getBoundingClientRect()
-        pointer.current.x = event.clientX - rect.left
-        pointer.current.y = event.clientY - rect.top
-        pointer.current.active = true
-      }}
-      onPointerLeave={() => {
-        pointer.current.active = false
-      }}
       {...rootProps}
     >
       {ready && (

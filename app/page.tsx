@@ -5,7 +5,7 @@ import { ComponentGallery } from "@/components/component-gallery"
 import { ExternalLink } from "@/components/external-link"
 import { FaqSection } from "@/components/faq-section"
 import { GalleryIndex } from "@/components/gallery-index"
-import { HeroPlayground } from "@/components/hero-playground"
+import { HeroScene } from "@/components/hero-scene"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { componentDocs } from "@/lib/component-docs"
@@ -47,70 +47,74 @@ export default function Home() {
     <main>
       <SiteHeader />
 
-      <section className="border-border border-b" id="top">
-        <div className="mx-auto grid max-w-[90rem] lg:min-h-[40rem] lg:grid-cols-[minmax(0,0.92fr)_minmax(32rem,1.08fr)]">
-          <div className="flex max-w-[44rem] flex-col justify-center px-4 py-9 md:px-8 md:py-14 lg:px-12 lg:py-16 lg:pr-14">
-            <h1 className="font-[family-name:var(--font-display)] text-[clamp(3.25rem,4.3vw,5.1rem)] leading-[0.94] font-semibold tracking-[-0.05em]">
-              React components
-              <span className="text-primary block">
-                with a little mischief.
-              </span>
-            </h1>
+      <HeroScene>
+        <Link
+          className="border-border/70 bg-background/60 text-muted-foreground hover:text-foreground mb-6 inline-flex w-fit items-center gap-2 rounded-full border py-1.5 pr-3 pl-2 text-xs font-semibold no-underline backdrop-blur-md"
+          href="/docs/components/data-table"
+        >
+          <span className="bg-primary text-primary-foreground rounded-full px-2 py-0.5">
+            New
+          </span>
+          Data Table
+          <span aria-hidden="true">→</span>
+        </Link>
 
-            <p className="mt-5 max-w-[34rem] text-[clamp(1.05rem,1.4vw,1.2rem)] leading-relaxed text-pretty">
-              Accessible components and blocks for shadcn projects. Tabs that
-              follow, sliders with a little give, and a set for the things an
-              agent shows while it works.
-            </p>
+        <h1 className="font-[family-name:var(--font-display)] text-[clamp(3.25rem,4.6vw,5.4rem)] leading-[0.94] font-semibold tracking-[-0.05em]">
+          React components
+          <span className="text-primary block">with a little mischief.</span>
+        </h1>
 
-            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
-              <a
-                className="bg-foreground text-background inline-flex min-h-11 items-center rounded-full px-5 font-semibold no-underline transition-transform duration-150 hover:-translate-y-0.5 motion-reduce:transition-none"
-                href="#components"
-              >
-                Browse components
-              </a>
-              <Link
-                className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4"
-                href={siteConfig.routes.docs}
-              >
-                Read the docs
-              </Link>
-            </div>
+        <p className="mt-5 max-w-[34rem] text-[clamp(1.05rem,1.4vw,1.2rem)] leading-relaxed text-pretty">
+          <strong className="font-semibold">
+            {componentDocs.length} accessible components
+          </strong>{" "}
+          for shadcn projects. Sliders with a little give, a set for the things
+          an agent shows while it works, a data table you can live in, and
+          backdrops that take their colours from your theme rather than bringing
+          their own.
+        </p>
 
-            <p className="text-muted-foreground mt-5 text-sm">
-              Install from{" "}
-              <ExternalLink
-                className="hover:text-foreground underline underline-offset-4"
-                href={siteConfig.package.url}
-              >
-                npm
-              </ExternalLink>{" "}
-              ·{" "}
-              <Link
-                className="hover:text-foreground underline underline-offset-4"
-                href={siteConfig.license.route}
-              >
-                {siteConfig.license.name}
-              </Link>{" "}
-              licensed
-            </p>
-            <p className="mt-2 text-sm">
-              Using a coding agent?{" "}
-              {/* A plain anchor: skill.md is a markdown route, not a page, so
-                  next/link would prefetch a tree that does not exist. */}
-              <a
-                className="font-semibold underline underline-offset-4"
-                href={siteConfig.routes.skill}
-              >
-                Give it skill.md.
-              </a>
-            </p>
-          </div>
-
-          <HeroPlayground />
+        <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
+          <Link
+            className="bg-foreground text-background inline-flex min-h-11 items-center rounded-full px-5 font-semibold no-underline transition-transform duration-150 hover:-translate-y-0.5 motion-reduce:transition-none"
+            href={siteConfig.routes.docs}
+          >
+            Browse {componentDocs.length} components
+          </Link>
+          <a
+            className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4"
+            href="#components"
+          >
+            See them running
+          </a>
         </div>
-      </section>
+
+        <p className="text-muted-foreground mt-5 text-sm">
+          Install from{" "}
+          <ExternalLink
+            className="hover:text-foreground underline underline-offset-4"
+            href={siteConfig.package.url}
+          >
+            npm
+          </ExternalLink>{" "}
+          ·{" "}
+          <Link
+            className="hover:text-foreground underline underline-offset-4"
+            href={siteConfig.license.route}
+          >
+            {siteConfig.license.name}
+          </Link>{" "}
+          licensed · Using a coding agent?{" "}
+          {/* A plain anchor: skill.md is a markdown route, not a page, so
+              next/link would prefetch a tree that does not exist. */}
+          <a
+            className="text-foreground font-semibold underline underline-offset-4"
+            href={siteConfig.routes.skill}
+          >
+            Give it skill.md.
+          </a>
+        </p>
+      </HeroScene>
 
       <ComponentGallery />
       <GalleryIndex />

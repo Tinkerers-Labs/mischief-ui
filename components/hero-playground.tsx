@@ -13,7 +13,7 @@ export function HeroPlayground() {
   if (!component) return null
 
   return (
-    <div className="bg-muted/40 border-border flex min-h-[19rem] min-w-0 flex-col justify-center border-y px-5 py-6 md:min-h-[24rem] md:px-10 md:py-8 lg:min-h-[40rem] lg:border-y-0 lg:border-l lg:p-12">
+    <div className="border-border/70 bg-card/85 flex min-w-0 flex-col justify-center rounded-[1.25rem] border p-5 shadow-2xl backdrop-blur-md md:p-8">
       <div className="mx-auto w-full max-w-[34rem]">
         <div className="mb-5 flex items-center justify-between gap-4 md:mb-7">
           <div>

@@ -6834,7 +6834,7 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
           },
           {
             kind: "text",
-            text: "Setting pointerRadius to zero removes the reaction and lets the field sit behind content that should receive the pointer instead.",
+            text: "The pointer is followed on the window rather than on this element, so the field still answers to it while sitting behind a headline that is taking every event itself. Setting pointerRadius to zero removes the reaction altogether.",
           },
         ],
       },
@@ -7724,6 +7724,11 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
         "number",
         "How sharply a blob ends. Lower is gooier. Defaults to 0.35.",
       ],
+      [
+        "pointer",
+        "boolean",
+        "Makes the pointer one of the blobs, so it merges with the rest as it passes through them.",
+      ],
     ],
     sections: [
       {
@@ -7737,6 +7742,24 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
           {
             kind: "text",
             text: "The count is capped at twelve because every blob is another term evaluated at every pixel, and past a dozen the shape stops being readable long before the frame rate does.",
+          },
+          {
+            kind: "text",
+            text: "The blobs also spread themselves to the shape of the box. Placed the same distance apart whatever the box looks like, they bunch into the middle third of a wide one and merge into a single mass, which reads as a glow rather than as a field of blobs.",
+          },
+        ],
+      },
+      {
+        id: "pointer",
+        title: "Making the pointer one of them",
+        blocks: [
+          {
+            kind: "text",
+            text: "With pointer on, wherever the reader is becomes another blob, merging with the others exactly as they merge with each other. It eases toward the pointer rather than being pinned to it, and fades in on arrival, so nothing pops into existence at the edge of the box.",
+          },
+          {
+            kind: "text",
+            text: "The pointer is followed on the window rather than on this element, which is what lets the field sit behind other content and still answer to a pointer that never touches it. A backdrop that only reacts when nothing is on top of it is a backdrop that never reacts.",
           },
         ],
       },
