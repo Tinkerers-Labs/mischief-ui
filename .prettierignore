@@ -3,5 +3,7 @@ node_modules
 packages/*/dist
 next-env.d.ts
 public/r
+skills/mischief-ui/SKILL.md
+skills/mischief-ui/reference.md
 pnpm-lock.yaml
 public/demo/pdf.worker.min.mjs

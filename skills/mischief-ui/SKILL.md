@@ -5,13 +5,36 @@ description: Find, evaluate, and install playful React components from Mischief 
 
 # Mischief UI
 
-Add only the component that solves the request. Treat each component as owned source code that can be adapted to the project.
+94 accessible React components for shadcn projects, across 11 families. Add only the component that solves the request. Treat each one as owned source code that can be adapted to the project.
+
+## Finding the right component
+
+Start from the family, then read only what you need. Do not guess a component name: they are listed, with a line each, in the files below.
+
+| Family | Components | What it covers |
+| --- | --- | --- |
+| Agent UI | 18 | The surface an assistant answers through: the thread, the composer, and everything it shows while it is working. |
+| Code | 3 | Code an agent wrote, ran, or wants to change, and the controls to accept it. |
+| Documents | 12 | Reading a file someone uploaded, marking it up, cutting it into pieces, and pulling structure out of it. |
+| Files | 2 | Getting a file in, and showing what arrived. |
+| Feedback | 6 | What the page says while it waits, and when there is nothing to show. |
+| Controls | 13 | Familiar inputs with more feedback than usual, and none of it required to operate them. |
+| Wayfinding | 5 | Knowing where you are in something long, and getting somewhere else quickly. |
+| Docs | 5 | The furniture of a documentation site, taken out of this one. |
+| Blocks | 11 | Larger pieces that compose several components into one part of a page. |
+| Scenes | 16 | Backdrops and moments where the drawing is the job, each one taking its colours from the theme it was installed into. |
+| Motion | 3 | Entrances and numbers that move, driven by arrival or by scrolling, and never by withholding the content. |
+
+- **Browse the catalog:** `reference.md` beside this file, or `https://ui.tinkererslabs.com/skill-reference.md` if you were handed this over the network. Every component grouped by family, one line each. Read it when you do not already know the name you want.
+- **One component in full:** `https://ui.tinkererslabs.com/docs/components/<component>.md` gives its whole documentation: install command, worked example, props, and accessibility behaviour. Read this before writing code against a component.
+- **Everything at once:** `https://ui.tinkererslabs.com/llms-full.txt`. Large. Only worth it when comparing many components in one pass.
 
 ## Workflow
 
 1. Read `components.json` and the project's package manager before choosing a command.
-2. Match the request to the smallest suitable component in the catalog below.
-3. Prefer the shadcn registry so the source lands in the consumer's codebase:
+2. Narrow to a family above, then find the component in `reference.md`.
+3. Read that component's markdown page before using it. The props and the accessibility notes are there, not here.
+4. Install through the shadcn registry, so the source lands in the consumer's codebase:
 
    ```bash
    npx shadcn@latest add Tinkerers-Labs/mischief-ui/<component>
@@ -19,26 +42,15 @@ Add only the component that solves the request. Treat each component as owned so
 
    Replace `npx` with the runner used by the project.
 
-4. Review the installed diff. Preserve existing aliases, shadcn tokens, Tailwind conventions, and React Server Component boundaries.
-5. Adapt copy and content to the product. Do not leave demo names or placeholder text in shipped UI.
-6. Verify keyboard use, focus visibility, reduced motion, and the relevant responsive layout.
+5. Review the installed diff. Preserve existing aliases, shadcn tokens, Tailwind conventions, and React Server Component boundaries.
+6. Adapt copy and content to the product. Do not leave demo names or placeholder text in shipped UI.
+7. Verify keyboard use, focus visibility, reduced motion, and the relevant responsive layout.
 
-Use `npm install mischief-ui` only when the user specifically prefers package imports over owned source. Base UI, Motion, and the document parsers are optional peers, so install one only if the component you added lists it.
+Use `npm install mischief-ui` only when the user specifically prefers package imports over owned source.
 
-## Catalog
+## Dependencies
 
-- `magnetic-tabs`: Accessible tabs with a restrained pointer pull.
-- `elastic-slider`: A keyboard-friendly slider with elastic end feedback.
-- `hold-button`: Hold-to-confirm for consequential actions, with immediate keyboard activation.
-- `signature-footer`: A complete footer composition with a large closing wordmark.
-- `impossible-checkbox`: A bear that refuses to leave a checkbox on. Use only for demos, Easter eggs, and harmless preferences. Never use it for consent, safety, or required settings.
-- `floating-index`: A compact page outline that tracks reading progress and the active section.
-- `shift-button`: A call to action whose leading icon makes room for a directional cue.
-- `image-gallery`: A responsive gallery block with grid and masonry layouts and an accessible lightbox.
-- `scroll-to-top-button`: A floating shortcut that appears after someone moves down a long page or scroll container and takes them back to the top.
-- `ask-ai`: A source-aware prompt handoff for ChatGPT, Claude, Perplexity, Grok, or a copied prompt.
-- `file-upload`: A validated file picker and dropzone with a visible queue and optional upload progress, cancel, and retry handling.
-- `file-thumbnail`: A compact image preview with automatic browser File support, loading, and failure states.
+Everything beyond React is an optional peer: `@base-ui/react`, `lucide-react`, `mammoth`, `motion`, `papaparse`, `pdfjs-dist`, `react-markdown`, `remark-gfm`, `three`. Install one only if the component you added lists it, which its documentation page states. Most components need nothing but React.
 
 ## Guardrails
 
@@ -46,4 +58,3 @@ Use `npm install mischief-ui` only when the user specifically prefers package im
 - Do not install several components as decoration or fill space with invented marketing copy.
 - Do not remove native semantics or accessibility behavior to simplify an animation.
 - Respect `prefers-reduced-motion` and avoid adding remote audio, images, or tracking.
-- Read component documentation at `https://ui.tinkererslabs.com/docs/components/<component>` when API details are needed.
