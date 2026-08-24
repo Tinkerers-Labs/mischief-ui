@@ -53,6 +53,11 @@ describe("what the entry promises about us", () => {
     expect(entry.logo).not.toContain("#e5532d")
   })
 
+  it("gives the logo an intrinsic size, so the listing can lay it out", () => {
+    expect(entry.logo).toMatch(/<svg[^>]*width='\d+'/)
+    expect(entry.logo).toMatch(/<svg[^>]*height='\d+'/)
+  })
+
   it("keeps the logo on one line, as the directory stores it", () => {
     expect(entry.logo).not.toContain("\n")
     // Their file is JSON with double-quoted strings; the markup uses single.

@@ -27,11 +27,15 @@ const BRAND = "#e5532d"
  * and a row of logos reads as a row when they all take its colour. The brand
  * asset itself stays tomato: it is used in the readme and on the brand page,
  * where a custom property would resolve to nothing.
+ *
+ * The intrinsic size goes on too. Our asset carries only a viewBox, which
+ * leaves an <img> to fall back on 300x150 and a row of logos ragged.
  */
 function markSvg() {
   const file = path.join(process.cwd(), "public/brand/mischief-mark.svg")
 
   return readFileSync(file, "utf8")
+    .replace("<svg ", "<svg width='24' height='24' ")
     .replaceAll(BRAND, "var(--foreground)")
     .replace(/\s*\n\s*/g, " ")
     .replace(/"/g, "'")
@@ -43,7 +47,7 @@ export function directoryEntry(): DirectoryEntry {
     name: siteConfig.registry.namespace,
     homepage: siteConfig.url.replace(/\/$/, ""),
     url: siteConfig.registry.url,
-    description: `${componentDocs.length} playful, accessible React components for shadcn projects: an agent's chat surface, document viewers, a data table, and backdrops that take their colours from your theme rather than bringing their own.`,
+    description: `${componentDocs.length} playful, accessible React components for shadcn projects: an agent's chat surface, document viewers, a data table, and WebGL backdrops that read their colours from your theme.`,
     logo: markSvg(),
   }
 }
