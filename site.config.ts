@@ -16,12 +16,14 @@ const routes = {
   brand: "/brand",
   license: "/license",
   changelog: "/changelog",
+  interfaces: "/interfaces",
   skill: "/skill.md",
 } as const
 
 const navigation = [
   { href: routes.components, label: "Components" },
   { href: routes.docs, label: "Docs" },
+  { href: routes.interfaces, label: "Interfaces" },
 ] as const
 
 export const siteConfig = {

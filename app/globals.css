@@ -1159,6 +1159,68 @@ a:focus-visible {
   color: var(--primary);
 }
 
+.interface-rules {
+  display: grid;
+  margin-top: 1.5rem;
+}
+
+.interface-rule {
+  border-top: 1px solid var(--border);
+  padding: 1.4rem 0;
+  scroll-margin-top: 6rem;
+}
+
+.interface-rule:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+.interface-rule h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.interface-rule p {
+  color: var(--muted-foreground);
+  font-size: 0.9375rem;
+  margin: 0.5rem 0 0;
+  max-width: 62ch;
+}
+
+.interface-rule-evidence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+}
+
+.interface-rule-checked,
+.interface-rule-component {
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted-foreground);
+  display: inline-flex;
+  font-size: 0.75rem;
+  font-weight: 600;
+  gap: 0.35rem;
+  min-height: 1.9rem;
+  padding: 0 0.7rem;
+  text-decoration: none;
+}
+
+.interface-rule-checked {
+  background: var(--muted);
+  border-color: transparent;
+  color: var(--foreground);
+}
+
+.interface-rule-component:hover {
+  color: var(--primary);
+}
+
 .component-preview-panel {
   border: 1px solid var(--border);
   border-radius: 1rem;

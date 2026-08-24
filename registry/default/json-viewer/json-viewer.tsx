@@ -337,7 +337,7 @@ export function JsonViewer({
                 aria-hidden="true"
                 size={13}
                 className={cn(
-                  "text-muted-foreground shrink-0 transition-transform",
+                  "text-muted-foreground shrink-0 transition-transform motion-reduce:transition-none",
                   !row.branch && "invisible",
                   row.expanded && "rotate-90"
                 )}
