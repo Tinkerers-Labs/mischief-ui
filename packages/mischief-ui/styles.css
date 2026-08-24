@@ -5,3 +5,15 @@
     transform: translateX(300%) skewX(-12deg);
   }
 }
+
+@keyframes mischief-marquee-x {
+  to {
+    transform: translateX(var(--marquee-shift));
+  }
+}
+
+@keyframes mischief-marquee-y {
+  to {
+    transform: translateY(var(--marquee-shift));
+  }
+}

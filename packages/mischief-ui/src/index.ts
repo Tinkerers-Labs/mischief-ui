@@ -455,6 +455,11 @@ export {
 } from "../../../registry/default/reveal/reveal"
 
 export {
+  Marquee,
+  type MarqueeProps,
+} from "../../../registry/default/marquee/marquee"
+
+export {
   SplitText,
   type SplitTextProps,
   type SplitBy,

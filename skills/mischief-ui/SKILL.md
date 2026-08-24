@@ -5,7 +5,7 @@ description: Find, evaluate, and install playful React components from Mischief 
 
 # Mischief UI
 
-95 accessible React components for shadcn projects, across 11 families. Add only the component that solves the request. Treat each one as owned source code that can be adapted to the project.
+96 accessible React components for shadcn projects, across 11 families. Add only the component that solves the request. Treat each one as owned source code that can be adapted to the project.
 
 ## Finding the right component
 
@@ -23,7 +23,7 @@ Start from the family, then read only what you need. Do not guess a component na
 | Docs | 5 | The furniture of a documentation site, taken out of this one. |
 | Blocks | 11 | Larger pieces that compose several components into one part of a page. |
 | Scenes | 16 | Backdrops and moments where the drawing is the job, each one taking its colours from the theme it was installed into. |
-| Motion | 3 | Entrances and numbers that move, driven by arrival or by scrolling, and never by withholding the content. |
+| Motion | 4 | Entrances and numbers that move, driven by arrival or by scrolling, and never by withholding the content. |
 
 - **Browse the catalog:** `reference.md` beside this file, or `https://ui.tinkererslabs.com/skill-reference.md` if you were handed this over the network. Every component grouped by family, one line each. Read it when you do not already know the name you want.
 - **One component in full:** `https://ui.tinkererslabs.com/docs/components/<component>.md` gives its whole documentation: install command, worked example, props, and accessibility behaviour. Read this before writing code against a component.

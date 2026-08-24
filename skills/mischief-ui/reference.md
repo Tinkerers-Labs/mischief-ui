@@ -1,6 +1,6 @@
 # Mischief UI catalog
 
-Every component, grouped by family. 95 in total.
+Every component, grouped by family. 96 in total.
 
 Install one with `npx shadcn@latest add Tinkerers-Labs/mischief-ui/<component>`, and read its full
 documentation at `https://ui.tinkererslabs.com/docs/components/<component>.md` before using it.
@@ -153,4 +153,5 @@ Entrances and numbers that move, driven by arrival or by scrolling, and never by
 
 - `reveal`: Moves its children in when they arrive on screen. It changes how something arrives and never whether it is there.
 - `split-text`: A heading animated one character, word, or line at a time, and still announced as one sentence rather than as a pile of single letters.
+- `marquee`: A row that runs on its own, seamlessly, and turns back into an ordinary scrolling row for anyone who asked for less motion.
 - `number-ticker`: Counts to a number rather than replacing it, in whatever currency or format you asked for.

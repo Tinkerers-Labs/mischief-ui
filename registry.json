@@ -1178,6 +1178,32 @@
       "registryDependencies": ["utils"]
     },
     {
+      "name": "marquee",
+      "type": "registry:ui",
+      "title": "Marquee",
+      "description": "A row that runs on its own, seamlessly, and turns back into an ordinary scrolling row for anyone who asked for less motion.",
+      "files": [
+        {
+          "path": "registry/default/marquee/marquee.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        "@keyframes mischief-marquee-x": {
+          "to": {
+            "transform": "translateX(var(--marquee-shift))"
+          }
+        },
+        "@keyframes mischief-marquee-y": {
+          "to": {
+            "transform": "translateY(var(--marquee-shift))"
+          }
+        }
+      },
+      "categories": ["motion", "scroll", "marquee", "layout"],
+      "registryDependencies": ["utils"]
+    },
+    {
       "name": "number-ticker",
       "type": "registry:ui",
       "title": "Number Ticker",
@@ -2173,6 +2199,19 @@
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/markdown-blocks.json"
       ]
+    },
+    {
+      "name": "marquee-demo",
+      "type": "registry:example",
+      "title": "Marquee Demo",
+      "description": "A worked example of Marquee: A row that runs on its own, seamlessly, and turns back into an ordinary scrolling row for anyone who asked for less motion.",
+      "files": [
+        {
+          "path": "components/demos/marquee-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/marquee.json"]
     },
     {
       "name": "message-demo",

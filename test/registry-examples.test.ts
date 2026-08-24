@@ -175,4 +175,32 @@ describe("component keyframes", () => {
       }
     }
   })
+
+  it("defines them for this site too, which renders from source", () => {
+    // An install carries the keyframes through the registry's css field, and
+    // the npm package ships them in styles.css. This site renders the same
+    // components straight from source, so it gets them from nowhere unless
+    // they are written here as well.
+    const globals = readFileSync(path.join(ROOT, "app/globals.css"), "utf8")
+    const defined = new Set(
+      [...globals.matchAll(/@keyframes\s+(mischief-[\w-]+)/g)].map(
+        ([, name]) => name
+      )
+    )
+
+    for (const item of components) {
+      const shipped = Object.keys(
+        (item as { css?: Record<string, unknown> }).css ?? {}
+      )
+        .map((key) => key.match(/^@keyframes\s+(\S+)/)?.[1])
+        .filter((name): name is string => Boolean(name))
+
+      for (const name of shipped) {
+        expect(
+          defined.has(name),
+          `${name} is shipped by ${item.name} but app/globals.css never defines it, so it does not animate here`
+        ).toBe(true)
+      }
+    }
+  })
 })

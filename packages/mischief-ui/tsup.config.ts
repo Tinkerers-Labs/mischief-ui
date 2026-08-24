@@ -115,6 +115,7 @@ export default defineConfig({
     "data-table": "../../registry/default/data-table/data-table.tsx",
     "scroll-scene": "../../registry/default/scroll-scene/scroll-scene.tsx",
     reveal: "../../registry/default/reveal/reveal.tsx",
+    marquee: "../../registry/default/marquee/marquee.tsx",
     "split-text": "../../registry/default/split-text/split-text.tsx",
     "number-ticker": "../../registry/default/number-ticker/number-ticker.tsx",
     "tilt-card": "../../registry/default/tilt-card/tilt-card.tsx",

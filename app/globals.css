@@ -1737,6 +1737,28 @@ summary,
     opacity var(--motion-fast) var(--ease-out);
 }
 
+/* The keyframes our own components animate by name. Installing a component
+   brings these along through the registry's css field, and the npm package
+   ships them in styles.css, but this site renders the same components from
+   source and so has to define them itself. */
+@keyframes mischief-file-thumbnail-shimmer {
+  to {
+    transform: translateX(300%) skewX(-12deg);
+  }
+}
+
+@keyframes mischief-marquee-x {
+  to {
+    transform: translateX(var(--marquee-shift));
+  }
+}
+
+@keyframes mischief-marquee-y {
+  to {
+    transform: translateY(var(--marquee-shift));
+  }
+}
+
 @keyframes panel-in {
   from {
     opacity: 0;

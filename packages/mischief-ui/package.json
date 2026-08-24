@@ -405,6 +405,11 @@
       "import": "./dist/reveal.js",
       "require": "./dist/reveal.cjs"
     },
+    "./marquee": {
+      "types": "./dist/marquee.d.ts",
+      "import": "./dist/marquee.js",
+      "require": "./dist/marquee.cjs"
+    },
     "./split-text": {
       "types": "./dist/split-text.d.ts",
       "import": "./dist/split-text.js",

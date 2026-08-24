@@ -7588,6 +7588,109 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
       "The full string is the element's label and every piece is hidden, so the text is announced once, as written. Under reduced motion every piece is at rest from the first paint and nothing moves, fades, or blurs. The text is in the document whether or not the animation ever runs.",
   },
   {
+    slug: "marquee",
+    kind: "component",
+    name: "Marquee",
+    family: "Motion",
+    summary:
+      "A row that runs on its own, seamlessly, and turns back into an ordinary scrolling row for anyone who asked for less motion.",
+    dependencies: [],
+    install: registryInstallCommand("marquee"),
+    npmImport: packageImport("Marquee", "marquee"),
+    usage: `export function Logos() {
+  return (
+    <Marquee duration={24} pauseOnHover fade>
+      {logos.map((logo) => (
+        <img key={logo.name} src={logo.src} alt={logo.name} />
+      ))}
+    </Marquee>
+  )
+}`,
+    sections: [
+      {
+        id: "seam",
+        title: "Why the children repeat",
+        blocks: [
+          {
+            kind: "text",
+            text: "A loop that travels the width of its content leaves a gap behind it before it wraps. The children are rendered more than once and the track travels exactly one copy's worth, so the moment it resets is the moment the second copy is where the first one was, and there is nothing to see.",
+          },
+          {
+            kind: "text",
+            text: "Every copy carries its own trailing gap rather than the track spacing them, which is what keeps each copy the same length and the travel exact. Two copies is the least that works; more only helps when the content is much narrower than the box holding it.",
+          },
+          {
+            kind: "text",
+            text: "The repeats are decoration. Only the first is content, and the rest are hidden from assistive technology, so a screen reader hears the list once rather than as many times as it happens to be drawn.",
+          },
+        ],
+      },
+      {
+        id: "reduced-motion",
+        title: "What happens with reduced motion",
+        blocks: [
+          {
+            kind: "text",
+            text: "Stopping the animation is not enough on its own: whatever had not arrived yet would simply never arrive, and the content past the edge would be unreachable. So the repeats are dropped, the animation is dropped, and the container becomes a scrolling one.",
+          },
+          {
+            kind: "text",
+            text: "What is left is an ordinary row that happens to be wider than its box, which is a thing people already know how to use.",
+          },
+        ],
+      },
+      {
+        id: "speed",
+        title: "Setting the pace",
+        blocks: [
+          {
+            kind: "text",
+            text: "duration is the seconds one full pass takes, so the same number reads as faster with less content and slower with more. Set it against the content you actually have rather than looking for one value that suits every row.",
+          },
+          {
+            kind: "code",
+            code: `<Marquee direction="up" duration={30} gap={24}>
+  {quotes.map((quote) => (
+    <Quote key={quote.id} {...quote} />
+  ))}
+</Marquee>`,
+            caption: "Vertical, slower, with more air between the items.",
+          },
+        ],
+      },
+    ],
+    props: [
+      [
+        "direction",
+        '"left" | "right" | "up" | "down"',
+        'Which way the content travels. Defaults to "left".',
+      ],
+      ["duration", "number", "Seconds for one full pass. Defaults to 20."],
+      [
+        "gap",
+        "number",
+        "Pixels between the items, and between one repeat and the next. Defaults to 16.",
+      ],
+      [
+        "pauseOnHover",
+        "boolean",
+        "Holds still while the pointer is over it. Off by default.",
+      ],
+      [
+        "copies",
+        "number",
+        "How many times the children repeat. Defaults to 2, and never goes below it.",
+      ],
+      [
+        "fade",
+        "boolean",
+        "Softens both ends so items arrive and leave. Off by default.",
+      ],
+    ],
+    accessibility:
+      "Only the first copy of the children is content; the repeats carry aria-hidden, so the list is announced once rather than once per copy. Under prefers-reduced-motion the component stops being a marquee altogether: the repeats are removed, the animation is removed, and the container scrolls instead, so nothing is placed out of reach of somebody who turned motion off. pauseOnHover stops the travel for a pointer, and because the reduced-motion path is a scrolling region rather than a moving one, keyboard users reach the content by scrolling it like any other overflow.",
+  },
+  {
     slug: "number-ticker",
     kind: "component",
     name: "Number Ticker",
