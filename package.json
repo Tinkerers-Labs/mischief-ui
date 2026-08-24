@@ -18,8 +18,8 @@
     "format:check": "prettier --check .",
     "registry:build": "pnpm examples:sync && shadcn build",
     "registry:smoke": "shadcn add ./public/r/file-thumbnail.json --dry-run",
-    "package:build": "pnpm --dir packages/mischief-ui build",
-    "package:pack": "pnpm package:build && npm pack --dry-run ./packages/mischief-ui",
+    "package:build": "SKIP_DTS=1 pnpm --dir packages/mischief-ui build",
+    "package:pack": "pnpm package:types && npm pack --dry-run ./packages/mischief-ui",
     "test": "vitest run",
     "check": "pnpm lockfile:check && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
     "lockfile:check": "pnpm install --frozen-lockfile --ignore-scripts --prefer-offline",
@@ -27,7 +27,8 @@
     "predev": "node scripts/copy-pdf-worker.mjs && pnpm docs:build",
     "docs:build": "tsx scripts/generate-docs.ts",
     "directory:entry": "tsx scripts/print-directory-entry.ts",
-    "examples:sync": "tsx scripts/sync-examples.ts && prettier --write registry.json --log-level silent"
+    "examples:sync": "tsx scripts/sync-examples.ts && prettier --write registry.json --log-level silent",
+    "package:types": "pnpm --dir packages/mischief-ui build"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

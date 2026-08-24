@@ -36,3 +36,9 @@ jobs:
 
       - name: Check repository
         run: pnpm check
+
+      # The repository check skips them because they cost ten minutes and
+      # verify nothing tsc has not already read. They are still what gets
+      # published, so they are built here.
+      - name: Build package declarations
+        run: pnpm package:types

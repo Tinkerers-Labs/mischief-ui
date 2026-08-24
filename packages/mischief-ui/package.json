@@ -492,7 +492,8 @@
     }
   },
   "scripts": {
-    "build": "NODE_OPTIONS=--max-old-space-size=16384 tsup"
+    "build": "NODE_OPTIONS=--max-old-space-size=16384 tsup",
+    "prepublishOnly": "NODE_OPTIONS=--max-old-space-size=16384 tsup"
   },
   "dependencies": {
     "clsx": "^2.1.1",

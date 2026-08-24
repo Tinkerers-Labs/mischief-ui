@@ -136,7 +136,14 @@ export default defineConfig({
     timeline: "../../registry/default/timeline/timeline.tsx",
   },
   format: ["esm", "cjs"],
-  dts: true,
+  /**
+   * Declarations are rolled up per entry, and there are ninety six entries, so
+   * this is ten minutes against two seconds for the JavaScript. They are a
+   * publish artifact rather than a check: tsc --noEmit already reads the same
+   * source. Slow is the default so nothing ships without types by forgetting;
+   * the repository check opts out.
+   */
+  dts: process.env.SKIP_DTS !== "1",
   clean: true,
   sourcemap: true,
   esbuildOptions(options) {
