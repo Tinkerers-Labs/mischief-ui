@@ -3,7 +3,11 @@ import type { Metadata } from "next"
 import { ComponentCatalog } from "@/components/component-catalog"
 import { InstallCommand } from "@/registry/default/install-command/install-command"
 import { defaultPackageManager } from "@/lib/package-commands"
-import { registryInstallArgs, siteConfig } from "@/site.config"
+import {
+  namespaceInstallCommand,
+  registryInstallArgs,
+  siteConfig,
+} from "@/site.config"
 
 export const metadata: Metadata = {
   title: `Documentation | ${siteConfig.name}`,
@@ -52,6 +56,30 @@ export default function DocsPage() {
         <p>
           The registry path copies source into your project, where it is scanned
           already, so it needs nothing.
+        </p>
+      </section>
+
+      <section className="docs-section">
+        <h2>Adding several</h2>
+        <p>
+          The command above names the repository every time, which is fine for
+          one component and tiresome for six. Register the namespace once in
+          your <code>components.json</code>:
+        </p>
+        <pre>
+          <code>{`{\n  "registries": {\n    "${siteConfig.registry.namespace}": "${siteConfig.registry.url}"\n  }\n}`}</code>
+        </pre>
+        <p>
+          Then every install is the short form, and the CLI resolves it against
+          the same files the long form uses:
+        </p>
+        <pre>
+          <code>{namespaceInstallCommand("data-table")}</code>
+        </pre>
+        <p>
+          Both paths fetch identical source. The namespace is an alias, not a
+          different distribution, so there is nothing to migrate if you start
+          with one and move to the other.
         </p>
       </section>
 

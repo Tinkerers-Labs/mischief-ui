@@ -25,7 +25,8 @@
     "lockfile:check": "pnpm install --frozen-lockfile --ignore-scripts --prefer-offline",
     "pdf-worker": "node scripts/copy-pdf-worker.mjs",
     "predev": "node scripts/copy-pdf-worker.mjs && pnpm docs:build",
-    "docs:build": "tsx scripts/generate-docs.ts"
+    "docs:build": "tsx scripts/generate-docs.ts",
+    "directory:entry": "tsx scripts/print-directory-entry.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

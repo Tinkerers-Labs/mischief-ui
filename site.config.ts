@@ -7,6 +7,8 @@ const siteName = "Mischief"
 const packageName = "mischief-ui"
 const packageUrl = `https://www.npmjs.com/package/${packageName}`
 const skillName = "mischief-ui"
+/** The registry namespace, as the shadcn directory requires it: @-prefixed. */
+const registryNamespace = "@mischief"
 const routes = {
   home: "/",
   docs: "/docs",
@@ -28,6 +30,11 @@ export const siteConfig = {
   description:
     "Open-source React components and blocks for shadcn projects, with playful interaction, accessible behavior, Tailwind CSS, and source you can own.",
   url: siteUrl,
+  registry: {
+    namespace: registryNamespace,
+    /** What a consumer puts in components.json, and what the directory lists. */
+    url: `${siteUrl}r/{name}.json`,
+  },
   routes,
   assets: {
     socialPreview: "/brand/mischief-social-preview.png",
@@ -107,6 +114,15 @@ export type ExternalLinkId = (typeof siteConfig.externalLinks)[number]["id"]
 /** Arguments for the shadcn CLI, without a package runner in front. */
 export function registryInstallArgs(slug: string) {
   return `shadcn@latest add ${siteConfig.repository.path}/${slug}`
+}
+
+/** The shorter form, for a project that has registered the namespace once. */
+export function namespaceInstallArgs(slug: string) {
+  return `shadcn@latest add ${siteConfig.registry.namespace}/${slug}`
+}
+
+export function namespaceInstallCommand(slug: string) {
+  return runCommand(defaultPackageManager, namespaceInstallArgs(slug))
 }
 
 export function registryInstallCommand(slug: string) {
