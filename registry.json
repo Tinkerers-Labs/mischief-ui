@@ -48,23 +48,19 @@
       "registryDependencies": ["utils"]
     },
     {
-      "name": "signature-footer",
-      "type": "registry:block",
-      "title": "Signature Footer",
-      "description": "A composed site footer that ends with an oversized, low-contrast wordmark.",
+      "name": "shift-button",
+      "type": "registry:ui",
+      "title": "Shift Button",
+      "description": "A call-to-action button that trades its leading icon for a directional cue.",
+      "dependencies": ["@base-ui/react@^1.7.0", "lucide-react@^1.31.0"],
       "files": [
         {
-          "path": "registry/default/signature-footer/signature-footer.tsx",
-          "type": "registry:block"
+          "path": "registry/default/shift-button/shift-button.tsx",
+          "type": "registry:ui"
         }
       ],
-      "categories": ["layout", "footer", "branding"],
-      "registryDependencies": [
-        "utils",
-        "https://ui.tinkererslabs.com/r/footer-columns.json",
-        "https://ui.tinkererslabs.com/r/footer-row.json",
-        "https://ui.tinkererslabs.com/r/footer-wordmark.json"
-      ]
+      "categories": ["button", "call-to-action", "motion"],
+      "registryDependencies": ["utils"]
     },
     {
       "name": "impossible-checkbox",
@@ -97,38 +93,19 @@
       "registryDependencies": ["utils"]
     },
     {
-      "name": "shift-button",
+      "name": "command-palette",
       "type": "registry:ui",
-      "title": "Shift Button",
-      "description": "A call-to-action button that trades its leading icon for a directional cue.",
-      "dependencies": ["@base-ui/react@^1.7.0", "lucide-react@^1.31.0"],
-      "files": [
-        {
-          "path": "registry/default/shift-button/shift-button.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "categories": ["button", "call-to-action", "motion"],
-      "registryDependencies": ["utils"]
-    },
-    {
-      "name": "image-gallery",
-      "type": "registry:block",
-      "title": "Image Gallery",
-      "description": "A responsive image collection with grid and masonry layouts and an accessible lightbox.",
+      "title": "Command Palette",
+      "description": "A search dialog over anything you can list, opened from a keyboard shortcut.",
       "dependencies": ["lucide-react@^1.31.0"],
       "files": [
         {
-          "path": "registry/default/image-gallery/image-gallery.tsx",
-          "type": "registry:block"
+          "path": "registry/default/command-palette/command-palette.tsx",
+          "type": "registry:ui"
         }
       ],
-      "categories": ["gallery", "images", "dialog", "layout"],
-      "registryDependencies": [
-        "utils",
-        "https://ui.tinkererslabs.com/r/image-grid.json",
-        "https://ui.tinkererslabs.com/r/lightbox.json"
-      ]
+      "categories": ["navigation", "search", "dialog", "command"],
+      "registryDependencies": ["utils"]
     },
     {
       "name": "scroll-to-top-button",
@@ -146,18 +123,47 @@
       "registryDependencies": ["utils"]
     },
     {
-      "name": "ask-ai",
+      "name": "install-command",
       "type": "registry:ui",
-      "title": "Ask AI",
-      "description": "A source-aware handoff that opens a prepared prompt in an AI assistant or copies it for another one.",
+      "title": "Install Command",
+      "description": "A switchable install line for a library, with the runner and installer kept apart.",
       "dependencies": ["lucide-react@^1.31.0"],
       "files": [
         {
-          "path": "registry/default/ask-ai/ask-ai.tsx",
+          "path": "registry/default/install-command/install-command.tsx",
           "type": "registry:ui"
         }
       ],
-      "categories": ["ai", "button", "links", "copy"],
+      "categories": ["docs", "install", "command", "copy"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "copy-for-ai",
+      "type": "registry:ui",
+      "title": "Copy for AI",
+      "description": "Hands a documentation page to an assistant as markdown.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/copy-for-ai/copy-for-ai.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["docs", "ai", "markdown", "copy"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "table-of-contents",
+      "type": "registry:ui",
+      "title": "Table of Contents",
+      "description": "A page outline that marks the section the reader is in.",
+      "files": [
+        {
+          "path": "registry/default/table-of-contents/table-of-contents.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["docs", "navigation", "scroll"],
       "registryDependencies": ["utils"]
     },
     {
@@ -195,6 +201,94 @@
         }
       },
       "categories": ["file", "thumbnail", "preview", "loading"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "conversation",
+      "type": "registry:ui",
+      "title": "Conversation",
+      "description": "A thread scroll container that follows a streaming reply and yields to the reader.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/conversation/conversation.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "chat", "scroll", "agent"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "message",
+      "type": "registry:ui",
+      "title": "Message",
+      "description": "One turn in a thread, with role, avatar, timestamp, and reachable actions.",
+      "files": [
+        {
+          "path": "registry/default/message/message.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "chat", "message", "agent"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "prompt-input",
+      "type": "registry:ui",
+      "title": "Prompt Input",
+      "description": "A growing composer that sends on Enter and becomes a stop button while streaming.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/prompt-input/prompt-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "chat", "input", "form", "agent"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "suggestions",
+      "type": "registry:ui",
+      "title": "Suggestions",
+      "description": "A scrollable row of prompts to start or continue a conversation with.",
+      "files": [
+        {
+          "path": "registry/default/suggestions/suggestions.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "chat", "prompts", "agent"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "questionnaire",
+      "type": "registry:ui",
+      "title": "Questionnaire",
+      "description": "Multi-step questions an agent asks before starting, with single, multiple, and freeform answers.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/questionnaire/questionnaire.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "form", "questions", "agent"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "ask-ai",
+      "type": "registry:ui",
+      "title": "Ask AI",
+      "description": "A source-aware handoff that opens a prepared prompt in an AI assistant or copies it for another one.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/ask-ai/ask-ai.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "button", "links", "copy"],
       "registryDependencies": ["utils"]
     },
     {
@@ -286,6 +380,36 @@
       "registryDependencies": ["utils"]
     },
     {
+      "name": "annotation-layer",
+      "type": "registry:ui",
+      "title": "Annotation Layer",
+      "description": "Notes attached to regions of a page, created by dragging.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/annotation-layer/annotation-layer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["document", "annotation", "review"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "redaction",
+      "type": "registry:ui",
+      "title": "Redaction",
+      "description": "Mark regions to black out, with a reveal that states it is only a preview.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/redaction/redaction.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["document", "redaction", "privacy"],
+      "registryDependencies": ["utils"]
+    },
+    {
       "name": "page-navigator",
       "type": "registry:ui",
       "title": "Page Navigator",
@@ -372,8 +496,23 @@
           "type": "registry:ui"
         }
       ],
-      "registryDependencies": ["utils"],
-      "categories": ["document", "csv", "table", "data"]
+      "categories": ["document", "csv", "table", "data"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "json-viewer",
+      "type": "registry:ui",
+      "title": "JSON Viewer",
+      "description": "A collapsible tree for a JSON payload, navigable from the keyboard, where every row can hand you its path.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/json-viewer/json-viewer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["document", "viewer", "tree", "data", "ai"],
+      "registryDependencies": ["utils"]
     },
     {
       "name": "docx-viewer",
@@ -387,8 +526,8 @@
           "type": "registry:ui"
         }
       ],
-      "registryDependencies": ["utils"],
-      "categories": ["document", "docx", "word", "viewer"]
+      "categories": ["document", "docx", "word", "viewer"],
+      "registryDependencies": ["utils"]
     },
     {
       "name": "pdf-viewer",
@@ -402,8 +541,8 @@
           "type": "registry:ui"
         }
       ],
-      "registryDependencies": ["utils"],
-      "categories": ["document", "pdf", "viewer", "canvas"]
+      "categories": ["document", "pdf", "viewer", "canvas"],
+      "registryDependencies": ["utils"]
     },
     {
       "name": "markdown-blocks",
@@ -417,170 +556,46 @@
           "type": "registry:ui"
         }
       ],
-      "registryDependencies": ["utils"],
-      "categories": ["document", "markdown", "layout", "ai"]
+      "categories": ["document", "markdown", "layout", "ai"],
+      "registryDependencies": ["utils"]
     },
     {
-      "name": "conversation",
-      "type": "registry:ui",
-      "title": "Conversation",
-      "description": "A thread scroll container that follows a streaming reply and yields to the reader.",
+      "name": "signature-footer",
+      "type": "registry:block",
+      "title": "Signature Footer",
+      "description": "A composed site footer that ends with an oversized, low-contrast wordmark.",
+      "files": [
+        {
+          "path": "registry/default/signature-footer/signature-footer.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "categories": ["layout", "footer", "branding"],
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/footer-columns.json",
+        "https://ui.tinkererslabs.com/r/footer-row.json",
+        "https://ui.tinkererslabs.com/r/footer-wordmark.json"
+      ]
+    },
+    {
+      "name": "image-gallery",
+      "type": "registry:block",
+      "title": "Image Gallery",
+      "description": "A responsive image collection with grid and masonry layouts and an accessible lightbox.",
       "dependencies": ["lucide-react@^1.31.0"],
       "files": [
         {
-          "path": "registry/default/conversation/conversation.tsx",
-          "type": "registry:ui"
+          "path": "registry/default/image-gallery/image-gallery.tsx",
+          "type": "registry:block"
         }
       ],
-      "registryDependencies": ["utils"],
-      "categories": ["ai", "chat", "scroll", "agent"]
-    },
-    {
-      "name": "message",
-      "type": "registry:ui",
-      "title": "Message",
-      "description": "One turn in a thread, with role, avatar, timestamp, and reachable actions.",
-      "files": [
-        {
-          "path": "registry/default/message/message.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "registryDependencies": ["utils"],
-      "categories": ["ai", "chat", "message", "agent"]
-    },
-    {
-      "name": "prompt-input",
-      "type": "registry:ui",
-      "title": "Prompt Input",
-      "description": "A growing composer that sends on Enter and becomes a stop button while streaming.",
-      "dependencies": ["lucide-react@^1.31.0"],
-      "files": [
-        {
-          "path": "registry/default/prompt-input/prompt-input.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "registryDependencies": ["utils"],
-      "categories": ["ai", "chat", "input", "form", "agent"]
-    },
-    {
-      "name": "suggestions",
-      "type": "registry:ui",
-      "title": "Suggestions",
-      "description": "A scrollable row of prompts to start or continue a conversation with.",
-      "files": [
-        {
-          "path": "registry/default/suggestions/suggestions.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "registryDependencies": ["utils"],
-      "categories": ["ai", "chat", "prompts", "agent"]
-    },
-    {
-      "name": "annotation-layer",
-      "type": "registry:ui",
-      "title": "Annotation Layer",
-      "description": "Notes attached to regions of a page, created by dragging.",
-      "dependencies": ["lucide-react@^1.31.0"],
-      "files": [
-        {
-          "path": "registry/default/annotation-layer/annotation-layer.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "registryDependencies": ["utils"],
-      "categories": ["document", "annotation", "review"]
-    },
-    {
-      "name": "redaction",
-      "type": "registry:ui",
-      "title": "Redaction",
-      "description": "Mark regions to black out, with a reveal that states it is only a preview.",
-      "dependencies": ["lucide-react@^1.31.0"],
-      "files": [
-        {
-          "path": "registry/default/redaction/redaction.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "registryDependencies": ["utils"],
-      "categories": ["document", "redaction", "privacy"]
-    },
-    {
-      "name": "questionnaire",
-      "type": "registry:ui",
-      "title": "Questionnaire",
-      "description": "Multi-step questions an agent asks before starting, with single, multiple, and freeform answers.",
-      "dependencies": ["lucide-react@^1.31.0"],
-      "files": [
-        {
-          "path": "registry/default/questionnaire/questionnaire.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "registryDependencies": ["utils"],
-      "categories": ["ai", "form", "questions", "agent"]
-    },
-    {
-      "name": "command-palette",
-      "type": "registry:ui",
-      "title": "Command Palette",
-      "description": "A search dialog over anything you can list, opened from a keyboard shortcut.",
-      "dependencies": ["lucide-react@^1.31.0"],
-      "files": [
-        {
-          "path": "registry/default/command-palette/command-palette.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "registryDependencies": ["utils"],
-      "categories": ["navigation", "search", "dialog", "command"]
-    },
-    {
-      "name": "install-command",
-      "type": "registry:ui",
-      "title": "Install Command",
-      "description": "A switchable install line for a library, with the runner and installer kept apart.",
-      "dependencies": ["lucide-react@^1.31.0"],
-      "files": [
-        {
-          "path": "registry/default/install-command/install-command.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "registryDependencies": ["utils"],
-      "categories": ["docs", "install", "command", "copy"]
-    },
-    {
-      "name": "copy-for-ai",
-      "type": "registry:ui",
-      "title": "Copy for AI",
-      "description": "Hands a documentation page to an assistant as markdown.",
-      "dependencies": ["lucide-react@^1.31.0"],
-      "files": [
-        {
-          "path": "registry/default/copy-for-ai/copy-for-ai.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "registryDependencies": ["utils"],
-      "categories": ["docs", "ai", "markdown", "copy"]
-    },
-    {
-      "name": "table-of-contents",
-      "type": "registry:ui",
-      "title": "Table of Contents",
-      "description": "A page outline that marks the section the reader is in.",
-      "files": [
-        {
-          "path": "registry/default/table-of-contents/table-of-contents.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "registryDependencies": ["utils"],
-      "categories": ["docs", "navigation", "scroll"]
+      "categories": ["gallery", "images", "dialog", "layout"],
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/image-grid.json",
+        "https://ui.tinkererslabs.com/r/lightbox.json"
+      ]
     },
     {
       "name": "code-block",
@@ -2082,6 +2097,21 @@
       ],
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/install-command.json"
+      ]
+    },
+    {
+      "name": "json-viewer-demo",
+      "type": "registry:example",
+      "title": "JSON Viewer Demo",
+      "description": "A worked example of JSON Viewer: A collapsible tree for a JSON payload, navigable from the keyboard, where every row can hand you its path.",
+      "files": [
+        {
+          "path": "components/demos/json-viewer-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/json-viewer.json"
       ]
     },
     {

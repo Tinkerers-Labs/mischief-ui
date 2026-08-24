@@ -120,6 +120,11 @@
       "import": "./dist/file-tree.js",
       "require": "./dist/file-tree.cjs"
     },
+    "./json-viewer": {
+      "types": "./dist/json-viewer.d.ts",
+      "import": "./dist/json-viewer.js",
+      "require": "./dist/json-viewer.cjs"
+    },
     "./document-splits": {
       "types": "./dist/document-splits.d.ts",
       "import": "./dist/document-splits.js",

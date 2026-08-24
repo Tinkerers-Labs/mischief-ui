@@ -139,6 +139,18 @@ describe("published examples", () => {
   })
 })
 
+describe("component categories", () => {
+  it("gives every component at least one, since the sync cannot invent them", () => {
+    for (const item of components) {
+      const categories = (item as { categories?: string[] }).categories ?? []
+      expect(
+        categories.length,
+        `${item.name} has no categories`
+      ).toBeGreaterThan(0)
+    }
+  })
+})
+
 describe("component keyframes", () => {
   it("ships the keyframes a component animates by name", () => {
     for (const item of components) {

@@ -3508,6 +3508,98 @@ async function onExpandedChange(ids: string[]) {
       "The data is a real table with a caption, column headers, and aria-sort on the sorted column, so it can be navigated with table commands rather than read as a wall of text. Sorting is a button inside each header. Numeric columns sort numerically instead of as text. When rows are capped the footer says how many of the total are shown, rather than silently truncating.",
   },
   {
+    slug: "json-viewer",
+    kind: "component",
+    name: "JSON Viewer",
+    family: "Documents",
+    summary:
+      "A collapsible tree for a JSON payload, navigable from the keyboard, where every row can hand you its path.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("json-viewer"),
+    npmImport: packageImport("JsonViewer", "json-viewer"),
+    usage: `export function ToolResult({ payload }) {
+  return (
+    <JsonViewer
+      value={payload}
+      rootName="result"
+      defaultExpandedDepth={2}
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "paths",
+        title: "The path is the point",
+        blocks: [
+          {
+            kind: "text",
+            text: "Reading a payload is half the job; the other half is saying where in it you were looking. Every row carries a copy control, and what it copies is the value, while the control names the path so the reader can see which one they are about to take.",
+          },
+          {
+            kind: "text",
+            text: "Paths are written the way they would be typed back into code, so a key that cannot survive dot notation is bracketed and quoted instead of being silently mangled.",
+          },
+          {
+            kind: "code",
+            code: `result.tools[0].input.query
+result["content-type"]`,
+            caption: "A plain key, and one that needs brackets.",
+          },
+        ],
+      },
+      {
+        id: "depth",
+        title: "How much is open to begin with",
+        blocks: [
+          {
+            kind: "text",
+            text: "A tree that arrives fully collapsed is one line, and one that arrives fully expanded is the wall of text the component exists to avoid. defaultExpandedDepth decides how far down the first view goes, and one level is usually enough to show the shape.",
+          },
+          {
+            kind: "text",
+            text: "A branch that is closed still says how much is inside it, so its size is legible without opening it. An empty object or array is a leaf: there is nothing to disclose, so it offers no control that would do nothing.",
+          },
+        ],
+      },
+      {
+        id: "long-values",
+        title: "Long strings",
+        blocks: [
+          {
+            kind: "text",
+            text: "One long string should not decide the width of the panel. Strings past maxStringLength are cut with an ellipsis inside the quotes, and the copy control still yields the whole thing rather than what is shown.",
+          },
+        ],
+      },
+    ],
+    props: [
+      ["value", "unknown", "The data. Anything JSON can hold."],
+      [
+        "rootName",
+        "string",
+        'What the top row is called, and the first segment of every path. Defaults to "root".',
+      ],
+      [
+        "defaultExpandedDepth",
+        "number",
+        "How many levels are open on arrival. Defaults to 1.",
+      ],
+      [
+        "maxStringLength",
+        "number",
+        "Where a string is cut for display. Defaults to 120.",
+      ],
+      [
+        "copyable",
+        "boolean",
+        "Shows the per-row copy control. Defaults to true.",
+      ],
+      ["label", "string", 'The tree\'s accessible name. Defaults to "JSON".'],
+    ],
+    accessibility:
+      "The rows are a real tree: role=tree on the container, role=treeitem with aria-level on each row, and aria-expanded on the ones that can open, so a screen reader announces depth and state rather than reading an indented list. Arrow keys move and fold the way a tree is expected to behave -- Right opens then descends, Left closes then climbs to the parent -- with Home and End for the ends and Enter or Space to toggle. Only one row is in the tab order, so the tree is a single stop rather than a hundred. A copy is confirmed through a live region, since the icon change alone is not announced.",
+  },
+  {
     slug: "docx-viewer",
     kind: "component",
     name: "DOCX Viewer",

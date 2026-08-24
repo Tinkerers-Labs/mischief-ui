@@ -1,6 +1,6 @@
 # Mischief UI catalog
 
-Every component, grouped by family. 94 in total.
+Every component, grouped by family. 95 in total.
 
 Install one with `npx shadcn@latest add Tinkerers-Labs/mischief-ui/<component>`, and read its full
 documentation at `https://ui.tinkererslabs.com/docs/components/<component>.md` before using it.
@@ -49,6 +49,7 @@ Reading a file someone uploaded, marking it up, cutting it into pieces, and pull
 - `schema-builder`: Build the shape you want extracted from a document. Fields carry a name, type, description, and requirement, and object and array fields nest.
 - `signature-pad`: Sign with a pointer on a canvas, or type a name instead. Returns a PNG data URL or the typed text.
 - `csv-viewer`: A real table for delimited data, with sortable columns, a sticky header, and a row cap so a large file cannot lock the page.
+- `json-viewer`: A collapsible tree for a JSON payload, navigable from the keyboard, where every row can hand you its path.
 - `docx-viewer`: Renders a Word document as elements built through an allowlist, so a file you did not write cannot bring its own scripts or links.
 - `pdf-viewer`: Page-by-page PDF rendering on a canvas, with paging and zoom, over any loader you give it.
 - `markdown-blocks`: Extracted document regions rendered as markdown, each one selectable so it can be tied back to where it came from.

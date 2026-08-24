@@ -93,6 +93,11 @@ export {
 } from "../../../registry/default/file-tree/file-tree"
 
 export {
+  JsonViewer,
+  type JsonViewerProps,
+} from "../../../registry/default/json-viewer/json-viewer"
+
+export {
   DocumentSplits,
   type DocumentSplitsProps,
   type SplitPage,

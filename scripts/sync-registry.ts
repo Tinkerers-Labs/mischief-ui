@@ -76,10 +76,15 @@ const REGISTRY_IMPORT = /^@\/registry\/default\/([a-z-]+)\//
  * registry's descriptions are terser than the documentation's on purpose,
  * because one is read in a terminal and the other on a page.
  */
-function componentEntry(item: Record<string, unknown>) {
-  const name = item.name as string
-  const doc = componentDocs.find((entry) => entry.slug === name)
-  if (!doc) throw new Error(`${name} has no documentation entry`)
+function componentEntry(doc: (typeof componentDocs)[number]) {
+  const name = doc.slug
+  // A component that is documented but not yet in the registry is new: seed it
+  // from the documentation and let the derived fields fill in below.
+  const item = published.get(name) ?? {
+    name,
+    description: doc.summary,
+    categories: [],
+  }
 
   const file = `registry/default/${name}/${name}.tsx`
   const source = readFileSync(path.join(root, file), "utf8")
@@ -132,7 +137,33 @@ function componentEntry(item: Record<string, unknown>) {
     ...[...registryDeps].filter((dep) => dep !== "utils").sort(),
   ]
 
-  return entry
+  return order(entry)
+}
+
+/** One key order for every entry, so a new one is not shaped differently. */
+const KEYS = [
+  "name",
+  "type",
+  "title",
+  "description",
+  "dependencies",
+  "files",
+  "css",
+  "categories",
+  "registryDependencies",
+]
+
+function order(entry: Record<string, unknown>) {
+  const ordered: Record<string, unknown> = {}
+
+  for (const key of KEYS) {
+    if (key in entry) ordered[key] = entry[key]
+  }
+  for (const key of Object.keys(entry)) {
+    if (!(key in ordered)) ordered[key] = entry[key]
+  }
+
+  return ordered
 }
 const versions = new Map<string, string>(
   registry.items
@@ -145,10 +176,10 @@ const versions = new Map<string, string>(
     )
 )
 
-const components = new Set(
+const published = new Map<string, Record<string, unknown>>(
   registry.items
     .filter((item: { type: string }) => item.type !== "registry:example")
-    .map((item: { name: string }) => item.name)
+    .map((item: { name: string }) => [item.name, item])
 )
 
 const examples = []
@@ -157,7 +188,7 @@ for (const file of readdirSync(demoDir).sort()) {
 
   const slug = file.replace("-demo.tsx", "")
   const doc = componentDocs.find((entry) => entry.slug === slug)
-  if (!doc || !components.has(slug)) continue
+  if (!doc) continue
 
   const fixtures = fixturesFor(file)
   const sources = [file, ...fixtures].map((name) =>
@@ -188,12 +219,7 @@ for (const file of readdirSync(demoDir).sort()) {
   examples.push(example)
 }
 
-registry.items = [
-  ...registry.items
-    .filter((item: { type: string }) => item.type !== "registry:example")
-    .map(componentEntry),
-  ...examples,
-]
+registry.items = [...componentDocs.map(componentEntry), ...examples]
 
 writeFileSync(registryPath, `${JSON.stringify(registry, null, 2)}\n`)
 const bundled = examples.filter(

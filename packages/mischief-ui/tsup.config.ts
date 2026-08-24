@@ -39,6 +39,7 @@ export default defineConfig({
     "page-navigator":
       "../../registry/default/page-navigator/page-navigator.tsx",
     "file-tree": "../../registry/default/file-tree/file-tree.tsx",
+    "json-viewer": "../../registry/default/json-viewer/json-viewer.tsx",
     "document-splits":
       "../../registry/default/document-splits/document-splits.tsx",
     "schema-builder":
