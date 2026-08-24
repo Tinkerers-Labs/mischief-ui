@@ -15,6 +15,7 @@ const routes = {
   components: "/#components",
   brand: "/brand",
   license: "/license",
+  changelog: "/changelog",
   skill: "/skill.md",
 } as const
 
@@ -90,6 +91,7 @@ export const siteConfig = {
   navigation,
   footerNavigation: [
     ...navigation,
+    { href: routes.changelog, label: "Changelog" },
     { href: routes.brand, label: "Brand" },
     { href: routes.license, label: "License" },
   ],

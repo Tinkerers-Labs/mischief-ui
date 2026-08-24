@@ -18,11 +18,21 @@ export type DirectoryEntry = {
   logo: string
 }
 
-/** The brand mark, on one line, as the directory stores it. */
+/** The tomato the mark is drawn in, everywhere the brand owns the surface. */
+const BRAND = "#e5532d"
+
+/**
+ * The mark, on one line, drawn in the directory's own foreground colour rather
+ * than in ours. The listing is somebody else's page in somebody else's theme,
+ * and a row of logos reads as a row when they all take its colour. The brand
+ * asset itself stays tomato: it is used in the readme and on the brand page,
+ * where a custom property would resolve to nothing.
+ */
 function markSvg() {
   const file = path.join(process.cwd(), "public/brand/mischief-mark.svg")
 
   return readFileSync(file, "utf8")
+    .replaceAll(BRAND, "var(--foreground)")
     .replace(/\s*\n\s*/g, " ")
     .replace(/"/g, "'")
     .trim()

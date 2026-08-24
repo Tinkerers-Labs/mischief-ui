@@ -48,6 +48,11 @@ describe("what the entry promises about us", () => {
     expect(entry.description).toContain(`${componentDocs.length} `)
   })
 
+  it("draws the logo in the directory's colour, not ours", () => {
+    expect(entry.logo).toContain("var(--foreground)")
+    expect(entry.logo).not.toContain("#e5532d")
+  })
+
   it("keeps the logo on one line, as the directory stores it", () => {
     expect(entry.logo).not.toContain("\n")
     // Their file is JSON with double-quoted strings; the markup uses single.

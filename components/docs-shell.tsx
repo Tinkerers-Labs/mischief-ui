@@ -33,6 +33,7 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
             </Fragment>
           ))}
           <p className="sidebar-label">More</p>
+          <Link href={siteConfig.routes.changelog}>Changelog</Link>
           <Link href={siteConfig.routes.brand}>Brand</Link>
           <Link href={siteConfig.routes.license}>License</Link>
           <ExternalLink href={siteConfig.repository.url}>GitHub</ExternalLink>
