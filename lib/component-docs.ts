@@ -7963,6 +7963,135 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
       "The lean is decoration and nothing is announced. Under reduced motion the card does not lean at all, rather than leaning more slowly. Because the effect is driven entirely by the pointer, nothing moves for a reader who is not moving one, and a keyboard reader gets an ordinary card.",
   },
   {
+    slug: "connection-beam",
+    kind: "component",
+    name: "Connection Beam",
+    family: "Scenes",
+    summary:
+      "A line between two elements with something travelling along it, measured from the elements rather than given as coordinates.",
+    dependencies: [],
+    install: registryInstallCommand("connection-beam"),
+    npmImport: packageImport("ConnectionBeam", "connection-beam"),
+    usage: `export function Architecture() {
+  const container = useRef(null)
+  const retriever = useRef(null)
+  const model = useRef(null)
+
+  return (
+    <div ref={container} className="relative">
+      <Node ref={retriever} />
+      <Node ref={model} />
+      <ConnectionBeam
+        containerRef={container}
+        fromRef={retriever}
+        toRef={model}
+      />
+    </div>
+  )
+}`,
+    sections: [
+      {
+        id: "measured",
+        title: "It reads the elements, not a list of points",
+        blocks: [
+          {
+            kind: "text",
+            text: "A diagram drawn from coordinates is right once, on the screen it was drawn for. Give this the two elements instead and the geometry comes from where they actually are, so the beam survives a reflow: resize the window, wrap the boxes onto another line, put the whole thing in a panel that opens, and the line follows.",
+          },
+          {
+            kind: "text",
+            text: "Both endpoints and the box around them are watched, which covers layout changes that no resize event would report.",
+          },
+          {
+            kind: "text",
+            text: "The container has to be a positioned element, since the beam is laid over it. Everything else is measured relative to that box, so page scrolling never enters into it.",
+          },
+        ],
+      },
+      {
+        id: "edges",
+        title: "Where it attaches",
+        blocks: [
+          {
+            kind: "text",
+            text: "Beams are drawn between the facing edges rather than the centres, so the line meets a box instead of disappearing under it. Which pair of edges depends on how the two are arranged: side by side, it leaves the right and arrives at the left, and stacked, it leaves the bottom and arrives at the top. anchor overrides that when the automatic choice is not the one you meant.",
+          },
+          {
+            kind: "text",
+            text: "The bow is square to the run, so two elements connected either way round curve the same amount rather than one of them bending the wrong way. A curvature of nought is a straight line, and a negative one bends the other way, which is what separates several beams landing on the same element.",
+          },
+        ],
+      },
+      {
+        id: "travel",
+        title: "The part that moves",
+        blocks: [
+          {
+            kind: "text",
+            text: "The line and the travelling part are the same path drawn twice. The moving one is a dash, and the dashes are measured against a normalised path length, so extent is a share of the line rather than a number of pixels that would mean something different on every screen.",
+          },
+          {
+            kind: "text",
+            text: "Stagger several beams with delay rather than giving them different durations. Different durations drift apart and eventually all arrive at once, which reads as a coincidence rather than a sequence.",
+          },
+          {
+            kind: "code",
+            code: `{sources.map((source, index) => (
+  <ConnectionBeam
+    key={source.id}
+    containerRef={container}
+    fromRef={source.ref}
+    toRef={model}
+    curvature={(index - 1) * 24}
+    delay={index * 0.6}
+  />
+))}`,
+            caption: "Three sources into one model, fanned and staggered.",
+          },
+        ],
+      },
+    ],
+    props: [
+      [
+        "containerRef",
+        "RefObject<HTMLElement>",
+        "The positioned box both endpoints live inside.",
+      ],
+      [
+        "fromRef, toRef",
+        "RefObject<HTMLElement>",
+        "The two elements. Nothing is drawn until both exist.",
+      ],
+      [
+        "curvature",
+        "number",
+        "Pixels the path bows away from the straight line. Negative bends the other way. Defaults to 60.",
+      ],
+      [
+        "anchor",
+        '"auto" | "horizontal" | "vertical"',
+        "Which edges to use. Auto picks by the longer axis.",
+      ],
+      ["inset", "number", "Clearance left at each end. Defaults to 4."],
+      [
+        "pathColor, beamColor",
+        "string",
+        "A theme token, or any CSS colour. Default to --border and --primary.",
+      ],
+      ["width", "number", "Stroke width. Defaults to 2."],
+      ["duration", "number", "Seconds for one trip. Defaults to 3."],
+      ["delay", "number", "Seconds before the first trip. Defaults to 0."],
+      ["reverse", "boolean", "Sends it the other way along the same path."],
+      [
+        "extent",
+        "number",
+        "How much of the path the travelling part covers, from nought to one. Defaults to 0.18.",
+      ],
+    ],
+    accessibility:
+      "The beam is decoration and carries aria-hidden: it illustrates a relationship that the elements it joins should already state, so nothing is lost when it is not rendered. Under prefers-reduced-motion the travelling part is not drawn at all rather than parked mid-path, where it would read as a stray dash nobody put there, and the line it runs along stays exactly as it was. Because the geometry is measured rather than fixed, a page zoomed or reflowed to a narrow width redraws correctly instead of leaving the line pointing somewhere the boxes no longer are.",
+  },
+  {
     slug: "cursor-trail",
     kind: "component",
     name: "Cursor Trail",

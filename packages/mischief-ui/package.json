@@ -430,6 +430,11 @@
       "import": "./dist/tilt-card.js",
       "require": "./dist/tilt-card.cjs"
     },
+    "./connection-beam": {
+      "types": "./dist/connection-beam.d.ts",
+      "import": "./dist/connection-beam.js",
+      "require": "./dist/connection-beam.cjs"
+    },
     "./cursor-trail": {
       "types": "./dist/cursor-trail.d.ts",
       "import": "./dist/cursor-trail.js",

@@ -17,3 +17,9 @@
     transform: translateY(var(--marquee-shift));
   }
 }
+
+@keyframes mischief-connection-beam {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

@@ -1250,6 +1250,27 @@
       "registryDependencies": ["utils"]
     },
     {
+      "name": "connection-beam",
+      "type": "registry:ui",
+      "title": "Connection Beam",
+      "description": "A line between two elements with something travelling along it, measured from the elements rather than given as coordinates.",
+      "files": [
+        {
+          "path": "registry/default/connection-beam/connection-beam.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        "@keyframes mischief-connection-beam": {
+          "to": {
+            "stroke-dashoffset": "0"
+          }
+        }
+      },
+      "categories": ["scene", "canvas", "diagram", "agent", "background"],
+      "registryDependencies": ["utils"]
+    },
+    {
       "name": "cursor-trail",
       "type": "registry:ui",
       "title": "Cursor Trail",
@@ -1678,6 +1699,22 @@
       ],
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/component-preview.json"
+      ]
+    },
+    {
+      "name": "connection-beam-demo",
+      "type": "registry:example",
+      "title": "Connection Beam Demo",
+      "description": "A worked example of Connection Beam: A line between two elements with something travelling along it, measured from the elements rather than given as coordinates.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "components/demos/connection-beam-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/connection-beam.json"
       ]
     },
     {

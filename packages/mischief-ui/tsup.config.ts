@@ -120,6 +120,8 @@ export default defineConfig({
     "split-text": "../../registry/default/split-text/split-text.tsx",
     "number-ticker": "../../registry/default/number-ticker/number-ticker.tsx",
     "tilt-card": "../../registry/default/tilt-card/tilt-card.tsx",
+    "connection-beam":
+      "../../registry/default/connection-beam/connection-beam.tsx",
     "cursor-trail": "../../registry/default/cursor-trail/cursor-trail.tsx",
     metaballs: "../../registry/default/metaballs/metaballs.tsx",
     "dither-image": "../../registry/default/dither-image/dither-image.tsx",

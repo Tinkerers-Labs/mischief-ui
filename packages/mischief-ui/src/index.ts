@@ -488,6 +488,11 @@ export {
 } from "../../../registry/default/cursor-trail/cursor-trail"
 
 export {
+  ConnectionBeam,
+  type ConnectionBeamProps,
+} from "../../../registry/default/connection-beam/connection-beam"
+
+export {
   Metaballs,
   type MetaballsProps,
 } from "../../../registry/default/metaballs/metaballs"

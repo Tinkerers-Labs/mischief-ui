@@ -1,6 +1,6 @@
 # Mischief UI catalog
 
-Every component, grouped by family. 97 in total.
+Every component, grouped by family. 98 in total.
 
 Install one with `npx shadcn@latest add Tinkerers-Labs/mischief-ui/<component>`, and read its full
 documentation at `https://ui.tinkererslabs.com/docs/components/<component>.md` before using it.
@@ -142,6 +142,7 @@ Backdrops and moments where the drawing is the job, each one taking its colours 
 - `scene-hero`: A lit three-dimensional object behind a headline, steered by the pointer and coloured by the theme. The one component here that asks for three.
 - `scroll-scene`: Turns the scrolling of a tall element into a number between nought and one, published to a custom property and to a callback, without rendering the page to do it.
 - `tilt-card`: A card that leans toward the pointer as though it were a physical object lying on the page.
+- `connection-beam`: A line between two elements with something travelling along it, measured from the elements rather than given as coordinates.
 - `cursor-trail`: A fading mark behind the pointer, drawn only inside its own box and only while the pointer is in it.
 - `metaballs`: Blobs that swell into one another as they meet, taking their two colours from your theme.
 - `dither-image`: A photograph reduced to two theme colours through an ordered dither, the way a newspaper reduced one to ink and paper.

@@ -1747,6 +1747,12 @@ summary,
   }
 }
 
+@keyframes mischief-connection-beam {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 @keyframes mischief-marquee-x {
   to {
     transform: translateX(var(--marquee-shift));
