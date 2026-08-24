@@ -46,6 +46,8 @@ export const siteConfig = {
   /** The rest of what we make, shown as a row across the foot of the site. */
   elsewhere: [
     { label: "Fetchbean", href: "https://fetchbean.com/" },
+    { label: "Promptsmint", href: "https://promptsmint.com/" },
+    { label: "AI Code Usage", href: "https://aicodeusage.com/" },
     { label: "Tinkerers Labs", href: "https://tinkererslabs.com/" },
     { label: "amankumar.ai", href: "https://amankumar.ai/" },
   ],
