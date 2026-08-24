@@ -17,7 +17,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "registry:build": "pnpm registry:sync && shadcn build",
-    "registry:smoke": "shadcn add ./public/r/file-thumbnail.json --dry-run",
+    "registry:smoke": "tsx scripts/registry-smoke.ts",
     "package:build": "SKIP_DTS=1 pnpm --dir packages/mischief-ui build",
     "package:pack": "pnpm package:types && npm pack --dry-run ./packages/mischief-ui",
     "test": "vitest run",
