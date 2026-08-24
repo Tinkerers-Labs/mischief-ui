@@ -8,6 +8,7 @@ import {
   checkedCount,
   citedComponents,
   interfaceSections,
+  ruleNumbers,
 } from "../lib/interface-rules"
 
 const ROOT = path.resolve(import.meta.dirname, "..")
@@ -82,6 +83,19 @@ describe("the interfaces page", () => {
           `${rule.id} has neither a check nor a component behind it`
         ).toBe(true)
       }
+    }
+  })
+
+  it("numbers every rule once, straight through", () => {
+    const ids = interfaceSections.flatMap((section) =>
+      section.rules.map((rule) => rule.id)
+    )
+
+    expect(ruleNumbers.size).toBe(ids.length)
+    expect(new Set(ruleNumbers.values()).size).toBe(ids.length)
+
+    for (const id of ids) {
+      expect(ruleNumbers.get(id)).toMatch(/^\d{2,}$/)
     }
   })
 

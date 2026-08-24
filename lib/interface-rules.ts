@@ -268,6 +268,16 @@ export const interfaceSections: readonly InterfaceSection[] = [
   },
 ] as const
 
+/**
+ * The rules numbered straight through, so a rule keeps its number wherever it
+ * is cited. Derived once rather than counted during render.
+ */
+export const ruleNumbers: ReadonlyMap<string, string> = new Map(
+  interfaceSections
+    .flatMap((section) => section.rules)
+    .map((rule, index) => [rule.id, String(index + 1).padStart(2, "0")])
+)
+
 /** Every component named as evidence, so nothing here cites something gone. */
 export function citedComponents() {
   return [

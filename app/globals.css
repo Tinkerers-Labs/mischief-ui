@@ -1159,41 +1159,126 @@ a:focus-visible {
   color: var(--primary);
 }
 
-.interface-rules {
-  display: grid;
-  margin-top: 1.5rem;
-}
-
-.interface-rule {
+.interface-section {
   border-top: 1px solid var(--border);
-  padding: 1.4rem 0;
-  scroll-margin-top: 6rem;
+  display: grid;
+  gap: 1.75rem;
+  margin-top: 4.5rem;
+  padding-top: 2.25rem;
+  scroll-margin-top: 5rem;
 }
 
-.interface-rule:last-child {
-  border-bottom: 1px solid var(--border);
+.interface-section:first-child {
+  border-top: 0;
+  margin-top: 0;
+  padding-top: 0;
 }
 
-.interface-rule h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+@media (min-width: 1024px) {
+  .interface-section {
+    align-items: start;
+    gap: 4rem;
+    grid-template-columns: minmax(14rem, 20rem) minmax(0, 1fr);
+  }
+
+  .interface-section-head {
+    position: sticky;
+    top: 6rem;
+  }
+}
+
+.interface-section-label {
+  color: var(--muted-foreground);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
   margin: 0;
+  text-transform: uppercase;
+}
+
+.interface-section-lead {
+  font-family: var(--font-display), var(--font-sans), sans-serif;
+  font-size: clamp(1.35rem, 1.8vw, 1.7rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.16;
+  margin: 0.85rem 0 0;
+  max-width: 30ch;
   text-wrap: balance;
 }
 
-.interface-rule p {
+.interface-rules {
+  display: grid;
+  margin-top: 0;
+  min-width: 0;
+}
+
+.interface-provenance p {
   color: var(--muted-foreground);
   font-size: 0.9375rem;
-  margin: 0.5rem 0 0;
-  max-width: 62ch;
+  line-height: 1.65;
+  margin: 0 0 0.9rem;
+  max-width: 60ch;
+}
+
+.interface-provenance-link {
+  align-items: center;
+  color: var(--foreground);
+  display: inline-flex;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  gap: 0.45rem;
+  margin-top: 0.4rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.interface-provenance-link:hover {
+  color: var(--primary);
+}
+
+.interface-rule {
+  display: grid;
+  gap: 1.15rem;
+  grid-template-columns: 2.25rem 1fr;
+  padding: 1.6rem 0;
+  scroll-margin-top: 5.5rem;
+}
+
+.interface-rules > *:not(:last-child) .interface-rule {
+  border-bottom: 1px solid color-mix(in oklch, var(--border) 65%, transparent);
+}
+
+.interface-rule-number {
+  color: var(--muted-foreground);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  line-height: 1.7;
+  opacity: 0.65;
+}
+
+.interface-rule h2 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.4;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.interface-rule-body > p {
+  color: var(--muted-foreground);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  margin: 0.55rem 0 0;
+  max-width: 60ch;
 }
 
 .interface-rule-evidence {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin-top: 0.9rem;
+  margin-top: 1rem;
 }
 
 .interface-rule-checked,
@@ -1209,16 +1294,36 @@ a:focus-visible {
   min-height: 1.9rem;
   padding: 0 0.7rem;
   text-decoration: none;
+  transition: color var(--motion-fast) var(--ease-out);
 }
 
 .interface-rule-checked {
-  background: var(--muted);
-  border-color: transparent;
-  color: var(--foreground);
+  background: color-mix(in oklch, var(--primary) 12%, transparent);
+  border-color: color-mix(in oklch, var(--primary) 30%, transparent);
+  color: var(--primary);
 }
 
 .interface-rule-component:hover {
-  color: var(--primary);
+  border-color: var(--foreground);
+  color: var(--foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interface-rule-checked,
+  .interface-rule-component {
+    transition: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .interface-rule {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .interface-rule-number {
+    line-height: 1;
+  }
 }
 
 .component-preview-panel {
