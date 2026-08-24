@@ -71,6 +71,17 @@ const built = existsSync(DIST)
 
 const byName = new Map(registry.items.map((item) => [item.name, item]))
 
+/**
+ * Our own items are declared as absolute URLs, so the CLI knows to come back
+ * here for them rather than looking in shadcn's registry. Reading one as a
+ * name means taking the slug back off the end.
+ */
+function itemName(dependency: string) {
+  return dependency.startsWith("http")
+    ? (dependency.split("/").pop() ?? "").replace(/\.json$/, "")
+    : dependency
+}
+
 /** Its own packages, plus those of the components it is built from. */
 function declaredPackages(name: string, seen = new Set<string>()): string[] {
   const item = byName.get(name)
@@ -82,7 +93,7 @@ function declaredPackages(name: string, seen = new Set<string>()): string[] {
       entry.replace(/@[\^~>=<\d].*$/, "")
     ),
     ...(item.registryDependencies ?? []).flatMap((dependency) =>
-      declaredPackages(dependency, seen)
+      declaredPackages(itemName(dependency), seen)
     ),
   ]
 }
@@ -125,7 +136,9 @@ describe.skipIf(!built || entries.length === 0)(
       const declared = new Map(
         registry.items.map((item) => [
           item.name,
-          (item.registryDependencies ?? []).filter((name) => name !== "utils"),
+          (item.registryDependencies ?? [])
+            .map(itemName)
+            .filter((name) => name !== "utils"),
         ])
       )
 
@@ -232,9 +245,9 @@ describe("what an install pulls", () => {
   it.each(registry.items)(
     "$name only reaches for other components if it is a block",
     (item) => {
-      const parts = (item.registryDependencies ?? []).filter(
-        (name) => !INFRASTRUCTURE.has(name)
-      )
+      const parts = (item.registryDependencies ?? [])
+        .map(itemName)
+        .filter((name) => !INFRASTRUCTURE.has(name))
 
       // A component is one thing you install. Only a block, which is openly an
       // assembly, may pull others in behind it.
@@ -248,5 +261,21 @@ describe("what an install pulls", () => {
     )
 
     expect(surface?.registryDependencies ?? []).toEqual(["utils"])
+  })
+
+  /**
+   * The whole reason the URLs are there. A bare name resolved against
+   * shadcn's own registry and failed, which left every component that sits on
+   * the render surface uninstallable by either route.
+   */
+  it("never names one of its own items without saying where it lives", () => {
+    const own = new Set(registry.items.map((item) => item.name))
+    const bare = registry.items.flatMap((item) =>
+      (item.registryDependencies ?? [])
+        .filter((dependency) => own.has(dependency))
+        .map((dependency) => `${item.name} -> ${dependency}`)
+    )
+
+    expect(bare).toEqual([])
   })
 })

@@ -61,9 +61,9 @@
       "categories": ["layout", "footer", "branding"],
       "registryDependencies": [
         "utils",
-        "footer-columns",
-        "footer-row",
-        "footer-wordmark"
+        "https://ui.tinkererslabs.com/r/footer-columns.json",
+        "https://ui.tinkererslabs.com/r/footer-row.json",
+        "https://ui.tinkererslabs.com/r/footer-wordmark.json"
       ]
     },
     {
@@ -124,7 +124,11 @@
         }
       ],
       "categories": ["gallery", "images", "dialog", "layout"],
-      "registryDependencies": ["utils", "image-grid", "lightbox"]
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/image-grid.json",
+        "https://ui.tinkererslabs.com/r/lightbox.json"
+      ]
     },
     {
       "name": "scroll-to-top-button",
@@ -997,7 +1001,10 @@
         }
       ],
       "categories": ["scene", "background", "gradient", "motion"],
-      "registryDependencies": ["utils", "render-surface"]
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
     },
     {
       "name": "grain-overlay",
@@ -1039,7 +1046,10 @@
         }
       ],
       "categories": ["scene", "background", "particles", "pointer"],
-      "registryDependencies": ["utils", "render-surface"]
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
     },
     {
       "name": "burst",
@@ -1053,7 +1063,10 @@
         }
       ],
       "categories": ["scene", "feedback", "celebration", "canvas"],
-      "registryDependencies": ["utils", "render-surface"]
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
     },
     {
       "name": "shader-surface",
@@ -1067,7 +1080,10 @@
         }
       ],
       "categories": ["scene", "background", "shader", "webgl"],
-      "registryDependencies": ["utils", "render-surface"]
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
     },
     {
       "name": "displacement-image",
@@ -1081,7 +1097,10 @@
         }
       ],
       "categories": ["scene", "media", "transition", "webgl"],
-      "registryDependencies": ["utils", "render-surface"]
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
     },
     {
       "name": "scene-hero",
@@ -1096,7 +1115,10 @@
         }
       ],
       "categories": ["scene", "hero", "3d", "webgl"],
-      "registryDependencies": ["utils", "render-surface"]
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
     },
     {
       "name": "scroll-scene",
@@ -1180,7 +1202,10 @@
         }
       ],
       "categories": ["scene", "pointer", "canvas"],
-      "registryDependencies": ["utils", "render-surface"]
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
     },
     {
       "name": "metaballs",
@@ -1194,7 +1219,10 @@
         }
       ],
       "categories": ["scene", "background", "shader", "webgl"],
-      "registryDependencies": ["utils", "render-surface"]
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
     },
     {
       "name": "dither-image",
@@ -1208,7 +1236,10 @@
         }
       ],
       "categories": ["scene", "media", "shader", "webgl"],
-      "registryDependencies": ["utils", "render-surface"]
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
     },
     {
       "name": "ascii-image",
@@ -1222,7 +1253,10 @@
         }
       ],
       "categories": ["scene", "media", "ascii", "canvas"],
-      "registryDependencies": ["utils", "render-surface"]
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
     },
     {
       "name": "wireframe-globe",
@@ -1237,7 +1271,10 @@
         }
       ],
       "categories": ["scene", "3d", "globe", "data"],
-      "registryDependencies": ["utils", "render-surface"]
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
     },
     {
       "name": "presence-field",
@@ -1251,7 +1288,10 @@
         }
       ],
       "categories": ["ai", "agent", "scene", "status"],
-      "registryDependencies": ["utils", "render-surface"]
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
     },
     {
       "name": "stream-glow",
