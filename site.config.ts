@@ -48,6 +48,8 @@ export const siteConfig = {
     { label: "Fetchbean", href: "https://fetchbean.com/" },
     { label: "Promptsmint", href: "https://promptsmint.com/" },
     { label: "AI Code Usage", href: "https://aicodeusage.com/" },
+    { label: "aijobsdesk", href: "https://aijobsdesk.com/" },
+    { label: "AidenGPT", href: "https://aidengpt.com/" },
     { label: "Tinkerers Labs", href: "https://tinkererslabs.com/" },
     { label: "amankumar.ai", href: "https://amankumar.ai/" },
   ],
