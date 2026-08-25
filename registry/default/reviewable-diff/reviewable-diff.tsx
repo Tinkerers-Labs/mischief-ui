@@ -79,14 +79,23 @@ export function ReviewableDiff({
     [hunks, before, after, context]
   )
 
-  const [held, setHeld] = React.useState<readonly number[]>(
-    defaultStaged ?? resolved.map((_, at) => at)
-  )
-  const chosen = staged ?? held
+  // Staged indexes belong to one set of hunks. Keeping them beside the hunks
+  // they were chosen from means a new diff starts fresh rather than carrying
+  // positions that now point at something else.
+  const [held, setHeld] = React.useState<{
+    of: readonly DiffHunk[]
+    staged: readonly number[]
+  } | null>(null)
+
+  const chosen =
+    staged ??
+    (held?.of === resolved
+      ? held.staged
+      : (defaultStaged ?? resolved.map((_, at) => at)))
   const isStaged = (at: number) => chosen.includes(at)
 
   const set = (next: number[]) => {
-    if (staged === undefined) setHeld(next)
+    if (staged === undefined) setHeld({ of: resolved, staged: next })
     onStagedChange?.(next)
   }
 
@@ -133,88 +142,100 @@ export function ReviewableDiff({
         </span>
       </div>
 
-      <ul role="group" aria-label={`Hunks in ${filename ?? "the change"}`}>
-        {resolved.map((hunk, at) => {
-          const { added, removed } = countOf(hunk)
-          const on = isStaged(at)
+      {resolved.length === 0 ? (
+        <p className="text-muted-foreground px-3 py-4 font-sans text-xs">
+          No changes.
+        </p>
+      ) : (
+        <>
+          <ul role="group" aria-label={`Hunks in ${filename ?? "the change"}`}>
+            {resolved.map((hunk, at) => {
+              const { added, removed } = countOf(hunk)
+              const on = isStaged(at)
+              const title = hunk.header ?? `Hunk ${at + 1}`
 
-          return (
-            <li
-              key={hunk.header ?? at}
-              data-staged={on ? "" : undefined}
-              className="border-border not-last:border-b"
-            >
-              <label
-                className={cn(
-                  "hover:bg-muted/50 focus-within:ring-ring flex cursor-pointer items-center gap-2 px-3 py-1.5 transition-colors focus-within:ring-2 focus-within:ring-inset motion-reduce:transition-none",
-                  !on && "opacity-60"
-                )}
-              >
-                <input
-                  type="checkbox"
-                  checked={on}
-                  onChange={() => toggle(at)}
-                  className="accent-primary size-4 shrink-0 focus-visible:outline-none"
-                />
-                <span className="text-muted-foreground truncate font-sans">
-                  {hunk.header ?? `Hunk ${at + 1}`}
-                </span>
-                <span className="text-muted-foreground ms-auto shrink-0 font-sans tabular-nums">
-                  +{added} -{removed}
-                </span>
-              </label>
-
-              <div className={cn("overflow-x-auto", !on && "opacity-45")}>
-                {hunk.lines.map((line, index) => (
-                  <div
-                    key={index}
-                    className={cn("flex whitespace-pre", tone[line.kind])}
+              return (
+                <li
+                  key={hunk.header ?? at}
+                  data-staged={on ? "" : undefined}
+                  className="border-border not-last:border-b"
+                >
+                  <label
+                    className={cn(
+                      "hover:bg-muted/50 focus-within:ring-ring flex cursor-pointer items-center gap-2 px-3 py-1.5 transition-colors focus-within:ring-2 focus-within:ring-inset motion-reduce:transition-none",
+                      !on && "opacity-60"
+                    )}
                   >
-                    <span
-                      aria-hidden="true"
-                      className="text-muted-foreground w-10 shrink-0 pe-2 text-end tabular-nums"
-                    >
-                      {line.afterNumber ?? line.beforeNumber ?? ""}
+                    <input
+                      type="checkbox"
+                      checked={on}
+                      onChange={() => toggle(at)}
+                      /* Named here rather than left to the label, whose parts
+                         are joined without the spaces that sit between them. */
+                      aria-label={`Stage ${title}, ${added} added, ${removed} removed`}
+                      className="accent-primary size-4 shrink-0 focus-visible:outline-none"
+                    />
+                    <span className="text-muted-foreground truncate font-sans">
+                      {title}
                     </span>
-                    <span className="text-muted-foreground w-4 shrink-0 select-none">
-                      {sign[line.kind]}
+                    <span className="text-muted-foreground ms-auto shrink-0 font-sans tabular-nums">
+                      +{added} -{removed}
                     </span>
-                    <span className="pe-3">{line.text}</span>
+                  </label>
+
+                  <div className={cn("overflow-x-auto", !on && "opacity-45")}>
+                    {hunk.lines.map((line, index) => (
+                      <div
+                        key={index}
+                        className={cn("flex whitespace-pre", tone[line.kind])}
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="text-muted-foreground w-10 shrink-0 pe-2 text-end tabular-nums"
+                        >
+                          {line.afterNumber ?? line.beforeNumber ?? ""}
+                        </span>
+                        <span className="text-muted-foreground w-4 shrink-0 select-none">
+                          {sign[line.kind]}
+                        </span>
+                        <span className="pe-3">{line.text}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </li>
-          )
-        })}
-      </ul>
+                </li>
+              )
+            })}
+          </ul>
 
-      <div className="border-border flex items-center gap-2 border-t px-3 py-2">
-        <button
-          type="button"
-          onClick={() => set(resolved.map((_, at) => at))}
-          className="text-muted-foreground hover:text-foreground focus-visible:ring-ring rounded-md px-2 py-1 font-sans text-xs transition-colors focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none"
-        >
-          Stage all
-        </button>
-        <button
-          type="button"
-          onClick={() => set([])}
-          className="text-muted-foreground hover:text-foreground focus-visible:ring-ring rounded-md px-2 py-1 font-sans text-xs transition-colors focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none"
-        >
-          Stage none
-        </button>
+          <div className="border-border flex items-center gap-2 border-t px-3 py-2">
+            <button
+              type="button"
+              onClick={() => set(resolved.map((_, at) => at))}
+              className="text-muted-foreground hover:text-foreground focus-visible:ring-ring rounded-md px-2 py-1 font-sans text-xs transition-colors focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none"
+            >
+              Stage all
+            </button>
+            <button
+              type="button"
+              onClick={() => set([])}
+              className="text-muted-foreground hover:text-foreground focus-visible:ring-ring rounded-md px-2 py-1 font-sans text-xs transition-colors focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none"
+            >
+              Stage none
+            </button>
 
-        <button
-          type="button"
-          disabled={chosen.length === 0}
-          onClick={() =>
-            onApply?.(chosen.map((at) => resolved[at]!).filter(Boolean))
-          }
-          className="bg-foreground text-background focus-visible:ring-ring ms-auto inline-flex min-h-8 items-center rounded-md px-3 font-sans text-xs font-medium transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40 motion-reduce:transition-none"
-        >
-          {applyLabel}
-        </button>
-      </div>
+            <button
+              type="button"
+              disabled={chosen.length === 0}
+              onClick={() =>
+                onApply?.(chosen.map((at) => resolved[at]!).filter(Boolean))
+              }
+              className="bg-foreground text-background focus-visible:ring-ring ms-auto inline-flex min-h-8 items-center rounded-md px-3 font-sans text-xs font-medium transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:outline-none disabled:opacity-40 motion-reduce:transition-none"
+            >
+              {applyLabel}
+            </button>
+          </div>
+        </>
+      )}
 
       <span aria-live="polite" className="sr-only">
         {summary}

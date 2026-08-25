@@ -63,6 +63,43 @@ describe("ReviewableDiff", () => {
     expect(screen.getByRole("button", { name: "Apply staged" })).toBeDisabled()
   })
 
+  it("names each box after what ticking it does", () => {
+    render(<ReviewableDiff before={before} after={after} context={0} />)
+
+    // Left to the label, the parts join up as "Stage@@ -2 +1 @@".
+    const boxes = screen.getAllByRole("checkbox", {
+      name: /^Stage @@ .+ @@, \d+ added, \d+ removed$/,
+    })
+
+    expect(boxes).toHaveLength(2)
+  })
+
+  it("says so when there is nothing to review", () => {
+    render(<ReviewableDiff before={before} after={before} />)
+
+    expect(screen.getByText("No changes.")).toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: "Apply staged" })).toBeNull()
+  })
+
+  it("starts fresh when the diff underneath it changes", async () => {
+    const user = userEvent.setup()
+    const { rerender } = render(
+      <ReviewableDiff before={before} after={after} context={0} />
+    )
+
+    await user.click(screen.getAllByRole("checkbox")[0]!)
+
+    // Those indexes belonged to the old hunks and mean nothing here.
+    const other = ["one", "two", "three"].join("\n")
+    rerender(
+      <ReviewableDiff before={other} after={"ONE\ntwo\nthree"} context={0} />
+    )
+
+    const boxes = screen.getAllByRole("checkbox")
+    expect(boxes).toHaveLength(1)
+    expect(boxes[0]).toBeChecked()
+  })
+
   it("keeps an unstaged hunk on the page", async () => {
     const user = userEvent.setup()
     render(<ReviewableDiff before={before} after={after} context={0} />)
