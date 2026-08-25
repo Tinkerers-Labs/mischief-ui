@@ -21,7 +21,10 @@ export function DemoVariants({
 
   return (
     <div className="grid w-full justify-items-center gap-6">
-      <div className="w-full">{active.render()}</div>
+      {/* Centres whatever the variant renders. Without this a demo that caps
+          its own width sits against the left edge while the switch below it
+          is centred, which reads as a mistake. */}
+      <div className="flex w-full justify-center">{active.render()}</div>
 
       <div
         role="group"

@@ -40,10 +40,40 @@ export default function DocsPage() {
           </Link>{" "}
           is all {componentDocs.length} of them, searchable. If you would rather
           read what they are all held to, that is{" "}
-          <Link className="detail-link" href="/interfaces">
+          <Link className="detail-link" href="/docs/guidelines">
             the guidelines
           </Link>
           .
+        </p>
+      </section>
+
+      <section className="docs-section">
+        <h2>The component set</h2>
+        <p>
+          Almost everything here is React and Tailwind CSS and nothing else.
+          Icons come from Lucide, which is what most of the collection reaches
+          for. Five components are built on Base UI where a real primitive is
+          worth having — a dialog, a popover — and four use Motion where the
+          movement is the component.
+        </p>
+        <p>
+          The heavier libraries belong to the one component that needs them:
+          pdfjs-dist to the PDF viewer, mammoth to the DOCX viewer, papaparse to
+          the CSV viewer, three to the two scenes that need a renderer. Every
+          one of those is an optional peer, so installing a button does not
+          bring a PDF engine with it, and nothing you did not ask for ends up in
+          your bundle.
+        </p>
+        <p>
+          Start with{" "}
+          <Link className="detail-link" href="/docs/components">
+            Components
+          </Link>{" "}
+          for the full list, or read{" "}
+          <Link className="detail-link" href="/docs/guidelines">
+            Guidelines
+          </Link>{" "}
+          for what they are all held to.
         </p>
       </section>
 

@@ -54,7 +54,17 @@ export function SplitText({
   ...rootProps
 }: SplitTextProps) {
   const ref = React.useRef<HTMLSpanElement>(null)
-  const [shown, setShown] = React.useState(trigger === "mount")
+  const [shown, setShown] = React.useState(false)
+
+  React.useEffect(() => {
+    if (trigger !== "mount") return
+
+    // A frame first, so the resting state is painted and the transition has
+    // somewhere to travel from. Flipping it in the same tick as the first
+    // render leaves the characters already arrived, and nothing animates.
+    const frame = requestAnimationFrame(() => setShown(true))
+    return () => cancelAnimationFrame(frame)
+  }, [trigger])
 
   React.useEffect(() => {
     if (trigger === "mount") return

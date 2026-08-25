@@ -26,6 +26,16 @@ export const docsSections: readonly DocsSection[] = [
     label: "Components",
     summary: "Everything here, by family.",
   },
+  {
+    href: "/docs/guidelines",
+    label: "Guidelines",
+    summary: "What every component is held to, and how that is checked.",
+  },
+  {
+    href: "/docs/troubleshooting",
+    label: "Troubleshooting",
+    summary: "The ways an install actually goes wrong.",
+  },
 ] as const
 
 export function docsNeighbours(href: string) {

@@ -21,9 +21,6 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
               {section.label}
             </DocsSidebarLink>
           ))}
-          <DocsSidebarLink href={siteConfig.routes.interfaces}>
-            Guidelines
-          </DocsSidebarLink>
           {componentFamilies.map((family) => (
             <Fragment key={family.name}>
               <p className="sidebar-label">{family.name}</p>
