@@ -126,7 +126,6 @@ export function Example() {
   },
   {
     slug: "elastic-slider",
-    featured: true,
     kind: "component",
     name: "Elastic Slider",
     family: "Controls",
@@ -351,7 +350,6 @@ formatValue={(value) => \`\${(value / 100).toFixed(2)} s\`}`,
   },
   {
     slug: "impossible-checkbox",
-    featured: true,
     kind: "component",
     name: "Impossible Checkbox",
     family: "Controls",
@@ -573,6 +571,7 @@ export function PageIndex() {
   },
   {
     slug: "command-palette",
+    featured: true,
     kind: "component",
     name: "Command Palette",
     family: "Wayfinding",
@@ -2812,7 +2811,6 @@ const annotation = {
   },
   {
     slug: "redaction",
-    featured: true,
     kind: "component",
     name: "Redaction",
     family: "Documents",
@@ -5757,6 +5755,7 @@ return (
   },
   {
     slug: "reviewable-diff",
+    featured: true,
     kind: "block",
     name: "Reviewable Diff",
     family: "Code",
@@ -9510,6 +9509,7 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
   },
   {
     slug: "dither-image",
+    featured: true,
     kind: "component",
     name: "Dither Image",
     family: "Scenes",

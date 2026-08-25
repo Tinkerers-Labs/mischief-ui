@@ -195,7 +195,7 @@ export const componentDemos: Record<string, ComponentDemo> = {
   "bounding-boxes": {
     Demo: BoundingBoxesDemo,
     frameClassName: "p-6 md:p-10",
-    tileClassName: "lg:col-span-7",
+    tileClassName: "lg:col-span-6",
   },
   "page-navigator": { Demo: PageNavigatorDemo, frameClassName: "p-6 md:p-10" },
   "file-tree": { Demo: FileTreeDemo, frameClassName: "p-6 md:p-10" },
@@ -215,7 +215,7 @@ export const componentDemos: Record<string, ComponentDemo> = {
   conversation: {
     Demo: ConversationDemo,
     frameClassName: "p-6 md:p-10",
-    tileClassName: "lg:col-span-5",
+    tileClassName: "lg:col-span-6",
   },
   message: { Demo: MessageDemo, frameClassName: "p-6 md:p-10" },
   "prompt-input": { Demo: PromptInputDemo, frameClassName: "p-6 md:p-10" },
@@ -237,6 +237,7 @@ export const componentDemos: Record<string, ComponentDemo> = {
   "command-palette": {
     Demo: CommandPaletteDemo,
     frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-6",
   },
   "install-command": {
     Demo: InstallCommandDemo,
@@ -329,7 +330,7 @@ export const componentDemos: Record<string, ComponentDemo> = {
   "wireframe-globe": {
     Demo: WireframeGlobeDemo,
     frameClassName: "p-6 md:p-10",
-    tileClassName: "lg:col-span-6",
+    tileClassName: "lg:col-span-12",
   },
   "presence-field": {
     Demo: PresenceFieldDemo,
@@ -396,6 +397,7 @@ export const componentDemos: Record<string, ComponentDemo> = {
   "reviewable-diff": {
     Demo: ReviewableDiffDemo,
     frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-6",
   },
   "subagent-tree": {
     Demo: SubagentTreeDemo,
@@ -412,12 +414,12 @@ export const componentDemos: Record<string, ComponentDemo> = {
   orb: {
     Demo: OrbDemo,
     frameClassName: "p-8 md:p-12",
-    tileClassName: "lg:col-span-4",
+    tileClassName: "lg:col-span-6",
   },
   matrix: {
     Demo: MatrixDemo,
     frameClassName: "p-6 md:p-10",
-    tileClassName: "lg:col-span-4",
+    tileClassName: "lg:col-span-6",
   },
   response: { Demo: ResponseDemo, frameClassName: "p-6 md:p-10" },
   "transcript-viewer": {
