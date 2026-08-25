@@ -6,12 +6,7 @@ import { InterfacesIndex } from "@/components/interfaces-index"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { componentDocs } from "@/lib/component-docs"
-import {
-  checkedCount,
-  componentFor,
-  interfaceSections,
-  ruleCount,
-} from "@/lib/interface-rules"
+import { componentFor, interfaceSections } from "@/lib/interface-rules"
 import { siteConfig } from "@/site.config"
 
 export const metadata: Metadata = {
@@ -28,103 +23,78 @@ export default function InterfacesPage() {
   }))
 
   return (
-    <main>
+    <>
       <SiteHeader />
 
-      <div className="interfaces-page">
-        <h1 className="interfaces-title">
-          <span>Interface</span>
-          <span>Guidelines</span>
-        </h1>
+      <main className="interfaces-page">
+        <p className="eyebrow">Interfaces</p>
+        <h1>Interface guidelines</h1>
+        <p className="brand-lead">
+          A list of details that make an interface good, kept as we learn them.
+        </p>
 
-        <div className="interfaces-sheet">
-          <section className="interfaces-block">
-            <h2>Introduction</h2>
-            <p>
-              A list of the details this collection holds itself to, kept
-              because most of them were written down after getting one wrong.
-              None of them are opinions: {checkedCount()} of the {ruleCount()}{" "}
-              are enforced by a test that fails when the rule is broken, and the
-              rest name the components where you can go and see them kept.
-            </p>
-            <p>
-              Everything cited is one of the {componentDocs.length} components
-              here, and everything is MIT, so the cost of keeping a rule is
-              readable rather than described.
-            </p>
-          </section>
+        {interfaceSections.map((section) => (
+          <section className="docs-section" key={section.id} id={section.id}>
+            <h2>
+              {section.title}
+              <span className="docs-family-count">{section.rules.length}</span>
+            </h2>
+            <p>{section.description}</p>
 
-          {interfaceSections.map((section) => (
-            <section
-              className="interfaces-block"
-              key={section.id}
-              id={section.id}
-            >
-              <h2>{section.title}</h2>
-              <p className="interfaces-block-lead">{section.description}</p>
+            <div className="rule-list">
+              {section.rules.map((rule) => (
+                <article className="rule-row" key={rule.id} id={rule.id}>
+                  <span className="rule-marker" aria-hidden="true">
+                    {rule.checked ? <Check size={13} /> : "◦"}
+                  </span>
 
-              <ul className="rule-list">
-                {section.rules.map((rule) => (
-                  <li key={rule.id} id={rule.id}>
-                    <p className="rule-text">
-                      {rule.rule}
+                  <div>
+                    <strong>{rule.rule}</strong>
+                    <p>{rule.detail}</p>
+
+                    <p className="rule-evidence">
                       {rule.checked ? (
                         <span
                           className="rule-checked"
                           title={`Enforced by a test: ${rule.checked}`}
                         >
-                          <Check aria-hidden="true" size={11} />
-                          checked
+                          Checked on every build
                         </span>
                       ) : null}
+                      {(rule.components ?? []).map((slug, at) => {
+                        const component = componentFor(slug)
+                        if (!component) return null
+
+                        return (
+                          <span key={slug}>
+                            {at > 0 || rule.checked ? (
+                              <span aria-hidden="true"> · </span>
+                            ) : null}
+                            <Link href={`/docs/components/${slug}`}>
+                              {component.name}
+                            </Link>
+                          </span>
+                        )
+                      })}
                     </p>
-                    <p className="rule-detail">{rule.detail}</p>
-
-                    {rule.components?.length ? (
-                      <p className="rule-evidence">
-                        {rule.components.map((slug, at) => {
-                          const component = componentFor(slug)
-                          if (!component) return null
-
-                          return (
-                            <span key={slug}>
-                              {at > 0 ? (
-                                <span aria-hidden="true"> · </span>
-                              ) : null}
-                              <Link href={`/docs/components/${slug}`}>
-                                {component.name}
-                              </Link>
-                            </span>
-                          )
-                        })}
-                      </p>
-                    ) : null}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
-
-          <section className="interfaces-block" id="provenance">
-            <h2>Where this came from</h2>
-            <p>
-              Seventeen components were uninstallable because a dependency was
-              written as a bare name. A shimmer animated a keyframe these pages
-              never defined, so it ran for everybody who installed it and for
-              nobody reading the documentation. Writing the list down is how the
-              gaps turned up, which is the argument for keeping it.
-            </p>
-            <p>
-              <Link href={siteConfig.routes.docs}>
-                Browse all {componentDocs.length} components
-              </Link>
-            </p>
+                  </div>
+                </article>
+              ))}
+            </div>
           </section>
-        </div>
-      </div>
+        ))}
+
+        <section className="docs-section">
+          <p>
+            <Link className="detail-link" href={siteConfig.routes.docs}>
+              Browse all {componentDocs.length} components
+            </Link>
+          </p>
+        </section>
+      </main>
 
       <InterfacesIndex items={index} />
       <SiteFooter />
-    </main>
+    </>
   )
 }
