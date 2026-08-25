@@ -26,25 +26,36 @@ function GalleryTile({ doc }: { doc: ComponentDoc }) {
   )
 }
 
-export function ComponentGallery() {
+export function ComponentGallery({
+  components = featuredComponents,
+  action,
+}: {
+  components?: readonly ComponentDoc[]
+  /** Replaces the line under the grid. */
+  action?: React.ReactNode
+} = {}) {
   return (
     <div className="gallery" id="components">
       <div className="gallery-grid">
-        {featuredComponents.map((doc) => (
+        {components.map((doc) => (
           <GalleryTile doc={doc} key={doc.slug} />
         ))}
       </div>
 
       <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 px-4 pb-[clamp(2rem,5vw,4rem)] text-center">
-        <Link
-          className="bg-foreground text-background inline-flex min-h-11 items-center rounded-full px-5 font-semibold no-underline transition-transform duration-150 hover:-translate-y-0.5 motion-reduce:transition-none"
-          href={siteConfig.routes.docs}
-        >
-          Browse all {componentDocs.length} components
-        </Link>
-        <p className="text-muted-foreground text-sm">
-          Filter by family, or search the lot.
-        </p>
+        {action ?? (
+          <>
+            <Link
+              className="bg-foreground text-background inline-flex min-h-11 items-center rounded-full px-5 font-semibold no-underline transition-transform duration-150 hover:-translate-y-0.5 motion-reduce:transition-none"
+              href={siteConfig.routes.docs}
+            >
+              Browse all {componentDocs.length} components
+            </Link>
+            <p className="text-muted-foreground text-sm">
+              Filter by family, or search the lot.
+            </p>
+          </>
+        )}
       </div>
     </div>
   )

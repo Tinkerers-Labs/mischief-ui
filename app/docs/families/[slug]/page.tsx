@@ -25,7 +25,7 @@ export async function generateMetadata({
   return {
     title: `${family.name} React Components | ${siteConfig.name}`,
     description: `${family.description} ${family.components.length} components for React, Tailwind CSS, and shadcn projects.`,
-    alternates: { canonical: `/docs/families/${family.slug}` },
+    alternates: { canonical: `/families/${family.slug}` },
   }
 }
 

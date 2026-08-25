@@ -92,8 +92,20 @@ const backdrops: Backdrop[] = [
  * recolours it on the next frame, which is the argument made rather than
  * described.
  */
-export function HeroScene({ children }: { children: React.ReactNode }) {
-  const [activeId, setActiveId] = React.useState(backdrops[0]!.id)
+export function HeroScene({
+  children,
+  /** Which backdrop to open on. Defaults to the first. */
+  initial,
+  /** The picker belongs to a page that is showing off the backdrops. */
+  controls = true,
+}: {
+  children: React.ReactNode
+  initial?: string
+  controls?: boolean
+}) {
+  const [activeId, setActiveId] = React.useState(
+    backdrops.find((entry) => entry.id === initial)?.id ?? backdrops[0]!.id
+  )
   const active =
     backdrops.find((entry) => entry.id === activeId) ?? backdrops[0]!
 
@@ -114,43 +126,45 @@ export function HeroScene({ children }: { children: React.ReactNode }) {
         <div className="flex max-w-[46rem] flex-col justify-center">
           {children}
 
-          <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2">
-            <div
-              role="group"
-              aria-label="Hero backdrop"
-              className="border-border/70 bg-background/60 inline-flex flex-wrap gap-1 rounded-full border p-1 backdrop-blur-md"
-            >
-              {backdrops.map((backdrop) => (
-                <button
-                  key={backdrop.id}
-                  type="button"
-                  aria-pressed={backdrop.id === active.id}
-                  onClick={() => setActiveId(backdrop.id)}
-                  className={
-                    backdrop.id === active.id
-                      ? "bg-foreground text-background rounded-full px-3 py-1.5 text-xs font-semibold"
-                      : "text-muted-foreground hover:text-foreground rounded-full px-3 py-1.5 text-xs font-semibold"
-                  }
-                >
-                  {backdrop.label}
-                </button>
-              ))}
-            </div>
-
-            <p className="text-muted-foreground text-xs">
-              This backdrop is{" "}
-              <Link
-                className="hover:text-foreground underline underline-offset-4"
-                href={`/docs/components/${active.slug}`}
+          {controls ? (
+            <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2">
+              <div
+                role="group"
+                aria-label="Hero backdrop"
+                className="border-border/70 bg-background/60 inline-flex flex-wrap gap-1 rounded-full border p-1 backdrop-blur-md"
               >
-                a component
-              </Link>
-              , drawn from your theme.{" "}
-              {active.id === "metaballs" || active.id === "constellation"
-                ? "Move your pointer through it."
-                : "Switch to dark and it follows."}
-            </p>
-          </div>
+                {backdrops.map((backdrop) => (
+                  <button
+                    key={backdrop.id}
+                    type="button"
+                    aria-pressed={backdrop.id === active.id}
+                    onClick={() => setActiveId(backdrop.id)}
+                    className={
+                      backdrop.id === active.id
+                        ? "bg-foreground text-background rounded-full px-3 py-1.5 text-xs font-semibold"
+                        : "text-muted-foreground hover:text-foreground rounded-full px-3 py-1.5 text-xs font-semibold"
+                    }
+                  >
+                    {backdrop.label}
+                  </button>
+                ))}
+              </div>
+
+              <p className="text-muted-foreground text-xs">
+                This backdrop is{" "}
+                <Link
+                  className="hover:text-foreground underline underline-offset-4"
+                  href={`/docs/components/${active.slug}`}
+                >
+                  a component
+                </Link>
+                , drawn from your theme.{" "}
+                {active.id === "metaballs" || active.id === "constellation"
+                  ? "Move your pointer through it."
+                  : "Switch to dark and it follows."}
+              </p>
+            </div>
+          ) : null}
         </div>
       </div>
     </section>

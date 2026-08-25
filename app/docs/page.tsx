@@ -88,7 +88,7 @@ export default function DocsPage() {
         </p>
         <div className="docs-component-list">
           {componentFamilies.map((family) => (
-            <Link key={family.slug} href={`/docs/families/${family.slug}`}>
+            <Link key={family.slug} href={`/families/${family.slug}`}>
               <span>{family.components.length}</span>
               <strong>{family.name}</strong>
               <p>{family.description}</p>

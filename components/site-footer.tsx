@@ -15,6 +15,7 @@ import {
   SignatureFooter,
   type FooterColumn,
 } from "@/registry/default/signature-footer/signature-footer"
+import { componentFamilies } from "@/lib/component-docs"
 import { type ExternalLinkId, siteConfig } from "@/site.config"
 
 const externalIcons: Record<ExternalLinkId, LucideIcon> = {
@@ -23,6 +24,13 @@ const externalIcons: Record<ExternalLinkId, LucideIcon> = {
 }
 
 const columns: FooterColumn[] = [
+  {
+    label: "Families",
+    links: componentFamilies.map((family) => ({
+      href: `/families/${family.slug}`,
+      label: family.name,
+    })),
+  },
   {
     label: "Explore",
     links: siteConfig.footerNavigation.map(({ href, label }) => ({

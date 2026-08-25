@@ -10822,40 +10822,57 @@ const familyOrder = [
   [
     "Agent UI",
     "The surface an assistant answers through: the thread, the composer, and everything it shows while it is working.",
+    "An assistant's interface is mostly waiting, and most of it is spent not knowing. These are the parts that say what is happening: the thread and the composer, what the model is thinking, which tool it reached for, how much of the window is gone, and what to show when a run ends early.",
   ],
   [
     "Code",
     "Code an agent wrote, ran, or wants to change, and the controls to accept it.",
+    "Code an agent wrote is code somebody has to read before it runs. These show it the way a reviewer wants it: highlighted, diffed, staged a hunk at a time, with the terminal output it produced and a frame to see what it renders as.",
   ],
   [
     "Documents",
     "Reading a file someone uploaded, marking it up, cutting it into pieces, and pulling structure out of it.",
+    "A file someone uploaded is not a blob to be summarised at. These open it, put marks on it, cut it into pieces, and pull structure out of it, so the answer can point at the page it came from.",
   ],
-  ["Files", "Getting a file in, and showing what arrived."],
+  [
+    "Files",
+    "Getting a file in, and showing what arrived.",
+    "Getting a file in is the easy half. These keep the handling legible after the drop: what arrived, what was refused, and what it looks like.",
+  ],
   [
     "Feedback",
     "What the page says while it waits, and when there is nothing to show.",
+    "Most of an interface is the time before the answer. These are what the page says while it waits, and what it says when there is nothing to show.",
   ],
   [
     "Controls",
     "Familiar inputs with more feedback than usual, and none of it required to operate them.",
+    "Familiar inputs, with more feedback than they usually get. None of the personality is load-bearing: every one works with a keyboard, a screen reader, and motion turned off.",
   ],
   [
     "Wayfinding",
     "Knowing where you are in something long, and getting somewhere else quickly.",
+    "Long pages lose people. These say where you are in something long and get you somewhere else without becoming another permanent sidebar.",
   ],
-  ["Docs", "The furniture of a documentation site, taken out of this one."],
+  [
+    "Docs",
+    "The furniture of a documentation site, taken out of this one.",
+    "The furniture of a documentation site, taken out of this one. Install commands that know your package manager, a live preview with its source beside it, and a page an assistant can read.",
+  ],
   [
     "Blocks",
     "Larger pieces that compose several components into one part of a page.",
+    "Larger pieces that compose several components into one part of a page. Each is openly an assembly, built from parts worth installing on their own.",
   ],
   [
     "Scenes",
     "Backdrops and moments where the drawing is the job, each one taking its colours from the theme it was installed into.",
+    "Backdrops and moments where the drawing is the job. Every one reads its colours from the theme it was installed into, so it arrives dark in a dark application and light in a light one, rather than looking like this library.",
   ],
   [
     "Motion",
     "Entrances and numbers that move, driven by arrival or by scrolling, and never by withholding the content.",
+    "Entrances and numbers that move, driven by arrival or by scrolling, and never by withholding the content. With motion reduced they are still, and still readable.",
   ],
 ] as const
 
@@ -10863,6 +10880,8 @@ export type ComponentFamily = {
   name: string
   slug: string
   description: string
+  /** The longer opening, for the family's own page. */
+  lead: string
   components: ComponentDoc[]
 }
 
@@ -10875,10 +10894,11 @@ export function familySlug(name: string) {
 }
 
 export const componentFamilies: ComponentFamily[] = familyOrder.map(
-  ([name, description]) => ({
+  ([name, description, lead]) => ({
     name,
     slug: familySlug(name),
     description,
+    lead,
     components: componentDocs.filter((component) => component.family === name),
   })
 )
