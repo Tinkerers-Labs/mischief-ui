@@ -70,7 +70,15 @@ export default function InterfacesPage() {
             <div className="rule-list">
               {section.rules.map((rule) => (
                 <article className="rule-row" key={rule.id} id={rule.id}>
-                  <span className="rule-marker" aria-hidden="true">
+                  <span
+                    className="rule-marker"
+                    aria-hidden="true"
+                    title={
+                      rule.checked
+                        ? `Enforced by a test: ${rule.checked}`
+                        : undefined
+                    }
+                  >
                     {rule.checked ? <Check size={13} /> : "◦"}
                   </span>
 
@@ -78,31 +86,25 @@ export default function InterfacesPage() {
                     <strong>{rule.rule}</strong>
                     <p>{rule.detail}</p>
 
-                    <p className="rule-evidence">
-                      {rule.checked ? (
-                        <span
-                          className="rule-checked"
-                          title={`Enforced by a test: ${rule.checked}`}
-                        >
-                          Checked on every build
-                        </span>
-                      ) : null}
-                      {(rule.components ?? []).map((slug, at) => {
-                        const component = componentFor(slug)
-                        if (!component) return null
+                    {rule.components?.length ? (
+                      <p className="rule-evidence">
+                        {rule.components.map((slug, at) => {
+                          const component = componentFor(slug)
+                          if (!component) return null
 
-                        return (
-                          <span key={slug}>
-                            {at > 0 || rule.checked ? (
-                              <span aria-hidden="true"> · </span>
-                            ) : null}
-                            <Link href={`/docs/components/${slug}`}>
-                              {component.name}
-                            </Link>
-                          </span>
-                        )
-                      })}
-                    </p>
+                          return (
+                            <span key={slug}>
+                              {at > 0 ? (
+                                <span aria-hidden="true"> · </span>
+                              ) : null}
+                              <Link href={`/docs/components/${slug}`}>
+                                {component.name}
+                              </Link>
+                            </span>
+                          )
+                        })}
+                      </p>
+                    ) : null}
                   </div>
                 </article>
               ))}

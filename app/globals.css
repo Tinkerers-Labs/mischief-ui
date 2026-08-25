@@ -1230,7 +1230,7 @@ a:focus-visible {
   line-height: 1.5;
 }
 
-.rule-row:has(.rule-checked) .rule-marker {
+.rule-marker[title] {
   color: var(--primary);
 }
 
@@ -1257,12 +1257,6 @@ a:focus-visible {
 
 .rule-evidence a:hover {
   color: var(--primary);
-}
-
-/* The marker already carries the accent; the words beside it are a label,
-   not a second flag. */
-.rule-checked {
-  color: var(--muted-foreground);
 }
 
 .component-preview-panel {
