@@ -8,7 +8,8 @@ import { GalleryIndex } from "@/components/gallery-index"
 import { HeroScene } from "@/components/hero-scene"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
-import { componentDocs } from "@/lib/component-docs"
+import { componentDocs, getComponentDoc } from "@/lib/component-docs"
+import { newestComponent } from "@/lib/changelog"
 import { ScrollToTopButton } from "@/registry/default/scroll-to-top-button/scroll-to-top-button"
 import { siteConfig } from "@/site.config"
 
@@ -43,21 +44,29 @@ const structuredData = {
 }
 
 export default function Home() {
+  // Whatever the newest release actually shipped, rather than a name typed in
+  // once and left behind by three releases.
+  const released = newestComponent()
+  const doc = released && getComponentDoc(released.slug)
+  const newest = doc ? { slug: doc.slug, name: doc.name } : undefined
+
   return (
     <main>
       <SiteHeader />
 
       <HeroScene>
-        <Link
-          className="border-border/70 bg-background/60 text-muted-foreground hover:text-foreground mb-6 inline-flex w-fit items-center gap-2 rounded-full border py-1.5 pr-3 pl-2 text-xs font-semibold no-underline backdrop-blur-md"
-          href="/docs/components/data-table"
-        >
-          <span className="bg-primary text-primary-foreground rounded-full px-2 py-0.5">
-            New
-          </span>
-          Data Table
-          <span aria-hidden="true">→</span>
-        </Link>
+        {newest ? (
+          <Link
+            className="border-border/70 bg-background/60 text-muted-foreground hover:text-foreground mb-6 inline-flex w-fit items-center gap-2 rounded-full border py-1.5 pr-3 pl-2 text-xs font-semibold no-underline backdrop-blur-md"
+            href={`/docs/components/${newest.slug}`}
+          >
+            <span className="bg-primary text-primary-foreground rounded-full px-2 py-0.5">
+              New
+            </span>
+            {newest.name}
+            <span aria-hidden="true">→</span>
+          </Link>
+        ) : null}
 
         <h1 className="font-[family-name:var(--font-display)] text-[clamp(3.25rem,4.6vw,5.4rem)] leading-[0.94] font-semibold tracking-[-0.05em]">
           React components

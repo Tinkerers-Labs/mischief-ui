@@ -60,6 +60,13 @@ export type RenderSurfaceProps<
    * a picture that had not loaded by then would never appear at all.
    */
   revision?: string | number
+  /**
+   * Change this when what setup builds has itself changed -- a different
+   * shader, a different program. `revision` repaints the state that exists;
+   * this replaces it. Without it a surface whose setup depends on a prop keeps
+   * drawing whatever it was built with the first time.
+   */
+  rebuildKey?: string | number
   paused?: boolean
   /** Marks the canvas as meaningful content rather than decoration. */
   label?: string
@@ -86,6 +93,7 @@ export function RenderSurface<TState, K extends SurfaceContextType = "2d">({
   maxDpr = 2,
   rebuildOnResize = true,
   revision,
+  rebuildKey,
   paused = false,
   label,
   className,
@@ -128,6 +136,8 @@ export function RenderSurface<TState, K extends SurfaceContextType = "2d">({
   const kind = contextType ?? ("2d" as K)
   const asleep = paused || !visible
   const repaint = React.useRef<(() => void) | null>(null)
+  const rebuild = React.useRef<(() => void) | null>(null)
+  const builtWith = React.useRef(rebuildKey)
   const controls = React.useRef<{ start: () => void; stop: () => void } | null>(
     null
   )
@@ -246,6 +256,14 @@ export function RenderSurface<TState, K extends SurfaceContextType = "2d">({
       window.requestAnimationFrame(paint)
     }
 
+    rebuild.current = () => {
+      if (disposed) return
+      stop()
+      if (!build()) return
+      if (asleepRef.current) window.requestAnimationFrame(paint)
+      else start()
+    }
+
     const resize = new ResizeObserver(() => {
       stop()
       if (!(rebuildOnResize ? build() : measure())) return
@@ -267,6 +285,7 @@ export function RenderSurface<TState, K extends SurfaceContextType = "2d">({
     return () => {
       disposed = true
       repaint.current = null
+      rebuild.current = null
       controls.current = null
       stop()
       resize.disconnect()
@@ -285,6 +304,13 @@ export function RenderSurface<TState, K extends SurfaceContextType = "2d">({
   React.useEffect(() => {
     repaint.current?.()
   }, [revision])
+
+  React.useEffect(() => {
+    // Mounting has already built once, so only a change asks for another.
+    if (builtWith.current === rebuildKey) return
+    builtWith.current = rebuildKey
+    rebuild.current?.()
+  }, [rebuildKey])
 
   return (
     <div

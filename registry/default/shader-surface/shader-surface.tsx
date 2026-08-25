@@ -208,6 +208,7 @@ export function ShaderSurface({
         <RenderSurface<Scene, "webgl">
           contextType="webgl"
           setup={setup}
+          rebuildKey={variant}
           draw={draw}
           teardown={teardown}
           paused={paused}

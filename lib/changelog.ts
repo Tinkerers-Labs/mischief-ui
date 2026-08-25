@@ -9,12 +9,19 @@ export type Release = {
   title: string
   summary: string
   changes: readonly string[]
+  /**
+   * Slugs this release added. The home page points at the newest of them, so
+   * a release records what it shipped rather than a badge being hand-edited
+   * and forgotten -- which is how it came to say Data Table three releases on.
+   */
+  components?: readonly string[]
 }
 
 export const releases: readonly Release[] = [
   {
     version: "0.8.9",
     date: "2026-08-25",
+    components: ["voice-input", "connection-beam", "json-viewer", "marquee"],
     title: "Four more, and a registry that installs",
     summary:
       "Seventeen components could not be installed at all: a dependency on a sibling was written as a bare name, which sends the CLI to shadcn's registry looking for a component only this one has. Nothing here caught it, because a dependency that resolves to the wrong place still parses. The build now installs the registry into a throwaway project and looks at what lands.",
@@ -32,6 +39,7 @@ export const releases: readonly Release[] = [
   {
     version: "0.8.8",
     date: "2026-08-24",
+    components: ["data-table"],
     title: "Pointer-aware backdrops",
     summary:
       "The two field components were built to sit behind other content, and neither could ever have received a pointer event there. Both now follow the pointer on the window instead.",
@@ -70,3 +78,13 @@ export const releases: readonly Release[] = [
     ],
   },
 ]
+
+/** The newest component this project has actually released. */
+export function newestComponent() {
+  for (const release of releases) {
+    const slug = release.components?.[0]
+    if (slug) return { slug, version: release.version }
+  }
+
+  return undefined
+}
