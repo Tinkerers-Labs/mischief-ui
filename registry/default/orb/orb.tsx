@@ -96,7 +96,9 @@ export function Orb({
       const { state: mode, level: loudness } = live.current
       const cx = box.width / 2
       const cy = box.height / 2
-      const base = Math.min(box.width, box.height) * 0.34
+      // The glow has to finish inside the box. Reaching past the half width
+      // leaves it cut off square at the edges instead of fading out.
+      const half = Math.min(box.width, box.height) / 2
       const [r, g, b] = ink as SurfaceColor
       const rgb = `${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}`
       const t = time * PACE[mode]
@@ -107,32 +109,46 @@ export function Orb({
           ? Math.min(Math.max(loudness, 0), 1) * 0.28
           : 0
 
-      const halo = context.createRadialGradient(
-        cx,
-        cy,
-        base * 0.2,
-        cx,
-        cy,
-        base * 1.9
+      // Idle is the resting state, so it sits smaller and dimmer rather than
+      // being the same orb moved slowly.
+      const calm = mode === "idle" ? 0.78 : 1
+      const breath = rings.reduce(
+        (sum, ring) => sum + Math.sin(t * ring.speed + ring.phase) * 0.02,
+        0
       )
-      halo.addColorStop(0, `rgba(${rgb}, 0.28)`)
+      const radius = half * 0.46 * calm * (1 + breath + push)
+
+      const halo = context.createRadialGradient(cx, cy, radius, cx, cy, half)
+      halo.addColorStop(0, `rgba(${rgb}, ${0.26 * calm})`)
+      halo.addColorStop(0.5, `rgba(${rgb}, ${0.08 * calm})`)
       halo.addColorStop(1, `rgba(${rgb}, 0)`)
       context.fillStyle = halo
       context.fillRect(0, 0, box.width, box.height)
 
-      for (const ring of rings) {
-        const wobble = Math.sin(t * ring.speed + ring.phase) * 0.06
-        const radius = base * (1 + wobble + push) * ring.weight
+      // Lit from above and to the left, which is what makes a filled circle
+      // read as a sphere rather than a disc.
+      const shade = (amount: number) =>
+        `${Math.round(Math.min(255, r * 255 * amount))}, ${Math.round(
+          Math.min(255, g * 255 * amount)
+        )}, ${Math.round(Math.min(255, b * 255 * amount))}`
 
-        context.beginPath()
-        context.arc(cx, cy, Math.max(radius, 1), 0, Math.PI * 2)
-        context.fillStyle = `rgba(${rgb}, ${0.16 * ring.weight + push * 0.3})`
-        context.fill()
-      }
+      const body = context.createRadialGradient(
+        cx - radius * 0.34,
+        cy - radius * 0.34,
+        radius * 0.08,
+        cx,
+        cy,
+        radius
+      )
+      body.addColorStop(0, `rgba(${shade(1.32)}, 1)`)
+      body.addColorStop(0.45, `rgba(${rgb}, 1)`)
+      body.addColorStop(0.88, `rgba(${shade(0.82)}, 1)`)
+      // The last stop feathers the rim, so the edge is not a hard cut.
+      body.addColorStop(1, `rgba(${shade(0.78)}, 0)`)
 
+      context.fillStyle = body
       context.beginPath()
-      context.arc(cx, cy, base * (0.52 + push * 0.5), 0, Math.PI * 2)
-      context.fillStyle = `rgba(${rgb}, 0.9)`
+      context.arc(cx, cy, radius, 0, Math.PI * 2)
       context.fill()
     },
     [ink]
