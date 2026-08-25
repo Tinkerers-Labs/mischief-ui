@@ -5,6 +5,8 @@ import { Check } from "lucide-react"
 import { InterfacesIndex } from "@/components/interfaces-index"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
+import { AuroraField } from "@/registry/default/aurora-field/aurora-field"
+import { GrainOverlay } from "@/registry/default/grain-overlay/grain-overlay"
 import { componentDocs } from "@/lib/component-docs"
 import { componentFor, interfaceSections } from "@/lib/interface-rules"
 import { siteConfig } from "@/site.config"
@@ -26,15 +28,39 @@ export default function InterfacesPage() {
     <>
       <SiteHeader />
 
-      <main className="interfaces-page">
-        <p className="eyebrow">Interfaces</p>
-        <h1>Interface guidelines</h1>
-        <p className="brand-lead">
-          A list of details that make an interface good, kept as we learn them.
-        </p>
+      {/* The page opens on two of the components it argues about, quietly:
+          a field that reads the theme, and grain over it. */}
+      <section className="interfaces-hero">
+        <div aria-hidden="true" className="interfaces-hero-scene">
+          <AuroraField
+            className="absolute inset-0"
+            blobs={4}
+            speed={0.35}
+            spread={0.7}
+          />
+          <GrainOverlay opacity={0.15} />
+          <div className="interfaces-hero-fade" />
+        </div>
 
-        {interfaceSections.map((section) => (
-          <section className="docs-section" key={section.id} id={section.id}>
+        <div className="interfaces-hero-inner">
+          <p className="eyebrow">Interfaces</p>
+          <h1>Interface guidelines</h1>
+          <p className="brand-lead">
+            A list of details that make an interface good, kept as we learn
+            them.
+          </p>
+        </div>
+      </section>
+
+      <main className="interfaces-page">
+        {interfaceSections.map((section, at) => (
+          <section
+            className={
+              at === 0 ? "docs-section docs-section-first" : "docs-section"
+            }
+            key={section.id}
+            id={section.id}
+          >
             <h2>
               {section.title}
               <span className="docs-family-count">{section.rules.length}</span>

@@ -1040,7 +1040,7 @@ a:focus-visible {
 }
 
 .brand-page h1,
-.interfaces-page h1 {
+.interfaces-hero-inner h1 {
   font-family: var(--font-display), sans-serif;
   font-size: clamp(3rem, 7vw, 6rem);
   font-weight: 650;
@@ -1160,14 +1160,55 @@ a:focus-visible {
   color: var(--primary);
 }
 
+.interfaces-hero {
+  border-bottom: 1px solid var(--border);
+  isolation: isolate;
+  overflow: hidden;
+  position: relative;
+}
+
+.interfaces-hero-scene {
+  inset: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+/* The colour is strongest at the top and gone by the text, so the band reads
+   as light on the page rather than a panel behind the words. */
+.interfaces-hero-fade {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in oklch, var(--background) 55%, transparent) 45%,
+    color-mix(in oklch, var(--background) 88%, transparent) 78%,
+    var(--background) 100%
+  );
+  inset: 0;
+  position: absolute;
+}
+
+.interfaces-hero-inner {
+  margin: 0 auto;
+  max-width: 52rem;
+  padding: clamp(3.5rem, 7vw, 6rem) clamp(1.25rem, 6vw, 5rem)
+    clamp(2.5rem, 5vw, 4rem);
+}
+
+.interfaces-hero-inner h1 {
+  max-width: 14ch;
+}
+
 .interfaces-page {
   margin: 0 auto;
   max-width: 52rem;
-  padding: clamp(4rem, 8vw, 7rem) clamp(1.25rem, 6vw, 5rem) 8rem;
+  padding: 0 clamp(1.25rem, 6vw, 5rem) 8rem;
 }
 
-.interfaces-page h1 {
-  max-width: 14ch;
+/* The band above already drew that line. */
+.interfaces-page .docs-section-first {
+  border-top: 0;
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  padding-top: 0;
 }
 
 .rule-list {
