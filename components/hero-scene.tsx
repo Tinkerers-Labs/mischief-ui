@@ -75,7 +75,14 @@ const backdrops: Backdrop[] = [
     id: "aurora",
     label: "Aurora",
     slug: "aurora-field",
-    render: () => <AuroraField className="absolute inset-0" blobs={6} />,
+    render: () => (
+      <AuroraField
+        className="absolute inset-0"
+        blobs={7}
+        spread={0.3}
+        opacity={0.95}
+      />
+    ),
   },
 ]
 
