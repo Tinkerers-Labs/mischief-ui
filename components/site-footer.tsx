@@ -61,7 +61,7 @@ const columns: FooterColumn[] = [
 export function SiteFooter() {
   return (
     <SignatureFooter
-      className="mt-16 [--background:var(--brand-paper)] [--foreground:var(--brand-ink)] [&_[data-slot=signature-footer-heading]]:font-[family-name:var(--font-display)] [&_[data-slot=signature-footer-wordmark]]:font-[family-name:var(--font-display)]"
+      className="mt-16 [--background:var(--brand-paper)] [--foreground:var(--brand-ink)] [&_[data-slot=footer-columns]_ul]:gap-0.5 [&_[data-slot=signature-footer-heading]]:font-[family-name:var(--font-display)] [&_[data-slot=signature-footer-wordmark]]:font-[family-name:var(--font-display)]"
       eyebrow={siteConfig.tagline}
       heading={
         <>
@@ -82,7 +82,10 @@ export function SiteFooter() {
       columns={columns}
       renderLink={({ href, label, external }) => {
         const className =
-          "hover:text-primary inline-flex min-h-11 items-center gap-2.5 text-sm font-medium text-[color-mix(in_oklab,currentColor_70%,transparent)] no-underline transition-colors duration-150 motion-reduce:transition-none"
+          // 44px is the touch minimum and it is the row pitch too, which with
+          // eleven families made the footer taller than the page. A fine
+          // pointer gets the 32px target the guidelines allow it instead.
+          "hover:text-primary inline-flex min-h-11 items-center gap-2.5 text-sm font-medium text-[color-mix(in_oklab,currentColor_70%,transparent)] no-underline transition-colors duration-150 pointer-fine:min-h-8 motion-reduce:transition-none"
 
         return external ? (
           <ExternalLink className={className} href={href}>
