@@ -44,8 +44,11 @@ describe("what the entry promises about us", () => {
     expect(resolved).toBe(`${siteConfig.url}r/${slug}.json`)
   })
 
-  it("counts the components it actually has", () => {
-    expect(entry.description).toContain(`${componentDocs.length} `)
+  it("puts no number in a sentence it cannot come back and change", () => {
+    // The entry is copied into shadcn's repository. A count there is right on
+    // the day it is written and wrong afterwards: the first one said
+    // ninety-four and was stale within a day.
+    expect(entry.description).not.toMatch(/\d/)
   })
 
   it("draws the logo in the directory's colour, not ours", () => {

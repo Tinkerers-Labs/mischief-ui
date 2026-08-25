@@ -1,7 +1,6 @@
 import { readFileSync } from "node:fs"
 import path from "node:path"
 
-import { componentDocs } from "@/lib/component-docs"
 import { siteConfig } from "@/site.config"
 
 /**
@@ -47,7 +46,10 @@ export function directoryEntry(): DirectoryEntry {
     name: siteConfig.registry.namespace,
     homepage: siteConfig.url.replace(/\/$/, ""),
     url: siteConfig.registry.url,
-    description: `${componentDocs.length} playful, accessible React components for shadcn projects: an agent's chat surface, document viewers, a data table, and WebGL backdrops that read their colours from your theme.`,
+    // No count. This text is copied into somebody else's repository, where it
+    // cannot be regenerated: the entry opened at ninety-four was stale within
+    // a day of being written.
+    description: `Playful, accessible React components for shadcn projects: an agent's chat surface, document viewers, a data table, and WebGL backdrops that read their colours from your theme.`,
     logo: markSvg(),
   }
 }
