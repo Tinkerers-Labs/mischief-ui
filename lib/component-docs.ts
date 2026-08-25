@@ -436,6 +436,7 @@ formatValue={(value) => \`\${(value / 100).toFixed(2)} s\`}`,
   },
   {
     slug: "floating-index",
+    featured: true,
     kind: "component",
     name: "Floating Index",
     family: "Wayfinding",
@@ -571,7 +572,6 @@ export function PageIndex() {
   },
   {
     slug: "command-palette",
-    featured: true,
     kind: "component",
     name: "Command Palette",
     family: "Wayfinding",

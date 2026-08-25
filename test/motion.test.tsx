@@ -26,11 +26,27 @@ describe("SplitText", () => {
     const root = container.querySelector("[data-slot='split-text']")!
     expect(root).toHaveAttribute("aria-label", line)
 
-    const pieces = root.querySelectorAll("span")
-    expect(pieces.length).toBe(line.length)
+    expect(root).toHaveTextContent(line)
 
-    for (const piece of pieces) {
-      expect(piece).toHaveAttribute("aria-hidden", "true")
+    // Every piece sits behind an aria-hidden ancestor, so the label is read
+    // once instead of the letters one at a time.
+    for (const piece of root.querySelectorAll("span")) {
+      expect(piece.closest("[aria-hidden='true']")).not.toBeNull()
+    }
+  })
+
+  it("only lets a line break between words", () => {
+    const { container } = render(
+      <SplitText trigger="mount">Good interfaces</SplitText>
+    )
+
+    const root = container.querySelector("[data-slot='split-text']")!
+    const words = root.querySelectorAll(":scope > span")
+
+    // "Good", the space it may break on, and "interfaces".
+    expect(words).toHaveLength(3)
+    for (const word of words) {
+      expect(word.className).toContain("whitespace-nowrap")
     }
   })
 

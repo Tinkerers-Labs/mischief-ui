@@ -36,6 +36,32 @@ function pieces(text: string, by: SplitBy) {
   return Array.from(text)
 }
 
+type Piece = { part: string; index: number }
+
+/**
+ * A line may only break between words. Every piece is its own inline-block,
+ * which the browser is otherwise free to break between, so splitting by
+ * character would let it cut "deserve" into "des" and "erve".
+ */
+function runs(parts: string[]): Piece[][] {
+  const out: Piece[][] = []
+  let word: Piece[] = []
+
+  parts.forEach((part, index) => {
+    if (part.trim() === "") {
+      if (word.length) out.push(word)
+      out.push([{ part, index }])
+      word = []
+      return
+    }
+
+    word.push({ part, index })
+  })
+
+  if (word.length) out.push(word)
+  return out
+}
+
 /**
  * Animates a string one character, word, or line at a time. The whole string
  * is carried on the element as its label, so it is announced once as ordinary
@@ -96,29 +122,36 @@ export function SplitText({
       className={cn("inline-block", className)}
       {...rootProps}
     >
-      {parts.map((part, index) => {
-        const blank = part.trim() === ""
+      {runs(parts).map((word, at) => (
+        <span
+          key={`word-${at}`}
+          aria-hidden="true"
+          className="inline-block whitespace-nowrap"
+        >
+          {word.map(({ part, index }) => {
+            const blank = part.trim() === ""
 
-        return (
-          <span
-            key={`${part}-${index}`}
-            aria-hidden="true"
-            className={cn(
-              "inline-block whitespace-pre transition-[opacity,translate,scale,filter] ease-out",
-              "motion-reduce:translate-none motion-reduce:scale-100 motion-reduce:opacity-100 motion-reduce:blur-none motion-reduce:transition-none",
-              shown || blank
-                ? "translate-none scale-100 opacity-100 blur-none"
-                : RESTING[animation]
-            )}
-            style={{
-              transitionDelay: `${delay + index * stagger}ms`,
-              transitionDuration: `${duration}ms`,
-            }}
-          >
-            {by === "line" && index < parts.length - 1 ? `${part}\n` : part}
-          </span>
-        )
-      })}
+            return (
+              <span
+                key={`${part}-${index}`}
+                className={cn(
+                  "inline-block whitespace-pre transition-[opacity,translate,scale,filter] ease-out",
+                  "motion-reduce:translate-none motion-reduce:scale-100 motion-reduce:opacity-100 motion-reduce:blur-none motion-reduce:transition-none",
+                  shown || blank
+                    ? "translate-none scale-100 opacity-100 blur-none"
+                    : RESTING[animation]
+                )}
+                style={{
+                  transitionDelay: `${delay + index * stagger}ms`,
+                  transitionDuration: `${duration}ms`,
+                }}
+              >
+                {by === "line" && index < parts.length - 1 ? `${part}\n` : part}
+              </span>
+            )
+          })}
+        </span>
+      ))}
     </Component>
   )
 }

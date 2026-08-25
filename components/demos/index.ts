@@ -300,7 +300,7 @@ export const componentDemos: Record<string, ComponentDemo> = {
   "split-text": {
     Demo: SplitTextDemo,
     frameClassName: "p-6 md:p-10",
-    tileClassName: "lg:col-span-6",
+    tileClassName: "lg:col-span-4",
   },
   "number-ticker": {
     Demo: NumberTickerDemo,
@@ -330,7 +330,7 @@ export const componentDemos: Record<string, ComponentDemo> = {
   "wireframe-globe": {
     Demo: WireframeGlobeDemo,
     frameClassName: "p-6 md:p-10",
-    tileClassName: "lg:col-span-12",
+    tileClassName: "lg:col-span-6",
   },
   "presence-field": {
     Demo: PresenceFieldDemo,
@@ -414,12 +414,12 @@ export const componentDemos: Record<string, ComponentDemo> = {
   orb: {
     Demo: OrbDemo,
     frameClassName: "p-8 md:p-12",
-    tileClassName: "lg:col-span-6",
+    tileClassName: "lg:col-span-4",
   },
   matrix: {
     Demo: MatrixDemo,
     frameClassName: "p-6 md:p-10",
-    tileClassName: "lg:col-span-6",
+    tileClassName: "lg:col-span-4",
   },
   response: { Demo: ResponseDemo, frameClassName: "p-6 md:p-10" },
   "transcript-viewer": {

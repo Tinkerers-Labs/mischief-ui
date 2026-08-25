@@ -28,6 +28,7 @@ export function Conversation({
   const viewportRef = React.useRef<HTMLDivElement>(null)
   const contentRef = React.useRef<HTMLDivElement>(null)
   const [following, setFollowing] = React.useState(stickToBottom)
+  const [above, setAbove] = React.useState(false)
 
   const report = React.useRef(onFollowChange)
   React.useEffect(() => {
@@ -55,9 +56,12 @@ export function Conversation({
   // from a scroll event or a resize, never during render.
   React.useEffect(() => {
     const viewport = viewportRef.current
-    if (!viewport || !stickToBottom) return
+    if (!viewport) return
 
     const onScroll = () => {
+      setAbove(viewport.scrollTop > 1)
+      if (!stickToBottom) return
+
       const next = atBottom()
       setFollowing((current) => {
         if (current === next) return current
@@ -107,6 +111,17 @@ export function Conversation({
           {children}
         </div>
       </div>
+
+      {/* A thread scrolled down cuts its top line in half, which reads as a
+          rendering fault rather than as there being more above it. */}
+      <div
+        aria-hidden="true"
+        data-slot="conversation-fade"
+        className={cn(
+          "from-background pointer-events-none absolute inset-x-0 top-0 h-8 rounded-t-[inherit] bg-gradient-to-b to-transparent transition-opacity duration-150 motion-reduce:transition-none",
+          above ? "opacity-100" : "opacity-0"
+        )}
+      />
 
       {showJumpButton && stickToBottom ? (
         <button
