@@ -485,6 +485,29 @@ export function PageIndex() {
         ],
       },
       {
+        id: "placement",
+        title: "Where it sits",
+        blocks: [
+          {
+            kind: "text",
+            text: "It floats at the top of the viewport, centred, which suits a page whose header scrolls away. Anywhere else is the position prop rather than a set of utilities cancelling the default one at a time.",
+          },
+          {
+            kind: "code",
+            code: `<FloatingIndex
+  items={sections}
+  position="bottom-right"
+  label="On this page"
+/>`,
+            caption: "The corners are top, bottom, and the four of them named.",
+          },
+          {
+            kind: "text",
+            text: "Bottom right is where a back-to-top control usually lives, so check they are not stacked on each other before choosing it. className still wins for anything the prop does not cover, such as the width.",
+          },
+        ],
+      },
+      {
         id: "progress",
         title: "The ring",
         blocks: [
@@ -520,6 +543,11 @@ export function PageIndex() {
         "showActiveLabel",
         "boolean",
         "Once past the top, the toggle says which section the reader is in rather than repeating the label. Defaults to true.",
+      ],
+      [
+        "position",
+        '"top" | "bottom" | "top-left" | "top-right" | "bottom-left" | "bottom-right"',
+        'Which corner it floats in. Defaults to "top", centred.',
       ],
       ["activeId", "string", "The active section when controlled."],
       ["defaultActiveId", "string", "The initial active section."],

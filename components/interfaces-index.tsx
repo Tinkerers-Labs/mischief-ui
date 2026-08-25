@@ -10,10 +10,9 @@ export function InterfacesIndex({
 }) {
   return (
     <>
-      {/* Bottom left, the way the gallery places it, rather than over the
-          header where it sits by default. */}
       <FloatingIndex
-        className="top-auto bottom-6 left-6 w-64 translate-x-0"
+        className="w-64"
+        position="bottom-left"
         items={[...items]}
         label="On this page"
       />

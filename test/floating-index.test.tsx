@@ -150,6 +150,43 @@ describe("FloatingIndex", () => {
     )
   })
 
+  it("moves to a corner without the caller undoing the default", async () => {
+    const { rerender } = render(
+      <>
+        {sections()}
+        <FloatingIndex items={items} position="bottom-right" />
+      </>
+    )
+
+    const nav = screen.getByRole("navigation")
+    expect(nav.className).toContain("bottom-6")
+    expect(nav.className).toContain("right-6")
+    // The centring the default needs must not survive into a corner.
+    expect(nav.className).not.toContain("left-1/2")
+    expect(nav.className).not.toContain("-translate-x-1/2")
+
+    rerender(
+      <>
+        {sections()}
+        <FloatingIndex items={items} position="bottom-left" />
+      </>
+    )
+    expect(screen.getByRole("navigation").className).toContain("left-6")
+  })
+
+  it("floats at the top, centred, until told otherwise", () => {
+    render(
+      <>
+        {sections()}
+        <FloatingIndex items={items} />
+      </>
+    )
+
+    const nav = screen.getByRole("navigation")
+    expect(nav.className).toContain("top-6")
+    expect(nav.className).toContain("-translate-x-1/2")
+  })
+
   it("keeps the label throughout when asked to", async () => {
     render(
       <>

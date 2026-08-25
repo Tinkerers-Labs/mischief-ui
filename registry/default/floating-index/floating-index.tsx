@@ -5,6 +5,19 @@ import { ChevronDown } from "lucide-react"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 import { cn } from "@/lib/utils"
 
+export type FloatingIndexPosition =
+  "top" | "bottom" | "top-left" | "top-right" | "bottom-left" | "bottom-right"
+
+/** Where it sits. Anything else is a matter of className. */
+const POSITIONS: Record<FloatingIndexPosition, string> = {
+  top: "top-6 left-1/2 -translate-x-1/2",
+  bottom: "bottom-6 left-1/2 -translate-x-1/2",
+  "top-left": "top-6 left-6",
+  "top-right": "top-6 right-6",
+  "bottom-left": "bottom-6 left-6",
+  "bottom-right": "bottom-6 right-6",
+}
+
 export interface FloatingIndexItem {
   id: string
   label: string
@@ -22,6 +35,11 @@ export interface FloatingIndexProps extends Omit<
    * in rather than repeating the label. On by default.
    */
   showActiveLabel?: boolean
+  /**
+   * Which corner it floats in. Defaults to the top, centred. Moving it should
+   * not mean undoing the default's utilities one at a time.
+   */
+  position?: FloatingIndexPosition
   activeId?: string
   defaultActiveId?: string
   onActiveChange?: (id: string) => void
@@ -35,6 +53,7 @@ export const FloatingIndex = React.forwardRef<HTMLElement, FloatingIndexProps>(
       items,
       label = "Index",
       showActiveLabel = true,
+      position = "top",
       activeId: controlledActiveId,
       defaultActiveId,
       onActiveChange,
@@ -183,7 +202,8 @@ export const FloatingIndex = React.forwardRef<HTMLElement, FloatingIndexProps>(
         data-slot="floating-index"
         ref={forwardedRef}
         className={cn(
-          "bg-foreground text-background border-background/15 fixed top-6 left-1/2 z-50 w-48 max-w-[calc(100vw-2rem)] -translate-x-1/2 overflow-hidden rounded-2xl border shadow-lg transition-[width] duration-200 motion-reduce:transition-none",
+          "bg-foreground text-background border-background/15 fixed z-50 w-48 max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border shadow-lg transition-[width] duration-200 motion-reduce:transition-none",
+          POSITIONS[position],
           open && "w-72",
           className
         )}

@@ -12,7 +12,8 @@ const items = [
 export function GalleryIndex() {
   return (
     <FloatingIndex
-      className="top-auto bottom-6 left-6 w-64 translate-x-0"
+      className="w-64"
+      position="bottom-left"
       items={items}
       label="On this page"
     />
