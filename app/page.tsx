@@ -68,10 +68,9 @@ export default function Home() {
           <strong className="font-semibold">
             {componentDocs.length} accessible components
           </strong>{" "}
-          for shadcn projects. Sliders with a little give, a set for the things
-          an agent shows while it works, a data table you can live in, and
-          backdrops that take their colours from your theme rather than bringing
-          their own.
+          for shadcn projects. Sliders with a little give, a data table you can
+          live in, everything an agent shows while it works, and a microphone
+          that draws what it hears.
         </p>
 
         <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
