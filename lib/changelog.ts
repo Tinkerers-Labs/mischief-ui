@@ -13,6 +13,23 @@ export type Release = {
 
 export const releases: readonly Release[] = [
   {
+    version: "0.8.9",
+    date: "2026-08-25",
+    title: "Four more, and a registry that installs",
+    summary:
+      "Seventeen components could not be installed at all: a dependency on a sibling was written as a bare name, which sends the CLI to shadcn's registry looking for a component only this one has. Nothing here caught it, because a dependency that resolves to the wrong place still parses. The build now installs the registry into a throwaway project and looks at what lands.",
+    changes: [
+      "JSON Viewer reads a payload as a keyboard-navigable tree, and every row can hand you its path in the notation you would paste back into code.",
+      "Marquee runs a row seamlessly, and under reduced motion becomes an ordinary scrolling row rather than a frozen one with half its content out of reach.",
+      "Voice Input draws what the microphone is hearing, which is the difference between a live one and a muted one. It records and hands back a Blob; transcription is a service, not a component.",
+      "Connection Beam joins two elements with a line, measured from the elements themselves, so the diagram survives a reflow.",
+      "Floating Index cancelled its own navigation: the panel closed in the same tick the scroll started, and a smooth scroll does not survive that. It now closes once the scroll has landed.",
+      "Floating Index takes a position, so moving it out of the top no longer means undoing the default a utility at a time, and can say which section the reader is in.",
+      "Components that animate a keyframe by name now publish it, and this site defines it too. The file thumbnail's shimmer had never run on these pages.",
+      "Every component has a page for its family, and the guidelines this collection holds itself to are written down at /interfaces.",
+    ],
+  },
+  {
     version: "0.8.8",
     date: "2026-08-24",
     title: "Pointer-aware backdrops",
