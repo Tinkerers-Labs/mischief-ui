@@ -1,13 +1,9 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 
-import { ComponentCatalog } from "@/components/component-catalog"
-import { InstallCommand } from "@/registry/default/install-command/install-command"
-import { defaultPackageManager } from "@/lib/package-commands"
-import {
-  namespaceInstallCommand,
-  registryInstallArgs,
-  siteConfig,
-} from "@/site.config"
+import { DocsPager } from "@/components/docs-pager"
+import { componentDocs, componentFamilies } from "@/lib/component-docs"
+import { siteConfig } from "@/site.config"
 
 export const metadata: Metadata = {
   title: `Documentation | ${siteConfig.name}`,
@@ -27,77 +23,51 @@ export default function DocsPage() {
       </h1>
       <p className="docs-lead">
         {siteConfig.name} adds physical feedback and a little personality to
-        familiar controls. Every component is open source, theme-aware, and
-        usable with a keyboard, touch, pointer, or screen reader where
-        applicable.
+        familiar controls, and covers the rest of an app around them. Every
+        component is open source, theme-aware, and usable with a keyboard,
+        touch, pointer, or screen reader where applicable.
       </p>
 
       <section className="docs-section">
-        <h2>Choose how you install</h2>
+        <h2>Where to start</h2>
         <p>
-          The shadcn registry copies source into your project, which is the
-          recommended path. The npm package is useful when you want ordinary
-          dependency updates or a quick look at the exported API.
-        </p>
-        <InstallCommand
-          add={siteConfig.package.installArgs}
-          defaultManager={defaultPackageManager}
-          run={registryInstallArgs("magnetic-tabs")}
-        />
-        <p>
-          Installing from npm needs one more line. Tailwind does not scan{" "}
-          <code>node_modules</code>, so a package&rsquo;s utility classes are
-          never generated and components arrive unstyled. Point it at this one
-          in your CSS:
-        </p>
-        <pre>
-          <code>{`@import "tailwindcss";\n@source "../node_modules/mischief-ui";`}</code>
-        </pre>
-        <p>
-          The registry path copies source into your project, where it is scanned
-          already, so it needs nothing.
+          <Link className="detail-link" href="/docs/installation">
+            Installation
+          </Link>{" "}
+          covers both paths in and the namespace that shortens them.{" "}
+          <Link className="detail-link" href="/docs/components">
+            Components
+          </Link>{" "}
+          is all {componentDocs.length} of them, searchable. If you would rather
+          read what they are all held to, that is{" "}
+          <Link className="detail-link" href="/interfaces">
+            the guidelines
+          </Link>
+          .
         </p>
       </section>
 
       <section className="docs-section">
-        <h2>Adding several</h2>
+        <h2>
+          The families
+          <span className="docs-family-count">{componentFamilies.length}</span>
+        </h2>
         <p>
-          The command above names the repository every time, which is fine for
-          one component and tiresome for six. Register the namespace once in
-          your <code>components.json</code>:
+          Each one is a page of its own, and reads end to end rather than as a
+          list to search.
         </p>
-        <pre>
-          <code>{`{\n  "registries": {\n    "${siteConfig.registry.namespace}": "${siteConfig.registry.url}"\n  }\n}`}</code>
-        </pre>
-        <p>
-          Then every install is the short form, and the CLI resolves it against
-          the same files the long form uses:
-        </p>
-        <pre>
-          <code>{namespaceInstallCommand("data-table")}</code>
-        </pre>
-        <p>
-          Both paths fetch identical source. The namespace is an alias, not a
-          different distribution, so there is nothing to migrate if you start
-          with one and move to the other.
-        </p>
+        <div className="docs-component-list">
+          {componentFamilies.map((family) => (
+            <Link key={family.slug} href={`/docs/families/${family.slug}`}>
+              <span>{family.components.length}</span>
+              <strong>{family.name}</strong>
+              <p>{family.description}</p>
+            </Link>
+          ))}
+        </div>
       </section>
 
-      <ComponentCatalog />
-
-      <section className="docs-section">
-        <h2>Compatibility</h2>
-        <ul>
-          <li>React 18 and 19</li>
-          <li>Tailwind CSS 4</li>
-          <li>shadcn CLI 4</li>
-          <li>
-            Next.js, Vite, React Router, and other React projects supported by
-            shadcn
-          </li>
-          <li>Light and dark themes through semantic shadcn tokens</li>
-        </ul>
-      </section>
+      <DocsPager href="/docs" />
     </article>
   )
 }

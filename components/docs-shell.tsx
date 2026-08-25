@@ -5,6 +5,8 @@ import { ExternalLink } from "@/components/external-link"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { componentFamilies } from "@/lib/component-docs"
+import { docsSections } from "@/lib/docs-nav"
+import { DocsSidebarLink } from "@/components/docs-sidebar-link"
 import { siteConfig } from "@/site.config"
 
 export function DocsShell({ children }: { children: React.ReactNode }) {
@@ -13,8 +15,15 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
       <SiteHeader />
       <div className="docs-layout">
         <aside className="docs-sidebar">
-          <p className="sidebar-label">Start here</p>
-          <Link href={siteConfig.routes.docs}>Introduction</Link>
+          <p className="sidebar-label">Sections</p>
+          {docsSections.map((section) => (
+            <DocsSidebarLink key={section.href} href={section.href}>
+              {section.label}
+            </DocsSidebarLink>
+          ))}
+          <DocsSidebarLink href={siteConfig.routes.interfaces}>
+            Guidelines
+          </DocsSidebarLink>
           {componentFamilies.map((family) => (
             <Fragment key={family.name}>
               <p className="sidebar-label">{family.name}</p>
@@ -23,12 +32,12 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
               {[...family.components]
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map((component) => (
-                  <Link
+                  <DocsSidebarLink
                     key={component.slug}
                     href={`/docs/components/${component.slug}`}
                   >
                     {component.name}
-                  </Link>
+                  </DocsSidebarLink>
                 ))}
             </Fragment>
           ))}

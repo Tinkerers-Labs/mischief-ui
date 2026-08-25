@@ -1160,6 +1160,64 @@ a:focus-visible {
   color: var(--primary);
 }
 
+.docs-sidebar a[aria-current="page"] {
+  color: var(--foreground);
+  font-weight: 650;
+}
+
+.docs-pager {
+  border-top: 1px solid var(--border);
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+}
+
+.docs-pager-link {
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 0.15rem);
+  color: inherit;
+  display: inline-flex;
+  gap: 0.6rem;
+  min-height: 3.5rem;
+  padding: 0 1rem;
+  text-decoration: none;
+}
+
+.docs-pager-next {
+  flex-direction: row;
+  grid-column: 2;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.docs-pager-link:hover {
+  border-color: var(--foreground);
+}
+
+.docs-pager-link > span {
+  display: grid;
+  font-weight: 650;
+}
+
+.docs-pager-eyebrow {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .docs-pager {
+    grid-template-columns: 1fr;
+  }
+
+  .docs-pager-next {
+    grid-column: 1;
+  }
+}
+
 .interfaces-hero {
   border-bottom: 1px solid var(--border);
   isolation: isolate;

@@ -6,7 +6,16 @@ import { siteConfig } from "@/site.config"
 export const dynamic = "force-static"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages = ["", "docs/", "interfaces/", "changelog/", "brand/", "license/"]
+  const pages = [
+    "",
+    "docs/",
+    "docs/installation/",
+    "docs/components/",
+    "interfaces/",
+    "changelog/",
+    "brand/",
+    "license/",
+  ]
   const componentPages = componentDocs.map(
     ({ slug }) => `docs/components/${slug}/`
   )
