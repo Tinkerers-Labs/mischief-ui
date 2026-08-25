@@ -5458,6 +5458,305 @@ return (
       "The list is a native select, so it works with a keyboard and reads out as a list of options without any ARIA. The test button is a real toggle with aria-pressed and a name that says which way it will go. Every state, including a refused permission and a browser that cannot enumerate at all, is announced through a polite live region and written on the element as data-status. The meter is decoration: it is hidden from assistive technology, and the same information is in the message beside it.",
   },
   {
+    slug: "chain-of-thought",
+    kind: "component",
+    name: "Chain of Thought",
+    family: "Agent UI",
+    summary:
+      "The steps an assistant took before answering, open while it is working and folded away once it is done.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("chain-of-thought"),
+    npmImport: packageImport("ChainOfThought", "chain-of-thought"),
+    usage: `export function Answer({ steps, running }) {
+  return <ChainOfThought thoughts={steps} thinking={running} />
+}`,
+    sections: [
+      {
+        id: "not-announced",
+        title: "The trace is never announced",
+        blocks: [
+          {
+            kind: "text",
+            text: "Reasoning arrives a token at a time. Put it in a live region and a screen reader reads every revision of every half-finished step, over the top of the answer the person actually asked for. It is the loudest possible way to be helpful.",
+          },
+          {
+            kind: "text",
+            text: "So the steps are ordinary text, reachable on purpose, and the only thing announced is the summary line: working on it, then thought for four seconds. Each step's status is in its accessible name rather than in the colour of a dot.",
+          },
+        ],
+      },
+      {
+        id: "opening",
+        title: "It opens and closes itself, once",
+        blocks: [
+          {
+            kind: "text",
+            text: "Open while thinking and folded away when the answer arrives is right, because the reasoning is interesting while there is nothing else to look at and clutter afterwards.",
+          },
+          {
+            kind: "text",
+            text: "It stops deciding the moment someone touches it. Collapsing a trace under a reader who opened it to read is the rudest thing this component could do, so the first click hands control over for good.",
+          },
+          {
+            kind: "code",
+            code: `<ChainOfThought thoughts={steps} open={open} onOpenChange={setOpen} />`,
+            caption: "Or hold it yourself, and it never decides at all.",
+          },
+        ],
+      },
+      {
+        id: "statuses",
+        title: "What a step can be",
+        blocks: [
+          {
+            kind: "table",
+            headers: ["Status", "What it means"],
+            rows: [
+              ["pending", "Planned, not started"],
+              ["active", "Running now"],
+              ["done", "Finished, and how long it took"],
+              ["failed", "Tried and did not work"],
+            ],
+          },
+          {
+            kind: "text",
+            text: "A step with no status is done. Each one is also written on its element as data-status, so a thread can style around it without lifting the state.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "Thought",
+        rows: [
+          ["id", "string", "Unique within the trace."],
+          ["label", "string", "The step, short enough to read in one breath."],
+          ["detail", "ReactNode", "What it found, under the label."],
+          [
+            "status",
+            '"pending" | "active" | "done" | "failed"',
+            "Defaults to done.",
+          ],
+          ["duration", "number", "Seconds this step took."],
+        ],
+      },
+    ],
+    props: [
+      ["thoughts", "readonly Thought[]", "The steps, in the order they ran."],
+      [
+        "thinking",
+        "boolean",
+        "Still working. The trace opens itself while this is true.",
+      ],
+      ["open", "boolean", "Hold the disclosure yourself."],
+      ["defaultOpen", "boolean", "Start open, and never decide again."],
+      [
+        "onOpenChange",
+        "(open: boolean) => void",
+        "Someone opened or closed it.",
+      ],
+      [
+        "...rootProps",
+        "HTMLAttributes<HTMLDivElement>",
+        "Native root attributes.",
+      ],
+    ],
+    accessibility:
+      "The disclosure is a button carrying aria-expanded, so the trace can be opened from a keyboard and its state is read out. Only the summary is in a polite live region: streaming reasoning is deliberately kept out of one, because announcing every token would talk over the answer. A step's status reaches a screen reader as words in its accessible name rather than as the colour of its marker, and the summary stops pulsing when reduced motion is preferred.",
+  },
+  {
+    slug: "web-preview",
+    kind: "component",
+    name: "Web Preview",
+    family: "Code",
+    summary:
+      "A sandboxed frame for whatever the assistant just built, with the widths to check it at.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("web-preview"),
+    npmImport: packageImport("WebPreview", "web-preview"),
+    usage: `export function Result({ url }) {
+  return <WebPreview src={url} title="The page the agent built" />
+}`,
+    sections: [
+      {
+        id: "sandbox",
+        title: "The sandbox is most of the component",
+        blocks: [
+          {
+            kind: "text",
+            text: "Generated code goes in a frame because it cannot be trusted, and the default here is scripts, forms, popups and modals. What it deliberately leaves out is allow-same-origin.",
+          },
+          {
+            kind: "text",
+            text: "Granting allow-scripts and allow-same-origin together undoes the sandbox completely: the framed page shares your origin, so its script can reach the frame element in the parent document and rewrite the sandbox attribute it is meant to be held by. Widen this only for content you wrote.",
+          },
+          {
+            kind: "text",
+            text: "The cost of leaving it out is that the frame has no origin at all, so a request from inside it arrives without one: fonts served from your own domain fail CORS, cookies do not travel, and storage is empty. A preview looking slightly wrong in the typeface is the sandbox working.",
+          },
+          {
+            kind: "code",
+            code: `<WebPreview
+  src={url}
+  title="The page the agent built"
+  sandbox="allow-scripts allow-forms"
+/>`,
+            caption: "Narrower is always available. Wider needs a reason.",
+          },
+        ],
+      },
+      {
+        id: "address",
+        title: "The address is what you asked for",
+        blocks: [
+          {
+            kind: "text",
+            text: "It is not where the frame ended up. A page on another origin will not tell you its own location, and reading it throws, so the bar shows the address that was requested and stops making promises after that.",
+          },
+          {
+            kind: "text",
+            text: "Reload works by mounting the frame again rather than by calling into it, for the same reason. The link out is a real anchor to the same address, so it can be middle-clicked and copied like any other.",
+          },
+        ],
+      },
+      {
+        id: "widths",
+        title: "Widths, scaled rather than cut off",
+        blocks: [
+          {
+            kind: "text",
+            text: "A phone width inside a panel narrower than a phone is scaled down, not clipped. The page inside still believes it has 390 pixels, which is the only way the media queries it was built with actually run.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "PreviewSize",
+        rows: [
+          ["id", "string", "Unique within the set."],
+          ["label", "string", "Shown on the button."],
+          ["width", "number", "Pixels. Zero fills the panel."],
+        ],
+      },
+    ],
+    props: [
+      ["src", "string", "What to show."],
+      [
+        "title",
+        "string",
+        "Names the frame. Required: an unnamed frame is announced as nothing else.",
+      ],
+      [
+        "sizes",
+        "readonly PreviewSize[]",
+        "Widths to offer. Phone, tablet, full.",
+      ],
+      ["defaultSize", "string", "Which width to open at."],
+      ["editable", "boolean", "Let someone type a different address."],
+      ["onNavigate", "(src: string) => void", "A new address was entered."],
+      [
+        "sandbox",
+        "string",
+        "Replaces the default. Read the note before widening it.",
+      ],
+      ["height", "number", "Pixels. Defaults to 420."],
+      [
+        "...rootProps",
+        "HTMLAttributes<HTMLDivElement>",
+        "Native root attributes.",
+      ],
+    ],
+    accessibility:
+      'The frame carries a required title, because one without a name is announced as "frame" and nothing more. The address is a labelled input rather than styled text, so it can be focused, read and copied, and it is read-only until editing is turned on. Width choices are a labelled group of toggles carrying aria-pressed. The link out says where it goes and that it opens in a new tab. Every control is at least 32px with a visible focus ring.',
+  },
+  {
+    slug: "video-player",
+    kind: "component",
+    name: "Video Player",
+    family: "Agent UI",
+    summary:
+      "Video with captions that can be turned on, a real scrubber, and controls that survive full screen.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("video-player"),
+    npmImport: packageImport("VideoPlayer", "video-player"),
+    usage: `export function Recording({ src, captions }) {
+  return <VideoPlayer src={src} label="the walkthrough" tracks={captions} />
+}`,
+    sections: [
+      {
+        id: "captions",
+        title: "Captions are a track, not a transcript",
+        blocks: [
+          {
+            kind: "text",
+            text: "A caption belongs to a moment in the video, which is what WebVTT and the track element already express. Rendering your own list of lines beside the picture is a different thing, useful for reading and useless for watching.",
+          },
+          {
+            kind: "code",
+            code: `<VideoPlayer
+  src="/walkthrough.mp4"
+  label="the walkthrough"
+  tracks={[{ src: "/walkthrough.vtt", srcLang: "en", label: "English", default: true }]}
+/>`,
+          },
+          {
+            kind: "text",
+            text: "Taking the browser's controls away takes its caption menu with them, so the track mode is set here by hand. The browser still draws the cues over the picture once a track is showing, which is why the toggle is three lines rather than a caption renderer.",
+          },
+        ],
+      },
+      {
+        id: "controls",
+        title: "Owning the controls means owning all of them",
+        blocks: [
+          {
+            kind: "text",
+            text: "Play, mute, speed, captions and full screen are each a real button with a name that says which way it will go, and the pressed ones carry aria-pressed. Seeking is a range input, so arrow keys, Home and End work and the position is announced as a time rather than a count of seconds.",
+          },
+          {
+            kind: "text",
+            text: "Full screen is requested on the whole component rather than on the video, so the controls come along instead of being replaced by the browser's own.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "VideoTrack",
+        rows: [
+          ["src", "string", "The WebVTT file."],
+          ["srcLang", "string", 'A BCP 47 tag, such as "en".'],
+          ["label", "string", "How the track is named to a reader."],
+          [
+            "kind",
+            '"captions" | "subtitles"',
+            "Captions carry sound, subtitles carry speech. Defaults to captions.",
+          ],
+          ["default", "boolean", "Start with this one showing."],
+        ],
+      },
+    ],
+    props: [
+      ["src", "string", "The video."],
+      ["label", "string", "Names the video in every control's label."],
+      ["poster", "string", "Shown before playback starts."],
+      ["tracks", "readonly VideoTrack[]", "Caption and subtitle tracks."],
+      [
+        "rates",
+        "readonly number[]",
+        "Speeds the button cycles through. Defaults to 1, 1.5 and 2.",
+      ],
+      [
+        "...rootProps",
+        "HTMLAttributes<HTMLDivElement>",
+        "Native root attributes.",
+      ],
+    ],
+    accessibility:
+      "The video carries an accessible name, and every control is a button whose name says the action it will take rather than the state it is in. Toggles carry aria-pressed. Seeking is a native range input announced as a position in minutes and seconds, so it works from a keyboard. Captions are real tracks, which means the browser draws them, the reader can style them in their own settings, and a deaf viewer gets them without a transcript being bolted on beside the picture. Full screen is entered on the component so the controls remain.",
+  },
+  {
     slug: "stop-generating",
     kind: "component",
     name: "Stop Generating",

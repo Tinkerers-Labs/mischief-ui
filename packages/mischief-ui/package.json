@@ -280,6 +280,21 @@
       "import": "./dist/mic-selector.js",
       "require": "./dist/mic-selector.cjs"
     },
+    "./chain-of-thought": {
+      "types": "./dist/chain-of-thought.d.ts",
+      "import": "./dist/chain-of-thought.js",
+      "require": "./dist/chain-of-thought.cjs"
+    },
+    "./web-preview": {
+      "types": "./dist/web-preview.d.ts",
+      "import": "./dist/web-preview.js",
+      "require": "./dist/web-preview.cjs"
+    },
+    "./video-player": {
+      "types": "./dist/video-player.d.ts",
+      "import": "./dist/video-player.js",
+      "require": "./dist/video-player.cjs"
+    },
     "./token-meter": {
       "types": "./dist/token-meter.d.ts",
       "import": "./dist/token-meter.js",

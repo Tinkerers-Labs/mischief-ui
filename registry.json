@@ -785,6 +785,51 @@
       "registryDependencies": ["utils"]
     },
     {
+      "name": "chain-of-thought",
+      "type": "registry:ui",
+      "title": "Chain of Thought",
+      "description": "The steps an assistant took before answering, open while it works and folded away after.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/chain-of-thought/chain-of-thought.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "chat", "reasoning", "feedback"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "web-preview",
+      "type": "registry:ui",
+      "title": "Web Preview",
+      "description": "A sandboxed frame for whatever the agent just built, with the widths to check it at.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/web-preview/web-preview.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "code", "preview", "iframe"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "video-player",
+      "type": "registry:ui",
+      "title": "Video Player",
+      "description": "Video with real captions, a keyboard-operable scrubber, and controls that survive full screen.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/video-player/video-player.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "media", "video", "player"],
+      "registryDependencies": ["utils"]
+    },
+    {
       "name": "stop-generating",
       "type": "registry:ui",
       "title": "Stop Generating",
@@ -1741,6 +1786,21 @@
         }
       ],
       "registryDependencies": ["https://ui.tinkererslabs.com/r/burst.json"]
+    },
+    {
+      "name": "chain-of-thought-demo",
+      "type": "registry:example",
+      "title": "Chain of Thought Demo",
+      "description": "A worked example of Chain of Thought: The steps an assistant took before answering, open while it is working and folded away once it is done.",
+      "files": [
+        {
+          "path": "components/demos/chain-of-thought-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/chain-of-thought.json"
+      ]
     },
     {
       "name": "code-block-demo",
@@ -3145,6 +3205,25 @@
       "registryDependencies": ["https://ui.tinkererslabs.com/r/tool-call.json"]
     },
     {
+      "name": "video-player-demo",
+      "type": "registry:example",
+      "title": "Video Player Demo",
+      "description": "A worked example of Video Player: Video with captions that can be turned on, a real scrubber, and controls that survive full screen.",
+      "files": [
+        {
+          "path": "components/demos/video-player-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/audio-fixtures.ts",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/video-player.json"
+      ]
+    },
+    {
       "name": "voice-input-demo",
       "type": "registry:example",
       "title": "Voice Input Demo",
@@ -3157,6 +3236,21 @@
       ],
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/voice-input.json"
+      ]
+    },
+    {
+      "name": "web-preview-demo",
+      "type": "registry:example",
+      "title": "Web Preview Demo",
+      "description": "A worked example of Web Preview: A sandboxed frame for whatever the assistant just built, with the widths to check it at.",
+      "files": [
+        {
+          "path": "components/demos/web-preview-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/web-preview.json"
       ]
     },
     {

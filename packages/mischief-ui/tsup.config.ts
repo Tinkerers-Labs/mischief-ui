@@ -83,6 +83,10 @@ export default defineConfig({
     "bar-visualizer":
       "../../registry/default/bar-visualizer/bar-visualizer.tsx",
     "mic-selector": "../../registry/default/mic-selector/mic-selector.tsx",
+    "chain-of-thought":
+      "../../registry/default/chain-of-thought/chain-of-thought.tsx",
+    "web-preview": "../../registry/default/web-preview/web-preview.tsx",
+    "video-player": "../../registry/default/video-player/video-player.tsx",
     "token-meter": "../../registry/default/token-meter/token-meter.tsx",
     "model-picker": "../../registry/default/model-picker/model-picker.tsx",
     "source-card": "../../registry/default/source-card/source-card.tsx",

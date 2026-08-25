@@ -289,6 +289,25 @@ export {
 } from "../../../registry/default/mic-selector/mic-selector"
 
 export {
+  ChainOfThought,
+  type ChainOfThoughtProps,
+  type Thought,
+  type ThoughtStatus,
+} from "../../../registry/default/chain-of-thought/chain-of-thought"
+
+export {
+  WebPreview,
+  type PreviewSize,
+  type WebPreviewProps,
+} from "../../../registry/default/web-preview/web-preview"
+
+export {
+  VideoPlayer,
+  type VideoPlayerProps,
+  type VideoTrack,
+} from "../../../registry/default/video-player/video-player"
+
+export {
   TokenMeter,
   type TokenMeterProps,
   type TokenSegment,

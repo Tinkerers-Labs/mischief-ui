@@ -104,6 +104,9 @@ import { ConnectionBeamDemo } from "@/components/demos/connection-beam-demo"
 import { AudioPlayerDemo } from "@/components/demos/audio-player-demo"
 import { BarVisualizerDemo } from "@/components/demos/bar-visualizer-demo"
 import { MicSelectorDemo } from "@/components/demos/mic-selector-demo"
+import { ChainOfThoughtDemo } from "@/components/demos/chain-of-thought-demo"
+import { WebPreviewDemo } from "@/components/demos/web-preview-demo"
+import { VideoPlayerDemo } from "@/components/demos/video-player-demo"
 
 export type ComponentDemo = {
   Demo: ComponentType
@@ -370,4 +373,10 @@ export const componentDemos: Record<string, ComponentDemo> = {
     frameClassName: "p-6 md:p-10",
   },
   "mic-selector": { Demo: MicSelectorDemo, frameClassName: "p-6 md:p-10" },
+  "chain-of-thought": {
+    Demo: ChainOfThoughtDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "web-preview": { Demo: WebPreviewDemo, frameClassName: "p-6 md:p-10" },
+  "video-player": { Demo: VideoPlayerDemo, frameClassName: "p-6 md:p-10" },
 }

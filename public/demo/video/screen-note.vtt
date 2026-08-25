@@ -1,0 +1,17 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:01.518
+Quick note before I forget.
+
+2
+00:00:01.868 --> 00:00:05.071
+The upload retry is firing twice when the network drops.
+
+3
+00:00:05.421 --> 00:00:08.099
+I think the listener gets added again on reconnect.
+
+4
+00:00:08.449 --> 00:00:11.882
+I'll push a fix this afternoon, but I wanted it written down.

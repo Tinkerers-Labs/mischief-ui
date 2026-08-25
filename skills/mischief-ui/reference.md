@@ -1,6 +1,6 @@
 # Mischief UI catalog
 
-Every component, grouped by family. 101 in total.
+Every component, grouped by family. 104 in total.
 
 Install one with `npx shadcn@latest add Tinkerers-Labs/mischief-ui/<component>`, and read its full
 documentation at `https://ui.tinkererslabs.com/docs/components/<component>.md` before using it.
@@ -25,6 +25,8 @@ The surface an assistant answers through: the thread, the composer, and everythi
 - `audio-player`: A recording with its shape, its position and its words, so a voice note can be read as well as heard.
 - `bar-visualizer`: Frequency bars for audio on its way out, the counterpart to the trace a microphone draws on the way in.
 - `mic-selector`: Chooses which microphone to use, then settles the question by lighting a meter from the one you chose.
+- `chain-of-thought`: The steps an assistant took before answering, open while it is working and folded away once it is done.
+- `video-player`: Video with captions that can be turned on, a real scrubber, and controls that survive full screen.
 - `stop-generating`: The control that interrupts a running answer, with the time it has been going and Escape wired up.
 - `token-meter`: How much of the context window is gone, split by what spent it, and a warning before it runs out.
 - `model-picker`: A model chooser that has room for what each one is good at, and full keyboard control.
@@ -39,6 +41,7 @@ Code an agent wrote, ran, or wants to change, and the controls to accept it.
 - `code-block`: A code panel with copy, optional line numbers, highlighted lines, and a collapse for anything long.
 - `diff-view`: A proposed change shown as a unified or side-by-side diff, with optional accept and reject controls.
 - `terminal-output`: Streaming command output with stderr called out, an exit code, and scroll that follows without trapping you.
+- `web-preview`: A sandboxed frame for whatever the assistant just built, with the widths to check it at.
 
 ## Documents
 

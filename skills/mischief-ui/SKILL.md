@@ -5,7 +5,7 @@ description: Find, evaluate, and install playful React components from Mischief 
 
 # Mischief UI
 
-101 accessible React components for shadcn projects, across 11 families. Add only the component that solves the request. Treat each one as owned source code that can be adapted to the project.
+104 accessible React components for shadcn projects, across 11 families. Add only the component that solves the request. Treat each one as owned source code that can be adapted to the project.
 
 ## Finding the right component
 
@@ -13,8 +13,8 @@ Start from the family, then read only what you need. Do not guess a component na
 
 | Family | Components | What it covers |
 | --- | --- | --- |
-| Agent UI | 22 | The surface an assistant answers through: the thread, the composer, and everything it shows while it is working. |
-| Code | 3 | Code an agent wrote, ran, or wants to change, and the controls to accept it. |
+| Agent UI | 24 | The surface an assistant answers through: the thread, the composer, and everything it shows while it is working. |
+| Code | 4 | Code an agent wrote, ran, or wants to change, and the controls to accept it. |
 | Documents | 13 | Reading a file someone uploaded, marking it up, cutting it into pieces, and pulling structure out of it. |
 | Files | 2 | Getting a file in, and showing what arrived. |
 | Feedback | 6 | What the page says while it waits, and when there is nothing to show. |

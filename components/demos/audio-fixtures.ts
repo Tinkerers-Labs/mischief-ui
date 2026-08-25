@@ -24,3 +24,14 @@ export const voiceNote: TranscriptLine[] = [
     text: "I'll push a fix this afternoon, but I wanted it written down.",
   },
 ]
+
+export const SAMPLE_VIDEO = "/demo/video/screen-note.mp4"
+
+export const videoCaptions = [
+  {
+    src: "/demo/video/screen-note.vtt",
+    srcLang: "en",
+    label: "English",
+    default: true,
+  },
+]
