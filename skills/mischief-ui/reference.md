@@ -1,6 +1,6 @@
 # Mischief UI catalog
 
-Every component, grouped by family. 108 in total.
+Every component, grouped by family. 114 in total.
 
 Install one with `npx shadcn@latest add Tinkerers-Labs/mischief-ui/<component>`, and read its full
 documentation at `https://ui.tinkererslabs.com/docs/components/<component>.md` before using it.
@@ -30,6 +30,10 @@ The surface an assistant answers through: the thread, the composer, and everythi
 - `subagent-tree`: Several agents working at once, nested under whoever handed the work down, each with its own state and elapsed time.
 - `stopped-run`: What the thread says after an answer ended early, with whatever it had already written kept above the line.
 - `memory-chips`: Everything an assistant has been told to remember about someone, each one removable on its own.
+- `orb`: A sphere that carries what an assistant is doing, settled when idle and moving with the voice when there is one.
+- `matrix`: A grid of cells lit from the bottom by a level, which reads as a piece of hardware rather than as a chart.
+- `response`: An assistant's answer as markdown, including while it is still half-written and briefly invalid.
+- `transcript-viewer`: A recording as text, where every line is also the way back to the moment it was said.
 - `stop-generating`: The control that interrupts a running answer, with the time it has been going and Escape wired up.
 - `token-meter`: How much of the context window is gone, split by what spent it, and a warning before it runs out.
 - `model-picker`: A model chooser that has room for what each one is good at, and full keyboard control.
@@ -80,6 +84,7 @@ What the page says while it waits, and when there is nothing to show.
 - `empty-row`: One line saying a list came back empty, for a table, a list, or a popover.
 - `not-found`: The page-scale empty state: a status, a heading you can read across a room, and somewhere to go.
 - `spinner`: The smallest way to say something is happening, for a control that is working.
+- `shimmering-text`: Words with a light moving across them, for the wait between asking and the first token.
 - `skeleton`: A placeholder the shape of what is coming, so the page does not jump when it arrives.
 - `status-pill`: A dot and a few words: operational, degraded, closed.
 
@@ -96,6 +101,7 @@ Familiar inputs with more feedback than usual, and none of it required to operat
 - `accordion`: A list of disclosures built on native details elements, so find-in-page and the browser do the work.
 - `copy-button`: Copies a value and says whether it worked, including when the clipboard refuses.
 - `secret-field`: An API key or token: hidden until asked for, copied whole either way.
+- `scrub-bar`: The seek control on its own: a slider that happens to be a timeline, announced in minutes and seconds.
 - `otp-input`: A one time code, one box per character, where pasting the whole code into any box fills the rest.
 - `tag-input`: An input that turns what you typed into a removable tag, and gives the last one back when you press backspace on an empty field.
 - `sortable-list`: A list reordered by dragging a handle, or from the keyboard without one, where every move is announced.

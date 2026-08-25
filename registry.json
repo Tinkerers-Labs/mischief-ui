@@ -891,6 +891,69 @@
       "registryDependencies": ["utils"]
     },
     {
+      "name": "orb",
+      "type": "registry:ui",
+      "title": "Orb",
+      "description": "A sphere that carries what an assistant is doing, settled when idle and moving with the voice when there is one.",
+      "files": [
+        {
+          "path": "registry/default/orb/orb.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "canvas", "voice", "status"],
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
+    },
+    {
+      "name": "matrix",
+      "type": "registry:ui",
+      "title": "Matrix",
+      "description": "A grid of cells lit from the bottom by a level, which reads as a piece of hardware rather than as a chart.",
+      "files": [
+        {
+          "path": "registry/default/matrix/matrix.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "canvas", "audio", "meter"],
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
+    },
+    {
+      "name": "response",
+      "type": "registry:ui",
+      "title": "Response",
+      "description": "An assistant's answer as markdown, including while it is still half-written and briefly invalid.",
+      "dependencies": ["react-markdown@^10.1.0", "remark-gfm@^4.0.1"],
+      "files": [
+        {
+          "path": "registry/default/response/response.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "chat", "markdown", "streaming"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "transcript-viewer",
+      "type": "registry:ui",
+      "title": "Transcript Viewer",
+      "description": "A recording as text, where every line is also the way back to the moment it was said.",
+      "files": [
+        {
+          "path": "registry/default/transcript-viewer/transcript-viewer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "audio", "transcript", "viewer"],
+      "registryDependencies": ["utils"]
+    },
+    {
       "name": "stop-generating",
       "type": "registry:ui",
       "title": "Stop Generating",
@@ -1074,6 +1137,30 @@
         }
       ],
       "categories": ["feedback", "loading"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "shimmering-text",
+      "type": "registry:ui",
+      "title": "Shimmering Text",
+      "description": "Words with a light moving across them, for the wait between asking and the first token.",
+      "files": [
+        {
+          "path": "registry/default/shimmering-text/shimmering-text.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        "@keyframes mischief-shimmering-text": {
+          "from": {
+            "background-position": "-150% 0"
+          },
+          "to": {
+            "background-position": "250% 0"
+          }
+        }
+      },
+      "categories": ["feedback", "loading", "text", "streaming"],
       "registryDependencies": ["utils"]
     },
     {
@@ -1541,6 +1628,20 @@
         }
       ],
       "categories": ["ai", "agent", "streaming", "feedback"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "scrub-bar",
+      "type": "registry:ui",
+      "title": "Scrub Bar",
+      "description": "The seek control on its own: a slider that happens to be a timeline, announced in minutes and seconds.",
+      "files": [
+        {
+          "path": "registry/default/scrub-bar/scrub-bar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["control", "slider", "audio", "media", "input"],
       "registryDependencies": ["utils"]
     },
     {
@@ -2479,6 +2580,19 @@
       "registryDependencies": ["https://ui.tinkererslabs.com/r/marquee.json"]
     },
     {
+      "name": "matrix-demo",
+      "type": "registry:example",
+      "title": "Matrix Demo",
+      "description": "A worked example of Matrix: A grid of cells lit from the bottom by a level, which reads as a piece of hardware rather than as a chart.",
+      "files": [
+        {
+          "path": "components/demos/matrix-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/matrix.json"]
+    },
+    {
       "name": "memory-chips-demo",
       "type": "registry:example",
       "title": "Memory Chips Demo",
@@ -2577,6 +2691,23 @@
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/number-ticker.json"
       ]
+    },
+    {
+      "name": "orb-demo",
+      "type": "registry:example",
+      "title": "Orb Demo",
+      "description": "A worked example of Orb: A sphere that carries what an assistant is doing, settled when idle and moving with the voice when there is one.",
+      "files": [
+        {
+          "path": "components/demos/orb-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/demo-variants.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/orb.json"]
     },
     {
       "name": "otp-input-demo",
@@ -2748,6 +2879,19 @@
       ]
     },
     {
+      "name": "response-demo",
+      "type": "registry:example",
+      "title": "Response Demo",
+      "description": "A worked example of Response: An assistant's answer as markdown, including while it is still half-written and briefly invalid.",
+      "files": [
+        {
+          "path": "components/demos/response-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/response.json"]
+    },
+    {
       "name": "reveal-demo",
       "type": "registry:example",
       "title": "Reveal Demo",
@@ -2834,6 +2978,19 @@
       ]
     },
     {
+      "name": "scrub-bar-demo",
+      "type": "registry:example",
+      "title": "Scrub Bar Demo",
+      "description": "A worked example of Scrub Bar: The seek control on its own: a slider that happens to be a timeline, announced in minutes and seconds.",
+      "files": [
+        {
+          "path": "components/demos/scrub-bar-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/scrub-bar.json"]
+    },
+    {
       "name": "secret-field-demo",
       "type": "registry:example",
       "title": "Secret Field Demo",
@@ -2885,6 +3042,21 @@
       ],
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/shift-button.json"
+      ]
+    },
+    {
+      "name": "shimmering-text-demo",
+      "type": "registry:example",
+      "title": "Shimmering Text Demo",
+      "description": "A worked example of Shimmering Text: Words with a light moving across them, for the wait between asking and the first token.",
+      "files": [
+        {
+          "path": "components/demos/shimmering-text-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/shimmering-text.json"
       ]
     },
     {
@@ -3324,6 +3496,21 @@
         }
       ],
       "registryDependencies": ["https://ui.tinkererslabs.com/r/tool-call.json"]
+    },
+    {
+      "name": "transcript-viewer-demo",
+      "type": "registry:example",
+      "title": "Transcript Viewer Demo",
+      "description": "A worked example of Transcript Viewer: A recording as text, where every line is also the way back to the moment it was said.",
+      "files": [
+        {
+          "path": "components/demos/transcript-viewer-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/transcript-viewer.json"
+      ]
     },
     {
       "name": "video-player-demo",

@@ -559,6 +559,36 @@
       "types": "./dist/data-table.d.ts",
       "import": "./dist/data-table.js",
       "require": "./dist/data-table.cjs"
+    },
+    "./orb": {
+      "types": "./dist/orb.d.ts",
+      "import": "./dist/orb.js",
+      "require": "./dist/orb.cjs"
+    },
+    "./matrix": {
+      "types": "./dist/matrix.d.ts",
+      "import": "./dist/matrix.js",
+      "require": "./dist/matrix.cjs"
+    },
+    "./response": {
+      "types": "./dist/response.d.ts",
+      "import": "./dist/response.js",
+      "require": "./dist/response.cjs"
+    },
+    "./transcript-viewer": {
+      "types": "./dist/transcript-viewer.d.ts",
+      "import": "./dist/transcript-viewer.js",
+      "require": "./dist/transcript-viewer.cjs"
+    },
+    "./shimmering-text": {
+      "types": "./dist/shimmering-text.d.ts",
+      "import": "./dist/shimmering-text.js",
+      "require": "./dist/shimmering-text.cjs"
+    },
+    "./scrub-bar": {
+      "types": "./dist/scrub-bar.d.ts",
+      "import": "./dist/scrub-bar.js",
+      "require": "./dist/scrub-bar.cjs"
     }
   },
   "scripts": {

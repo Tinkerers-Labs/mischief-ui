@@ -111,6 +111,12 @@ import { ReviewableDiffDemo } from "@/components/demos/reviewable-diff-demo"
 import { SubagentTreeDemo } from "@/components/demos/subagent-tree-demo"
 import { StoppedRunDemo } from "@/components/demos/stopped-run-demo"
 import { MemoryChipsDemo } from "@/components/demos/memory-chips-demo"
+import { OrbDemo } from "@/components/demos/orb-demo"
+import { MatrixDemo } from "@/components/demos/matrix-demo"
+import { ResponseDemo } from "@/components/demos/response-demo"
+import { TranscriptViewerDemo } from "@/components/demos/transcript-viewer-demo"
+import { ShimmeringTextDemo } from "@/components/demos/shimmering-text-demo"
+import { ScrubBarDemo } from "@/components/demos/scrub-bar-demo"
 
 export type ComponentDemo = {
   Demo: ComponentType
@@ -399,4 +405,16 @@ export const componentDemos: Record<string, ComponentDemo> = {
     Demo: MemoryChipsDemo,
     frameClassName: "p-6 md:p-10",
   },
+  orb: { Demo: OrbDemo, frameClassName: "p-8 md:p-12" },
+  matrix: { Demo: MatrixDemo, frameClassName: "p-6 md:p-10" },
+  response: { Demo: ResponseDemo, frameClassName: "p-6 md:p-10" },
+  "transcript-viewer": {
+    Demo: TranscriptViewerDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "shimmering-text": {
+    Demo: ShimmeringTextDemo,
+    frameClassName: "p-8 md:p-12",
+  },
+  "scrub-bar": { Demo: ScrubBarDemo, frameClassName: "p-6 md:p-10" },
 }

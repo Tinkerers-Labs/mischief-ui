@@ -23,3 +23,12 @@
     stroke-dashoffset: 0;
   }
 }
+
+@keyframes mischief-shimmering-text {
+  from {
+    background-position: -150% 0;
+  }
+  to {
+    background-position: 250% 0;
+  }
+}

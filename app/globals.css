@@ -1911,6 +1911,15 @@ summary,
   }
 }
 
+@keyframes mischief-shimmering-text {
+  from {
+    background-position: -150% 0;
+  }
+  to {
+    background-position: 250% 0;
+  }
+}
+
 @keyframes mischief-connection-beam {
   to {
     stroke-dashoffset: 0;

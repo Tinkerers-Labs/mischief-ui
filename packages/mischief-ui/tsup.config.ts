@@ -92,6 +92,14 @@ export default defineConfig({
     "subagent-tree": "../../registry/default/subagent-tree/subagent-tree.tsx",
     "stopped-run": "../../registry/default/stopped-run/stopped-run.tsx",
     "memory-chips": "../../registry/default/memory-chips/memory-chips.tsx",
+    orb: "../../registry/default/orb/orb.tsx",
+    matrix: "../../registry/default/matrix/matrix.tsx",
+    response: "../../registry/default/response/response.tsx",
+    "transcript-viewer":
+      "../../registry/default/transcript-viewer/transcript-viewer.tsx",
+    "shimmering-text":
+      "../../registry/default/shimmering-text/shimmering-text.tsx",
+    "scrub-bar": "../../registry/default/scrub-bar/scrub-bar.tsx",
     "token-meter": "../../registry/default/token-meter/token-meter.tsx",
     "model-picker": "../../registry/default/model-picker/model-picker.tsx",
     "source-card": "../../registry/default/source-card/source-card.tsx",

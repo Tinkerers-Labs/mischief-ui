@@ -6104,6 +6104,241 @@ return (
       'Each remove button names the entry it will remove, so a screen reader hears "Forget: prefers pnpm" rather than a row of identical Remove buttons. A removal is confirmed through a polite live region, which matters because the chip it was announced from has gone by the time the message lands. The list is a real list, so its length is announced, and the empty state is a sentence rather than an absence.',
   },
   {
+    slug: "orb",
+    kind: "component",
+    name: "Orb",
+    family: "Agent UI",
+    summary:
+      "A sphere that carries what an assistant is doing, settled when idle and moving with the voice when there is one.",
+    dependencies: [],
+    install: registryInstallCommand("orb"),
+    npmImport: packageImport("Orb", "orb"),
+    usage: `export function Assistant() {
+  return <Orb state={state} level={level} />
+}`,
+    sections: [
+      {
+        id: "states",
+        title: "Four states, four paces",
+        blocks: [
+          {
+            kind: "text",
+            text: "Idle settles, listening breathes, thinking turns over faster, and speaking moves with the voice. The pace is the difference: a reader learns which is which in a few seconds without a legend.",
+          },
+          {
+            kind: "text",
+            text: "Only listening and speaking read the level. The other two keep their own rhythm, so a stale level left over from a finished turn cannot make a thinking orb pulse as though somebody were talking.",
+          },
+        ],
+      },
+      {
+        id: "level",
+        title: "Feeding it a level",
+        blocks: [
+          {
+            kind: "text",
+            text: "level is a number between nought and one, and it is read inside the frame loop rather than through a re-render. Handing it sixty values a second from an analyser costs one canvas frame, not sixty renders of the tree around it.",
+          },
+        ],
+      },
+    ],
+    props: [
+      [
+        "state",
+        '"idle" | "listening" | "thinking" | "speaking"',
+        'What the assistant is doing. Defaults to "idle".',
+      ],
+      ["level", "number", "How loud it is now, nought to one."],
+      [
+        "color",
+        "string",
+        'A theme token or CSS colour. Defaults to "--primary".',
+      ],
+      ["size", "number", "Width and height in pixels. Defaults to 120."],
+      ["label", "string", "Said aloud in place of the state name."],
+    ],
+    accessibility:
+      "The orb is a drawing, so what it means is also written: the state, or a label of your own, is announced through a polite live region. Nothing about the assistant's condition is carried by the animation alone, which matters because the animation is exactly what a reduced-motion setting or a sleeping surface will take away. The canvas itself is hidden from assistive technology.",
+  },
+  {
+    slug: "matrix",
+    kind: "component",
+    name: "Matrix",
+    family: "Agent UI",
+    summary:
+      "A grid of cells lit from the bottom by a level, which reads as a piece of hardware rather than as a chart.",
+    dependencies: [],
+    install: registryInstallCommand("matrix"),
+    npmImport: packageImport("Matrix", "matrix"),
+    usage: `export function Meter() {
+  return <Matrix className="h-32 w-full" level={level} />
+}`,
+    sections: [
+      {
+        id: "reading",
+        title: "Why it fills from the floor",
+        blocks: [
+          {
+            kind: "text",
+            text: "Cells light from the bottom up, so height is loudness and the grid reads the way an equaliser does. Scattering lit cells at random across the box would be prettier for a second and unreadable after that.",
+          },
+          {
+            kind: "text",
+            text: "With nothing to show it keeps a low shimmer along the floor rather than going black, so a quiet microphone is told apart from a dead one. Turn that off with idle when the silence is the message.",
+          },
+        ],
+      },
+    ],
+    props: [
+      [
+        "columns",
+        "number",
+        "Cells across. Rows follow from the box. Defaults to 24.",
+      ],
+      ["level", "number", "Nought to one."],
+      [
+        "idle",
+        "boolean",
+        "Keeps a low shimmer when there is no level. On by default.",
+      ],
+      [
+        "color",
+        "string",
+        'A theme token or CSS colour. Defaults to "--primary".',
+      ],
+      ["gap", "number", "Pixels between cells. Defaults to 2."],
+      [
+        "label",
+        "string",
+        "Names the canvas when the grid is content rather than decoration.",
+      ],
+    ],
+    accessibility:
+      "The grid is decoration by default and hidden from assistive technology, because a level meter beside a control that already says what it is doing has nothing to add. Give it a label only where the meter is the only thing carrying the state. It sleeps when scrolled out of view like every surface here, and rebuilds its cells on resize so the grid stays square rather than stretching.",
+  },
+  {
+    slug: "response",
+    kind: "component",
+    name: "Response",
+    family: "Agent UI",
+    summary:
+      "An assistant's answer as markdown, including while it is still half-written and briefly invalid.",
+    dependencies: ["react-markdown", "remark-gfm"],
+    install: registryInstallCommand("response"),
+    npmImport: packageImport("Response", "response"),
+    usage: `export function Answer({ text, streaming }) {
+  return <Response streaming={streaming}>{text}</Response>
+}`,
+    sections: [
+      {
+        id: "streaming",
+        title: "Markdown that is not finished yet",
+        blocks: [
+          {
+            kind: "text",
+            text: "Text arriving a token at a time is markdown that is invalid for most of its life: a fence opened three lines ago and not yet closed, a bold marker with nothing after it. Rendered as it stands, the reply fills with stray asterisks and a code block that swallows everything after it.",
+          },
+          {
+            kind: "text",
+            text: "While streaming is set, the unterminated markers are closed for the length of that render and reopened by the next token. The reader sees a code block that grows rather than a page that breaks and repairs itself.",
+          },
+        ],
+      },
+      {
+        id: "code",
+        title: "Code inside an answer",
+        blocks: [
+          {
+            kind: "text",
+            text: "A fenced block becomes a panel and inline code stays inline, because a panel around three words in the middle of a sentence is a worse answer than the sentence. The panel is deliberately plain: a component should be one thing you install, so this one does not drag a code viewer in behind it. Pass renderCode and it will use whatever you already have.",
+          },
+        ],
+      },
+    ],
+    props: [
+      ["children", "string", "The markdown, whole or partial."],
+      [
+        "streaming",
+        "boolean",
+        "Closes unterminated markers for this render. Off by default.",
+      ],
+      [
+        "renderCode",
+        "(code: string, language?: string) => ReactNode",
+        "Renders a fenced block. Pass Code Block here for the copy control; the default is a plain panel so this installs alone.",
+      ],
+    ],
+    accessibility:
+      "The answer is ordinary prose in the accessibility tree: headings are headings, lists are lists, and code blocks are code. It is not itself a live region, and should not be put inside one -- a reply announced token by token as it grows is unusable, and the thing worth announcing is that it started and that it finished.",
+  },
+  {
+    slug: "transcript-viewer",
+    kind: "component",
+    name: "Transcript Viewer",
+    family: "Agent UI",
+    summary:
+      "A recording as text, where every line is also the way back to the moment it was said.",
+    dependencies: [],
+    install: registryInstallCommand("transcript-viewer"),
+    npmImport: packageImport("TranscriptViewer", "transcript-viewer"),
+    usage: `export function Recording() {
+  return (
+    <TranscriptViewer
+      cues={cues}
+      time={time}
+      onSeek={(cue) => player.seek(cue.start)}
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "two-acts",
+        title: "Reading and scrubbing are one act",
+        blocks: [
+          {
+            kind: "text",
+            text: "Give it the position and it marks the line being spoken; click a line and it hands you the second to seek to. Neither is a separate mode, which is the whole point: people look for a sentence they remember, not for a timestamp they never knew.",
+          },
+          {
+            kind: "text",
+            text: "A cue with no end is treated as running until the next one begins, so a transcript from a service that only reports start times needs no preparation.",
+          },
+        ],
+      },
+      {
+        id: "following",
+        title: "Following without hijacking",
+        blocks: [
+          {
+            kind: "text",
+            text: "While it follows, the active line is scrolled into view by the nearest amount that puts it on screen, never centred. Centring on every cue drags the page under a reader who was looking at something else a moment ago.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "TranscriptCue",
+        rows: [
+          ["id", "string", "Distinct within the transcript."],
+          ["start", "number", "Seconds from the beginning."],
+          ["end", "number", "Optional. Defaults to the next cue's start."],
+          ["speaker", "string", "Shown before the line."],
+          ["text", "string", "What was said."],
+        ],
+      },
+    ],
+    props: [
+      ["cues", "TranscriptCue[]", "The transcript, in order."],
+      ["time", "number", "Where the recording is now, in seconds."],
+      ["onSeek", "(cue: TranscriptCue) => void", "A line was chosen."],
+      ["follow", "boolean", "Scrolls to the active line. On by default."],
+      ["label", "string", 'Names the list. Defaults to "Transcript".'],
+    ],
+    accessibility:
+      "Every line is a real button, so the transcript is operable from the keyboard without any arrow-key handling of its own, and the line being spoken carries aria-current rather than only a background colour. Times are rendered in minutes and seconds instead of as a raw number of seconds, which is what a screen reader would otherwise read aloud.",
+  },
+  {
     slug: "stop-generating",
     kind: "component",
     name: "Stop Generating",
@@ -7103,6 +7338,52 @@ return (
     ],
     accessibility:
       "With a label it is a status region and announces itself once; without one it is hidden from assistive technology, which is right when the text beside it already says what is happening. It draws in currentColor, so it inherits whatever it sits in. Reduced motion stops the turn and leaves the ring, so a control still reads as busy rather than as an unexplained circle.",
+  },
+  {
+    slug: "shimmering-text",
+    kind: "component",
+    name: "Shimmering Text",
+    family: "Feedback",
+    summary:
+      "Words with a light moving across them, for the wait between asking and the first token.",
+    dependencies: [],
+    install: registryInstallCommand("shimmering-text"),
+    npmImport: packageImport("ShimmeringText", "shimmering-text"),
+    usage: `export function Waiting() {
+  return <ShimmeringText>Reading the contract…</ShimmeringText>
+}`,
+    sections: [
+      {
+        id: "still-text",
+        title: "It is still text",
+        blocks: [
+          {
+            kind: "text",
+            text: "The sweep is a background the words are clipped to, not an image of the words. They can be selected, translated, searched and read aloud exactly as if nothing were moving over them.",
+          },
+          {
+            kind: "text",
+            text: "Where motion is unwelcome the clipping is dropped and the words keep their own colour. That is why the resting state is a colour rather than transparency: text that is transparent without its animation is text that has gone.",
+          },
+        ],
+      },
+    ],
+    props: [
+      ["children", "ReactNode", "The words."],
+      ["duration", "number", "Seconds for one pass. Defaults to 2.4."],
+      [
+        "extent",
+        "number",
+        "How wide the bright band is, nought to one. Defaults to 0.35.",
+      ],
+      [
+        "paused",
+        "boolean",
+        "Stops the sweep and leaves the words as they are.",
+      ],
+    ],
+    accessibility:
+      "The words are ordinary text throughout, so nothing about them is conditional on the animation. Under prefers-reduced-motion the sweep is not applied at all and the text renders in the muted foreground colour, which is the state it would have ended in anyway. It carries no live region of its own: what is being waited for belongs in the sentence, not in an announcement that repeats every time the light goes round.",
   },
   {
     slug: "skeleton",
@@ -9639,6 +9920,67 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
     ],
     accessibility:
       "The glow is a hidden decorative layer and announces nothing. Under reduced motion the breathing stops and a steady edge remains, so the region is still marked. As with any ambient signal, the words next to it are what actually reports the state.",
+  },
+  {
+    slug: "scrub-bar",
+    kind: "component",
+    name: "Scrub Bar",
+    family: "Controls",
+    summary:
+      "The seek control on its own: a slider that happens to be a timeline, announced in minutes and seconds.",
+    dependencies: [],
+    install: registryInstallCommand("scrub-bar"),
+    npmImport: packageImport("ScrubBar", "scrub-bar"),
+    usage: `export function Player() {
+  return (
+    <ScrubBar
+      duration={214}
+      value={at}
+      buffered={158}
+      onValueChange={setAt}
+      onCommit={(seconds) => player.seek(seconds)}
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "committing",
+        title: "Dragging and arriving",
+        blocks: [
+          {
+            kind: "text",
+            text: "onValueChange fires all the way through a drag, so the time and the bar keep up with the pointer. onCommit fires once, when the drag ends. Seeking a real player on every change of a drag is how a scrub turns into a stutter.",
+          },
+        ],
+      },
+      {
+        id: "buffered",
+        title: "What has arrived",
+        blocks: [
+          {
+            kind: "text",
+            text: "buffered draws a second, quieter fill behind the played part, so the difference between somewhere you can go and somewhere still downloading is visible before it is clicked.",
+          },
+        ],
+      },
+    ],
+    props: [
+      ["duration", "number", "Length in seconds."],
+      ["value", "number", "Position in seconds when controlled."],
+      ["defaultValue", "number", "Position when it is not."],
+      ["onValueChange", "(seconds: number) => void", "Throughout a drag."],
+      ["onCommit", "(seconds: number) => void", "Once, when the drag ends."],
+      ["step", "number", "Seconds an arrow key moves. Defaults to 5."],
+      ["buffered", "number", "How much has downloaded, in seconds."],
+      ["label", "string", 'Names the slider. Defaults to "Seek".'],
+      [
+        "disabled",
+        "boolean",
+        "Turns it off and takes it out of the tab order.",
+      ],
+    ],
+    accessibility:
+      "It is a real slider: role, minimum, maximum and current value, focusable, with arrow keys moving by step and Home and End going to either end. aria-valuetext reads it as a time -- one minute forty of three minutes thirty-four -- because a screen reader announcing the raw second count of a recording tells a listener nothing they can use. The handle appears on hover and on focus, so it is never a pointer-only affordance.",
   },
   {
     slug: "otp-input",

@@ -264,6 +264,33 @@ export {
 } from "../../../registry/default/stop-generating/stop-generating"
 
 export {
+  Orb,
+  type OrbProps,
+  type OrbState,
+} from "../../../registry/default/orb/orb"
+
+export {
+  Matrix,
+  type MatrixProps,
+} from "../../../registry/default/matrix/matrix"
+
+export {
+  TranscriptViewer,
+  type TranscriptViewerProps,
+  type TranscriptCue,
+} from "../../../registry/default/transcript-viewer/transcript-viewer"
+
+export {
+  ShimmeringText,
+  type ShimmeringTextProps,
+} from "../../../registry/default/shimmering-text/shimmering-text"
+
+export {
+  ScrubBar,
+  type ScrubBarProps,
+} from "../../../registry/default/scrub-bar/scrub-bar"
+
+export {
   VoiceInput,
   type VoiceInputProps,
   type VoiceInputStatus,
