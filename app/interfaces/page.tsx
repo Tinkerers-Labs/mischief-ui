@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Check } from "lucide-react"
 
 import { InterfacesIndex } from "@/components/interfaces-index"
+import { RuleDemo } from "@/components/interface-demos"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { AuroraField } from "@/registry/default/aurora-field/aurora-field"
@@ -85,6 +86,7 @@ export default function InterfacesPage() {
                   <div>
                     <strong>{rule.rule}</strong>
                     <p>{rule.detail}</p>
+                    <RuleDemo id={rule.id} />
                   </div>
                 </article>
               ))}

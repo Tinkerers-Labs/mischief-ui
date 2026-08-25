@@ -1230,6 +1230,20 @@ a:focus-visible {
   scroll-margin-top: 5rem;
 }
 
+.rule-demo:not(:empty) {
+  border-left: 2px solid color-mix(in oklch, var(--border) 90%, transparent);
+  margin-top: 0.9rem;
+  padding-left: 0.9rem;
+}
+
+.rule-demo-hint {
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  margin: 0 0 0.6rem;
+  max-width: 52ch;
+}
+
 .rule-marker {
   color: var(--muted-foreground);
   line-height: 1.5;
