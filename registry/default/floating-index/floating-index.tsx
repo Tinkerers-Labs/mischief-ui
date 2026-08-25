@@ -17,6 +17,11 @@ export interface FloatingIndexProps extends Omit<
 > {
   items: FloatingIndexItem[]
   label?: string
+  /**
+   * Once the reader is into the page, the trigger says which section they are
+   * in rather than repeating the label. On by default.
+   */
+  showActiveLabel?: boolean
   activeId?: string
   defaultActiveId?: string
   onActiveChange?: (id: string) => void
@@ -29,6 +34,7 @@ export const FloatingIndex = React.forwardRef<HTMLElement, FloatingIndexProps>(
     {
       items,
       label = "Index",
+      showActiveLabel = true,
       activeId: controlledActiveId,
       defaultActiveId,
       onActiveChange,
@@ -134,13 +140,41 @@ export const FloatingIndex = React.forwardRef<HTMLElement, FloatingIndexProps>(
     }, [container, containerRef, items, updateActiveId])
 
     function navigateTo(item: FloatingIndexItem) {
-      document.getElementById(item.id)?.scrollIntoView({
-        behavior: prefersReducedMotion ? "auto" : "smooth",
-        block: "start",
-      })
+      const target = document.getElementById(item.id)
+      if (!target) return
+
       updateActiveId(item.id)
-      setOpen(false)
+
+      if (prefersReducedMotion) {
+        target.scrollIntoView({ behavior: "auto", block: "start" })
+        setOpen(false)
+        return
+      }
+
+      target.scrollIntoView({ behavior: "smooth", block: "start" })
+
+      // Collapsing the panel while the scroll is in flight cancels it, and the
+      // reader stays where they were having asked to be somewhere else. So the
+      // panel closes once the scroll has landed instead.
+      let settled = false
+      const close = () => {
+        if (settled) return
+        settled = true
+        window.removeEventListener("scrollend", close)
+        window.clearTimeout(timer)
+        setOpen(false)
+      }
+
+      const timer = window.setTimeout(close, 700)
+      window.addEventListener("scrollend", close, { once: true })
     }
+
+    const activeItem = items.find((item) => item.id === activeId)
+    // At the top there is no section to be in yet, so the label stands.
+    const triggerLabel =
+      showActiveLabel && !open && progress > 0 && activeItem
+        ? activeItem.label
+        : label
 
     return (
       <nav
@@ -202,7 +236,7 @@ export const FloatingIndex = React.forwardRef<HTMLElement, FloatingIndexProps>(
             <span className="bg-background size-1.5 rounded-full" />
           </span>
 
-          <span className="min-w-0 flex-1 truncate">{label}</span>
+          <span className="min-w-0 flex-1 truncate">{triggerLabel}</span>
           <ChevronDown
             aria-hidden="true"
             className={cn(

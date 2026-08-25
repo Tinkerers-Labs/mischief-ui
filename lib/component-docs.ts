@@ -516,6 +516,11 @@ export function PageIndex() {
         "Section ids, labels, and optional icons.",
       ],
       ["label", "string", "The toggle label. Defaults to Index."],
+      [
+        "showActiveLabel",
+        "boolean",
+        "Once past the top, the toggle says which section the reader is in rather than repeating the label. Defaults to true.",
+      ],
       ["activeId", "string", "The active section when controlled."],
       ["defaultActiveId", "string", "The initial active section."],
       [
@@ -536,7 +541,7 @@ export function PageIndex() {
       ["className", "string", "Classes for placement and appearance."],
     ],
     accessibility:
-      "The index is a labelled navigation landmark with native buttons, visible focus, aria-expanded on the toggle, and aria-current on the active section. Escape closes the outline. Reduced motion removes panel animation and smooth scrolling.",
+      "The index is a labelled navigation landmark with native buttons, visible focus, aria-expanded on the toggle, and aria-current on the active section. Escape closes the outline. Reduced motion removes panel animation and jumps rather than scrolling smoothly. The navigation landmark keeps the name it was given even when the toggle is showing the current section instead, so it is still found by that name.",
   },
   {
     slug: "command-palette",
