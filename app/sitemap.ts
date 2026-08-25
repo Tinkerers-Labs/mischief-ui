@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "docs/components/",
     "docs/guidelines/",
     "docs/troubleshooting/",
+    "ax/",
     "changelog/",
     "brand/",
     "license/",

@@ -16,6 +16,7 @@ const routes = {
   brand: "/brand",
   license: "/license",
   changelog: "/changelog",
+  ax: "/ax",
   guidelines: "/docs/guidelines",
   skill: "/skill.md",
 } as const
@@ -92,6 +93,7 @@ export const siteConfig = {
   navigation,
   footerNavigation: [
     ...navigation,
+    { href: routes.ax, label: "Agent experience" },
     { href: routes.changelog, label: "Changelog" },
     { href: routes.brand, label: "Brand" },
     { href: routes.license, label: "License" },
