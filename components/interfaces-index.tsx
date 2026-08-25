@@ -10,6 +10,8 @@ export function InterfacesIndex({
 }) {
   return (
     <>
+      {/* Bottom left, because the way back to the top sits in the other
+          corner and two of these stacked is one too many. */}
       <FloatingIndex
         className="w-64"
         position="bottom-left"
