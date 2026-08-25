@@ -29,18 +29,26 @@ function useReducedMotion() {
 }
 
 function FocusVisibleDemo() {
+  const button =
+    "border-border bg-background focus-visible:ring-ring focus-visible:border-ring inline-flex min-h-9 items-center rounded-full border px-4 text-sm font-semibold focus-visible:ring-2 focus-visible:outline-none"
+
   return (
     <>
       <p className="rule-demo-hint">
-        Click this button, then press Tab to reach it. The ring is for the
-        second one only.
+        Click the first button: it takes focus, with no ring. Now press Tab —
+        the second takes focus from the keyboard, and says so.
       </p>
-      <button
-        type="button"
-        className="border-border bg-background focus-visible:ring-ring inline-flex min-h-9 items-center rounded-full border px-4 text-sm font-semibold focus-visible:ring-2 focus-visible:outline-none"
-      >
-        Click me, then Tab to me
-      </button>
+      <div className="flex flex-wrap gap-2">
+        {/* Two, because clicking one and then tabbing moves focus off it: the
+            contrast only shows when the click and the Tab land on different
+            buttons. */}
+        <button type="button" className={button}>
+          Click me
+        </button>
+        <button type="button" className={button}>
+          Then Tab to me
+        </button>
+      </div>
     </>
   )
 }
