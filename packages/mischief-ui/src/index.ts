@@ -270,6 +270,25 @@ export {
 } from "../../../registry/default/voice-input/voice-input"
 
 export {
+  AudioPlayer,
+  type AudioPlayerProps,
+  type TranscriptLine,
+} from "../../../registry/default/audio-player/audio-player"
+
+export {
+  BarVisualizer,
+  type BarVisualizerProps,
+  type BarVisualizerSource,
+  type BarVisualizerState,
+} from "../../../registry/default/bar-visualizer/bar-visualizer"
+
+export {
+  MicSelector,
+  type MicSelectorProps,
+  type MicSelectorStatus,
+} from "../../../registry/default/mic-selector/mic-selector"
+
+export {
   TokenMeter,
   type TokenMeterProps,
   type TokenSegment,

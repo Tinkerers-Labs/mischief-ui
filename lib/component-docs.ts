@@ -5157,6 +5157,307 @@ return (
       "The button carries aria-pressed, so the difference between recording and not is in the accessibility tree rather than only in the icon. Every state change is announced through a polite live region, and the visible message is marked aria-hidden because it is the same sentence: it is said once, not once on screen and once aloud. The trace is decoration and never carries meaning the words do not, which matters because under prefers-reduced-motion it is not drawn at all -- a single painted frame would sit frozen while the microphone was open, so the words and the elapsed time take over instead.",
   },
   {
+    slug: "audio-player",
+    kind: "component",
+    name: "Audio Player",
+    family: "Agent UI",
+    summary:
+      "A recording with its shape, its position and its words, so a voice note can be read as well as heard.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("audio-player"),
+    npmImport: packageImport("AudioPlayer", "audio-player"),
+    usage: `export function VoiceNote({ recording, lines }) {
+  return <AudioPlayer src={recording} waveform transcript={lines} />
+}`,
+    sections: [
+      {
+        id: "peaks",
+        title: "Give it the peaks if you have them",
+        blocks: [
+          {
+            kind: "text",
+            text: "Drawing a waveform means knowing the amplitude across the whole file, and the only way to learn that in a browser is to decode it. Decoding holds the audio uncompressed: an hour of speech is a few hundred megabytes of Float32, arriving all at once.",
+          },
+          {
+            kind: "text",
+            text: "So peaks is a real prop rather than an internal detail. Compute them once where the file is uploaded, store them beside it, and every play after that skips the decode entirely.",
+          },
+          {
+            kind: "code",
+            code: `<AudioPlayer src={url} waveform peaks={stored.peaks} />`,
+            caption:
+              "Amplitudes from 0 to 1, one per bar. Anything from 32 to a few hundred reads well.",
+          },
+          {
+            kind: "text",
+            text: "Without them it decodes, and stops short at maxDecodeBytes. Past that ceiling the audio still plays and only the picture is given up, which is the right way round.",
+          },
+        ],
+      },
+      {
+        id: "seeking",
+        title: "A picture is not a control",
+        blocks: [
+          {
+            kind: "text",
+            text: "The waveform is drawn on a canvas, and a canvas cannot be tabbed to, dragged with a keyboard, or read out. So the thing that seeks is an ordinary range input lying over the drawing, transparent, at the full size of it.",
+          },
+          {
+            kind: "text",
+            text: "That leaves the picture optional and the control intact. Arrow keys step through the audio, Home and End reach either end, the value is announced as a position in minutes and seconds rather than as a number of seconds, and the focus ring is drawn around the whole scrubber.",
+          },
+        ],
+      },
+      {
+        id: "transcript",
+        title: "The transcript shape",
+        blocks: [
+          {
+            kind: "text",
+            text: "A line is a start, an optional end, the text, and optionally who said it. Every speech service emits at least that much, so a transcript from one of them normalises in a few lines rather than tying this component to whichever one you picked.",
+          },
+          {
+            kind: "code",
+            code: `const lines = response.segments.map((segment) => ({
+  start: segment.start,
+  end: segment.end,
+  text: segment.text,
+}))`,
+            caption: "Whisper, in full.",
+          },
+          {
+            kind: "text",
+            text: "Lines are buttons, so the transcript is a way to move through the audio and not only a thing to read. The line under the playhead is marked with aria-current and scrolls itself into view while the audio is playing, instantly where reduced motion is preferred.",
+          },
+        ],
+      },
+      {
+        id: "duration",
+        title: "Recordings that do not know how long they are",
+        blocks: [
+          {
+            kind: "text",
+            text: "A file from MediaRecorder, which is what Voice Input hands you, carries no duration in its header. The browser reports Infinity for it until it is asked to look, which leaves a player with no scale to draw against and a scrubber with no end.",
+          },
+          {
+            kind: "text",
+            text: "Seeking past the end is what makes it look. That happens here on the first metadata event, so a recording made in the same page plays with a real length like any other file.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "TranscriptLine",
+        rows: [
+          ["start", "number", "Seconds from the beginning of the audio."],
+          [
+            "end",
+            "number",
+            "Seconds. Only needed when lines do not run back to back.",
+          ],
+          ["text", "string", "What was said."],
+          ["speaker", "string", "Who said it, shown before the line."],
+        ],
+      },
+    ],
+    props: [
+      ["src", "string | Blob", "A URL, or a recording you already hold."],
+      ["waveform", "boolean", "Draw the audio behind the scrubber."],
+      [
+        "peaks",
+        "readonly number[]",
+        "Amplitudes from 0 to 1. Supplying these skips decoding.",
+      ],
+      [
+        "transcript",
+        "readonly TranscriptLine[]",
+        "Timed lines, shown under the controls.",
+      ],
+      [
+        "rates",
+        "readonly number[]",
+        "Speeds the button cycles through. Defaults to 1, 1.5 and 2.",
+      ],
+      [
+        "maxDecodeBytes",
+        "number",
+        "Above this the audio plays without a drawn waveform. Defaults to 40MB.",
+      ],
+      [
+        "color",
+        "string",
+        'A theme token for the played portion. Defaults to "--primary".',
+      ],
+      ["label", "string", "Names the recording in every control's label."],
+      [
+        "...rootProps",
+        "HTMLAttributes<HTMLDivElement>",
+        "Native root attributes.",
+      ],
+    ],
+    accessibility:
+      "Seeking is a native range input with an accessible name and a value announced as a position in minutes and seconds, so it works with arrow keys, Home and End, and a screen reader. The waveform behind it is decoration and carries nothing the time display does not. Transcript lines are buttons, which makes every line reachable without a pointer, and the current one is marked with aria-current rather than by colour alone. Play, speed and every transcript line meet the 44px touch target. Nothing autoplays.",
+  },
+  {
+    slug: "bar-visualizer",
+    kind: "component",
+    name: "Bar Visualizer",
+    family: "Agent UI",
+    summary:
+      "Frequency bars for audio on its way out, the counterpart to the trace a microphone draws on the way in.",
+    dependencies: [],
+    install: registryInstallCommand("bar-visualizer"),
+    npmImport: packageImport("BarVisualizer", "bar-visualizer"),
+    usage: `export function Speaking({ audio }) {
+  return <BarVisualizer source={audio} state="speaking" />
+}`,
+    sections: [
+      {
+        id: "sources",
+        title: "What it can be given",
+        blocks: [
+          {
+            kind: "text",
+            text: "A MediaStream for audio arriving, an audio or video element for audio playing, or an AnalyserNode you already built and would rather keep control of.",
+          },
+          {
+            kind: "table",
+            headers: ["Source", "When"],
+            rows: [
+              ["MediaStream", "A microphone, or a track from a call"],
+              ["HTMLMediaElement", "A reply being played back"],
+              ["AnalyserNode", "You already have a graph and want one tap"],
+            ],
+          },
+          {
+            kind: "text",
+            text: "An element can be handed to createMediaElementSource exactly once, and a second attempt throws for the rest of the page's life. Development remounts every effect twice, so that tap is kept and reused rather than rebuilt, and the element goes back to the speakers when this component unmounts.",
+          },
+        ],
+      },
+      {
+        id: "state",
+        title: "It says the state as well as drawing it",
+        blocks: [
+          {
+            kind: "text",
+            text: "Bars that move are the whole point of this, which makes it useless under prefers-reduced-motion: a single painted frame would show a bar chart frozen mid-sentence, saying nothing about whether anything is happening.",
+          },
+          {
+            kind: "text",
+            text: "So state is a prop rather than something inferred from the levels. It carries the answer in words through a live region in both cases, and where motion is reduced the bars fall back to an even resting row instead of a misleading still.",
+          },
+        ],
+      },
+    ],
+    types: [],
+    props: [
+      [
+        "source",
+        "MediaStream | HTMLMediaElement | AnalyserNode | null",
+        "The audio to draw. Without one the bars rest.",
+      ],
+      [
+        "state",
+        '"idle" | "listening" | "speaking"',
+        "What is happening, announced and put on the element.",
+      ],
+      ["bars", "number", "How many bars to draw. Defaults to 24."],
+      [
+        "color",
+        "string",
+        'A theme token for the bars. Defaults to "--primary".',
+      ],
+      [
+        "...rootProps",
+        "HTMLAttributes<HTMLDivElement>",
+        "Native root attributes.",
+      ],
+    ],
+    accessibility:
+      "The state is announced through a polite live region in words, so a reader who cannot see the bars still learns that the assistant is listening or speaking. It is also on the element as data-state. Under prefers-reduced-motion the drawing is replaced by a still row of bars rather than a frozen frame, because a stopped visualiser reads as a stopped conversation.",
+  },
+  {
+    slug: "mic-selector",
+    kind: "component",
+    name: "Mic Selector",
+    family: "Agent UI",
+    summary:
+      "Chooses which microphone to use, then settles the question by lighting a meter from the one you chose.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("mic-selector"),
+    npmImport: packageImport("MicSelector", "mic-selector"),
+    usage: `export function Setup() {
+  const [device, setDevice] = React.useState("")
+
+  return <MicSelector value={device} onValueChange={setDevice} />
+}`,
+    sections: [
+      {
+        id: "labels",
+        title: "Why the names are missing at first",
+        blocks: [
+          {
+            kind: "text",
+            text: "A page that has never been granted the microphone can count the devices but not read their labels. Browsers withhold them because a list of attached hardware identifies a machine well enough to track it.",
+          },
+          {
+            kind: "text",
+            text: "So an untested list reads Microphone 1 and Microphone 2, and fills in with real names the moment the test grants permission. Showing numbered placeholders is honest about that. Asking for the microphone on mount, purely to read the labels, is not.",
+          },
+        ],
+      },
+      {
+        id: "testing",
+        title: "Testing opens the device",
+        blocks: [
+          {
+            kind: "text",
+            text: "The meter needs the microphone open, which is a permission prompt and a recording indicator, so it happens when the test is pressed and not before. Pressing it again, changing device, or leaving the page closes the stream and the audio context.",
+          },
+          {
+            kind: "text",
+            text: "The meter reads loudness rather than the loudest sample, so a chair creak does not light the whole row and leave it there. It is drawn as segments that turn on and off, which means it stays readable under reduced motion instead of being replaced by something else.",
+          },
+        ],
+      },
+    ],
+    types: [],
+    props: [
+      [
+        "value",
+        "string",
+        "The chosen device id, when you are holding the value.",
+      ],
+      ["defaultValue", "string", "The device to start on, uncontrolled."],
+      [
+        "onValueChange",
+        "(deviceId: string) => void",
+        "A different microphone was chosen.",
+      ],
+      [
+        "onStatusChange",
+        "(status: MicSelectorStatus) => void",
+        "Every state change, if you are mirroring it elsewhere.",
+      ],
+      ["segments", "number", "Segments in the meter. Defaults to 12."],
+      ["label", "string", "Names the list and the test button."],
+      [
+        "disabled",
+        "boolean",
+        "Turns the control off without changing its state.",
+      ],
+      [
+        "...rootProps",
+        "HTMLAttributes<HTMLDivElement>",
+        "Native root attributes.",
+      ],
+    ],
+    accessibility:
+      "The list is a native select, so it works with a keyboard and reads out as a list of options without any ARIA. The test button is a real toggle with aria-pressed and a name that says which way it will go. Every state, including a refused permission and a browser that cannot enumerate at all, is announced through a polite live region and written on the element as data-status. The meter is decoration: it is hidden from assistive technology, and the same information is in the message beside it.",
+  },
+  {
     slug: "stop-generating",
     kind: "component",
     name: "Stop Generating",

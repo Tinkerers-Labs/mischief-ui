@@ -735,6 +735,56 @@
       ]
     },
     {
+      "name": "audio-player",
+      "type": "registry:ui",
+      "title": "Audio Player",
+      "description": "A recording with its waveform, its position and its transcript, every line seekable.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/audio-player/audio-player.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "media", "audio", "canvas", "player"],
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
+    },
+    {
+      "name": "bar-visualizer",
+      "type": "registry:ui",
+      "title": "Bar Visualizer",
+      "description": "Frequency bars for audio on its way out, with the state said as well as drawn.",
+      "files": [
+        {
+          "path": "registry/default/bar-visualizer/bar-visualizer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "media", "audio", "canvas", "feedback"],
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/render-surface.json"
+      ]
+    },
+    {
+      "name": "mic-selector",
+      "type": "registry:ui",
+      "title": "Mic Selector",
+      "description": "Picks the microphone, then proves the choice with a live level meter.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/mic-selector/mic-selector.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "media", "audio", "control", "form"],
+      "registryDependencies": ["utils"]
+    },
+    {
       "name": "stop-generating",
       "type": "registry:ui",
       "title": "Stop Generating",
@@ -1592,6 +1642,25 @@
       "registryDependencies": ["https://ui.tinkererslabs.com/r/ask-ai.json"]
     },
     {
+      "name": "audio-player-demo",
+      "type": "registry:example",
+      "title": "Audio Player Demo",
+      "description": "A worked example of Audio Player: A recording with its shape, its position and its words, so a voice note can be read as well as heard.",
+      "files": [
+        {
+          "path": "components/demos/audio-player-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/audio-fixtures.ts",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/audio-player.json"
+      ]
+    },
+    {
       "name": "aurora-field-demo",
       "type": "registry:example",
       "title": "Aurora Field Demo",
@@ -1619,6 +1688,26 @@
       ],
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/avatar-stack.json"
+      ]
+    },
+    {
+      "name": "bar-visualizer-demo",
+      "type": "registry:example",
+      "title": "Bar Visualizer Demo",
+      "description": "A worked example of Bar Visualizer: Frequency bars for audio on its way out, the counterpart to the trace a microphone draws on the way in.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "components/demos/bar-visualizer-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/audio-fixtures.ts",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/bar-visualizer.json"
       ]
     },
     {
@@ -2294,6 +2383,21 @@
         }
       ],
       "registryDependencies": ["https://ui.tinkererslabs.com/r/metaballs.json"]
+    },
+    {
+      "name": "mic-selector-demo",
+      "type": "registry:example",
+      "title": "Mic Selector Demo",
+      "description": "A worked example of Mic Selector: Chooses which microphone to use, then settles the question by lighting a meter from the one you chose.",
+      "files": [
+        {
+          "path": "components/demos/mic-selector-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/mic-selector.json"
+      ]
     },
     {
       "name": "model-picker-demo",

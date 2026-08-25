@@ -265,6 +265,21 @@
       "import": "./dist/voice-input.js",
       "require": "./dist/voice-input.cjs"
     },
+    "./audio-player": {
+      "types": "./dist/audio-player.d.ts",
+      "import": "./dist/audio-player.js",
+      "require": "./dist/audio-player.cjs"
+    },
+    "./bar-visualizer": {
+      "types": "./dist/bar-visualizer.d.ts",
+      "import": "./dist/bar-visualizer.js",
+      "require": "./dist/bar-visualizer.cjs"
+    },
+    "./mic-selector": {
+      "types": "./dist/mic-selector.d.ts",
+      "import": "./dist/mic-selector.js",
+      "require": "./dist/mic-selector.cjs"
+    },
     "./token-meter": {
       "types": "./dist/token-meter.d.ts",
       "import": "./dist/token-meter.js",

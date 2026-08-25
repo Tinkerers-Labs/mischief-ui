@@ -1,6 +1,6 @@
 # Mischief UI catalog
 
-Every component, grouped by family. 98 in total.
+Every component, grouped by family. 101 in total.
 
 Install one with `npx shadcn@latest add Tinkerers-Labs/mischief-ui/<component>`, and read its full
 documentation at `https://ui.tinkererslabs.com/docs/components/<component>.md` before using it.
@@ -22,6 +22,9 @@ The surface an assistant answers through: the thread, the composer, and everythi
 - `inline-citations`: Numbered markers placed inside generated text, each linking to its entry in a source list underneath.
 - `response-actions`: The row under an answer: copy it, ask again, and rate it. Drops into the actions slot on Message.
 - `voice-input`: A microphone that draws what it is hearing, so a live one is told apart from a dead one at a glance.
+- `audio-player`: A recording with its shape, its position and its words, so a voice note can be read as well as heard.
+- `bar-visualizer`: Frequency bars for audio on its way out, the counterpart to the trace a microphone draws on the way in.
+- `mic-selector`: Chooses which microphone to use, then settles the question by lighting a meter from the one you chose.
 - `stop-generating`: The control that interrupts a running answer, with the time it has been going and Escape wired up.
 - `token-meter`: How much of the context window is gone, split by what spent it, and a warning before it runs out.
 - `model-picker`: A model chooser that has room for what each one is good at, and full keyboard control.
