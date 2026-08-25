@@ -8,7 +8,7 @@ import { SiteHeader } from "@/components/site-header"
 import { AuroraField } from "@/registry/default/aurora-field/aurora-field"
 import { GrainOverlay } from "@/registry/default/grain-overlay/grain-overlay"
 import { componentDocs } from "@/lib/component-docs"
-import { componentFor, interfaceSections } from "@/lib/interface-rules"
+import { interfaceSections } from "@/lib/interface-rules"
 import { siteConfig } from "@/site.config"
 
 export const metadata: Metadata = {
@@ -85,26 +85,6 @@ export default function InterfacesPage() {
                   <div>
                     <strong>{rule.rule}</strong>
                     <p>{rule.detail}</p>
-
-                    {rule.components?.length ? (
-                      <p className="rule-evidence">
-                        {rule.components.map((slug, at) => {
-                          const component = componentFor(slug)
-                          if (!component) return null
-
-                          return (
-                            <span key={slug}>
-                              {at > 0 ? (
-                                <span aria-hidden="true"> · </span>
-                              ) : null}
-                              <Link href={`/docs/components/${slug}`}>
-                                {component.name}
-                              </Link>
-                            </span>
-                          )
-                        })}
-                      </p>
-                    ) : null}
                   </div>
                 </article>
               ))}

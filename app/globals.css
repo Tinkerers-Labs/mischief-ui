@@ -1246,19 +1246,6 @@ a:focus-visible {
   margin-top: 0.35rem;
 }
 
-.rule-evidence {
-  margin-top: 0.5rem;
-}
-
-.rule-evidence a {
-  color: inherit;
-  text-underline-offset: 0.25rem;
-}
-
-.rule-evidence a:hover {
-  color: var(--primary);
-}
-
 .component-preview-panel {
   border: 1px solid var(--border);
   border-radius: 1rem;
