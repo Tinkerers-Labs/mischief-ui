@@ -1805,7 +1805,6 @@ export function Starters() {
     slug: "questionnaire",
     kind: "component",
     name: "Questionnaire",
-    featured: true,
     family: "Agent UI",
     summary:
       "The questions an agent asks before it starts. One at a time, with single or multiple answers, an open answer alongside them, and required ones it will not move past.",
@@ -2571,6 +2570,7 @@ export function Answer() {
   },
   {
     slug: "bounding-boxes",
+    featured: true,
     kind: "component",
     name: "Bounding Boxes",
     family: "Documents",
@@ -4095,7 +4095,6 @@ export function Layout() {
   },
   {
     slug: "image-gallery",
-    featured: true,
     kind: "block",
     name: "Image Gallery",
     family: "Blocks",
@@ -6105,6 +6104,7 @@ return (
   },
   {
     slug: "orb",
+    featured: true,
     kind: "component",
     name: "Orb",
     family: "Agent UI",
@@ -6162,6 +6162,7 @@ return (
   },
   {
     slug: "matrix",
+    featured: true,
     kind: "component",
     name: "Matrix",
     family: "Agent UI",
@@ -9246,6 +9247,7 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
   },
   {
     slug: "connection-beam",
+    featured: true,
     kind: "component",
     name: "Connection Beam",
     family: "Scenes",
@@ -9430,6 +9432,7 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
   },
   {
     slug: "metaballs",
+    featured: true,
     kind: "component",
     name: "Metaballs",
     family: "Scenes",
@@ -9753,7 +9756,6 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
     kind: "component",
     name: "Presence Field",
     family: "Agent UI",
-    featured: true,
     summary:
       "An ambient backdrop that carries what the assistant is doing. It changes colour and pace with the state, and settles into each one rather than snapping to it.",
     dependencies: [],

@@ -192,7 +192,11 @@ export const componentDemos: Record<string, ComponentDemo> = {
     Demo: InlineCitationsDemo,
     frameClassName: "p-6 md:p-10",
   },
-  "bounding-boxes": { Demo: BoundingBoxesDemo, frameClassName: "p-6 md:p-10" },
+  "bounding-boxes": {
+    Demo: BoundingBoxesDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-7",
+  },
   "page-navigator": { Demo: PageNavigatorDemo, frameClassName: "p-6 md:p-10" },
   "file-tree": { Demo: FileTreeDemo, frameClassName: "p-6 md:p-10" },
   "document-splits": {
@@ -368,7 +372,7 @@ export const componentDemos: Record<string, ComponentDemo> = {
   "data-table": {
     Demo: DataTableDemo,
     frameClassName: "p-6 md:p-10",
-    tileClassName: "lg:col-span-8",
+    tileClassName: "lg:col-span-12",
   },
   "json-viewer": { Demo: JsonViewerDemo, frameClassName: "p-6 md:p-10" },
   "voice-input": { Demo: VoiceInputDemo, frameClassName: "p-6 md:p-10" },
@@ -405,8 +409,16 @@ export const componentDemos: Record<string, ComponentDemo> = {
     Demo: MemoryChipsDemo,
     frameClassName: "p-6 md:p-10",
   },
-  orb: { Demo: OrbDemo, frameClassName: "p-8 md:p-12" },
-  matrix: { Demo: MatrixDemo, frameClassName: "p-6 md:p-10" },
+  orb: {
+    Demo: OrbDemo,
+    frameClassName: "p-8 md:p-12",
+    tileClassName: "lg:col-span-4",
+  },
+  matrix: {
+    Demo: MatrixDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-4",
+  },
   response: { Demo: ResponseDemo, frameClassName: "p-6 md:p-10" },
   "transcript-viewer": {
     Demo: TranscriptViewerDemo,
