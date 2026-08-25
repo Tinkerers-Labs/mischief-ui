@@ -107,6 +107,10 @@ import { MicSelectorDemo } from "@/components/demos/mic-selector-demo"
 import { ChainOfThoughtDemo } from "@/components/demos/chain-of-thought-demo"
 import { WebPreviewDemo } from "@/components/demos/web-preview-demo"
 import { VideoPlayerDemo } from "@/components/demos/video-player-demo"
+import { ReviewableDiffDemo } from "@/components/demos/reviewable-diff-demo"
+import { SubagentTreeDemo } from "@/components/demos/subagent-tree-demo"
+import { StoppedRunDemo } from "@/components/demos/stopped-run-demo"
+import { MemoryChipsDemo } from "@/components/demos/memory-chips-demo"
 
 export type ComponentDemo = {
   Demo: ComponentType
@@ -379,4 +383,20 @@ export const componentDemos: Record<string, ComponentDemo> = {
   },
   "web-preview": { Demo: WebPreviewDemo, frameClassName: "p-6 md:p-10" },
   "video-player": { Demo: VideoPlayerDemo, frameClassName: "p-6 md:p-10" },
+  "reviewable-diff": {
+    Demo: ReviewableDiffDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "subagent-tree": {
+    Demo: SubagentTreeDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "stopped-run": {
+    Demo: StoppedRunDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "memory-chips": {
+    Demo: MemoryChipsDemo,
+    frameClassName: "p-6 md:p-10",
+  },
 }

@@ -295,6 +295,26 @@
       "import": "./dist/video-player.js",
       "require": "./dist/video-player.cjs"
     },
+    "./reviewable-diff": {
+      "types": "./dist/reviewable-diff.d.ts",
+      "import": "./dist/reviewable-diff.js",
+      "require": "./dist/reviewable-diff.cjs"
+    },
+    "./subagent-tree": {
+      "types": "./dist/subagent-tree.d.ts",
+      "import": "./dist/subagent-tree.js",
+      "require": "./dist/subagent-tree.cjs"
+    },
+    "./stopped-run": {
+      "types": "./dist/stopped-run.d.ts",
+      "import": "./dist/stopped-run.js",
+      "require": "./dist/stopped-run.cjs"
+    },
+    "./memory-chips": {
+      "types": "./dist/memory-chips.d.ts",
+      "import": "./dist/memory-chips.js",
+      "require": "./dist/memory-chips.cjs"
+    },
     "./token-meter": {
       "types": "./dist/token-meter.d.ts",
       "import": "./dist/token-meter.js",

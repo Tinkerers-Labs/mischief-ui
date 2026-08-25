@@ -830,6 +830,67 @@
       "registryDependencies": ["utils"]
     },
     {
+      "name": "reviewable-diff",
+      "type": "registry:block",
+      "title": "Reviewable Diff",
+      "description": "A proposed change staged a hunk at a time, so a good patch with one bad hunk is not all or nothing.",
+      "files": [
+        {
+          "path": "registry/default/reviewable-diff/reviewable-diff.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "categories": ["ai", "agent", "code", "diff", "review"],
+      "registryDependencies": [
+        "utils",
+        "https://ui.tinkererslabs.com/r/diff-view.json"
+      ]
+    },
+    {
+      "name": "subagent-tree",
+      "type": "registry:ui",
+      "title": "Subagent Tree",
+      "description": "Several agents working at once, nested under whoever handed the work down.",
+      "files": [
+        {
+          "path": "registry/default/subagent-tree/subagent-tree.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "status", "tree", "feedback"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "stopped-run",
+      "type": "registry:ui",
+      "title": "Stopped Run",
+      "description": "What the thread says after an answer ended early, keeping what it had already written.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/stopped-run/stopped-run.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "chat", "feedback", "error"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "memory-chips",
+      "type": "registry:ui",
+      "title": "Memory Chips",
+      "description": "Everything an assistant remembers about someone, each one removable on its own.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/memory-chips/memory-chips.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "privacy", "settings", "chat"],
+      "registryDependencies": ["utils"]
+    },
+    {
       "name": "stop-generating",
       "type": "registry:ui",
       "title": "Stop Generating",
@@ -2418,6 +2479,21 @@
       "registryDependencies": ["https://ui.tinkererslabs.com/r/marquee.json"]
     },
     {
+      "name": "memory-chips-demo",
+      "type": "registry:example",
+      "title": "Memory Chips Demo",
+      "description": "A worked example of Memory Chips: Everything an assistant has been told to remember about someone, each one removable on its own.",
+      "files": [
+        {
+          "path": "components/demos/memory-chips-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/memory-chips.json"
+      ]
+    },
+    {
       "name": "message-demo",
       "type": "registry:example",
       "title": "Message Demo",
@@ -2683,6 +2759,21 @@
         }
       ],
       "registryDependencies": ["https://ui.tinkererslabs.com/r/reveal.json"]
+    },
+    {
+      "name": "reviewable-diff-demo",
+      "type": "registry:example",
+      "title": "Reviewable Diff Demo",
+      "description": "A worked example of Reviewable Diff: A proposed change reviewed a hunk at a time: take three of the seven, leave the rest, apply what you took.",
+      "files": [
+        {
+          "path": "components/demos/reviewable-diff-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/reviewable-diff.json"
+      ]
     },
     {
       "name": "scene-hero-demo",
@@ -2984,6 +3075,21 @@
       ]
     },
     {
+      "name": "stopped-run-demo",
+      "type": "registry:example",
+      "title": "Stopped Run Demo",
+      "description": "A worked example of Stopped Run: What the thread says after an answer ended early, with whatever it had already written kept above the line.",
+      "files": [
+        {
+          "path": "components/demos/stopped-run-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/stopped-run.json"
+      ]
+    },
+    {
       "name": "stream-glow-demo",
       "type": "registry:example",
       "title": "Stream Glow Demo",
@@ -3016,6 +3122,21 @@
       ],
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/streaming-text.json"
+      ]
+    },
+    {
+      "name": "subagent-tree-demo",
+      "type": "registry:example",
+      "title": "Subagent Tree Demo",
+      "description": "A worked example of Subagent Tree: Several agents working at once, nested under whoever handed the work down, each with its own state and elapsed time.",
+      "files": [
+        {
+          "path": "components/demos/subagent-tree-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/subagent-tree.json"
       ]
     },
     {

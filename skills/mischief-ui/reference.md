@@ -1,6 +1,6 @@
 # Mischief UI catalog
 
-Every component, grouped by family. 104 in total.
+Every component, grouped by family. 108 in total.
 
 Install one with `npx shadcn@latest add Tinkerers-Labs/mischief-ui/<component>`, and read its full
 documentation at `https://ui.tinkererslabs.com/docs/components/<component>.md` before using it.
@@ -27,6 +27,9 @@ The surface an assistant answers through: the thread, the composer, and everythi
 - `mic-selector`: Chooses which microphone to use, then settles the question by lighting a meter from the one you chose.
 - `chain-of-thought`: The steps an assistant took before answering, open while it is working and folded away once it is done.
 - `video-player`: Video with captions that can be turned on, a real scrubber, and controls that survive full screen.
+- `subagent-tree`: Several agents working at once, nested under whoever handed the work down, each with its own state and elapsed time.
+- `stopped-run`: What the thread says after an answer ended early, with whatever it had already written kept above the line.
+- `memory-chips`: Everything an assistant has been told to remember about someone, each one removable on its own.
 - `stop-generating`: The control that interrupts a running answer, with the time it has been going and Escape wired up.
 - `token-meter`: How much of the context window is gone, split by what spent it, and a warning before it runs out.
 - `model-picker`: A model chooser that has room for what each one is good at, and full keyboard control.
@@ -42,6 +45,7 @@ Code an agent wrote, ran, or wants to change, and the controls to accept it.
 - `diff-view`: A proposed change shown as a unified or side-by-side diff, with optional accept and reject controls.
 - `terminal-output`: Streaming command output with stderr called out, an exit code, and scroll that follows without trapping you.
 - `web-preview`: A sandboxed frame for whatever the assistant just built, with the widths to check it at.
+- `reviewable-diff`: A proposed change reviewed a hunk at a time: take three of the seven, leave the rest, apply what you took.
 
 ## Documents
 

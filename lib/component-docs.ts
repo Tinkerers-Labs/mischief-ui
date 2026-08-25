@@ -5757,6 +5757,353 @@ return (
       "The video carries an accessible name, and every control is a button whose name says the action it will take rather than the state it is in. Toggles carry aria-pressed. Seeking is a native range input announced as a position in minutes and seconds, so it works from a keyboard. Captions are real tracks, which means the browser draws them, the reader can style them in their own settings, and a deaf viewer gets them without a transcript being bolted on beside the picture. Full screen is entered on the component so the controls remain.",
   },
   {
+    slug: "reviewable-diff",
+    kind: "block",
+    name: "Reviewable Diff",
+    family: "Code",
+    summary:
+      "A proposed change reviewed a hunk at a time: take three of the seven, leave the rest, apply what you took.",
+    dependencies: [],
+    install: registryInstallCommand("reviewable-diff"),
+    npmImport: packageImport("ReviewableDiff", "reviewable-diff"),
+    usage: `export function Review({ before, after }) {
+  return (
+    <ReviewableDiff
+      before={before}
+      after={after}
+      filename="src/upload/retry.ts"
+      onApply={(hunks) => stage(hunks)}
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "why-hunks",
+        title: "All or nothing is the wrong shape",
+        blocks: [
+          {
+            kind: "text",
+            text: "Diff View accepts or rejects a whole change, which is right when a person wrote it and knew what they meant. A patch from an agent is different: the part that fixes the bug and the part that misread the codebase usually arrive together.",
+          },
+          {
+            kind: "text",
+            text: "Rejecting the lot to avoid one bad hunk throws away the work. Accepting the lot to keep the good hunk lets the bad one in. So the unit of the decision is the hunk, and apply hands back only the ones that were staged.",
+          },
+          {
+            kind: "code",
+            code: `<ReviewableDiff
+  before={before}
+  after={after}
+  onApply={(hunks) => apply(hunks)}
+/>`,
+            caption:
+              "onApply receives the staged hunks, in file order, and nothing else.",
+          },
+        ],
+      },
+      {
+        id: "diffing",
+        title: "It borrows the diff, not the display",
+        blocks: [
+          {
+            kind: "text",
+            text: "The line comparison and the hunk splitting come from Diff View, which already exports both. Installing this installs that too, which is why it is a block rather than a component: one diff implementation arrives, not two that drift, and the one it sits on is worth having on its own.",
+          },
+          {
+            kind: "text",
+            text: "Pass hunks directly when you have a real patch from git, and no comparison runs at all. Pass before and after, and it computes them with the context you ask for.",
+          },
+        ],
+      },
+      {
+        id: "counting",
+        title: "Saying how much is staged",
+        blocks: [
+          {
+            kind: "text",
+            text: "The header counts staged hunks and the lines they carry, and it updates as boxes are ticked. Unstaged hunks stay visible and dimmed rather than disappearing, because a hunk that vanishes when you untick it makes the patch harder to reason about, not easier.",
+          },
+        ],
+      },
+    ],
+    types: [],
+    props: [
+      ["before, after", "string", "The two versions, compared here."],
+      [
+        "hunks",
+        "readonly DiffHunk[]",
+        "Already split, when you have a real patch. Skips the comparison.",
+      ],
+      ["filename", "string", "Shown in the header."],
+      ["context", "number", "Unchanged lines around a change. Defaults to 3."],
+      [
+        "defaultStaged",
+        "readonly number[]",
+        "Hunk indexes that start staged. Defaults to all of them.",
+      ],
+      ["staged", "readonly number[]", "Hold the staged set yourself."],
+      [
+        "onStagedChange",
+        "(staged: number[]) => void",
+        "The staged set changed.",
+      ],
+      [
+        "onApply",
+        "(hunks: DiffHunk[]) => void",
+        "Apply was pressed, with the staged hunks.",
+      ],
+      ["applyLabel", "string", "The apply button's text."],
+      [
+        "...rootProps",
+        "HTMLAttributes<HTMLDivElement>",
+        "Native root attributes.",
+      ],
+    ],
+    accessibility:
+      "Each hunk is a native checkbox inside its own label, so the whole row is a target, the set is walkable with Tab and Space, and no ARIA is invented for a control the platform already has. The group carries a name that includes the filename. How much is staged is announced through a polite live region as hunks and lines rather than left to the header's colour, and an unstaged hunk is dimmed and unticked rather than hidden, so it stays readable and reachable.",
+  },
+  {
+    slug: "subagent-tree",
+    kind: "component",
+    name: "Subagent Tree",
+    family: "Agent UI",
+    summary:
+      "Several agents working at once, nested under whoever handed the work down, each with its own state and elapsed time.",
+    dependencies: [],
+    install: registryInstallCommand("subagent-tree"),
+    npmImport: packageImport("SubagentTree", "subagent-tree"),
+    usage: `export function Fleet({ runs }) {
+  return <SubagentTree runs={runs} />
+}`,
+    sections: [
+      {
+        id: "not-a-tree-widget",
+        title: "It is nested lists, not a tree widget",
+        blocks: [
+          {
+            kind: "text",
+            text: "The obvious reach here is role=tree with treeitem children and arrow-key navigation. It would be wrong. Nothing in this is expanded, selected or activated: it is work being watched, not a file browser.",
+          },
+          {
+            kind: "text",
+            text: 'A tree widget would announce "tree, level 2, 3 of 4" over that, and take the arrow keys hostage to move between things nobody can do anything to. Nested lists say the same shape, cost nothing, and leave the keyboard alone. Reach for the widget when the nodes become controls.',
+          },
+        ],
+      },
+      {
+        id: "states",
+        title: "What a run can be",
+        blocks: [
+          {
+            kind: "table",
+            headers: ["Status", "What it means"],
+            rows: [
+              ["queued", "Handed out, not started"],
+              ["running", "Working now"],
+              ["done", "Finished"],
+              ["failed", "Stopped without finishing"],
+            ],
+          },
+          {
+            kind: "text",
+            text: "Status reaches a screen reader as a word after the label rather than as the colour of a dot, and the running marker stops pulsing when reduced motion is preferred. The count of what is running is announced once for the whole tree, not once per agent, because twelve agents finishing is one piece of news.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "AgentRun",
+        rows: [
+          ["id", "string", "Unique within the tree."],
+          ["label", "string", "What this agent was asked to do."],
+          [
+            "status",
+            '"queued" | "running" | "done" | "failed"',
+            "Defaults to done.",
+          ],
+          ["detail", "ReactNode", "What it is doing, or what it found."],
+          ["duration", "number", "Seconds it has taken."],
+          ["children", "readonly AgentRun[]", "Work it handed down."],
+        ],
+      },
+    ],
+    props: [
+      ["runs", "readonly AgentRun[]", "The top level agents."],
+      ["label", "string", "Names the group. Defaults to Agents."],
+      [
+        "...rootProps",
+        "HTMLAttributes<HTMLDivElement>",
+        "Native root attributes.",
+      ],
+    ],
+    accessibility:
+      "Nesting is expressed with nested lists, so a screen reader announces the depth and the number of items at each level without a tree widget's keyboard contract being invented for content that cannot be operated. Each run's status is spoken as a word, never carried by colour alone. One polite live region summarises the whole tree, so a fleet finishing is announced once rather than once per agent. The running marker respects reduced motion.",
+  },
+  {
+    slug: "stopped-run",
+    kind: "component",
+    name: "Stopped Run",
+    family: "Agent UI",
+    summary:
+      "What the thread says after an answer ended early, with whatever it had already written kept above the line.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("stopped-run"),
+    npmImport: packageImport("StoppedRun", "stopped-run"),
+    usage: `export function Ended({ text }) {
+  return (
+    <StoppedRun reason="stopped" elapsed={7.4} onRetry={again}>
+      {text}
+    </StoppedRun>
+  )
+}`,
+    sections: [
+      {
+        id: "keep-the-partial",
+        title: "Keep what it wrote",
+        blocks: [
+          {
+            kind: "text",
+            text: "Clearing the half-written answer when a run ends is the tidy choice and the wrong one. Someone stopped it because they had read enough, and the part they read is usually the part they wanted.",
+          },
+          {
+            kind: "text",
+            text: "So the text stays, faded at its bottom edge, with a rule and a sentence underneath saying it ended and why.",
+          },
+        ],
+      },
+      {
+        id: "marked-incomplete",
+        title: "Half a sentence is not an answer",
+        blocks: [
+          {
+            kind: "text",
+            text: "The fade says incomplete to someone who can see it and nothing at all to someone who cannot. A screen reader would otherwise read the fragment in the same voice as a finished answer and stop, which is how a truncated instruction becomes a followed one.",
+          },
+          {
+            kind: "text",
+            text: "The partial text is a group named as an incomplete answer, so it is announced as such before it is read, and the reason is announced through a live region as soon as it appears.",
+          },
+        ],
+      },
+      {
+        id: "reasons",
+        title: "Why it ended",
+        blocks: [
+          {
+            kind: "table",
+            headers: ["Reason", "What it says"],
+            rows: [
+              ["stopped", "You stopped this answer"],
+              ["error", "Something went wrong"],
+              ["limit", "It reached its length limit"],
+              ["timeout", "It took too long and was cut off"],
+            ],
+          },
+          {
+            kind: "text",
+            text: "Carry on is offered only where carrying on makes sense, which is why it is a prop rather than something inferred: a stopped answer can be resumed and a failed one usually has to be run again.",
+          },
+        ],
+      },
+    ],
+    types: [],
+    props: [
+      [
+        "reason",
+        '"stopped" | "error" | "limit" | "timeout"',
+        "Why it ended. Defaults to stopped.",
+      ],
+      ["children", "ReactNode", "What arrived before it ended."],
+      ["message", "string", "Replaces the default sentence."],
+      ["elapsed", "number", "Seconds it ran for."],
+      ["onRetry", "() => void", "Run it again from the start."],
+      ["onResume", "() => void", "Carry on from where it stopped."],
+      ["retryLabel, resumeLabel", "string", "The two buttons' text."],
+      [
+        "...rootProps",
+        "HTMLAttributes<HTMLDivElement>",
+        "Native root attributes.",
+      ],
+    ],
+    accessibility:
+      "The partial answer is a group named as incomplete, so assistive technology says so before reading it rather than delivering a fragment in the voice of a finished answer. The reason is announced through a polite live region and is also written on the element as data-reason. The fade over the text is decoration and repeats nothing that is not in the sentence below it. Both actions are ordinary buttons at 32px with visible focus.",
+  },
+  {
+    slug: "memory-chips",
+    kind: "component",
+    name: "Memory Chips",
+    family: "Agent UI",
+    summary:
+      "Everything an assistant has been told to remember about someone, each one removable on its own.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("memory-chips"),
+    npmImport: packageImport("MemoryChips", "memory-chips"),
+    usage: `export function Settings({ memories }) {
+  return <MemoryChips memories={memories} onForget={forget} />
+}`,
+    sections: [
+      {
+        id: "listable",
+        title: "Memory you cannot see cannot be corrected",
+        blocks: [
+          {
+            kind: "text",
+            text: "An assistant that quietly keeps notes on someone is holding a profile they have never read. The first thing this component does is show it, in the words it was stored in, not a summary of them.",
+          },
+          {
+            kind: "text",
+            text: "The second is to let one entry go without taking the rest. Where forgetting everything is the only control, a single wrong note turns into a choice between living with it and starting over, so most people live with it.",
+          },
+        ],
+      },
+      {
+        id: "nothing-leaves",
+        title: "It removes nothing by itself",
+        blocks: [
+          {
+            kind: "text",
+            text: "onForget is called with an id and that is all that happens here. Deleting the record, telling the server, and deciding whether the assistant may write it again are yours, because they are decisions about someone's data and they do not belong in a component you copied in.",
+          },
+          {
+            kind: "code",
+            code: `<MemoryChips
+  memories={memories}
+  onForget={(id) => forget(id)}
+  onForgetAll={() => forgetEverything()}
+/>`,
+            caption:
+              "Leave onForgetAll off and there is no way to clear it all.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "Memory",
+        rows: [
+          ["id", "string", "Unique within the set."],
+          ["text", "string", "The note, as it was stored."],
+          ["source", "string", "Where it came from, shown after the note."],
+        ],
+      },
+    ],
+    props: [
+      ["memories", "readonly Memory[]", "What is being remembered."],
+      ["onForget", "(id: string) => void", "One entry was dismissed."],
+      ["onForgetAll", "() => void", "Clear everything. Omit to withhold it."],
+      ["label", "string", "Names the group."],
+      ["emptyMessage", "string", "Shown when there is nothing stored."],
+      [
+        "...rootProps",
+        "HTMLAttributes<HTMLDivElement>",
+        "Native root attributes.",
+      ],
+    ],
+    accessibility:
+      'Each remove button names the entry it will remove, so a screen reader hears "Forget: prefers pnpm" rather than a row of identical Remove buttons. A removal is confirmed through a polite live region, which matters because the chip it was announced from has gone by the time the message lands. The list is a real list, so its length is announced, and the empty state is a sentence rather than an absence.',
+  },
+  {
     slug: "stop-generating",
     kind: "component",
     name: "Stop Generating",

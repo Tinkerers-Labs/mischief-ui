@@ -87,6 +87,11 @@ export default defineConfig({
       "../../registry/default/chain-of-thought/chain-of-thought.tsx",
     "web-preview": "../../registry/default/web-preview/web-preview.tsx",
     "video-player": "../../registry/default/video-player/video-player.tsx",
+    "reviewable-diff":
+      "../../registry/default/reviewable-diff/reviewable-diff.tsx",
+    "subagent-tree": "../../registry/default/subagent-tree/subagent-tree.tsx",
+    "stopped-run": "../../registry/default/stopped-run/stopped-run.tsx",
+    "memory-chips": "../../registry/default/memory-chips/memory-chips.tsx",
     "token-meter": "../../registry/default/token-meter/token-meter.tsx",
     "model-picker": "../../registry/default/model-picker/model-picker.tsx",
     "source-card": "../../registry/default/source-card/source-card.tsx",

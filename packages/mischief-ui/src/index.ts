@@ -308,6 +308,30 @@ export {
 } from "../../../registry/default/video-player/video-player"
 
 export {
+  ReviewableDiff,
+  type ReviewableDiffProps,
+} from "../../../registry/default/reviewable-diff/reviewable-diff"
+
+export {
+  SubagentTree,
+  type AgentRun,
+  type AgentRunStatus,
+  type SubagentTreeProps,
+} from "../../../registry/default/subagent-tree/subagent-tree"
+
+export {
+  StoppedRun,
+  type StoppedReason,
+  type StoppedRunProps,
+} from "../../../registry/default/stopped-run/stopped-run"
+
+export {
+  MemoryChips,
+  type Memory,
+  type MemoryChipsProps,
+} from "../../../registry/default/memory-chips/memory-chips"
+
+export {
   TokenMeter,
   type TokenMeterProps,
   type TokenSegment,
