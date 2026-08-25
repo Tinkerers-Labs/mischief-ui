@@ -26,7 +26,7 @@ export function llmsIndex() {
 
   return `# ${siteConfig.name} UI
 
-> ${componentDocs.length} React components for AI and document interfaces, built with Tailwind CSS and shadcn theme tokens. Every component installs through the shadcn registry or from npm, and anything heavier than React is an optional peer.
+> ${componentDocs.length} React components for shadcn projects: document viewers and redaction, agent chat, data tables, command palettes, form controls, and shader fields, built with Tailwind CSS and shadcn theme tokens. Every component installs through the shadcn registry or from npm, and anything heavier than React is an optional peer.
 
 Each link below is that component's whole documentation as markdown: what it does, how to install it, a worked example, the concerns particular to it, its props, and its accessibility behaviour.
 

@@ -10,13 +10,39 @@ A component should solve a familiar interface problem, work across input methods
 
 Before opening a pull request:
 
-1. Add or update a real example on the site.
+1. Wire a real example into the site. See below for where it goes.
 2. Test the component with a keyboard and a pointer.
 3. Test reduced motion.
 4. Test at 375px and 1440px widths.
 5. Run `pnpm check`.
 
 Keep pull requests focused. Explain the user-facing reason for the change and include screenshots for visual changes.
+
+## Where a component gets wired
+
+Six files, every one of them hand-edited:
+
+1. `registry/default/<slug>/<slug>.tsx`, the component.
+2. `lib/component-docs.ts`, its entry. `registry.json`, the docs page, the
+   markdown under `public/docs`, and llms.txt are all generated from this, so
+   it is the only place any of them is written.
+3. `components/demos/<slug>-demo.tsx`, the example.
+4. `components/demos/index.ts`, registering that demo under the component's
+   slug. A demo nothing registers still compiles and still ships: it simply
+   renders nowhere, because the page looks the component up by slug and draws
+   nothing when it misses.
+5. `packages/mischief-ui/tsup.config.ts`, a build entry.
+6. `packages/mischief-ui/package.json`, the subpath export, plus the barrel in
+   `src/index.ts` when the component needs no optional peer.
+
+Anything the component exports belongs in that docs entry as well, secondary
+components included, written as `prop (ExportName)` the way Inline Citations
+documents `id (Citation)`.
+
+`pnpm check` enforces all of it. Every link above has a test that reads the
+tree and fails on a gap: a directory the registry does not ship, a documented
+component with no registered demo, an export named nowhere in its own
+documentation.
 
 ## Dependencies
 

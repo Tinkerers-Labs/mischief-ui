@@ -31,7 +31,7 @@ export const siteConfig = {
   title: `${siteName} UI | Playful React Components for shadcn`,
   tagline: "Good interfaces deserve a little mischief.",
   description:
-    "Open-source React components and blocks for shadcn projects, with playful interaction, accessible behavior, Tailwind CSS, and source you can own.",
+    "A playful, high-utility shadcn registry: PDF, DOCX and JSON viewers, redaction and bounding boxes, agent chat with tool calls, data tables, command palettes, OTP inputs, and shader fields.",
   url: siteUrl,
   registry: {
     namespace: registryNamespace,

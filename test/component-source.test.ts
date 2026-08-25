@@ -3,6 +3,7 @@ import path from "node:path"
 
 import { describe, expect, it } from "vitest"
 
+import { componentDemos } from "../components/demos"
 import { componentDocs } from "../lib/component-docs"
 import {
   componentSource,
@@ -23,6 +24,13 @@ describe("component source", () => {
   it.each(componentDocs)("$name has a demo file to show", (component) => {
     expect(exists(demoSourcePath(component.slug))).toBe(true)
   })
+
+  it.each(componentDocs)(
+    "$name has a demo the docs can render",
+    (component) => {
+      expect(componentDemos[component.slug]).toBeDefined()
+    }
+  )
 
   it("reads the component itself, not a stub", async () => {
     const source = await componentSource("hold-button")

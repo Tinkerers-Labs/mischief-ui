@@ -49,7 +49,7 @@ export function directoryEntry(): DirectoryEntry {
     // No count. This text is copied into somebody else's repository, where it
     // cannot be regenerated: the entry opened at ninety-four was stale within
     // a day of being written.
-    description: `Playful, accessible React components for shadcn projects: an agent's chat surface, document viewers, a data table, and WebGL backdrops that read their colours from your theme.`,
+    description: `A playful, high-utility shadcn registry: PDF, DOCX and JSON viewers, redaction and bounding boxes, agent chat with tool calls, data tables, command palettes, OTP inputs, and shader fields.`,
     logo: markSvg(),
   }
 }

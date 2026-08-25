@@ -4,6 +4,7 @@ import path from "node:path"
 import { describe, expect, it } from "vitest"
 
 import { componentDocs, componentFamilies } from "../lib/component-docs"
+import { componentSourcePath } from "../lib/component-source"
 import { componentMarkdown } from "../lib/component-markdown"
 import { llmsFull, llmsIndex } from "../lib/llms-txt"
 
@@ -45,6 +46,29 @@ describe("component markdown", () => {
 
       for (const [propName] of component.props) {
         expect(markdown).toContain(`| \`${propName}\` |`)
+      }
+    }
+  )
+
+  it.each(documents)(
+    "$name names everything its source exports",
+    ({ component, markdown }) => {
+      const source = readFileSync(
+        path.resolve(
+          import.meta.dirname,
+          "..",
+          componentSourcePath(component.slug)
+        ),
+        "utf8"
+      )
+      const exported = [
+        ...source.matchAll(/^export (?:function|const|class) (\w+)/gm),
+      ]
+        .map(([, name]) => name!)
+        .filter((name) => /^[A-Z]/.test(name))
+
+      for (const name of exported) {
+        expect(markdown, `${name} is exported and undocumented`).toContain(name)
       }
     }
   )

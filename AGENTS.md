@@ -14,3 +14,5 @@ Read `DESIGN.md` before changing components, documentation, or site copy.
 ## Required checks
 
 Run `pnpm check` before committing. Run `pnpm registry:build` after changing `registry.json` or a registry component.
+
+Adding a component touches six files by hand. `CONTRIBUTING.md` names them under "Where a component gets wired".

@@ -97,6 +97,10 @@ import { AvatarStackDemo } from "@/components/demos/avatar-stack-demo"
 import { TimelineDemo } from "@/components/demos/timeline-demo"
 
 import { DataTableDemo } from "@/components/demos/data-table-demo"
+import { JsonViewerDemo } from "@/components/demos/json-viewer-demo"
+import { VoiceInputDemo } from "@/components/demos/voice-input-demo"
+import { MarqueeDemo } from "@/components/demos/marquee-demo"
+import { ConnectionBeamDemo } from "@/components/demos/connection-beam-demo"
 
 export type ComponentDemo = {
   Demo: ComponentType
@@ -349,5 +353,12 @@ export const componentDemos: Record<string, ComponentDemo> = {
     Demo: DataTableDemo,
     frameClassName: "p-6 md:p-10",
     tileClassName: "lg:col-span-8",
+  },
+  "json-viewer": { Demo: JsonViewerDemo, frameClassName: "p-6 md:p-10" },
+  "voice-input": { Demo: VoiceInputDemo, frameClassName: "p-6 md:p-10" },
+  marquee: { Demo: MarqueeDemo, frameClassName: "p-6 md:p-10" },
+  "connection-beam": {
+    Demo: ConnectionBeamDemo,
+    frameClassName: "p-6 md:p-10",
   },
 }

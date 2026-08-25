@@ -2051,6 +2051,13 @@ export function AskAboutAcme() {
         "HTMLAttributes<HTMLDivElement>",
         "Native root attributes.",
       ],
+      [
+        "id (AskAiLogo)",
+        "string",
+        "Which assistant's mark to draw. An unknown id falls back to the first letter of name.",
+      ],
+      ["name (AskAiLogo)", "string", "The assistant, for that fallback."],
+      ["className (AskAiLogo)", "string", "Classes for the mark."],
     ],
     accessibility:
       "Every assistant is a named external link with a 44px target and explicit new-tab wording. The copy action is a native button. Success and failure are shown in the button and announced through a polite status region. The component does not open a destination until someone chooses it. Prompts are placed in destination URLs, so they must not contain secrets or private data.",
@@ -5625,6 +5632,16 @@ return (
         "(link: FooterLink) => ReactNode",
         "Renders every link, for your framework's link component.",
       ],
+      [
+        "link (FooterLinkItem)",
+        "FooterLink",
+        "One link on its own, outside a column.",
+      ],
+      [
+        "renderLink (FooterLinkItem)",
+        "(link: FooterLink) => ReactNode",
+        "The same override, for that single link.",
+      ],
     ],
     sections: [
       {
@@ -5652,6 +5669,10 @@ return (
           {
             kind: "text",
             text: "Links are plain anchors unless you say otherwise, and one marked external opens in a new tab, carries rel=noreferrer noopener, and says so in its accessible name. renderLink hands each one back instead, which is how a framework's link gets used without this component knowing about it -- along with the styling, which then becomes yours to keep consistent.",
+          },
+          {
+            kind: "text",
+            text: "FooterLinkItem is that anchor on its own, and FOOTER_LABEL is the class string the group headings wear. Both are exported, so a footer you assemble yourself keeps one link style and one label style instead of a second set that drifts from this one.",
           },
         ],
       },

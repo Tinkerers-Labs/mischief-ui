@@ -40,6 +40,20 @@ function fixturesFor(entry: string, seen = new Set<string>()): string[] {
   return found
 }
 
+describe("published components", () => {
+  it("ships every directory under registry/default", () => {
+    const onDisk = readdirSync(path.join(ROOT, "registry/default"), {
+      withFileTypes: true,
+    })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+
+    const published = components.map((item) => item.name)
+
+    expect(onDisk.sort()).toEqual(published.sort())
+  })
+})
+
 describe("published examples", () => {
   it("covers every demo of a component", () => {
     const shouldPublish = demoFiles
