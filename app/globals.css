@@ -1039,6 +1039,7 @@ a:focus-visible {
   opacity: 0.35;
 }
 
+.ax-hero h1,
 .ax-page h1,
 .brand-page h1,
 .interfaces-hero-inner h1 {
@@ -1668,7 +1669,11 @@ pre:not([data-slot]) {
 .ax-page {
   margin: 0 auto;
   max-width: 90rem;
-  padding: clamp(4rem, 8vw, 8rem) clamp(1rem, 4vw, 3rem) 8rem;
+  padding: 0 clamp(1rem, 4vw, 3rem) 8rem;
+}
+
+.ax-hero h1 {
+  max-width: 14ch;
 }
 
 .ax-page h1 {

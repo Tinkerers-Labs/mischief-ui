@@ -1,7 +1,8 @@
 import type { Metadata, Route } from "next"
 import Link from "next/link"
 
-import { ExternalLink } from "@/components/external-link"
+import { AxIndex } from "@/components/ax-index"
+import { HeroScene } from "@/components/hero-scene"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { axIntro, axSections } from "@/lib/ax"
@@ -19,25 +20,18 @@ export default function AxPage() {
     <>
       <SiteHeader />
 
+      {/* Constellation, because the page is about things joined to each other. */}
+      <HeroScene controls={false} initial="constellation">
+        <div className="ax-hero">
+          <p className="eyebrow">Agent experience</p>
+          <h1>
+            AX, <span className="text-primary">explained.</span>
+          </h1>
+          <p className="ax-lead">{axIntro}</p>
+        </div>
+      </HeroScene>
+
       <main className="ax-page">
-        <p className="eyebrow">Agent experience</p>
-        <h1>
-          AX, <span className="text-primary">explained.</span>
-        </h1>
-        <p className="ax-lead">{axIntro}</p>
-
-        <nav aria-label="On this page" className="ax-index">
-          {axSections.map((section) => (
-            <a
-              key={section.id}
-              href={`#${section.id}`}
-              className="border-border text-muted-foreground inline-flex min-h-9 items-center rounded-full border px-3 text-xs font-semibold no-underline transition-colors motion-reduce:transition-none"
-            >
-              {section.title}
-            </a>
-          ))}
-        </nav>
-
         {axSections.map((section) => (
           <section className="ax-section" key={section.id} id={section.id}>
             <h2>{section.title}</h2>
@@ -84,27 +78,11 @@ export default function AxPage() {
                 ))}
               </div>
             ) : null}
-
-            {section.sources ? (
-              <p className="ax-sources">
-                Sources:{" "}
-                {section.sources.map((source, at) => (
-                  <span key={source.href}>
-                    {at > 0 ? ", " : ""}
-                    <ExternalLink
-                      className="underline underline-offset-4"
-                      href={source.href}
-                    >
-                      {source.label}
-                    </ExternalLink>
-                  </span>
-                ))}
-              </p>
-            ) : null}
           </section>
         ))}
       </main>
 
+      <AxIndex />
       <SiteFooter />
     </>
   )

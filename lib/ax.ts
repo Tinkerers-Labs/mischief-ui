@@ -1,15 +1,7 @@
 /**
  * What agent experience is, written down because most of what is published
  * about it is a position rather than an explanation.
- *
- * Every claim about somebody else's work carries the page it came from. The
- * sections about this site name what a reader can open to check it.
  */
-export type AxSource = {
-  label: string
-  href: string
-}
-
 export type AxTable = {
   headers: readonly string[]
   rows: readonly (readonly string[])[]
@@ -20,176 +12,124 @@ export type AxSection = {
   title: string
   body: readonly string[]
   table?: AxTable
-  /** Pages on this site that show the section is true here. */
-  seen?: readonly AxSource[]
-  sources?: readonly AxSource[]
+  /** Files on this site a reader can open to see the thing itself. */
+  seen?: readonly { label: string; href: string }[]
 }
 
 export const axIntro =
-  "Agent experience is what a piece of software is like to use when the thing using it is an agent rather than a person. The term is a year old, the field has more manifesto than method, and the parts of it that are settled are worth knowing. This is what it means, what it is made of, and what nobody has worked out yet."
+  "Software gets used by agents now, and they are a strange kind of user: they read everything literally, ask nobody, and give up quietly. This is what that changes, what the tooling for it actually is, and what nobody has worked out yet."
 
 export const axSections: readonly AxSection[] = [
   {
     id: "what-it-is",
     title: "What it is",
     body: [
-      "Agent experience, or AX, is the holistic experience an agent has when it uses a product. Mathias Biilmann of Netlify named it in 2025, and the definition has stayed close to that: how well an agent can find out what your service does, call it without guessing, and recover when something goes wrong.",
-      "It is usually explained against developer experience, and the distinction is worth keeping. DX is about the person building on your platform. AX is about the agent that person sends in their place. The two come apart in a specific way: a developer who hits an unclear error reads around it, asks somebody, and works it out. An agent hits the same error and either invents an answer or gives up, and in both cases the person who delegated the work is not there to see it happen.",
-      "So AX is not a rebrand of DX. It is the part of DX that stops working when nobody is watching.",
-    ],
-    sources: [
-      { label: "agentexperience.ax", href: "https://agentexperience.ax/" },
-      {
-        label: "Netlify on agent experience",
-        href: "https://www.netlify.com/agent-experience/",
-      },
+      "An agent reads your documentation, runs your install command, and either gets where it was going or does not. Nobody is watching while it happens. Agent experience is the name for how that goes.",
+      "The useful comparison is developer experience. A developer who hits a confusing error reads around it, asks someone, works it out. An agent hits the same error and invents an answer or stops. Same error, and only one of those ends with somebody learning something.",
+      "So it is not a rebrand of DX. It is the part of DX that stops working when nobody is watching.",
     ],
   },
   {
     id: "why-now",
-    title: "Why it turned up when it did",
+    title: "Why now",
     body: [
-      "Netlify noticed that more than a thousand sites a day were being created on their platform straight out of ChatGPT. Nobody had designed for that. It worked because a deploy happened to be reachable without a human in the loop, and it would have failed if any step had needed a person to click something.",
-      "That is the whole argument, and it does not need the forecasting that usually comes with it. A class of user arrived that reads documentation literally, never asks a colleague, and abandons a task rather than filing a bug. Everything else follows from taking that user seriously.",
-    ],
-    sources: [
-      {
-        label: "Beyond DX, The New Stack",
-        href: "https://thenewstack.io/beyond-dx-developers-must-now-learn-agent-experience-ax/",
-      },
+      "More than a thousand sites a day get built on Netlify by people who never open the dashboard. They asked a chatbot, and it worked, because no step in the path happened to need a person.",
+      "Nothing about that was designed. It just turned out that a service you can get all the way through without a human is a service an agent can finish a job on. Everything else here follows from that.",
     ],
   },
   {
     id: "principles",
-    title: "The principles, and which of them bite",
+    title: "The principles",
     body: [
-      "The canonical list has five principles for services and five for agents. Three of the five for services carry real weight, and the summaries below are ours rather than theirs.",
-      "Agent accessibility is the sharp one. Its own wording is that requiring a human in order to reach a goal is an anti-pattern. Read plainly, that rules out a great deal of ordinary practice: a signup wall in front of the documentation, an API key that arrives by email, a dashboard that is the only way to do something the API almost supports.",
-      "Contextual alignment says a service cannot assume the model already knows it. That sounds obvious and is routinely broken by documentation written for somebody who has already read the rest of the documentation.",
-      "Differentiating agent interaction is the one nobody does. If your logs cannot tell an agent from a person, you have no idea which half of your interface is being used, and no way to tell whether any of this worked.",
-      "The remaining two, human centricity and interactivity patterns, are closer to statements of intent. They are not wrong. They are just hard to fail.",
+      "There are five written down. Three are worth your time.",
+      "The sharp one is that no step should need a human. Taken seriously, that removes the signup wall in front of your documentation and the API key that arrives by email. The second is to stop writing for a reader who has already read the rest of your documentation, which is easy to agree with and hard to actually do.",
+      "The third is to log agent traffic separately. Almost nobody does, which is why almost nobody can tell you whether any of this worked. The remaining two are hard to fail.",
     ],
     table: {
       headers: ["Principle", "What it asks for"],
       rows: [
         [
           "Human centricity",
-          "An agent is a delegate. Design for the person who sent it.",
+          "An agent is a delegate. Design for whoever sent it.",
         ],
+        ["Agent accessibility", "No step in the path may require a human."],
+        ["Contextual alignment", "Assume the model knows nothing about you."],
+        ["Interactivity patterns", "Conventions for citation and provenance."],
         [
-          "Agent accessibility",
-          "No step in the path may require a human. Parity with the human interface.",
-        ],
-        [
-          "Contextual alignment",
-          "Supply the context. Assume the model knows nothing about you.",
-        ],
-        [
-          "Interactivity patterns",
-          "Conventions for citation, provenance, and anything consequential.",
-        ],
-        [
-          "Differentiate agent interaction",
-          "Your metrics and logs should record that an agent did it.",
+          "Differentiate agents",
+          "Your logs should record that an agent did it.",
         ],
       ],
     },
-    sources: [
-      {
-        label: "Principles of AX",
-        href: "https://agentexperience.ax/concepts/principles-of-ax/",
-      },
-    ],
   },
   {
     id: "mechanisms",
-    title: "The four things it is actually made of",
+    title: "The four things it is made of",
     body: [
-      "AX as a word covers four separate mechanisms that get discussed together and are not interchangeable. This is the part that is hard to find written down, and the part worth knowing before adopting any of it.",
-      "The short version: llms.txt is for a model reading your site, AGENTS.md is for a coding agent working in your repository, a skill is a procedure an agent loads when it is relevant, and MCP is a live connection to something that can act. A project can want all four or one of them, and choosing by fashion is how you end up maintaining three files nobody reads.",
+      "Four different things get talked about as though they were one decision. They are not interchangeable, and choosing by fashion is how you end up maintaining three files nobody reads.",
     ],
     table: {
       headers: ["", "What it is", "Who reads it", "Reach for it when"],
       rows: [
         [
           "llms.txt",
-          "A markdown index of your documentation at a fixed path, with the full text alongside it.",
-          "Any model that has been pointed at your site.",
-          "Your documentation is worth reading and your HTML is not the best way to read it.",
+          "A markdown index of your documentation at a fixed path.",
+          "Any model pointed at your site.",
+          "Your docs are worth reading and your HTML is not the way to read them.",
         ],
         [
           "AGENTS.md",
-          "Instructions that live in a repository, about that repository.",
-          "A coding agent working in the checkout.",
-          "Somebody, or something, is going to change your code and needs the house rules.",
+          "Instructions living in a repository, about that repository.",
+          "A coding agent in the checkout.",
+          "Something is going to change your code and needs the house rules.",
         ],
         [
           "Agent Skills",
-          "A named procedure with a description, loaded when the description matches the task.",
+          "A named procedure, loaded when its description matches the task.",
           "An agent deciding what it knows how to do.",
           "There is a right way to use your thing and it does not fit in a README.",
         ],
         [
           "MCP",
-          "A protocol for exposing tools an agent can call, over a live connection.",
-          "An agent that needs to do something, not read something.",
-          "Reading is not enough and the agent has to act.",
+          "A protocol exposing tools an agent can call, over a live connection.",
+          "An agent that needs to act, not read.",
+          "Reading is not enough.",
         ],
       ],
     },
-    sources: [
-      {
-        label: "AX concepts",
-        href: "https://agentexperience.ax/concepts/",
-      },
-      { label: "AGENTS.md", href: "https://agents.md/" },
-      { label: "llms.txt", href: "https://llmstxt.org/" },
-      {
-        label: "Model Context Protocol",
-        href: "https://modelcontextprotocol.io/",
-      },
-    ],
   },
   {
     id: "measuring",
     title: "Measuring it",
     body: [
-      "AXIS is the one part of this that produces a number. Netlify built it, it is open source, and the comparison it invites is Lighthouse: you write a scenario as a prompt and a rubric, it runs the scenario against a real agent, and an LLM judge scores what happened.",
-      "It weights four dimensions. Goal achievement is forty per cent, and the other three take twenty each: the environment, meaning whether your project structure and build tooling got in the way; the service, meaning whether your endpoints and tools were usable; and the agent itself, meaning the quality of its own planning and tool choice.",
-      "That last dimension is the interesting one, because it is not about you. A fifth of the score is the agent's own competence, which is an honest admission that these results move when the model does. A score is a reading taken with one agent on one day, not a property of your software.",
+      "One tool gives you a number. You write a scenario as a prompt and a rubric, it runs against a real agent, and something judges what happened. Lighthouse, roughly.",
+      "A fifth of the score is the agent's own planning. That is honest of them, and it means the number moves when the model does. What you get is a reading, not a property of your software.",
     ],
     table: {
       headers: ["Dimension", "Weight", "What it looks at"],
       rows: [
-        ["Goal achievement", "40%", "Did the task actually get done."],
-        ["Environment", "20%", "Shell, filesystem, and build tooling."],
-        ["Service", "20%", "APIs, MCP tools, and third parties."],
-        ["Agent", "20%", "The agent's own planning and tool selection."],
+        ["Goal achievement", "40%", "Did the task get done."],
+        ["Environment", "20%", "Shell, filesystem, build tooling."],
+        ["Service", "20%", "APIs, MCP tools, third parties."],
+        ["Agent", "20%", "The agent's own planning and tool choice."],
       ],
     },
-    sources: [{ label: "AXIS", href: "https://axis.run/" }],
   },
   {
     id: "unsettled",
     title: "What is not settled",
     body: [
-      "The canonical concepts page says, in its own words, that concrete best practices are still being identified. Netlify's page prescribes no file formats, no endpoint shapes, and no authentication patterns. That is worth saying plainly, because a field with a name, a conference talk, and a scoring tool can look more settled than it is.",
-      "What exists today is a vocabulary, four mechanisms at different stages of standardisation, and one way to take a measurement. What does not exist is a specification you can conform to. Anyone offering you an AX checklist is writing it themselves.",
-      "The reasonable position is to adopt the mechanisms that solve a problem you actually have, measure whether they worked, and wait on the rest. Most of the cost of being early here is maintaining files nobody reads.",
-    ],
-    sources: [
-      {
-        label: "Applying AX practices",
-        href: "https://agentexperience.ax/concepts/applying-ax-practices/",
-      },
+      "Nobody has written the spec, and the people who coined the term say so themselves. No file format, no endpoint shape, no auth pattern. Just the observation that this matters, which it does.",
+      "What you actually have is a vocabulary, four mechanisms at different stages of being real, and one way to take a measurement. Anyone handing you an AX checklist wrote it themselves.",
+      "Take what solves a problem you already have. Measure whether it helped. Wait on the rest.",
     ],
   },
   {
     id: "here",
     title: "The four, in one place",
     body: [
-      "Three of the four mechanisms are in use on this site, which makes it a convenient place to see what each one actually looks like rather than what it is described as. The fourth, MCP, is not here: the shadcn CLI already exposes registries to agents over its own MCP server, and a second one for a hundred and fourteen components nobody has to call would be a file nobody reads.",
-      "The links below return exactly what an agent gets. Opening one in a browser is the fastest way to understand the difference between an index, a full text, and a skill.",
+      "Three of the four are here, which makes this an easy place to see what they look like rather than what they are described as. MCP is not: the shadcn CLI already hands registries to agents over its own, and a second one nobody calls is just something else to keep working.",
+      "These are the files themselves, not descriptions of them. Open two and the difference explains itself.",
     ],
     seen: [
       { label: "llms.txt", href: "/llms.txt" },
