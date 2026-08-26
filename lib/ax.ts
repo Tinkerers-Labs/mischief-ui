@@ -17,15 +17,15 @@ export type AxSection = {
 }
 
 export const axIntro =
-  "Software gets used by agents now, and they are a strange kind of user: they read everything literally, ask nobody, and give up quietly. This is what that changes, what the tooling for it actually is, and what nobody has worked out yet."
+  "Agents are a strange kind of user. They read everything literally, ask nobody, and give up quietly. Designing for that has a name now, about four moving parts worth knowing, and a good deal nobody has worked out yet."
 
 export const axSections: readonly AxSection[] = [
   {
     id: "what-it-is",
     title: "What it is",
     body: [
-      "An agent reads your documentation, runs your install command, and either gets where it was going or does not. Nobody is watching while it happens. Agent experience is the name for how that goes.",
-      "The useful comparison is developer experience. A developer who hits a confusing error reads around it, asks someone, works it out. An agent hits the same error and invents an answer or stops. Same error, and only one of those ends with somebody learning something.",
+      "An agent reads your documentation, runs your install command, and either gets where it was going or it does not. Agent experience is the name for how that goes.",
+      "Developer experience is the useful comparison. A developer who hits a confusing error reads around it, asks someone, works it out. An agent hits the same error and invents an answer or stops. Same error, and only one of them ends with anybody learning anything.",
       "So it is not a rebrand of DX. It is the part of DX that stops working when nobody is watching.",
     ],
   },
@@ -34,16 +34,16 @@ export const axSections: readonly AxSection[] = [
     title: "Why now",
     body: [
       "More than a thousand sites a day get built on Netlify by people who never open the dashboard. They asked a chatbot, and it worked, because no step in the path happened to need a person.",
-      "Nothing about that was designed. It just turned out that a service you can get all the way through without a human is a service an agent can finish a job on. Everything else here follows from that.",
+      "Nobody designed for that. It fell out of the service being finishable end to end, which sounds like a low bar until you check how much software clears it.",
     ],
   },
   {
     id: "principles",
     title: "The principles",
     body: [
-      "There are five written down. Three are worth your time.",
-      "The sharp one is that no step should need a human. Taken seriously, that removes the signup wall in front of your documentation and the API key that arrives by email. The second is to stop writing for a reader who has already read the rest of your documentation, which is easy to agree with and hard to actually do.",
-      "The third is to log agent traffic separately. Almost nobody does, which is why almost nobody can tell you whether any of this worked. The remaining two are hard to fail.",
+      "Five are written down. Three of them bite.",
+      "Agent accessibility is the sharp one, and it is the whole of the argument: no step in the path may require a human. Taken seriously that removes the signup wall in front of your documentation and the API key that arrives by email.",
+      "Contextual alignment means writing for somebody who has not read the rest of your documentation, which everyone agrees with and few manage. Differentiating agents means logging their traffic apart from everyone else's, which is rarer still, and is why so few people can tell you whether any of this helped. The other two are hard to fail.",
     ],
     table: {
       headers: ["Principle", "What it asks for"],
@@ -67,6 +67,7 @@ export const axSections: readonly AxSection[] = [
     title: "The four things it is made of",
     body: [
       "Four different things get talked about as though they were one decision. They are not interchangeable, and choosing by fashion is how you end up maintaining three files nobody reads.",
+      "Most projects want one or two of them. The last column is the one to read first.",
     ],
     table: {
       headers: ["", "What it is", "Who reads it", "Reach for it when"],
@@ -102,8 +103,8 @@ export const axSections: readonly AxSection[] = [
     id: "measuring",
     title: "Measuring it",
     body: [
-      "One tool gives you a number. You write a scenario as a prompt and a rubric, it runs against a real agent, and something judges what happened. Lighthouse, roughly.",
-      "A fifth of the score is the agent's own planning. That is honest of them, and it means the number moves when the model does. What you get is a reading, not a property of your software.",
+      "AXIS is the one tool that gives you a number, and it works the way Lighthouse does. You write a scenario as a prompt and a rubric, it runs against a real agent, and a model judges what came back.",
+      "A fifth of the score is the agent's own planning rather than anything you built, which is an honest thing to have admitted, and means the number moves when the model does. What you get is a reading, not a property of your software.",
     ],
     table: {
       headers: ["Dimension", "Weight", "What it looks at"],
@@ -119,7 +120,7 @@ export const axSections: readonly AxSection[] = [
     id: "unsettled",
     title: "What is not settled",
     body: [
-      "Nobody has written the spec, and the people who coined the term say so themselves. No file format, no endpoint shape, no auth pattern. Just the observation that this matters, which it does.",
+      "Nobody has written the spec, and the people who coined the term say so themselves. No file format, no endpoint shape, no auth pattern.",
       "What you actually have is a vocabulary, four mechanisms at different stages of being real, and one way to take a measurement. Anyone handing you an AX checklist wrote it themselves.",
       "Take what solves a problem you already have. Measure whether it helped. Wait on the rest.",
     ],
@@ -128,8 +129,8 @@ export const axSections: readonly AxSection[] = [
     id: "here",
     title: "The four, in one place",
     body: [
-      "Three of the four are here, which makes this an easy place to see what they look like rather than what they are described as. MCP is not: the shadcn CLI already hands registries to agents over its own, and a second one nobody calls is just something else to keep working.",
-      "These are the files themselves, not descriptions of them. Open two and the difference explains itself.",
+      "Three of the four are in use on this site, which makes it an easier place to see them than to read about them. MCP is not: the shadcn CLI already hands registries to agents over its own, and a second one nobody calls is just something else to keep working.",
+      "These are the files, not descriptions of them. Open two and the difference explains itself.",
     ],
     seen: [
       { label: "llms.txt", href: "/llms.txt" },
