@@ -1039,6 +1039,7 @@ a:focus-visible {
   opacity: 0.35;
 }
 
+.ax-page h1,
 .brand-page h1,
 .interfaces-hero-inner h1 {
   font-family: var(--font-display), sans-serif;
@@ -1663,6 +1664,61 @@ pre:not([data-slot]) {
 }
 
 /* Brand */
+
+.ax-page {
+  margin: 0 auto;
+  max-width: 90rem;
+  padding: clamp(4rem, 8vw, 8rem) clamp(1rem, 4vw, 3rem) 8rem;
+}
+
+.ax-page h1 {
+  max-width: 14ch;
+}
+
+.ax-lead {
+  color: var(--muted-foreground);
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  line-height: 1.6;
+  margin-top: 1.75rem;
+  max-width: 46rem;
+  text-wrap: pretty;
+}
+
+.ax-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.ax-section {
+  border-top: 1px solid var(--border);
+  margin-top: clamp(3rem, 5vw, 4.5rem);
+  max-width: 76rem;
+  padding-top: clamp(1.75rem, 3vw, 2.75rem);
+}
+
+.ax-section h2 {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.6rem, 2.5vw, 2.25rem);
+  font-weight: 620;
+  letter-spacing: -0.03em;
+  line-height: 1.06;
+  max-width: 22ch;
+}
+
+/* The reading width from DESIGN.md. Tables are free to be wider. */
+.ax-section p {
+  line-height: 1.7;
+  margin-top: 1.15rem;
+  max-width: 68ch;
+}
+
+.ax-sources {
+  color: var(--muted-foreground);
+  font-size: 0.78rem;
+  margin-top: 1.75rem;
+}
 
 .brand-page {
   margin: 0 auto;

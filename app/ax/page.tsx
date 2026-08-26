@@ -1,5 +1,4 @@
-import type { Metadata } from "next"
-import type { Route } from "next"
+import type { Metadata, Route } from "next"
 import Link from "next/link"
 
 import { ExternalLink } from "@/components/external-link"
@@ -20,17 +19,17 @@ export default function AxPage() {
     <>
       <SiteHeader />
 
-      <main className="docs-article docs-intro">
+      <main className="ax-page">
         <p className="eyebrow">Agent experience</p>
         <h1>AX, explained.</h1>
-        <p className="docs-lead">{axIntro}</p>
+        <p className="ax-lead">{axIntro}</p>
 
-        <nav aria-label="On this page" className="mt-8 flex flex-wrap gap-1.5">
+        <nav aria-label="On this page" className="ax-index">
           {axSections.map((section) => (
             <a
               key={section.id}
               href={`#${section.id}`}
-              className="border-border text-muted-foreground hover:text-foreground inline-flex min-h-8 items-center rounded-full border px-3 text-xs font-semibold no-underline"
+              className="border-border text-muted-foreground hover:text-foreground inline-flex min-h-9 items-center rounded-full border px-3 text-xs font-semibold no-underline"
             >
               {section.title}
             </a>
@@ -38,7 +37,7 @@ export default function AxPage() {
         </nav>
 
         {axSections.map((section) => (
-          <section className="docs-section" key={section.id} id={section.id}>
+          <section className="ax-section" key={section.id} id={section.id}>
             <h2>{section.title}</h2>
 
             {section.body.map((paragraph) => (
@@ -46,38 +45,22 @@ export default function AxPage() {
             ))}
 
             {section.table ? (
-              <div className="border-border mt-5 overflow-x-auto rounded-xl border">
-                <table className="w-full border-collapse text-sm">
+              <div className="doc-table-scroll">
+                <table className="doc-table">
                   <thead>
-                    <tr className="border-border bg-muted/40 border-b">
+                    <tr>
                       {section.table.headers.map((head, at) => (
-                        <th
-                          key={at}
-                          scope="col"
-                          className="px-3 py-2 text-start font-semibold"
-                        >
-                          {head}
+                        <th key={at} scope="col">
+                          {head || " "}
                         </th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
                     {section.table.rows.map((row) => (
-                      <tr
-                        key={row[0]}
-                        className="border-border not-last:border-b"
-                      >
+                      <tr key={row[0]}>
                         {row.map((cell, at) => (
-                          <td
-                            key={at}
-                            className={
-                              at === 0
-                                ? "text-foreground px-3 py-2 align-top font-medium"
-                                : "text-muted-foreground px-3 py-2 align-top"
-                            }
-                          >
-                            {cell}
-                          </td>
+                          <td key={at}>{cell}</td>
                         ))}
                       </tr>
                     ))}
@@ -87,12 +70,12 @@ export default function AxPage() {
             ) : null}
 
             {section.seen ? (
-              <div className="mt-5 flex flex-wrap gap-1.5">
+              <div className="mt-6 flex flex-wrap gap-1.5">
                 {section.seen.map((one) => (
                   <Link
                     key={one.href}
                     href={one.href as Route}
-                    className="border-border text-muted-foreground hover:text-foreground inline-flex min-h-8 items-center rounded-full border px-3 font-mono text-xs no-underline"
+                    className="border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 inline-flex min-h-9 items-center rounded-full border px-3 font-mono text-xs no-underline transition-colors motion-reduce:transition-none"
                   >
                     {one.label}
                   </Link>
@@ -101,7 +84,7 @@ export default function AxPage() {
             ) : null}
 
             {section.sources ? (
-              <p className="text-muted-foreground mt-4 text-xs">
+              <p className="ax-sources">
                 Sources:{" "}
                 {section.sources.map((source, at) => (
                   <span key={source.href}>
