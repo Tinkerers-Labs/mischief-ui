@@ -1720,6 +1720,28 @@ pre:not([data-slot]) {
   margin-top: 1.75rem;
 }
 
+.ax-sources a:hover,
+.ax-index a:hover {
+  color: var(--primary);
+}
+
+.ax-index a:hover {
+  border-color: color-mix(in oklab, var(--primary) 40%, transparent);
+}
+
+/* The accent means checkable here, the way it marks an enforced rule on the
+   guidelines page. It stays on the border: tomato on paper is 3.2:1, which
+   carries a heading and fails small text. The sentence above these says what
+   they are, so the colour is not holding the meaning on its own. */
+.ax-file {
+  border-color: color-mix(in oklab, var(--primary) 32%, transparent);
+}
+
+.ax-file:hover {
+  background: color-mix(in oklab, var(--primary) 10%, transparent);
+  border-color: var(--primary);
+}
+
 .brand-page {
   margin: 0 auto;
   max-width: 90rem;

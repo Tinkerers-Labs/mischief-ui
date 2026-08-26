@@ -21,7 +21,9 @@ export default function AxPage() {
 
       <main className="ax-page">
         <p className="eyebrow">Agent experience</p>
-        <h1>AX, explained.</h1>
+        <h1>
+          AX, <span className="text-primary">explained.</span>
+        </h1>
         <p className="ax-lead">{axIntro}</p>
 
         <nav aria-label="On this page" className="ax-index">
@@ -29,7 +31,7 @@ export default function AxPage() {
             <a
               key={section.id}
               href={`#${section.id}`}
-              className="border-border text-muted-foreground hover:text-foreground inline-flex min-h-9 items-center rounded-full border px-3 text-xs font-semibold no-underline"
+              className="border-border text-muted-foreground inline-flex min-h-9 items-center rounded-full border px-3 text-xs font-semibold no-underline transition-colors motion-reduce:transition-none"
             >
               {section.title}
             </a>
@@ -75,7 +77,7 @@ export default function AxPage() {
                   <Link
                     key={one.href}
                     href={one.href as Route}
-                    className="border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 inline-flex min-h-9 items-center rounded-full border px-3 font-mono text-xs no-underline transition-colors motion-reduce:transition-none"
+                    className="ax-file text-foreground hover:text-primary inline-flex min-h-9 items-center rounded-full border px-3 font-mono text-xs no-underline transition-colors motion-reduce:transition-none"
                   >
                     {one.label}
                   </Link>
@@ -90,7 +92,7 @@ export default function AxPage() {
                   <span key={source.href}>
                     {at > 0 ? ", " : ""}
                     <ExternalLink
-                      className="hover:text-foreground underline underline-offset-4"
+                      className="underline underline-offset-4"
                       href={source.href}
                     >
                       {source.label}
