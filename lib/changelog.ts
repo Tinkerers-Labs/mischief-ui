@@ -19,6 +19,22 @@ export type Release = {
 
 export const releases: readonly Release[] = [
   {
+    version: "0.8.11",
+    date: "2026-08-30",
+    components: ["combobox"],
+    title: "The field that was missing",
+    summary:
+      "Three components here each did part of a searchable multi-select and none of them did it. Model Picker opens a list and gives it keyboard control, with nothing to type into. Command Palette searches and ranks, then fires an action and closes, which is not a value you can hold. Tag Input takes free text and gives it back as chips, with no list of options behind it. Combobox is the one that combines them.",
+    changes: [
+      "Combobox narrows a list as you type and holds one choice or several. The multiple prop decides which, and the types narrow with it, so a single-value call site is handed a string and a multi-value one an array without either of them casting.",
+      "Both modes are the same control. The field is a combobox in either, focus never leaves the input, and the active option is pointed at rather than focused, so there is one keyboard model to learn and one accessibility tree to get right. What changes is what the field holds: the chosen label, or a chip per choice.",
+      "Options carry a group and appear under a heading. Same-named groups meet under one heading, and a heading disappears when nothing under it matches, so filtering never leaves an empty section behind.",
+      "max caps how many can be held. At the cap the rest go unavailable rather than vanishing, which keeps the list stable and explains itself, and what is already chosen stays removable.",
+      "onCreate offers what was typed as a new option. It reports the text and nothing else: the value, whether it is saved, and whether it is selected are all decisions the component has no business making.",
+      "Ranking and filtering are the same contract Command Palette already used, so options that arrive from a search endpoint are not re-ranked over the server's ordering, and a half-finished fetch says it is searching instead of reporting that nothing matched.",
+    ],
+  },
+  {
     version: "0.8.10",
     date: "2026-08-26",
     components: [
