@@ -5,7 +5,7 @@ description: Find, evaluate, and install playful React components from Mischief 
 
 # Mischief UI
 
-114 accessible React components for shadcn projects, across 11 families. Add only the component that solves the request. Treat each one as owned source code that can be adapted to the project.
+115 accessible React components for shadcn projects, across 11 families. Add only the component that solves the request. Treat each one as owned source code that can be adapted to the project.
 
 ## Finding the right component
 
@@ -18,7 +18,7 @@ Start from the family, then read only what you need. Do not guess a component na
 | Documents | 13 | Reading a file someone uploaded, marking it up, cutting it into pieces, and pulling structure out of it. |
 | Files | 2 | Getting a file in, and showing what arrived. |
 | Feedback | 7 | What the page says while it waits, and when there is nothing to show. |
-| Controls | 14 | Familiar inputs with more feedback than usual, and none of it required to operate them. |
+| Controls | 15 | Familiar inputs with more feedback than usual, and none of it required to operate them. |
 | Wayfinding | 5 | Knowing where you are in something long, and getting somewhere else quickly. |
 | Docs | 5 | The furniture of a documentation site, taken out of this one. |
 | Blocks | 11 | Larger pieces that compose several components into one part of a page. |

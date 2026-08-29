@@ -154,6 +154,7 @@ export default defineConfig({
     "stream-glow": "../../registry/default/stream-glow/stream-glow.tsx",
     "otp-input": "../../registry/default/otp-input/otp-input.tsx",
     "tag-input": "../../registry/default/tag-input/tag-input.tsx",
+    combobox: "../../registry/default/combobox/combobox.tsx",
     "sortable-list": "../../registry/default/sortable-list/sortable-list.tsx",
     "resizable-panels":
       "../../registry/default/resizable-panels/resizable-panels.tsx",

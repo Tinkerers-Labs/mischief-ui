@@ -530,6 +530,11 @@
       "import": "./dist/tag-input.js",
       "require": "./dist/tag-input.cjs"
     },
+    "./combobox": {
+      "types": "./dist/combobox.d.ts",
+      "import": "./dist/combobox.js",
+      "require": "./dist/combobox.cjs"
+    },
     "./sortable-list": {
       "types": "./dist/sortable-list.d.ts",
       "import": "./dist/sortable-list.js",

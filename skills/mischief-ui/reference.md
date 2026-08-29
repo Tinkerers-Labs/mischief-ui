@@ -1,6 +1,6 @@
 # Mischief UI catalog
 
-Every component, grouped by family. 114 in total.
+Every component, grouped by family. 115 in total.
 
 Install one with `npx shadcn@latest add Tinkerers-Labs/mischief-ui/<component>`, and read its full
 documentation at `https://ui.tinkererslabs.com/docs/components/<component>.md` before using it.
@@ -104,6 +104,7 @@ Familiar inputs with more feedback than usual, and none of it required to operat
 - `scrub-bar`: The seek control on its own: a slider that happens to be a timeline, announced in minutes and seconds.
 - `otp-input`: A one time code, one box per character, where pasting the whole code into any box fills the rest.
 - `tag-input`: An input that turns what you typed into a removable tag, and gives the last one back when you press backspace on an empty field.
+- `combobox`: A field that narrows a list as you type, and holds one choice or several as removable chips.
 - `sortable-list`: A list reordered by dragging a handle, or from the keyboard without one, where every move is announced.
 - `stepper`: Where someone is in something with a beginning and an end, said in words as well as drawn.
 

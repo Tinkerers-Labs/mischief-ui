@@ -10127,6 +10127,294 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
       "The field is labelled, described by its status region, and every change is announced politely. Remove controls name their own tag. Clicking the surrounding box focuses the field, and the whole control shows a focus ring when anything inside it has focus.",
   },
   {
+    slug: "combobox",
+    kind: "component",
+    name: "Combobox",
+    family: "Controls",
+    summary:
+      "A field that narrows a list as you type, and holds one choice or several as removable chips.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("combobox"),
+    npmImport: packageImport("Combobox", "combobox"),
+    usage: `export function Labels() {
+  const [labels, setLabels] = React.useState(["bug"])
+
+  return (
+    <Combobox
+      multiple
+      label="Labels"
+      options={options}
+      value={labels}
+      onValueChange={setLabels}
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "one-or-several",
+        title: "One choice, or several",
+        blocks: [
+          {
+            kind: "text",
+            text: "The multiple prop decides what the field holds and what it reports. Without it the chosen label sits in the field and picking closes the list. With it each choice becomes a chip and the list stays open, because choosing four labels should not mean opening the same menu four times.",
+          },
+          {
+            kind: "code",
+            code: `<Combobox options={models} onValueChange={(id) => {}} />
+<Combobox multiple options={labels} onValueChange={(ids) => {}} />`,
+            caption:
+              "id is a string in the first, and an array of them in the second. TypeScript narrows on multiple, so neither call site casts.",
+          },
+          {
+            kind: "text",
+            text: "Because the narrowing reads the prop itself, a variable passed as multiple leaves both shapes possible and will not compile. Pick the mode at the call site, or render the two branches separately.",
+          },
+        ],
+      },
+      {
+        id: "matching",
+        title: "How typing narrows the list",
+        blocks: [
+          {
+            kind: "text",
+            text: "Options are scored against the query and the best matches come first. Lower is better, and an option matching none of these tiers is dropped rather than ranked last.",
+          },
+          {
+            kind: "table",
+            headers: ["Rank", "Match"],
+            rows: [
+              ["0", "The label is exactly the query"],
+              ["1", "The label starts with the query"],
+              ["2", "The label contains the query"],
+              ["3", "The group contains the query"],
+              ["4", "A keyword contains the query"],
+              ["5", "The description contains the query"],
+            ],
+          },
+          {
+            kind: "text",
+            text: "Keywords are for the words people actually type that are not in the label: an old name, an abbreviation, the noun rather than the verb. Ties keep the order you passed, so an option list already arranged deliberately stays that way.",
+          },
+          {
+            kind: "code",
+            code: `const labels = [
+  { value: "accessibility", label: "Accessibility", group: "Area", keywords: ["a11y"] },
+  { value: "registry", label: "Registry", group: "Area" },
+]`,
+            caption:
+              "Typing a11y finds the first even though no label says it.",
+          },
+          {
+            kind: "text",
+            text: "A field showing exactly what was chosen is not treated as a search, so reopening a single-value combobox offers the whole list again instead of the one option already in the field.",
+          },
+        ],
+      },
+      {
+        id: "ranking-of-your-own",
+        title: "Ranking it yourself",
+        blocks: [
+          {
+            kind: "text",
+            text: "When the built-in tiers do not suit, pass rank and score the options yourself: fuzzy matching, a field the component knows nothing about, recent choices first. Lower is a better match, and false drops one.",
+          },
+          {
+            kind: "code",
+            code: `import { rankComboboxOption } from "mischief-ui/combobox"
+
+<Combobox
+  options={options}
+  rank={(option, query) =>
+    option.recent ? -1 : rankComboboxOption(option, query)
+  }
+/>`,
+            caption:
+              "The built-in ranker is exported, so yours can defer to it rather than reproduce it.",
+          },
+        ],
+      },
+      {
+        id: "remote",
+        title: "Options from a server",
+        blocks: [
+          {
+            kind: "text",
+            text: "Filtering an array in the browser is right while the whole set is there. Once options come from a search endpoint, two things change: you need to know what was typed, and the component must stop re-ranking what the server already ordered.",
+          },
+          {
+            kind: "code",
+            code: `const [query, setQuery] = useState("")
+const [hits, setHits] = useState([])
+const [loading, setLoading] = useState(false)
+
+useEffect(() => {
+  if (!query) return setHits([])
+  const controller = new AbortController()
+
+  setLoading(true)
+  searchPeople(query, { signal: controller.signal })
+    .then(setHits)
+    .finally(() => setLoading(false))
+
+  return () => controller.abort()
+}, [query])
+
+<Combobox
+  multiple
+  options={hits}
+  filter={false}
+  loading={loading}
+  onQueryChange={setQuery}
+/>`,
+            caption:
+              "Debouncing and aborting stay yours: only you know what the endpoint costs.",
+          },
+          {
+            kind: "text",
+            text: "While loading, the list says it is searching rather than reporting that nothing matched, because an empty list mid-flight is not an answer. It is marked busy at the same time, so a screen reader is told to wait instead of hearing an empty set.",
+          },
+        ],
+      },
+      {
+        id: "groups-and-limits",
+        title: "Headings, and a limit",
+        blocks: [
+          {
+            kind: "text",
+            text: "An option naming a group appears under a heading, and options naming the same group meet under one heading in the order the group first appears. A heading disappears when nothing under it matches, so filtering never leaves an empty section behind.",
+          },
+          {
+            kind: "text",
+            text: "max caps how many can be held. At the cap the rest go unavailable rather than vanishing, which keeps the list stable and explains why they cannot be picked. What is already chosen stays removable, and the cap is announced when it is reached.",
+          },
+        ],
+      },
+      {
+        id: "creating",
+        title: "Adding one that is not there",
+        blocks: [
+          {
+            kind: "text",
+            text: "Pass onCreate and the list offers what was typed as a new option, unless a label already matches it or the cap has been reached. The component reports the text and nothing more: you decide what value it gets, whether it is saved, and whether it is selected.",
+          },
+          {
+            kind: "code",
+            code: `<Combobox
+  multiple
+  options={options}
+  value={labels}
+  onValueChange={setLabels}
+  onCreate={(label) => {
+    const option = { value: slugify(label), label }
+    setOptions((current) => [...current, option])
+    setLabels((current) => [...current, option.value])
+  }}
+/>`,
+            caption:
+              "Reporting the text rather than inventing a value keeps ids yours.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "ComboboxOption",
+        rows: [
+          ["value", "string", "What onValueChange reports and value matches."],
+          [
+            "label",
+            "string",
+            "Shown in the list, in the chip, and in the field.",
+          ],
+          ["description", "string", "A line beneath the label."],
+          ["group", "string", "Puts the option under a named heading."],
+          [
+            "keywords",
+            "string[]",
+            "Extra words that should match, without being shown.",
+          ],
+          [
+            "disabled",
+            "boolean",
+            "Listed but unchoosable, and skipped by the keyboard.",
+          ],
+        ],
+      },
+    ],
+    props: [
+      [
+        "options",
+        "ComboboxOption[]",
+        "Each with a value and a label, and optional description, group, keywords, and disabled.",
+      ],
+      [
+        "multiple",
+        "boolean",
+        "Holds several choices as chips instead of one, and keeps the list open.",
+      ],
+      [
+        "value, defaultValue",
+        "string | string[]",
+        "Controlled and uncontrolled selection. An array when multiple.",
+      ],
+      [
+        "onValueChange",
+        "(value: string | string[]) => void",
+        "The selection after a change. An array when multiple.",
+      ],
+      [
+        "max",
+        "number",
+        "How many may be chosen. The rest go unavailable once reached. Multiple only.",
+      ],
+      [
+        "onQueryChange",
+        "(query: string) => void",
+        "Called as the query changes, for fetching the options yourself.",
+      ],
+      ["loading", "boolean", "Says options are on their way."],
+      [
+        "loadingMessage",
+        "ReactNode",
+        'Shown while loading. Defaults to "Searching".',
+      ],
+      [
+        "filter",
+        "boolean",
+        "Rank and filter here. Turn it off when results arrive already matched.",
+      ],
+      [
+        "rank",
+        "ComboboxRanker",
+        "Score an option against the query yourself. Lower is better, false drops it.",
+      ],
+      [
+        "onCreate",
+        "(label: string) => void",
+        "Offers what was typed as a new option and reports the text.",
+      ],
+      [
+        "createLabel",
+        "(query: string) => ReactNode",
+        "What the create row says.",
+      ],
+      [
+        "label",
+        "string",
+        'Names the field and the list. Defaults to "Options".',
+      ],
+      ["placeholder", "string", "Shown while the field is empty."],
+      [
+        "emptyMessage",
+        "(query: string) => ReactNode",
+        "Shown when nothing matches.",
+      ],
+      ["disabled", "boolean", "Disables the field and every chip control."],
+    ],
+    accessibility:
+      "The field is a combobox that owns the list, says whether it is open, and points at the active option with aria-activedescendant, so focus never leaves the input and nothing is lost between the query and the list. Arrow keys move and step past anything unavailable, Home and End jump, Enter chooses, Escape closes and then clears what was typed, and backspace on an empty field takes the last chip back. The list is marked multi-selectable when it is, busy while options are loading, and its headings name their groups. Every chip control names the option it removes rather than being a row of identical buttons, and additions, removals, and reaching the cap are announced in a polite live region.",
+  },
+  {
     slug: "sortable-list",
     kind: "component",
     name: "Sortable List",

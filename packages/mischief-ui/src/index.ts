@@ -618,6 +618,16 @@ export {
 } from "../../../registry/default/tag-input/tag-input"
 
 export {
+  Combobox,
+  rankComboboxOption,
+  type ComboboxMultipleProps,
+  type ComboboxOption,
+  type ComboboxProps,
+  type ComboboxRanker,
+  type ComboboxSingleProps,
+} from "../../../registry/default/combobox/combobox"
+
+export {
   SortableList,
   type SortableListProps,
 } from "../../../registry/default/sortable-list/sortable-list"

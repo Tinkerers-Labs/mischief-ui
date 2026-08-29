@@ -89,6 +89,7 @@ import { WireframeGlobeDemo } from "@/components/demos/wireframe-globe-demo"
 import { PresenceFieldDemo } from "@/components/demos/presence-field-demo"
 import { StreamGlowDemo } from "@/components/demos/stream-glow-demo"
 import { OtpInputDemo } from "@/components/demos/otp-input-demo"
+import { ComboboxDemo } from "@/components/demos/combobox-demo"
 import { TagInputDemo } from "@/components/demos/tag-input-demo"
 import { SortableListDemo } from "@/components/demos/sortable-list-demo"
 import { ResizablePanelsDemo } from "@/components/demos/resizable-panels-demo"
@@ -347,6 +348,10 @@ export const componentDemos: Record<string, ComponentDemo> = {
   },
   "tag-input": {
     Demo: TagInputDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  combobox: {
+    Demo: ComboboxDemo,
     frameClassName: "p-6 md:p-10",
   },
   "sortable-list": {
