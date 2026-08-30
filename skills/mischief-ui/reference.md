@@ -1,6 +1,6 @@
 # Mischief UI catalog
 
-Every component, grouped by family. 115 in total.
+Every component, grouped by family. 116 in total.
 
 Install one with `npx shadcn@latest add Tinkerers-Labs/mischief-ui/<component>`, and read its full
 documentation at `https://ui.tinkererslabs.com/docs/components/<component>.md` before using it.
@@ -153,6 +153,7 @@ Backdrops and moments where the drawing is the job, each one taking its colours 
 - `grain-overlay`: Film grain for any positioned box, which incidentally fixes the banding a wide gradient shows on a good monitor.
 - `spotlight-card`: A card that catches a light following the pointer, and can light every card in its grid from the same pointer at once.
 - `constellation-field`: Drifting points joined by lines when they come close, brightening and swelling around the pointer.
+- `lattice-field`: A grid of dots that parts around the pointer and falls apart when pressed, then climbs back into line.
 - `burst`: A short burst of pieces for the moment something finally completes. It draws nothing until it is fired and stops as soon as the last piece falls out of the box.
 - `shader-surface`: Four shader backdrops -- caustics, metal, plasma and ripple -- each taking its two colours from your theme, so the same surface arrives dark in a dark application and light in a light one.
 - `displacement-image`: Two images crossing by pushing their pixels through the same noise in opposite directions, with the first image also present as ordinary markup for anything that cannot run it.

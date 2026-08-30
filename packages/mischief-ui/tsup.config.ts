@@ -128,6 +128,7 @@ export default defineConfig({
       "../../registry/default/spotlight-card/spotlight-card.tsx",
     "constellation-field":
       "../../registry/default/constellation-field/constellation-field.tsx",
+    "lattice-field": "../../registry/default/lattice-field/lattice-field.tsx",
     burst: "../../registry/default/burst/burst.tsx",
     "shader-surface":
       "../../registry/default/shader-surface/shader-surface.tsx",

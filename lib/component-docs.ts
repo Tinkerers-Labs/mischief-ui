@@ -8350,6 +8350,117 @@ const colors = useThemeColors(ref, ["--primary", "--background"])
       "Decoration, hidden from assistive technology, and behind its children on its own layer. Under reduced motion the points are painted once where they started and the drift never begins, so the pattern remains without any movement.",
   },
   {
+    slug: "lattice-field",
+    kind: "component",
+    name: "Lattice Field",
+    family: "Scenes",
+    summary:
+      "A grid of dots that parts around the pointer and falls apart when pressed, then climbs back into line.",
+    dependencies: [],
+    install: registryInstallCommand("lattice-field"),
+    npmImport: packageImport("LatticeField", "lattice-field"),
+    usage: `export function Backdrop() {
+  return (
+    <LatticeField className="rounded-xl border">
+      <div className="px-8 py-16 text-center">
+        <h2>Press it</h2>
+      </div>
+    </LatticeField>
+  )
+}`,
+    props: [
+      [
+        "spacing",
+        "number",
+        "Pixels between dots. The lattice is rebuilt to suit whatever box it gets. Defaults to 16.",
+      ],
+      ["dotSize", "number", "Diameter of a dot in pixels. Defaults to 2."],
+      [
+        "color",
+        "string",
+        'A theme custom property or a CSS colour for the dots. Defaults to "--foreground".',
+      ],
+      [
+        "echoColor",
+        "string",
+        'The lagging second colour drawn behind. Setting it to the same value as color turns the echo off. Defaults to "--primary".',
+      ],
+      [
+        "pointerRadius",
+        "number",
+        "How far the pointer reaches, in pixels. Zero turns the reaction off. Defaults to 140.",
+      ],
+      [
+        "push",
+        "number",
+        "Furthest a dot is pushed by the pointer, in pixels. Defaults to 26.",
+      ],
+      [
+        "gravity",
+        "number",
+        "Pixels per second squared, once the lattice has been let go. Defaults to 1400.",
+      ],
+      [
+        "scatter",
+        "number",
+        "Pixels per second the dots leave the press at. Defaults to 320.",
+      ],
+      [
+        "collapseOnClick",
+        "boolean",
+        "Whether a press breaks the lattice. Defaults to true.",
+      ],
+      [
+        "sway",
+        "number",
+        "Multiplies the idle wave. Zero holds the lattice perfectly still. Defaults to 1.",
+      ],
+      ["paused", "boolean", "Holds the lattice still."],
+    ],
+    sections: [
+      {
+        id: "closed-form",
+        title: "Nothing is simulated",
+        blocks: [
+          {
+            kind: "text",
+            text: "A dot has no stored position. Where it lands is worked out from its place in the grid, the clock, and the handful of numbers the pointer contributes, so a frame is one draw call over one buffer that was filled when the lattice was built. There is no velocity to integrate and no per-dot state to keep in step.",
+          },
+          {
+            kind: "text",
+            text: "The fall is ballistic rather than physical: an outward kick that fades with distance from the press, gravity on top of it, and a floor each dot is not allowed past, set a little differently for every dot so the pile is uneven. It costs the same as the resting grid, and letting go is a mix back towards the grid rather than a simulation that has to be unwound.",
+          },
+        ],
+      },
+      {
+        id: "echo",
+        title: "The same lattice, drawn twice",
+        blocks: [
+          {
+            kind: "text",
+            text: "Each frame draws the buffer twice. The first pass runs the same shader with the motion turned down and paints in echoColor, so it sits behind the real dots as a version of the grid that has not caught up yet. The depth comes from the two passes disagreeing, not from a second set of dots being tracked.",
+          },
+        ],
+      },
+      {
+        id: "size",
+        title: "Spacing, not count",
+        blocks: [
+          {
+            kind: "text",
+            text: "A lattice is described by the gap between its dots, so it looks the same in a narrow column as across a wide hero and needs no adjusting when the box changes. Past a budget the spacing widens on its own rather than the count climbing, which keeps a full page backdrop from asking the GPU for hundreds of thousands of points.",
+          },
+          {
+            kind: "text",
+            text: "The pointer is followed on the window rather than on this element, so the lattice still answers to it while sitting behind a headline that is taking every event itself. Setting pointerRadius to zero removes the reaction, and collapseOnClick to false leaves the grid unbreakable.",
+          },
+        ],
+      },
+    ],
+    accessibility:
+      "Decoration, hidden from assistive technology, and behind its children on its own layer, so a press meant for it reaches whatever is on top instead. Under reduced motion the lattice is painted once at rest: the wave never starts and the collapse never runs, so the pattern is there without any movement. Nothing is said only by the collapse, which is why there is no keyboard route to it.",
+  },
+  {
     slug: "burst",
     kind: "component",
     name: "Burst",

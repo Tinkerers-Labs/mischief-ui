@@ -430,6 +430,11 @@
       "import": "./dist/constellation-field.js",
       "require": "./dist/constellation-field.cjs"
     },
+    "./lattice-field": {
+      "types": "./dist/lattice-field.d.ts",
+      "import": "./dist/lattice-field.js",
+      "require": "./dist/lattice-field.cjs"
+    },
     "./burst": {
       "types": "./dist/burst.d.ts",
       "import": "./dist/burst.js",

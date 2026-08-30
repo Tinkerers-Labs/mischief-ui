@@ -520,6 +520,11 @@ export {
 } from "../../../registry/default/constellation-field/constellation-field"
 
 export {
+  LatticeField,
+  type LatticeFieldProps,
+} from "../../../registry/default/lattice-field/lattice-field"
+
+export {
   Burst,
   type BurstHandle,
   type BurstOptions,

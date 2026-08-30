@@ -71,6 +71,7 @@ import { AuroraFieldDemo } from "@/components/demos/aurora-field-demo"
 import { GrainOverlayDemo } from "@/components/demos/grain-overlay-demo"
 import { SpotlightCardDemo } from "@/components/demos/spotlight-card-demo"
 import { ConstellationFieldDemo } from "@/components/demos/constellation-field-demo"
+import { LatticeFieldDemo } from "@/components/demos/lattice-field-demo"
 import { BurstDemo } from "@/components/demos/burst-demo"
 import { ShaderSurfaceDemo } from "@/components/demos/shader-surface-demo"
 import { DisplacementImageDemo } from "@/components/demos/displacement-image-demo"
@@ -272,6 +273,11 @@ export const componentDemos: Record<string, ComponentDemo> = {
   },
   "constellation-field": {
     Demo: ConstellationFieldDemo,
+    frameClassName: "p-6 md:p-10",
+    tileClassName: "lg:col-span-6",
+  },
+  "lattice-field": {
+    Demo: LatticeFieldDemo,
     frameClassName: "p-6 md:p-10",
     tileClassName: "lg:col-span-6",
   },

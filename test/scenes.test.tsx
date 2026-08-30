@@ -6,6 +6,7 @@ import * as React from "react"
 import { AuroraField } from "../registry/default/aurora-field/aurora-field"
 import { Burst, type BurstHandle } from "../registry/default/burst/burst"
 import { ConstellationField } from "../registry/default/constellation-field/constellation-field"
+import { LatticeField } from "../registry/default/lattice-field/lattice-field"
 import { DisplacementImage } from "../registry/default/displacement-image/displacement-image"
 import { GrainOverlay } from "../registry/default/grain-overlay/grain-overlay"
 import { RenderSurface } from "../registry/default/render-surface/render-surface"
@@ -66,6 +67,39 @@ describe("ConstellationField", () => {
 
     expect(screen.getByRole("button", { name: "Start" })).toBeInTheDocument()
     expect(surface).toHaveClass("pointer-events-none")
+  })
+})
+
+describe("LatticeField", () => {
+  it("keeps the lattice behind its children and out of the pointer's way", () => {
+    const { container } = render(
+      <LatticeField>
+        <button type="button">Press</button>
+      </LatticeField>
+    )
+
+    const surface = container.querySelector("[data-slot='render-surface']")
+
+    expect(screen.getByRole("button", { name: "Press" })).toBeInTheDocument()
+    expect(surface).toHaveClass("pointer-events-none")
+    expect(surface).toHaveClass("-z-10")
+  })
+
+  it("leaves the press to whatever is on top of it", async () => {
+    const user = userEvent.setup()
+    const onClick = vi.fn()
+
+    render(
+      <LatticeField>
+        <button type="button" onClick={onClick}>
+          Press
+        </button>
+      </LatticeField>
+    )
+
+    await user.click(screen.getByRole("button", { name: "Press" }))
+
+    expect(onClick).toHaveBeenCalledOnce()
   })
 })
 
