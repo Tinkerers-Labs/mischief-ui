@@ -19,6 +19,20 @@ export type Release = {
 
 export const releases: readonly Release[] = [
   {
+    version: "0.8.12",
+    date: "2026-08-31",
+    components: ["lattice-field"],
+    title: "A grid worth breaking",
+    summary:
+      "The scenes here all drift. Aurora Field moves a gradient, Constellation Field lets its points wander and joins the ones that stray close together, Shader Surface paints something that was never still to begin with. None of them holds a shape, so none of them can lose one. Lattice Field starts as a grid, which is the part that makes breaking it mean anything.",
+    changes: [
+      "Lattice Field rests as a grid of dots, parts around the pointer, and comes apart when pressed: the dots take an outward kick, fall under gravity, and pile against a floor set a little differently for each one. Pressing again lets them climb back into line.",
+      "No dot stores a position. Where it lands is a function of its cell, the clock, and the few numbers the pointer contributes, so a frame is one draw call over a buffer filled once and letting go is a mix back towards the grid rather than a simulation run backwards.",
+      "Each frame draws that buffer twice, the first pass with its motion turned down and in a second colour, so the grid appears to lag behind itself. It is one extra draw call and no extra state.",
+      "The lattice is described by the gap between dots rather than by how many there are, so it survives a resize unchanged, and past a budget the spacing widens on its own instead of the count climbing.",
+    ],
+  },
+  {
     version: "0.8.11",
     date: "2026-08-30",
     components: ["combobox"],
