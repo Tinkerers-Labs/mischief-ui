@@ -19,6 +19,22 @@ export type Release = {
 
 export const releases: readonly Release[] = [
   {
+    version: "0.8.13",
+    date: "2026-09-04",
+    components: ["save-bar"],
+    title: "Only while there is something to save",
+    summary:
+      "Copy Button confirms something already done, Status Pill reports a state nobody has to act on, and Hold Button guards an action before it happens. None of them is about work that exists only in the form, unwritten, while somebody decides whether to close the tab. Save Bar is the one that is.",
+    changes: [
+      "Save Bar is on screen only because a form is holding unsaved changes. It says so, saves, confirms, and leaves, so floating is what the component is for rather than how it is positioned.",
+      "It asks the form for a boolean and a promise. There is no copy of the values, no view on validation, and no state to keep in step, which is why any form library drives it without an adapter.",
+      "A rejection is the failed state. The bar holds its place, Save comes back as Try again, and the changes stay on screen. The message is kept only while there is still something to retry, so a form the host reset takes it away rather than leaving a failure to outlive what it was about.",
+      "The check draws itself on a transition rather than a keyframe, so the component installs no CSS. The indicator stays mounted through every state for the same reason the bar does: a transition needs something to start from.",
+      "Cmd+S and Ctrl+S save while there is something to save, and warnOnLeave asks the browser to confirm a reload. A bar that reports unsaved changes and then lets the tab close without a word is not telling the truth.",
+      "The live region sits outside the bar. A region that was hidden a moment ago is not reliably read when it returns, and the announcement is the whole point on a form somebody is about to leave.",
+    ],
+  },
+  {
     version: "0.8.12",
     date: "2026-08-31",
     components: ["lattice-field"],
