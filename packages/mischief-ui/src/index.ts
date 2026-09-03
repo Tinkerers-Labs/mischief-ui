@@ -16,6 +16,12 @@ export {
 } from "../../../registry/default/scroll-to-top-button/scroll-to-top-button"
 
 export {
+  SaveBar,
+  type SaveBarProps,
+  type SaveBarState,
+} from "../../../registry/default/save-bar/save-bar"
+
+export {
   AskAi,
   AskAiLogo,
   createAskAiTargets,

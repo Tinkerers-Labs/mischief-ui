@@ -64,6 +64,11 @@
       "import": "./dist/scroll-to-top-button.js",
       "require": "./dist/scroll-to-top-button.cjs"
     },
+    "./save-bar": {
+      "types": "./dist/save-bar.d.ts",
+      "import": "./dist/save-bar.js",
+      "require": "./dist/save-bar.cjs"
+    },
     "./ask-ai": {
       "types": "./dist/ask-ai.d.ts",
       "import": "./dist/ask-ai.js",

@@ -1,6 +1,6 @@
 # Mischief UI catalog
 
-Every component, grouped by family. 116 in total.
+Every component, grouped by family. 117 in total.
 
 Install one with `npx shadcn@latest add Tinkerers-Labs/mischief-ui/<component>`, and read its full
 documentation at `https://ui.tinkererslabs.com/docs/components/<component>.md` before using it.
@@ -97,6 +97,7 @@ Familiar inputs with more feedback than usual, and none of it required to operat
 - `hold-button`: A confirmation button for actions that deserve a second thought. Release early to cancel, or activate once with a keyboard.
 - `shift-button`: A call to action that trades its leading icon for a directional cue when someone approaches it.
 - `impossible-checkbox`: A checkbox with one stubborn rule: the bear will not let you leave it on. Best kept for demos, Easter eggs, and harmless preferences.
+- `save-bar`: A bar that exists only while a form has unsaved changes. It says so, saves, confirms, and leaves.
 - `theme-toggle`: A light and dark switch that survives a reload, follows the system when asked, and stays in step across tabs.
 - `accordion`: A list of disclosures built on native details elements, so find-in-page and the browser do the work.
 - `copy-button`: Copies a value and says whether it worked, including when the clipboard refuses.

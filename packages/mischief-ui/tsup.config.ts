@@ -21,6 +21,7 @@ export default defineConfig({
     "image-gallery": "../../registry/default/image-gallery/image-gallery.tsx",
     "scroll-to-top-button":
       "../../registry/default/scroll-to-top-button/scroll-to-top-button.tsx",
+    "save-bar": "../../registry/default/save-bar/save-bar.tsx",
     "ask-ai": "../../registry/default/ask-ai/ask-ai.tsx",
     "file-upload": "../../registry/default/file-upload/file-upload.tsx",
     "file-thumbnail":

@@ -907,6 +907,142 @@ useEffect(() => {
       "The control is a named native button with a 48px target. While there is nothing to scroll back from it is hidden from assistive technology and taken out of the tab order, so it is never a stop on the way through the page. Scrolling is immediate when reduced motion is requested, and the fade stops with it.",
   },
   {
+    slug: "save-bar",
+    kind: "component",
+    name: "Save Bar",
+    family: "Controls",
+    summary:
+      "A bar that exists only while a form has unsaved changes. It says so, saves, confirms, and leaves.",
+    dependencies: [],
+    install: registryInstallCommand("save-bar"),
+    npmImport: packageImport("SaveBar", "save-bar"),
+    usage: `export function Settings() {
+  const form = useSettingsForm()
+
+  return (
+    <>
+      <SettingsFields form={form} />
+      <SaveBar
+        dirty={form.dirty}
+        onSave={() => form.submit()}
+        onReset={() => form.reset()}
+      />
+    </>
+  )
+}`,
+    sections: [
+      {
+        id: "contract",
+        title: "What it asks of the form",
+        blocks: [
+          {
+            kind: "text",
+            text: "Two things. dirty says whether there is anything to save, and onSave does it. The bar keeps no copy of your values, holds no opinion about validation, and has no state you have to keep in step with your own.",
+          },
+          {
+            kind: "code",
+            code: `<SaveBar
+  dirty={form.formState.isDirty}
+  onSave={form.handleSubmit(save)}
+  onReset={() => form.reset()}
+/>`,
+            caption:
+              "Any form library works, because the only thing being read is a boolean.",
+          },
+          {
+            kind: "text",
+            text: "onSave may return a promise. While it is pending the bar says it is saving and both buttons go unavailable. When it resolves the check is drawn, and the bar drops away once dirty turns false. A form that is still dirty after a save keeps its bar, which is the right outcome when the write did not take.",
+          },
+        ],
+      },
+      {
+        id: "failure",
+        title: "When the save does not land",
+        blocks: [
+          {
+            kind: "text",
+            text: "A rejection is the failed state. The bar holds its place, the message changes, and Save comes back as Try again, so the changes are still on screen and still recoverable. onSaveError hands you the rejection itself.",
+          },
+          {
+            kind: "code",
+            code: `<SaveBar
+  dirty={dirty}
+  errorMessage="The settings service did not answer."
+  onSave={save}
+  onSaveError={(error) => report(error)}
+/>`,
+          },
+          {
+            kind: "text",
+            text: "The failure is kept only while there is still something to retry. If the form goes clean, by a reset or by anything else, the message leaves with the bar rather than outliving what it was about.",
+          },
+        ],
+      },
+      {
+        id: "leaving",
+        title: "The shortcut and the reload",
+        blocks: [
+          {
+            kind: "text",
+            text: "Cmd+S and Ctrl+S save while there is something to save, and do nothing while there is not, so a page with no unsaved work leaves the key to the browser. Escape is deliberately not bound: it already belongs to whatever dialog or menu is open over the form.",
+          },
+          {
+            kind: "text",
+            text: "warnOnLeave is on by default. A bar that reports unsaved changes and then lets the tab close without a word is not telling the truth. Turn it off where the changes survive a reload on their own, or inside a preview like the one above.",
+          },
+        ],
+      },
+    ],
+    props: [
+      [
+        "dirty",
+        "boolean",
+        "Whether the form holds unsaved changes. The bar appears for this and nothing else.",
+      ],
+      [
+        "onSave",
+        "() => void | Promise<void>",
+        "Runs the save. A rejection is the failed state.",
+      ],
+      [
+        "onReset",
+        "() => void",
+        "Discards the changes. Omit it and no Reset button is drawn.",
+      ],
+      [
+        "onSaveError",
+        "(error: unknown) => void",
+        "Receives the rejection, for logging or a more specific message.",
+      ],
+      [
+        "message, savingMessage, savedMessage, errorMessage",
+        "string",
+        "The line beside the indicator in each state.",
+      ],
+      [
+        "saveLabel, resetLabel, retryLabel",
+        "string",
+        "Button copy. Save becomes the retry label after a failure.",
+      ],
+      ["shortcut", "boolean", "Saves on Cmd+S and Ctrl+S. Defaults to true."],
+      [
+        "warnOnLeave",
+        "boolean",
+        "Confirms a reload or a close while dirty. Defaults to true.",
+      ],
+      ["label", "string", "The accessible name of the bar."],
+      [
+        "data-state (SaveBarState)",
+        '"clean" | "dirty" | "saving" | "saved" | "error"',
+        "The step the bar is on, written to the root for styling.",
+      ],
+      ["className", "string", "Classes for placement and appearance."],
+      ["...divProps", "HTMLAttributes", "Native div attributes."],
+    ],
+    accessibility:
+      "The bar is a named region. While the form is clean it is hidden from assistive technology and its buttons are out of the tab order, so a page with nothing to save carries no extra stop. The message is repeated in a live region kept outside the bar, because a region that was hidden a moment ago is not reliably read when it returns, and that copy is what announces the save and the failure. Reduced motion removes the rise, the spin, and the drawn check, leaving a bar that is simply there and then gone.",
+  },
+  {
     slug: "install-command",
     kind: "component",
     name: "Install Command",

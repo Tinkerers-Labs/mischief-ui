@@ -59,6 +59,7 @@ import { ImageGalleryDemo } from "@/components/demos/image-gallery-demo"
 import { ImpossibleCheckboxDemo } from "@/components/demos/impossible-checkbox-demo"
 import { InlineCitationsDemo } from "@/components/demos/inline-citations-demo"
 import { MagneticTabsDemo } from "@/components/demos/magnetic-tabs-demo"
+import { SaveBarDemo } from "@/components/demos/save-bar-demo"
 import { ScrollToTopDemo } from "@/components/demos/scroll-to-top-button-demo"
 import { ShiftButtonDemo } from "@/components/demos/shift-button-demo"
 import { SignatureFooterDemo } from "@/components/demos/signature-footer-demo"
@@ -138,6 +139,7 @@ export const componentDemos: Record<string, ComponentDemo> = {
   },
   "floating-index": { Demo: FloatingIndexDemo },
   "scroll-to-top-button": { Demo: ScrollToTopDemo },
+  "save-bar": { Demo: SaveBarDemo, frameClassName: "p-4 md:p-8" },
   "file-upload": { Demo: FileUploadDemo, frameClassName: "p-4 md:p-8" },
   "file-thumbnail": { Demo: FileThumbnailDemo, frameClassName: "p-6 md:p-10" },
   "ask-ai": { Demo: AskAiDemo, frameClassName: "p-4 md:p-8" },

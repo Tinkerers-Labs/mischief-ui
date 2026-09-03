@@ -123,6 +123,20 @@
       "registryDependencies": ["utils"]
     },
     {
+      "name": "save-bar",
+      "type": "registry:ui",
+      "title": "Save Bar",
+      "description": "A bar that exists only while a form has unsaved changes. It says so, saves, confirms, and leaves.",
+      "files": [
+        {
+          "path": "registry/default/save-bar/save-bar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["form", "button", "feedback", "floating"],
+      "registryDependencies": ["utils"]
+    },
+    {
       "name": "install-command",
       "type": "registry:ui",
       "title": "Install Command",
@@ -2978,6 +2992,19 @@
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/reviewable-diff.json"
       ]
+    },
+    {
+      "name": "save-bar-demo",
+      "type": "registry:example",
+      "title": "Save Bar Demo",
+      "description": "A worked example of Save Bar: A bar that exists only while a form has unsaved changes. It says so, saves, confirms, and leaves.",
+      "files": [
+        {
+          "path": "components/demos/save-bar-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/save-bar.json"]
     },
     {
       "name": "scene-hero-demo",
