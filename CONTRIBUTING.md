@@ -69,10 +69,11 @@ Button must never be asked for a PDF parser.
 - **Subpath exports keep the code apart.** Every component is its own build
   entry, so `mischief-ui/hold-button` never reaches the code behind
   `mischief-ui/pdf-viewer`.
-- **The declaration build needs headroom.** `package:build` raises the Node
-  heap because the shared type graph across every entry outgrows the default
-  limit. tsup runs the declaration pass in a worker thread, which inherits
-  `NODE_OPTIONS`. Dropping the flag fails with `ERR_WORKER_OUT_OF_MEMORY`.
+- **The declaration build runs in batches.** Rolling up declarations for every
+  entry in one TypeScript program outgrew a 16 GB machine at 117 entries and
+  failed with `ERR_WORKER_OUT_OF_MEMORY`. `scripts/build-types.mjs` in the
+  package runs tsup once per batch of twenty entries, each a fresh process with
+  its own heap, after a single JavaScript build.
 - **The root barrel holds only what installs with React alone.** A component
   that statically imports an optional peer stays out of `src/index.ts`, so a
   root import never fails on a package the reader chose not to install. Its

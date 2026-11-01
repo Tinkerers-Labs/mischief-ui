@@ -707,8 +707,8 @@
     }
   },
   "scripts": {
-    "build": "NODE_OPTIONS=--max-old-space-size=16384 tsup",
-    "prepublishOnly": "NODE_OPTIONS=--max-old-space-size=16384 tsup"
+    "build": "tsup && node scripts/build-types.mjs",
+    "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
     "clsx": "^2.1.1",
