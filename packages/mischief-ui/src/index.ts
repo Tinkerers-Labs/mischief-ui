@@ -675,3 +675,142 @@ export {
   type SortDirection,
   type SortValue,
 } from "../../../registry/default/data-table/data-table"
+
+export {
+  ToolApproval,
+  type ToolApprovalDecision,
+  type ToolApprovalProps,
+} from "../../../registry/default/tool-approval/tool-approval"
+
+export {
+  MessageQueue,
+  type QueuedMessage,
+  type MessageQueueProps,
+} from "../../../registry/default/message-queue/message-queue"
+
+export {
+  parseSlashCommand,
+  SlashMenu,
+  type SlashCommand,
+  type SlashMenuProps,
+  type ParsedSlashCommand,
+} from "../../../registry/default/slash-menu/slash-menu"
+
+export {
+  GhostText,
+  type GhostTextProps,
+} from "../../../registry/default/ghost-text/ghost-text"
+
+export {
+  InlineEdit,
+  type InlineEditSelection,
+  type InlineEditRequest,
+  type InlineEditResult,
+  type InlineEditPhase,
+  type InlineEditProps,
+} from "../../../registry/default/inline-edit/inline-edit"
+
+export {
+  MessageBranches,
+  type BranchNode,
+  type MessageBranchesProps,
+} from "../../../registry/default/message-branches/message-branches"
+
+export {
+  UndoButton,
+  type UndoButtonState,
+  type UndoButtonProps,
+} from "../../../registry/default/undo-button/undo-button"
+
+export {
+  StatusIsland,
+  type StatusIslandTaskStatus,
+  type StatusIslandTask,
+  type StatusIslandState,
+  type StatusIslandProps,
+} from "../../../registry/default/status-island/status-island"
+
+export {
+  NotificationStack,
+  type NotificationStackItem,
+  type NotificationStackProps,
+} from "../../../registry/default/notification-stack/notification-stack"
+
+export {
+  defaultFeedbackSentiments,
+  FeedbackWidget,
+  type FeedbackSentiment,
+  type FeedbackWidgetValue,
+  type FeedbackWidgetState,
+  type FeedbackWidgetProps,
+} from "../../../registry/default/feedback-widget/feedback-widget"
+
+export {
+  WheelPicker,
+  WheelPickerGroup,
+  type WheelPickerOption,
+  type WheelPickerProps,
+  type WheelPickerGroupProps,
+} from "../../../registry/default/wheel-picker/wheel-picker"
+
+export {
+  getWeeklyHoursIssues,
+  WeeklyHours,
+  type Weekday,
+  type TimeRange,
+  type WeeklyHoursValue,
+  type WeeklyHoursIssue,
+  type WeeklyHoursProps,
+} from "../../../registry/default/weekly-hours/weekly-hours"
+
+export {
+  QuantityButton,
+  type QuantityButtonProps,
+} from "../../../registry/default/quantity-button/quantity-button"
+
+export {
+  RangeHistogram,
+  type RangeHistogramBin,
+  type RangeHistogramValue,
+  type RangeHistogramProps,
+} from "../../../registry/default/range-histogram/range-histogram"
+
+export {
+  SwipeActions,
+  SwipeActionsItem,
+  type SwipeActionTone,
+  type SwipeAction,
+  type SwipeActionsProps,
+  type SwipeActionsItemProps,
+} from "../../../registry/default/swipe-actions/swipe-actions"
+
+export {
+  StackPanel,
+  StackPanelItem,
+  type StackPanelProps,
+  type StackPanelItemProps,
+} from "../../../registry/default/stack-panel/stack-panel"
+
+export {
+  LinkPreview,
+  type LinkPreviewData,
+  type LinkPreviewProps,
+} from "../../../registry/default/link-preview/link-preview"
+
+export {
+  Sparkline,
+  type SparklineProps,
+} from "../../../registry/default/sparkline/sparkline"
+
+export {
+  HeatCalendar,
+  type HeatCalendarDay,
+  type HeatCalendarProps,
+} from "../../../registry/default/heat-calendar/heat-calendar"
+
+export {
+  MetricCard,
+  type MetricPoint,
+  type MetricPeriod,
+  type MetricCardProps,
+} from "../../../registry/default/metric-card/metric-card"

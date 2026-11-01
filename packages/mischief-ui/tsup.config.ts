@@ -163,6 +163,31 @@ export default defineConfig({
     stepper: "../../registry/default/stepper/stepper.tsx",
     "avatar-stack": "../../registry/default/avatar-stack/avatar-stack.tsx",
     timeline: "../../registry/default/timeline/timeline.tsx",
+    "tool-approval": "../../registry/default/tool-approval/tool-approval.tsx",
+    "message-queue": "../../registry/default/message-queue/message-queue.tsx",
+    "slash-menu": "../../registry/default/slash-menu/slash-menu.tsx",
+    "ghost-text": "../../registry/default/ghost-text/ghost-text.tsx",
+    "inline-edit": "../../registry/default/inline-edit/inline-edit.tsx",
+    "message-branches":
+      "../../registry/default/message-branches/message-branches.tsx",
+    "undo-button": "../../registry/default/undo-button/undo-button.tsx",
+    "status-island": "../../registry/default/status-island/status-island.tsx",
+    "notification-stack":
+      "../../registry/default/notification-stack/notification-stack.tsx",
+    "feedback-widget":
+      "../../registry/default/feedback-widget/feedback-widget.tsx",
+    "wheel-picker": "../../registry/default/wheel-picker/wheel-picker.tsx",
+    "weekly-hours": "../../registry/default/weekly-hours/weekly-hours.tsx",
+    "quantity-button":
+      "../../registry/default/quantity-button/quantity-button.tsx",
+    "range-histogram":
+      "../../registry/default/range-histogram/range-histogram.tsx",
+    "swipe-actions": "../../registry/default/swipe-actions/swipe-actions.tsx",
+    "stack-panel": "../../registry/default/stack-panel/stack-panel.tsx",
+    "link-preview": "../../registry/default/link-preview/link-preview.tsx",
+    sparkline: "../../registry/default/sparkline/sparkline.tsx",
+    "heat-calendar": "../../registry/default/heat-calendar/heat-calendar.tsx",
+    "metric-card": "../../registry/default/metric-card/metric-card.tsx",
   },
   format: ["esm", "cjs"],
   /**

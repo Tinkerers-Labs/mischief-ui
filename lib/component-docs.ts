@@ -11334,6 +11334,2397 @@ export function People({ people }) {
     accessibility:
       "A real table with a caption, column headers scoped to their columns, and aria-sort on any column that can be sorted, so the current order is announced when a heading is reached. Sort controls are buttons with a touch-sized target. Resize handles are separators in the tab order, driven by the arrow keys. Every checkbox is named with the row it selects rather than being a column of boxes called Select, and the number chosen is kept in a polite live region. onRowClick is pointer only and is documented as never being the only route to what it does. While loading it marks itself busy, and the placeholders carry no text for anything to read out.",
   },
+  {
+    slug: "tool-approval",
+    kind: "component",
+    name: "Tool Approval",
+    family: "Agent UI",
+    summary:
+      "Asks before an agent runs a tool. Shows what the call will do, offers Allow once, Always allow and Deny, and leaves a one-line record of the answer.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("tool-approval"),
+    npmImport: packageImport("ToolApproval", "tool-approval"),
+    usage: `export function Permission({ call }: { call: PendingCall }) {
+  return (
+    <ToolApproval
+      name={call.tool}
+      input={call.arguments}
+      destructive={call.tool === "delete_branch"}
+      onDecision={(decision) => agent.respond(call.id, decision)}
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "decisions",
+        title: "Three answers, then a record",
+        blocks: [
+          {
+            kind: "text",
+            text: 'onDecision receives "allow-once", "allow-always" or "deny". Remembering an Always allow is your job; the card only reports it. When the callback returns a promise the card shows it is sending, disables every choice, and waits. A rejection puts the choices back with a short error, so a dropped request never reads as an answer.',
+          },
+          {
+            kind: "text",
+            text: "Once the answer lands the card does not vanish. It shrinks to one line, such as Allowed once read_file, so the transcript still says who let what run. Focus moves to that line rather than falling to the page. Pass decision to draw the same line for a card restored from history.",
+          },
+        ],
+      },
+      {
+        id: "summary",
+        title: "Saying what the call will do",
+        blocks: [
+          {
+            kind: "text",
+            text: "A plain object input is listed key by key, and the raw input sits behind a disclosure for anyone who wants the exact payload. When keys are not enough, pass summary with a sentence of your own.",
+          },
+          {
+            kind: "code",
+            code: `<ToolApproval
+  name="delete_branch"
+  input={{ branch: "release/0.7", remote: "origin" }}
+  summary={<p>Deletes release/0.7 on origin.</p>}
+  destructive
+  onDecision={respond}
+/>`,
+          },
+        ],
+      },
+      {
+        id: "destructive",
+        title: "Destructive calls",
+        blocks: [
+          {
+            kind: "text",
+            text: "destructive turns both allow buttons into press and hold. Letting go early cancels. From the keyboard, holding Enter or Space does the same, and a quick press does nothing, so a stray Enter cannot delete a branch. Assistive technology that activates a button directly, with no key or pointer behind it, gets a two-step confirmation instead: the first activation asks, the second allows. Deny always takes one press.",
+          },
+        ],
+      },
+    ],
+    props: [
+      ["name", "string", "The tool the agent wants to run."],
+      [
+        "input",
+        "unknown",
+        "The raw arguments. A plain object is also listed key by key.",
+      ],
+      [
+        "summary",
+        "ReactNode",
+        "Says what the call will do, in place of the key list.",
+      ],
+      [
+        "onDecision",
+        "(decision: ToolApprovalDecision) => void | Promise<void>",
+        "Receives the answer. A rejection puts the choices back.",
+      ],
+      [
+        "destructive",
+        "boolean",
+        "Allowing takes a press and hold. Defaults to false.",
+      ],
+      [
+        "decision",
+        "ToolApprovalDecision | null",
+        "An earlier answer, drawn as the resolved line.",
+      ],
+      ["allowAlways", "boolean", "Offer Always allow. Defaults to true."],
+      [
+        "holdDuration",
+        "number",
+        "Milliseconds a destructive allow is held. Defaults to 1200.",
+      ],
+      [
+        "decision (ToolApprovalDecision)",
+        '"allow-once" | "allow-always" | "deny"',
+        "The three answers.",
+      ],
+      ["className", "string", "Classes for the card and the resolved line."],
+      ["...divProps", "HTMLAttributes", "Native div attributes."],
+    ],
+    accessibility:
+      "The card is a group named by its question, Allow read_file to run?, and described by the argument list or summary. Every choice is a native button. Destructive allows are described by the hold instruction, announce when holding has started, and offer a two-step confirmation to assistive technology that activates without a key press. The raw input is a disclosure with aria-expanded. The resolved line is a status that takes focus after a decision, so keyboard users are not dropped to the top of the page. Reduced motion stops the sending spinner and the press scale; the hold fill still tracks the press because it is the only measure of how long is left.",
+  },
+  {
+    slug: "message-queue",
+    kind: "component",
+    name: "Message Queue",
+    family: "Agent UI",
+    summary:
+      "Keeps follow-ups typed while the agent is busy. They stack above the composer, can be edited, reordered or removed, and go out one at a time when the agent is free.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("message-queue"),
+    npmImport: packageImport("MessageQueue", "message-queue"),
+    usage: `export function Composer() {
+  const { busy, send } = useAgent()
+  const [queue, setQueue] = useState<QueuedMessage[]>([])
+
+  return (
+    <>
+      <MessageQueue
+        busy={busy}
+        items={queue}
+        onItemsChange={setQueue}
+        onRelease={(item) => send(item.text)}
+      />
+      <PromptInput
+        status={busy ? "streaming" : "ready"}
+        onSubmit={(text) =>
+          busy
+            ? setQueue((q) => [...q, { id: crypto.randomUUID(), text }])
+            : send(text)
+        }
+      />
+    </>
+  )
+}`,
+    sections: [
+      {
+        id: "release",
+        title: "When an item goes",
+        blocks: [
+          {
+            kind: "text",
+            text: "The queue is yours: items in, onItemsChange out. While busy is true nothing moves. When it turns false the first item slides down toward the composer, leaves items, and is handed to onRelease. One item goes per idle spell, so if your send does not turn busy back on, the rest still wait for the next one.",
+          },
+          {
+            kind: "text",
+            text: "An item being edited is never sent. If the agent finishes while someone is rewording the first follow-up, the queue waits for them to finish and sends the new wording.",
+          },
+        ],
+      },
+      {
+        id: "editing",
+        title: "Editing and reordering",
+        blocks: [
+          {
+            kind: "text",
+            text: "Press an item to edit it in place. Enter saves, Shift+Enter starts a new line, Escape throws the edit away, and saving it empty removes it. Drag the handle to reorder, or focus the handle and use the up and down arrow keys. Rows glide to their new places in 160ms, and focus stays on the item that moved.",
+          },
+        ],
+      },
+    ],
+    props: [
+      [
+        "items",
+        "readonly QueuedMessage[]",
+        "The queued follow-ups, first to go first.",
+      ],
+      [
+        "onItemsChange",
+        "(items: QueuedMessage[]) => void",
+        "Receives the queue after an edit, move, removal or release.",
+      ],
+      [
+        "busy",
+        "boolean",
+        "While true the queue waits. When it turns false the first item goes.",
+      ],
+      [
+        "onRelease",
+        "(item: QueuedMessage) => void",
+        "Receives the item being sent. It has already left items.",
+      ],
+      ["label", "string", 'Names the list. Defaults to "Queued messages".'],
+      [
+        "id, text (QueuedMessage)",
+        "string",
+        "A stable key and the message text.",
+      ],
+      ["className", "string", "Classes for the queue container."],
+      ["...divProps", "HTMLAttributes", "Native div attributes."],
+    ],
+    accessibility:
+      "The queue is a named ordered list. Each item has a move handle, an edit button and a remove button, all named after the item's text. The move handle is described by its arrow key instruction, and every move, removal and release is announced in a polite live region. Focus stays on a moved item, goes to the neighbouring item after a removal, and returns to the item after an edit. Reduced motion removes the entrance, the release slide and the reordering glide, and releases without the short exit delay.",
+  },
+  {
+    slug: "slash-menu",
+    kind: "component",
+    name: "Slash Menu",
+    family: "Agent UI",
+    summary:
+      "A message field that opens a command menu when a word starts with a slash, then spells out the chosen command's arguments and marks the one you are typing.",
+    dependencies: [],
+    install: registryInstallCommand("slash-menu"),
+    npmImport: packageImport("SlashMenu", "slash-menu"),
+    usage: `const commands: SlashCommand[] = [
+  {
+    name: "translate",
+    description: "Translate text into another language",
+    args: ["language", "text"],
+  },
+  { name: "clear", description: "Start a new conversation" },
+]
+
+export function Composer() {
+  const [text, setText] = useState("")
+
+  return (
+    <SlashMenu
+      commands={commands}
+      value={text}
+      onValueChange={setText}
+      placeholder="Type / for commands"
+      onKeyDown={(event) => {
+        if (event.key !== "Enter" || event.shiftKey) return
+        event.preventDefault()
+        run(parseSlashCommand(text, commands) ?? text)
+        setText("")
+      }}
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "menu",
+        title: "Opening and picking",
+        blocks: [
+          {
+            kind: "text",
+            text: "A slash at the start of a word opens the menu next to it. A slash inside a word, as in and/or, does not. Typing filters by name, with names that start with the query listed before names that only contain it. The arrow keys move, Enter or Tab picks, and Escape closes the menu until a new slash is typed. Picking replaces the typed fragment with the full command and a space, and leaves the caret after it.",
+          },
+          {
+            kind: "text",
+            text: "While the menu is open, Enter and Tab belong to it, and your onKeyDown does not see them. Once it is closed, every key reaches your handler, so Enter to send works as it did. The menu opens below the caret when the window has room for it and above when it does not, so the same field works at the top of a page and in a composer pinned to the bottom. Set side to top or bottom to fix it.",
+          },
+        ],
+      },
+      {
+        id: "arguments",
+        title: "Arguments",
+        blocks: [
+          {
+            kind: "text",
+            text: "args names a command's arguments in order. After a command, a line under the field shows its signature, such as /translate <language> <text>, with the argument the caret is in marked. The last argument takes the rest of the line, so a sentence counts as one <text>.",
+          },
+          {
+            kind: "code",
+            code: `parseSlashCommand("/translate Spanish Where is the station?", commands)
+// { command: translate, args: ["Spanish", "Where is the station?"] }`,
+            caption:
+              "The same rule, exported for the moment the message is sent. It returns null for text that is not a known command.",
+          },
+        ],
+      },
+    ],
+    props: [
+      ["commands", "readonly SlashCommand[]", "The commands the menu offers."],
+      ["value", "string", "The field text, when controlled."],
+      ["defaultValue", "string", "The starting text, when uncontrolled."],
+      [
+        "onValueChange",
+        "(value: string) => void",
+        "Receives the text after every change, including a pick.",
+      ],
+      [
+        "onCommandSelect",
+        "(command: SlashCommand) => void",
+        "Runs when a command is picked from the menu.",
+      ],
+      [
+        "side",
+        '"auto" | "top" | "bottom"',
+        "Where the menu opens. Auto picks the side with room. Defaults to auto.",
+      ],
+      [
+        "name, description, args (SlashCommand)",
+        "string, string, readonly string[]",
+        "What is typed after the slash, a line of help, and the argument names in order.",
+      ],
+      [
+        "parseSlashCommand (parseSlashCommand)",
+        "(text: string, commands: readonly SlashCommand[]) => ParsedSlashCommand | null",
+        "Splits a message into its command and arguments.",
+      ],
+      [
+        "command, args (ParsedSlashCommand)",
+        "SlashCommand, string[]",
+        "What parseSlashCommand returns.",
+      ],
+      [
+        "className",
+        "string",
+        "Classes for the textarea. Its other attributes pass through.",
+      ],
+      [
+        "...textareaProps",
+        "TextareaHTMLAttributes",
+        'Native textarea attributes. aria-label defaults to "Message".',
+      ],
+    ],
+    accessibility:
+      "The field follows the combobox pattern: role combobox with aria-autocomplete list, aria-expanded, aria-controls and aria-activedescendant pointing at the highlighted option, so focus never leaves the text while the arrow keys move through a listbox of options. Escape closes the menu without reaching handlers further up, such as a stop-generating shortcut. The argument hint is attached to the field with aria-describedby, and a polite live region names the argument the caret has moved into and how many commands match. The menu appears and disappears without animation, so reduced motion changes nothing.",
+  },
+  {
+    slug: "ghost-text",
+    kind: "component",
+    name: "Ghost Text",
+    family: "Agent UI",
+    summary:
+      "An input or textarea that shows a suggested completion right after the caret. Tab takes it, Escape puts it away, and typing the suggested letters keeps it in place.",
+    dependencies: [],
+    install: registryInstallCommand("ghost-text"),
+    npmImport: packageImport("GhostText", "ghost-text"),
+    usage: `export function Subject() {
+  const [subject, setSubject] = useState("")
+
+  return (
+    <GhostText
+      aria-label="Subject"
+      value={subject}
+      onValueChange={setSubject}
+      getSuggestion={(text, signal) => completeSubject(text, { signal })}
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "suggestions",
+        title: "Where suggestions come from",
+        blocks: [
+          {
+            kind: "text",
+            text: "getSuggestion receives the text so far and returns what should come after it, as a string or a promise of one. An empty string means there is nothing to suggest. It is called after debounce milliseconds of quiet typing, only while the field has focus and is not empty.",
+          },
+          {
+            kind: "code",
+            code: `<GhostText
+  debounce={250}
+  getSuggestion={async (text, signal) => {
+    const response = await fetch("/api/complete", {
+      method: "POST",
+      body: JSON.stringify({ text }),
+      signal,
+    })
+    return (await response.json()).completion
+  }}
+  onSuggestionError={(error) => report(error)}
+/>`,
+            caption:
+              "Pass the signal to fetch so a request for text that has moved on is cancelled.",
+          },
+          {
+            kind: "text",
+            text: "A suggestion that arrives for text that has since changed is dropped, whether or not the request honoured the signal. A rejection leaves the field without a suggestion and goes to onSuggestionError.",
+          },
+        ],
+      },
+      {
+        id: "typing-through",
+        title: "Typing through a suggestion",
+        blocks: [
+          {
+            kind: "text",
+            text: "Typing a character the suggestion predicted uses it up instead of asking again, so the rest of the suggestion stays exactly where it was. Typing anything else drops it, and a new one is asked for once typing pauses. Escape dismisses it, and nothing is asked for again until the text changes.",
+          },
+          {
+            kind: "text",
+            text: "Suggestions only show while the caret is at the end of the text. A completion belongs after what has been written, not in the middle of it.",
+          },
+        ],
+      },
+      {
+        id: "keys",
+        title: "Keys",
+        blocks: [
+          {
+            kind: "text",
+            text: "Tab takes the whole suggestion. Ctrl or Cmd with the right arrow takes the next word. Escape dismisses. With no suggestion showing, Tab moves focus as it always does, so the field never traps a keyboard user. On a touch keyboard, which has no Tab key, the small Tab mark after the suggestion is a button that takes it.",
+          },
+        ],
+      },
+    ],
+    props: [
+      ["value", "string", "The text, when controlled."],
+      ["defaultValue", "string", "The starting text, when uncontrolled."],
+      [
+        "onValueChange",
+        "(value: string) => void",
+        "Called on every change, including an accepted suggestion.",
+      ],
+      [
+        "getSuggestion",
+        "(text: string, signal: AbortSignal) => string | Promise<string>",
+        "Returns the completion to show after the text. An empty string means none.",
+      ],
+      [
+        "debounce",
+        "number",
+        "Milliseconds of quiet before asking. Defaults to 300.",
+      ],
+      ["multiline", "boolean", "Renders a textarea instead of an input."],
+      ["rows", "number", "Textarea rows when multiline. Defaults to 3."],
+      [
+        "onAccept",
+        "(accepted: string) => void",
+        "Receives the part that was taken, whole or one word.",
+      ],
+      [
+        "onSuggestionError",
+        "(error: unknown) => void",
+        "Receives a rejected getSuggestion.",
+      ],
+      ["hint", "string", "The field's screen reader description of the keys."],
+      ["disabled, readOnly", "boolean", "Either one stops suggestions."],
+      ["className", "string", "Classes for the field itself."],
+      [
+        "...fieldProps",
+        "HTMLAttributes",
+        "Native attributes for the input or textarea, such as id, name, and placeholder.",
+      ],
+    ],
+    accessibility:
+      "The field is a native input or textarea marked aria-autocomplete inline, and its description says that Tab accepts and Escape dismisses. A new suggestion is announced politely, read from the start of the word it completes, and is not announced again while it is being typed through. The muted text itself is hidden from assistive technology. Tab only accepts while a suggestion is visible, so focus moves normally otherwise. Escape stops at the suggestion, leaving the next press for a surrounding dialog. Reduced motion removes the fade the suggestion arrives with.",
+  },
+  {
+    slug: "inline-edit",
+    kind: "component",
+    name: "Inline Edit",
+    family: "Agent UI",
+    summary:
+      "Select a span of a document, say how it should change, and watch the replacement stream in beside the struck-out original. Nothing changes until you accept it.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("inline-edit"),
+    npmImport: packageImport("InlineEdit", "inline-edit"),
+    usage: `export function Draft() {
+  const [text, setText] = useState(initialDraft)
+
+  return (
+    <InlineEdit
+      value={text}
+      onChange={setText}
+      onRequestEdit={({ selection, instruction, signal }) =>
+        streamRewrite(selection.text, instruction, { signal })
+      }
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "flow",
+        title: "Select, ask, review",
+        blocks: [
+          {
+            kind: "text",
+            text: "Selecting text, with a pointer or with Shift and the arrow keys, brings up Edit selection beside it. That button, or Cmd+K or Ctrl+K inside the document, opens a small prompt. Submitting it calls onRequestEdit, and the replacement streams in next to the original, which is struck through. Accept writes it into the value through onChange. Reject leaves the value as it was.",
+          },
+          {
+            kind: "text",
+            text: "Either way the document gets focus back with a selection: the new text after Accept, the original after Reject. A second edit on the same span is one shortcut away.",
+          },
+          {
+            kind: "text",
+            text: "Accept writes into the value as it is now, and only while the selected text is still at the offsets it was selected from. If your code changed that text, or moved it, during the edit, Accept is withdrawn and changedMessage takes its place. The proposal stays on screen. Retry asks again for the same text where it now sits, and Dismiss leaves the document alone. A change elsewhere in the document does not block Accept, and is kept.",
+          },
+        ],
+      },
+      {
+        id: "request",
+        title: "What onRequestEdit returns",
+        blocks: [
+          {
+            kind: "text",
+            text: "The request carries the selection with its offsets and text, the instruction, and an AbortSignal. Return the replacement as a string, a promise of one, an async iterable of chunks, or a ReadableStream of strings. A host that receives chunks through callbacks can enqueue them into a ReadableStream.",
+          },
+          {
+            kind: "code",
+            code: `async function* streamRewrite({ selection, instruction, signal }) {
+  const response = await fetch("/api/rewrite", {
+    method: "POST",
+    body: JSON.stringify({ text: selection.text, instruction }),
+    signal,
+  })
+  const reader = response.body.pipeThrough(new TextDecoderStream()).getReader()
+
+  for (;;) {
+    const { done, value } = await reader.read()
+    if (done) return
+    yield value
+  }
+}`,
+          },
+          {
+            kind: "text",
+            text: "Stop and Reject abort the signal. A rejection shows errorMessage in place with Try again, which asks once more with the same instruction.",
+          },
+        ],
+      },
+      {
+        id: "keys",
+        title: "Keys",
+        blocks: [
+          {
+            kind: "text",
+            text: "Cmd+K or Ctrl+K opens the prompt for the current selection. Enter sends the instruction. Once the replacement has arrived, focus moves to Accept, so Enter accepts; Cmd+Enter or Ctrl+Enter accepts from anywhere in the bar. Escape closes the prompt, stops a stream, or rejects, whichever is open.",
+          },
+          {
+            kind: "text",
+            text: "readOnly stops typing in the document but keeps editing through requests, for text that should only change by review.",
+          },
+        ],
+      },
+    ],
+    props: [
+      ["value", "string", "The document text, when controlled."],
+      ["defaultValue", "string", "The starting text, when uncontrolled."],
+      [
+        "onChange",
+        "(value: string) => void",
+        "Called with the new text after typing or an accepted edit.",
+      ],
+      [
+        "onRequestEdit",
+        "(request: InlineEditRequest) => InlineEditResult",
+        "Produces the replacement for a selection, whole or streamed.",
+      ],
+      [
+        "selection, instruction, signal (InlineEditRequest)",
+        "InlineEditSelection, string, AbortSignal",
+        "What was selected, what was asked, and the signal Stop and Reject abort.",
+      ],
+      [
+        "start, end, text (InlineEditSelection)",
+        "number, number, string",
+        "Offsets of the selection in the value, and its text.",
+      ],
+      [
+        "InlineEditResult",
+        "AsyncIterable<string> | ReadableStream<string> | Promise<string> | string",
+        "Any of these is accepted as the replacement.",
+      ],
+      [
+        "data-phase (InlineEditPhase)",
+        '"idle" | "prompting" | "streaming" | "review" | "error"',
+        "The step the edit is on, written to the root for styling.",
+      ],
+      [
+        "readOnly",
+        "boolean",
+        "Blocks typing. Edits through requests still work.",
+      ],
+      [
+        "label",
+        "string",
+        "The accessible name of the document. Defaults to Document.",
+      ],
+      ["placeholder", "string", "Placeholder for the instruction field."],
+      ["errorMessage", "string", "Shown when a request fails."],
+      [
+        "changedMessage",
+        "string",
+        "Shown in place of Accept when the selected text changed during the edit.",
+      ],
+      ["className", "string", "Classes for the root."],
+      ["...divProps", "HTMLAttributes", "Native div attributes."],
+    ],
+    accessibility:
+      "The document is a native textarea, so selection works with the keyboard as well as a pointer, and its description names the Cmd+K or Ctrl+K shortcut. The instruction field is labelled. While an edit is under review the original is a del element and the replacement an ins element, each with a hidden Removed or Added prefix, and the bar holding Accept and Reject is a named toolbar that takes focus. A live region says when rewriting starts, reads the suggested replacement when it is ready, confirms Accept or Reject, and says so when the document changed under the edit. Reduced motion removes the bar's entrance and holds the streaming caret still.",
+  },
+  {
+    slug: "message-branches",
+    kind: "component",
+    name: "Message Branches",
+    family: "Agent UI",
+    summary:
+      "The 2 / 3 switcher on a message that was edited or regenerated, with an overview of every place the conversation forked and which path is on screen.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("message-branches"),
+    npmImport: packageImport("MessageBranches", "message-branches"),
+    usage: `export function Thread({ nodes, activePath, select }) {
+  return activePath.map((id) => (
+    <div key={id}>
+      <Message role={roleOf(id)}>{textOf(id)}</Message>
+      <MessageBranches
+        nodes={nodes}
+        activePath={activePath}
+        messageId={id}
+        onSelect={select}
+      />
+    </div>
+  ))
+}`,
+    sections: [
+      {
+        id: "data",
+        title: "The tree it reads",
+        blocks: [
+          {
+            kind: "text",
+            text: "nodes is every message as an id and a parentId, with null for a first message. Messages that share a parent are versions of each other, in the order they appear. activePath is the ids on screen, from the first message down. The control renders nothing on a message that has only one version, so it can go under every message.",
+          },
+          {
+            kind: "code",
+            code: `const nodes = [
+  { id: "q1", parentId: null, label: "Undo the last commit" },
+  { id: "a1", parentId: "q1", label: "git reset --soft HEAD~1" },
+  { id: "q2", parentId: null, label: "Undo a pushed commit" },
+  { id: "a2", parentId: "q2", label: "git revert" },
+]`,
+            caption: "q1 and q2 are two versions of the first question.",
+          },
+        ],
+      },
+      {
+        id: "selecting",
+        title: "What onSelect asks of you",
+        blocks: [
+          {
+            kind: "text",
+            text: "The arrows and the overview both call onSelect with a message id. Deciding what is shown below that message is yours. Most chat products follow the newest reply at each level, and the example does the same.",
+          },
+          {
+            kind: "code",
+            code: `function pathThrough(id) {
+  const path = ancestorsOf(id).concat(id)
+  let replies = childrenOf(id)
+  while (replies.length > 0) {
+    const newest = replies[replies.length - 1]
+    path.push(newest.id)
+    replies = childrenOf(newest.id)
+  }
+  return path
+}`,
+          },
+        ],
+      },
+      {
+        id: "overview",
+        title: "The overview",
+        blocks: [
+          {
+            kind: "text",
+            text: "The fork button opens every branch at once. A run of messages with no fork in it is one row, labelled with its first message and its length, so a long thread edited once stays two rows deep. Rows on the path being shown are marked. Up, Down, Home, and End move between rows, Enter chooses one, and Escape closes it. Set overview to false to keep only the arrows.",
+          },
+        ],
+      },
+    ],
+    props: [
+      [
+        "nodes",
+        "readonly BranchNode[]",
+        "Every message in the conversation, by id and parent.",
+      ],
+      [
+        "id, parentId, label (BranchNode)",
+        "string, string | null, string",
+        "A message, the message it replies to, and the short line the overview shows for it.",
+      ],
+      [
+        "activePath",
+        "readonly string[]",
+        "The ids on screen, first message first.",
+      ],
+      ["messageId", "string", "The message this control sits on."],
+      [
+        "onSelect",
+        "(branchId: string) => void",
+        "Called with the version or branch chosen.",
+      ],
+      [
+        "overview",
+        "boolean",
+        "Shows the branch overview button. Defaults to true.",
+      ],
+      ["label", "string", "The accessible name of the control."],
+      ["className", "string", "Classes for the root."],
+      ["...divProps", "HTMLAttributes", "Native div attributes."],
+    ],
+    accessibility:
+      "The control is a named group of native buttons. The count reads as Version 2 of 3, and a step is announced politely. The first and last arrows are marked aria-disabled rather than disabled, so pressing Next on the last version does not throw focus out of the control. The overview is a labelled dialog of nested lists whose rows are buttons named with their label, length, and whether they are shown; it opens with focus on the row on screen and returns focus to its button when it closes. Reduced motion removes the counter's slide and the overview's entrance.",
+  },
+  {
+    slug: "undo-button",
+    kind: "component",
+    name: "Undo Button",
+    family: "Controls",
+    summary:
+      "An action that looks done at once and only commits after a few seconds. Until then the button is Undo.",
+    dependencies: [],
+    install: registryInstallCommand("undo-button"),
+    npmImport: packageImport("UndoButton", "undo-button"),
+    usage: `export function DraftRow({ draft }: { draft: Draft }) {
+  const [deleting, setDeleting] = React.useState(false)
+
+  return (
+    <li className={deleting ? "opacity-60" : ""}>
+      {draft.title}
+      <UndoButton
+        message={\`Deleted \${draft.title}\`}
+        onAction={() => setDeleting(true)}
+        onUndo={() => setDeleting(false)}
+        onCommit={() => deleteDraft(draft.id)}
+      />
+    </li>
+  )
+}`,
+    sections: [
+      {
+        id: "three-moments",
+        title: "Three moments, three callbacks",
+        blocks: [
+          {
+            kind: "text",
+            text: "onAction runs on the click, so the row can look deleted straight away. onUndo runs if the person takes it back. onCommit runs once the window ends without an undo, and that is the only place the real work belongs. A host that only passes onCommit still gets the countdown and the Undo.",
+          },
+          {
+            kind: "text",
+            text: "If the button leaves the page while the window is open, the action commits. The person was told it happened, so it happens.",
+          },
+        ],
+      },
+      {
+        id: "clock",
+        title: "Who the clock waits for",
+        blocks: [
+          {
+            kind: "text",
+            text: "The countdown stops while a mouse rests on the button and while keyboard focus is on it, and starts again from where it stopped when either moves away. Someone reading the button with a screen reader or deciding with the pointer over it is never raced. The focus a mouse click leaves behind does not hold the clock, or a mouse user would never see the action commit.",
+          },
+          {
+            kind: "code",
+            code: `<UndoButton duration={8000} message="Moved to trash" onCommit={trash} />`,
+            caption:
+              "duration is in milliseconds and has a floor of one second.",
+          },
+        ],
+      },
+    ],
+    props: [
+      ["onCommit", "() => void", "Runs once the window ends without an undo."],
+      [
+        "onAction",
+        "() => void",
+        "Runs at once on the click, for showing the action as done.",
+      ],
+      ["onUndo", "() => void", "Runs when the person presses Undo."],
+      [
+        "duration",
+        "number",
+        "The grace window in milliseconds. Defaults to 5000.",
+      ],
+      [
+        "children",
+        "ReactNode",
+        "The label before the action. Defaults to Delete.",
+      ],
+      ["undoLabel", "string", "The label during the window. Defaults to Undo."],
+      [
+        "message, undoneMessage",
+        "string",
+        "What is announced when the action is taken and when it is undone. Default Deleted and Undone.",
+      ],
+      [
+        "data-state (UndoButtonState)",
+        '"idle" | "pending"',
+        "Whether the window is open. data-paused is also set while the clock is held.",
+      ],
+      ["className", "string", "Classes for the button."],
+      [
+        "...buttonProps",
+        "ButtonHTMLAttributes",
+        "Native button attributes. onClick runs before the button's own handling, and preventDefault stops it.",
+      ],
+    ],
+    accessibility:
+      "It stays one native button, so its name changes from the action to Undo and focus never moves. Taking the action is announced politely with the time left, for example: Deleted. Undo available for 5 seconds. Undoing is announced too. The seconds are shown as text and the draining bar is decoration, so nothing depends on seeing the bar. The countdown pauses while the button has keyboard focus or a hovering mouse, which meets the timing adjustable criterion without a separate control. Reduced motion removes the draining bar and keeps the seconds.",
+  },
+  {
+    slug: "status-island",
+    kind: "component",
+    name: "Status Island",
+    family: "Feedback",
+    summary:
+      "A small pill at the edge of the screen that reports background work. It reshapes as tasks come and go, opens into the full list, and leaves once everything is done.",
+    dependencies: [],
+    install: registryInstallCommand("status-island"),
+    npmImport: packageImport("StatusIsland", "status-island"),
+    usage: `export function Uploads() {
+  const { tasks, cancel, retry } = useUploads()
+
+  return (
+    <StatusIsland
+      tasks={tasks.map((upload) => ({
+        id: upload.id,
+        label: upload.file.name,
+        progress: upload.loaded / upload.total,
+        status: upload.failed ? "error" : upload.done ? "done" : "running",
+      }))}
+      onCancel={cancel}
+      onRetry={retry}
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "tasks",
+        title: "What it reads",
+        blocks: [
+          {
+            kind: "text",
+            text: "One array. Each task has an id, a label, a status of running, done or error, and an optional progress from 0 to 1. Leave progress out while the size of the work is unknown and the ring spins instead of filling. detail is a second line, usually the reason a task failed.",
+          },
+          {
+            kind: "text",
+            text: "The island keeps no copy of the work. Cancel and retry hand back the id, and the host changes the array.",
+          },
+        ],
+      },
+      {
+        id: "lead",
+        title: "Which task leads",
+        blocks: [
+          {
+            kind: "text",
+            text: "A failure comes first, because it is the one that needs a person. Otherwise the first running task leads, with its percent, and a count says how many others are still open. When nothing is running and nothing failed the island says Done, waits doneDuration, and leaves. It stays while it is open or holds focus, so it never disappears under a keyboard.",
+          },
+        ],
+      },
+      {
+        id: "placement",
+        title: "Placement",
+        blocks: [
+          {
+            kind: "text",
+            text: "It is fixed at the top center by default. Pass a className to move it, such as bottom-4 top-auto, or absolute to keep it inside a container.",
+          },
+        ],
+      },
+    ],
+    props: [
+      [
+        "tasks",
+        "StatusIslandTask[]",
+        "The work to report: { id, label, status, progress?, detail? }.",
+      ],
+      [
+        "onCancel",
+        "(id: string) => void",
+        "Cancels a running task. Omit it and no Cancel button is drawn.",
+      ],
+      [
+        "onRetry",
+        "(id: string) => void",
+        "Retries a failed task. Omit it and no Retry button is drawn.",
+      ],
+      [
+        "label",
+        "string",
+        "The accessible name of the island. Defaults to Background tasks.",
+      ],
+      [
+        "doneLabel, failedLabel, cancelLabel, retryLabel",
+        "string",
+        "Status words and button copy.",
+      ],
+      [
+        "doneDuration",
+        "number",
+        "How long Done stays before the island leaves, in milliseconds. Defaults to 1600.",
+      ],
+      [
+        "status (StatusIslandTaskStatus)",
+        '"running" | "done" | "error"',
+        "A task's status.",
+      ],
+      [
+        "data-state (StatusIslandState)",
+        '"hidden" | "running" | "error" | "done"',
+        "What the island is showing, written to the root for styling. data-expanded is set while the list is open.",
+      ],
+      ["className", "string", "Classes for placement."],
+      ["...divProps", "HTMLAttributes", "Native div attributes."],
+    ],
+    accessibility:
+      "The island is a named region with one button that says what leads and whether the list is expanded. Enter or a click opens the list, and Escape or a click outside closes it and returns focus to that button. Each running task has a named progress bar, and Cancel and Retry name the task they act on. Completions and failures are announced politely from a live region kept outside the island, so they are read even as it leaves. Progress ticks are not announced. While hidden the island is inert. Reduced motion removes the reshaping, the ring's spin and the bar transitions.",
+  },
+  {
+    slug: "notification-stack",
+    kind: "component",
+    name: "Notification Stack",
+    family: "Feedback",
+    summary:
+      "Several notifications kept as one compact stack. It spreads into a readable list on hover, focus or tap, and folds back when you leave.",
+    dependencies: [],
+    install: registryInstallCommand("notification-stack"),
+    npmImport: packageImport("NotificationStack", "notification-stack"),
+    usage: `export function Inbox() {
+  const [items, setItems] = React.useState(notifications)
+
+  return (
+    <NotificationStack
+      items={items}
+      onDismiss={(id) => setItems((list) => list.filter((item) => item.id !== id))}
+      onClearAll={() => setItems([])}
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "items",
+        title: "What a card holds",
+        blocks: [
+          {
+            kind: "text",
+            text: "Each item has an id and a title, and may have a description, a short time such as 2m ago, and an icon. The newest item goes first in the array and sits on top of the stack. The host owns the array: onDismiss hands back an id after the card has left, and onClearAll empties it.",
+          },
+        ],
+      },
+      {
+        id: "opening",
+        title: "How it opens",
+        blocks: [
+          {
+            kind: "text",
+            text: "A resting mouse, keyboard focus anywhere inside, or a tap on a card spreads the stack. Leaving with the mouse or with focus folds it back, and a tap outside closes what a tap opened. visibleCount sets how many cards peek behind the first while it is folded.",
+          },
+          {
+            kind: "text",
+            text: "On touch, a card swiped sideways past a short distance is dismissed in the direction it was thrown. A shorter swipe springs back. Vertical scrolling is left to the page.",
+          },
+        ],
+      },
+    ],
+    props: [
+      [
+        "items",
+        "NotificationStackItem[]",
+        "The notifications, newest first: { id, title, description?, time?, icon? }.",
+      ],
+      ["onDismiss", "(id: string) => void", "Removes one notification."],
+      [
+        "onClearAll",
+        "() => void",
+        "Removes all of them. Omit it and no Clear all button is drawn.",
+      ],
+      [
+        "label",
+        "string",
+        "The heading and accessible name. Defaults to Notifications.",
+      ],
+      [
+        "visibleCount",
+        "number",
+        "Cards showing behind the first while folded. Defaults to 3.",
+      ],
+      [
+        "emptyMessage, dismissLabel, clearLabel",
+        "string",
+        "The empty line and button copy.",
+      ],
+      ["className", "string", "Classes for the root section."],
+      ["...sectionProps", "HTMLAttributes", "Native section attributes."],
+    ],
+    accessibility:
+      "The stack is a section named by its heading, and each card is a list item with a dismiss button named for its notification. Tabbing in spreads the stack so every card is readable and reachable. Dismissing a card moves focus to the next card, and Clear all leaves focus on the stack, so focus is never dropped to the page. Cards hidden behind the fold are out of the tab order and hidden from assistive technology until it opens. A notification that arrives is announced politely, and the ones already there are not. Swiping is a touch shortcut; every card also has a button. Reduced motion removes the spring and the exit slide, and dismissal happens at once.",
+  },
+  {
+    slug: "feedback-widget",
+    kind: "component",
+    name: "Feedback Widget",
+    family: "Controls",
+    summary:
+      "A button in the corner that opens into a small form: how it is going, a message, and Send. A failed send keeps the text.",
+    dependencies: [],
+    install: registryInstallCommand("feedback-widget"),
+    npmImport: packageImport("FeedbackWidget", "feedback-widget"),
+    usage: `export function AppShell({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      {children}
+      <FeedbackWidget
+        onSubmit={({ sentiment, message }) =>
+          fetch("/api/feedback", {
+            method: "POST",
+            body: JSON.stringify({ sentiment, message, page: location.pathname }),
+          }).then((response) => {
+            if (!response.ok) throw new Error(response.statusText)
+          })
+        }
+      />
+    </>
+  )
+}`,
+    sections: [
+      {
+        id: "sending",
+        title: "Sending and failing",
+        blocks: [
+          {
+            kind: "text",
+            text: "onSubmit receives the chosen sentiment, or null, and the trimmed message. Return a promise and the button says Sending until it settles. A resolution draws a check, says thanks, clears the form, and closes on its own. A rejection is the failed state: the message stays in the box and Send becomes Try again. onSubmitError hands you the rejection.",
+          },
+          {
+            kind: "text",
+            text: "Send waits until there is a sentiment or a message. Cmd+Enter and Ctrl+Enter send from the message box.",
+          },
+        ],
+      },
+      {
+        id: "sentiments",
+        title: "The sentiment question",
+        blocks: [
+          {
+            kind: "text",
+            text: "Four faces come by default, from Great to Bad, exported as defaultFeedbackSentiments. Pass your own list of { value, label, icon? } to change them, or an empty array to leave the question out.",
+          },
+          {
+            kind: "code",
+            code: `<FeedbackWidget
+  sentiments={[
+    { value: "yes", label: "Yes" },
+    { value: "no", label: "No" },
+  ]}
+  sentimentLabel="Did this page answer your question?"
+  onSubmit={send}
+/>`,
+          },
+        ],
+      },
+      {
+        id: "placement",
+        title: "Placement",
+        blocks: [
+          {
+            kind: "text",
+            text: "It is fixed to the bottom right corner and grows up and to the left from there. Pass a className to move it, or absolute to keep it inside a container. A draft survives closing, so an accidental click outside costs nothing.",
+          },
+        ],
+      },
+    ],
+    props: [
+      [
+        "onSubmit",
+        "(value: FeedbackWidgetValue) => void | Promise<void>",
+        "Sends { sentiment, message }. A rejection is the failed state.",
+      ],
+      ["onSubmitError", "(error: unknown) => void", "Receives the rejection."],
+      [
+        "sentiments (FeedbackSentiment)",
+        "{ value: string; label: string; icon?: ReactNode }[]",
+        "The sentiment choices. Defaults to defaultFeedbackSentiments. An empty array hides the question.",
+      ],
+      [
+        "triggerLabel, title, sentimentLabel, messageLabel, placeholder",
+        "string",
+        "The trigger, the panel heading, and the field labels.",
+      ],
+      [
+        "sendLabel, sendingLabel, retryLabel, closeLabel",
+        "string",
+        "Button copy.",
+      ],
+      [
+        "sentMessage, errorMessage",
+        "string",
+        "The thanks and the failure line.",
+      ],
+      [
+        "data-state (FeedbackWidgetState)",
+        '"closed" | "open" | "sending" | "sent" | "error"',
+        "The step the widget is on, written to the root for styling.",
+      ],
+      ["className", "string", "Classes for placement."],
+      ["...divProps", "HTMLAttributes", "Native div attributes."],
+    ],
+    accessibility:
+      "The trigger is a native button that says it opens a dialog. Open, the panel is a non-modal dialog named by its heading, focus moves to the message box, and Tab cycles inside the panel. Escape closes it and returns focus to the trigger, and so does the automatic close after a successful send. A click outside closes it without moving focus. The sentiments are native radio buttons in a fieldset with a legend, so arrow keys move between them and each face has a visible text label. Sending, the thanks and the failure are announced politely, and Send stays focusable while it is unavailable rather than dropping focus. Reduced motion removes the morph, the spinner's turn and the drawn check.",
+  },
+  {
+    slug: "wheel-picker",
+    kind: "component",
+    name: "Wheel Picker",
+    family: "Controls",
+    summary:
+      "A scrolling wheel for one value out of a long ordered list: an hour, a minute, a year, a size. Several wheels side by side make a time picker.",
+    dependencies: [],
+    install: registryInstallCommand("wheel-picker"),
+    npmImport: packageImport("WheelPicker", "wheel-picker"),
+    usage: `const hours = Array.from({ length: 12 }, (_, index) => ({
+  value: String(index + 1),
+  label: String(index + 1),
+}))
+
+const minutes = Array.from({ length: 12 }, (_, index) => {
+  const minute = String(index * 5).padStart(2, "0")
+  return { value: minute, label: minute }
+})
+
+export function ReminderTime() {
+  const [hour, setHour] = React.useState("7")
+  const [minute, setMinute] = React.useState("30")
+  const [period, setPeriod] = React.useState("AM")
+
+  return (
+    <WheelPickerGroup label="Reminder time">
+      <WheelPicker label="Hour" loop options={hours} value={hour} onValueChange={setHour} />
+      <WheelPicker label="Minute" loop options={minutes} value={minute} onValueChange={setMinute} />
+      <WheelPicker
+        label="AM or PM"
+        options={[
+          { value: "AM", label: "AM" },
+          { value: "PM", label: "PM" },
+        ]}
+        value={period}
+        onValueChange={setPeriod}
+      />
+    </WheelPickerGroup>
+  )
+}`,
+    sections: [
+      {
+        id: "scrolling",
+        title: "The browser does the scrolling",
+        blocks: [
+          {
+            kind: "text",
+            text: "The wheel is an ordinary scroll container with rows snapped to the middle, so a flick on a phone or a trackpad carries the momentum that device already has. A mouse wheel moves it a row at a time, and a mouse can also drag it and throw it a short way. Clicking a row brings it to the middle.",
+          },
+          {
+            kind: "text",
+            text: "The value changes once the wheel comes to rest, not for every row that passes the band, so onValueChange fires once per choice rather than once per frame.",
+          },
+        ],
+      },
+      {
+        id: "loop",
+        title: "Looping",
+        blocks: [
+          {
+            kind: "text",
+            text: "loop runs past the last option back to the first, which suits minutes and hours. The rows are repeated enough times that a hard flick runs out of momentum before it runs out of rows, and the wheel is moved back to the middle copy without a visible jump once it rests. The arrow keys wrap too. Page Up, Page Down, Home and End stop at the ends.",
+          },
+        ],
+      },
+      {
+        id: "group",
+        title: "Several wheels as one value",
+        blocks: [
+          {
+            kind: "text",
+            text: "WheelPickerGroup lines wheels up behind a single selection band and gives the set a name. Left and right arrows move between its wheels. Each wheel still has its own label, value and onValueChange, so the parts of a time are kept and combined however your form wants them.",
+          },
+        ],
+      },
+      {
+        id: "spinbutton",
+        title: "Why it is a spinbutton",
+        blocks: [
+          {
+            kind: "text",
+            text: "Each wheel is a spinbutton with the option's label as its value text, not a listbox. A spinbutton is what VoiceOver on iOS treats as adjustable, so a swipe up or down changes the value the way it does on the native picker, and desktop screen readers read the new label after each arrow key. A listbox leaning on aria-activedescendant is announced unevenly on mobile screen readers, and a wheel is mostly used on phones.",
+          },
+        ],
+      },
+    ],
+    props: [
+      [
+        "options",
+        "readonly WheelPickerOption[]",
+        "The rows, in order, as { value, label }.",
+      ],
+      ["value", "string", "The chosen value, for a controlled wheel."],
+      [
+        "defaultValue",
+        "string",
+        "The starting value. Defaults to the first option.",
+      ],
+      [
+        "onValueChange",
+        "(value: string) => void",
+        "Called once the wheel rests on a new row, or on each key press.",
+      ],
+      ["label", "string", "The accessible name, such as Hour."],
+      ["loop", "boolean", "Runs past the last option back to the first."],
+      [
+        "visibleCount",
+        "number",
+        "Rows on screen at once, made odd so one sits in the middle. Defaults to 5.",
+      ],
+      ["itemHeight", "number", "Row height in pixels. Defaults to 36."],
+      [
+        "disabled",
+        "boolean",
+        "Stops input and removes the wheel from the tab order.",
+      ],
+      [
+        "name",
+        "string",
+        "Submits the chosen value with a form under this name.",
+      ],
+      ["className", "string", "Classes for the wheel, such as a width."],
+      ["...divProps", "HTMLAttributes", "Native div attributes."],
+      [
+        "label (WheelPickerGroup)",
+        "string",
+        "The accessible name for the set, such as Start time.",
+      ],
+      [
+        "visibleCount, itemHeight (WheelPickerGroup)",
+        "number",
+        "Shared by every wheel inside, so their rows line up.",
+      ],
+      [
+        "children (WheelPickerGroup)",
+        "ReactNode",
+        "The wheels, in reading order.",
+      ],
+    ],
+    accessibility:
+      "Each wheel is a focusable spinbutton named by label, with the option's label as its value text. Up and Down move one row, Page Up and Page Down move a window, Home and End go to the ends, and typing jumps to the first option that starts with what was typed, cycling on a repeated letter. Keyboard moves are instant rather than animated. A group is a named group, and Left and Right move between its wheels. The rows are drawn for sighted readers and hidden from assistive technology, which reads the value text instead. Reduced motion lays the drum flat: the rows no longer tilt or shrink, the faded edges remain, and a click or a drag lands without a smooth scroll.",
+  },
+  {
+    slug: "weekly-hours",
+    kind: "component",
+    name: "Weekly Hours",
+    family: "Controls",
+    summary:
+      "Weekly availability, the settings screen of every booking tool. Each day is on or off and holds one or more time ranges, and mistakes are flagged where they are made.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("weekly-hours"),
+    npmImport: packageImport("WeeklyHours", "weekly-hours"),
+    usage: `export function Availability() {
+  const [week, setWeek] = React.useState<WeeklyHoursValue>(savedWeek)
+  const blocked = getWeeklyHoursIssues(week).length > 0
+
+  return (
+    <form onSubmit={() => save(week)}>
+      <WeeklyHours value={week} onValueChange={setWeek} />
+      <button disabled={blocked}>Save</button>
+    </form>
+  )
+}`,
+    sections: [
+      {
+        id: "value",
+        title: "The value",
+        blocks: [
+          {
+            kind: "text",
+            text: "One list of ranges per weekday, keyed by lowercase English day name. Times are 24 hour HH:mm strings whatever clock is shown, and an end of 24:00 is midnight. An empty list means the day is unavailable, so there is no separate flag to keep in step.",
+          },
+          {
+            kind: "code",
+            code: `const week: WeeklyHoursValue = {
+  monday: [{ start: "09:00", end: "17:00" }],
+  tuesday: [
+    { start: "09:00", end: "12:00" },
+    { start: "13:00", end: "17:00" },
+  ],
+  wednesday: [], thursday: [], friday: [], saturday: [], sunday: [],
+}`,
+          },
+        ],
+      },
+      {
+        id: "editing",
+        title: "Switching, adding and copying",
+        blocks: [
+          {
+            kind: "text",
+            text: "Switching a day off folds its ranges away and remembers them, so switching it back on restores them. A day switched on for the first time gets defaultRange, nine to five unless you say otherwise. Add puts a one hour range an hour after the day's last one. Removing the last range switches the day off. Copy sets every day of the week to that day's ranges, including days that were off.",
+          },
+        ],
+      },
+      {
+        id: "validation",
+        title: "Errors where they happen",
+        blocks: [
+          {
+            kind: "text",
+            text: "A range that ends at or before its start, and ranges on one day that run into each other, are marked invalid with a line under the range naming the problem. Nothing is blocked or rearranged while someone is still choosing. getWeeklyHoursIssues returns the same findings as data, so a form can refuse to save a week the editor is flagging.",
+          },
+        ],
+      },
+      {
+        id: "locale",
+        title: "Language, clock and first day",
+        blocks: [
+          {
+            kind: "text",
+            text: "Day names and times come from Intl in locale, or the reader's browser language when it is left out. The clock follows the locale unless hourCycle says h12 or h23, and the week starts on the locale's first day where the browser reports it, Monday otherwise. Pass firstDay to fix it. Server rendering uses en-US until the page hydrates, so pass locale if the server should already render the reader's language.",
+          },
+        ],
+      },
+    ],
+    props: [
+      ["value", "WeeklyHoursValue", "The week, for a controlled editor."],
+      [
+        "defaultValue",
+        "WeeklyHoursValue",
+        "The starting week. Defaults to nine to five, Monday to Friday.",
+      ],
+      [
+        "onValueChange",
+        "(value: WeeklyHoursValue) => void",
+        "Called with the whole week after every change.",
+      ],
+      [
+        "step",
+        "15 | 30",
+        "Minutes between the times on offer. Defaults to 30.",
+      ],
+      ["locale", "string", "Language for day names and times."],
+      ["hourCycle", '"h12" | "h23"', "Forces a 12 or 24 hour clock."],
+      ["firstDay", "Weekday", "The day the list starts on."],
+      [
+        "defaultRange",
+        "TimeRange",
+        "What a day gets when switched on for the first time.",
+      ],
+      [
+        "label",
+        "string",
+        "The accessible name of the editor. Defaults to Weekly hours.",
+      ],
+      ["disabled", "boolean", "Makes every control unavailable."],
+      ["className", "string", "Classes for placement and appearance."],
+      ["...divProps", "HTMLAttributes", "Native div attributes."],
+      [
+        "value (getWeeklyHoursIssues)",
+        "Partial<WeeklyHoursValue>",
+        "Returns { day, index, kind, other? } for every range that ends before it starts or overlaps another.",
+      ],
+    ],
+    accessibility:
+      "The editor is a named group. Each day's switch is a native button with the switch role, named by the day, so it reads as Monday, on. Times are native selects, which open the platform's own picker on phones, named with the day and, when a day has several ranges, their number. Add, copy and remove buttons name the day and the range they act on. An invalid range sets aria-invalid on both selects and links the message as their description, and a polite live region repeats it, along with the result of a copy. Focus moves to a new range's start time, to the neighbouring range after a removal, and to the day's switch when its last range goes. Folded ranges are inert. Reduced motion removes the fold and the switch slide.",
+  },
+  {
+    slug: "quantity-button",
+    kind: "component",
+    name: "Quantity Button",
+    family: "Controls",
+    summary:
+      "An Add button that becomes a stepper in the same footprint once there is something to count, and turns back when the last one is removed.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("quantity-button"),
+    npmImport: packageImport("QuantityButton", "quantity-button"),
+    usage: `export function MenuItem({ item }: { item: Item }) {
+  const cart = useCart()
+
+  return (
+    <li className="flex items-center justify-between">
+      {item.name}
+      <QuantityButton
+        label={item.name}
+        value={cart.count(item.id)}
+        onValueChange={(count) => cart.set(item.id, count)}
+      />
+    </li>
+  )
+}`,
+    sections: [
+      {
+        id: "shape",
+        title: "One footprint, two shapes",
+        blocks: [
+          {
+            kind: "text",
+            text: "At zero it is an Add button. Pressing it sets the count to min and the minus and plus slide out from the middle. At min the minus becomes a trash icon and removes the item, which brings the Add button back. The control is the same width throughout, so a list of items does not shift as things go in and out of the basket.",
+          },
+          {
+            kind: "text",
+            text: "min is both the count Add jumps to and the count where minus turns into remove, so an item sold in pairs uses min={2}. max stops the plus.",
+          },
+        ],
+      },
+      {
+        id: "async",
+        title: "When the basket lives on a server",
+        blocks: [
+          {
+            kind: "text",
+            text: "onValueChange may return a promise. The new count shows at once, marked as pending, and the control reports itself busy until the promise settles. Taps made in the meantime are folded together: once the request settles, only the newest count is sent. A rejection puts the last confirmed count back and says so to screen readers.",
+          },
+          {
+            kind: "code",
+            code: `<QuantityButton
+  label="Mint lemonade"
+  max={4}
+  value={count}
+  onValueChange={async (next) => {
+    await updateBasket(item.id, next)
+    setCount(next)
+  }}
+/>`,
+          },
+        ],
+      },
+      {
+        id: "digits",
+        title: "Rolling digits",
+        blocks: [
+          {
+            kind: "text",
+            text: "Only the digits that change roll, up when the count rises and down when it falls, so 10 to 11 moves the ones and leaves the tens alone. The count fades in and out with the stepper rather than rolling from or to zero. Reduced motion swaps the numbers in place.",
+          },
+        ],
+      },
+    ],
+    props: [
+      [
+        "label",
+        "string",
+        "What is being counted, such as Margherita pizza. Every button name includes it.",
+      ],
+      [
+        "value",
+        "number",
+        "The count, for a controlled button. Zero shows Add.",
+      ],
+      ["defaultValue", "number", "The starting count. Defaults to 0."],
+      [
+        "onValueChange",
+        "(value: number) => void | Promise<void>",
+        "Called with the new count. A promise holds it as pending, and a rejection reverts it.",
+      ],
+      [
+        "min",
+        "number",
+        "The count Add jumps to and where minus becomes remove. Defaults to 1.",
+      ],
+      ["max", "number", "The highest count. Defaults to no limit."],
+      [
+        "addLabel",
+        "string",
+        "The visible text on the Add button. Defaults to Add.",
+      ],
+      ["disabled", "boolean", "Stops every change."],
+      [
+        "data-state",
+        '"empty" | "filled"',
+        "Which shape is showing, written to the root for styling.",
+      ],
+      ["className", "string", "Classes for placement and appearance."],
+      ["...divProps", "HTMLAttributes", "Native div attributes."],
+    ],
+    accessibility:
+      "The control is a group named by label. Add is named Add plus the item. The stepper's buttons are named One fewer, Remove at the minimum, and One more, each with the item. The count is a spinbutton: Up and Right add one, Down and Left take one away and stop at min rather than removing, and Home and End go to min and max. Focus moves to the plus after Add and back to Add after a removal, and only when focus was already inside, so a count changed elsewhere never pulls focus. The hidden shape is out of the tab order and hidden from assistive technology. A polite live region says the new count, the removal, or a refused change. Plus is marked unavailable at max. Reduced motion removes the slide, the fade and the digit roll.",
+  },
+  {
+    slug: "range-histogram",
+    kind: "component",
+    name: "Range Histogram",
+    family: "Controls",
+    summary:
+      "A two-handle range filter drawn over the distribution it filters, so you can see where the results are before you cut them off.",
+    dependencies: [],
+    install: registryInstallCommand("range-histogram"),
+    npmImport: packageImport("RangeHistogram", "range-histogram"),
+    usage: `export function PriceFilter({ listings }: { listings: Listing[] }) {
+  const [range, setRange] = React.useState<[number, number]>([50, 300])
+
+  return (
+    <RangeHistogram
+      label="Price per night"
+      values={listings.map((listing) => listing.price)}
+      value={range}
+      onValueChange={setRange}
+      onValueCommit={(next) => refetch({ minPrice: next[0], maxPrice: next[1] })}
+      step={5}
+      formatValue={(value) => \`$\${value}\`}
+      inputs
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "data",
+        title: "Raw values or counted bins",
+        blocks: [
+          {
+            kind: "text",
+            text: "Pass values when you have the numbers themselves, such as the prices of the listings already on the page. The component groups them into binCount bars and counts the ones inside the range exactly.",
+          },
+          {
+            kind: "text",
+            text: "Pass bins when the server has already counted, which is the usual case for a search over more results than you would send to the browser. Each bin is a start, an end, and a count. The count line is then an estimate wherever a handle sits inside a bin, on the assumption that the bin's items are spread evenly across it. A handle resting on a bin edge gives an exact count.",
+          },
+          {
+            kind: "code",
+            code: `<RangeHistogram
+  label="Duration"
+  bins={facets.duration}
+  min={0}
+  max={180}
+  formatValue={(minutes) => \`\${minutes} min\`}
+  formatCount={(count, total) => \`\${count} of \${total} episodes\`}
+/>`,
+          },
+        ],
+      },
+      {
+        id: "events",
+        title: "Change and commit",
+        blocks: [
+          {
+            kind: "text",
+            text: "onValueChange fires on every movement, so the bars and the count can follow the handle. onValueCommit fires once a drag ends, a key is released, or a typed bound is entered. Fetch on commit, not on change, or a single drag sends a request per pixel.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "RangeHistogramBin",
+        rows: [
+          ["start", "number", "The bin's lower edge, included."],
+          ["end", "number", "The upper edge. Only the last bin includes it."],
+          ["count", "number", "How many results fall in the bin."],
+        ],
+      },
+    ],
+    props: [
+      [
+        "label",
+        "string",
+        "Names the group and both handles, as Label minimum and Label maximum.",
+      ],
+      [
+        "values",
+        "readonly number[]",
+        "The raw values being filtered. The count is exact.",
+      ],
+      [
+        "bins",
+        "readonly RangeHistogramBin[]",
+        "Counts the host already has. Used when values is not given.",
+      ],
+      [
+        "binCount",
+        "number",
+        "How many bars values are grouped into. Defaults to 24.",
+      ],
+      [
+        "min, max",
+        "number",
+        "The ends of the scale. Default to the data's extent.",
+      ],
+      ["step", "number", "The smallest movement. Defaults to 1."],
+      [
+        "largeStep",
+        "number",
+        "One Page Up, Page Down, or Shift+arrow. Defaults to ten steps.",
+      ],
+      [
+        "value, defaultValue (RangeHistogramValue)",
+        "[number, number]",
+        "The selected range, controlled or uncontrolled.",
+      ],
+      [
+        "onValueChange",
+        "(value: RangeHistogramValue) => void",
+        "Fires on every movement.",
+      ],
+      [
+        "onValueCommit",
+        "(value: RangeHistogramValue) => void",
+        "Fires when a drag ends, a key is released, or a typed bound is entered.",
+      ],
+      [
+        "formatValue",
+        "(value: number) => string",
+        "Writes the readout and each handle's aria-valuetext.",
+      ],
+      [
+        "formatCount",
+        "(count: number, total: number) => string",
+        'The line under the chart. Defaults to "128 of 412 results".',
+      ],
+      [
+        "inputs",
+        "boolean",
+        "Shows minimum and maximum number fields under the chart.",
+      ],
+      [
+        "disabled",
+        "boolean",
+        "Takes the handles out of the tab order and ignores input.",
+      ],
+      ["className", "string", "Classes for placement and width."],
+      [
+        "...divProps (RangeHistogramProps)",
+        "HTMLAttributes",
+        "Native div attributes.",
+      ],
+    ],
+    accessibility:
+      "Each handle is a focusable slider with its own name, its current bounds as aria-valuemin and aria-valuemax, and a formatted aria-valuetext, so a screen reader hears $120 rather than 120. The arrow keys move a step, Shift+arrow and Page Up or Page Down move a large step, and Home and End go as far as the other handle allows. The handles cannot cross. The visible count changes as you drag, and the new count is announced once, when the movement is committed, rather than on every step. The bars are decorative and hidden from assistive technology. Each handle has a hit area larger than its 20px dot, and the drag works anywhere on the chart, which picks the nearer handle.",
+  },
+  {
+    slug: "swipe-actions",
+    kind: "component",
+    name: "Swipe Actions",
+    family: "Controls",
+    summary:
+      "List rows that swipe aside to reveal what can be done with them, the way a mail inbox does. Every action is also in a menu.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("swipe-actions"),
+    npmImport: packageImport("SwipeActions", "swipe-actions"),
+    usage: `export function Inbox({ messages }: { messages: Message[] }) {
+  return (
+    <SwipeActions label="Inbox">
+      {messages.map((message) => (
+        <SwipeActionsItem
+          key={message.id}
+          label={message.subject}
+          leading={[
+            { label: "Read", icon: <MailOpen />, tone: "primary", onSelect: () => markRead(message) },
+          ]}
+          trailing={[
+            { label: "Delete", icon: <Trash2 />, tone: "destructive", onSelect: () => remove(message) },
+            { label: "Archive", icon: <Archive />, onSelect: () => archive(message) },
+          ]}
+        >
+          <MessageRow message={message} />
+        </SwipeActionsItem>
+      ))}
+    </SwipeActions>
+  )
+}`,
+    sections: [
+      {
+        id: "gesture",
+        title: "How a swipe resolves",
+        blocks: [
+          {
+            kind: "list",
+            items: [
+              "Swiping right reveals leading. Swiping left reveals trailing. A side with no actions barely moves.",
+              "Let go past half the actions' width, or flick, and the row stays open. Let go short of that and it springs closed.",
+              "Past the actions the row resists, so you can feel the end of them.",
+              "Keep going past about 60 percent of the row and the edge action, the first in its array, takes over the whole revealed area with a quick snap. Let go there and it runs. Phones that support it give a short vibration at that moment.",
+              "Only one row in a list is open at a time. Pressing anywhere else closes it, and the tap that closes a row never reaches the link under it.",
+            ],
+          },
+          {
+            kind: "text",
+            text: "Vertical movement is left to the page, so a list of rows still scrolls normally on a phone. fullSwipe={false} on a row turns the full swipe off where running the edge action by accident would cost too much, and the action then waits for a tap.",
+          },
+        ],
+      },
+      {
+        id: "without-swipe",
+        title: "Without a swipe",
+        blocks: [
+          {
+            kind: "text",
+            text: "A swipe cannot be found with a keyboard, and screen readers on phones take the gesture for themselves. So each row also has a More actions button that lists every action, leading first, in a menu. It is always in the tab order and appears when the row is hovered or the button has keyboard focus. The menu takes the arrow keys, Home, End, and Escape, and gives focus back to the button when it closes.",
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "SwipeAction",
+        rows: [
+          ["label", "string", "The button text, and the menu item's name."],
+          [
+            "icon",
+            "ReactNode",
+            "Drawn above the label. Hidden from assistive technology.",
+          ],
+          [
+            "tone",
+            '"neutral" | "primary" | "destructive"',
+            "The fill behind the action. Defaults to neutral.",
+          ],
+          ["onSelect", "() => void", "Runs the action. The row closes first."],
+        ],
+      },
+    ],
+    props: [
+      ["label", "string", "The accessible name of the list."],
+      ["className", "string", "Classes for the list."],
+      [
+        "label (SwipeActionsItem)",
+        "string",
+        "Names the row in its More actions button and menu.",
+      ],
+      [
+        "leading (SwipeActionsItem)",
+        "readonly SwipeAction[]",
+        "Revealed by swiping right. The first sits at the edge and runs on a full swipe.",
+      ],
+      [
+        "trailing (SwipeActionsItem)",
+        "readonly SwipeAction[]",
+        "Revealed by swiping left. The first sits at the edge and runs on a full swipe.",
+      ],
+      [
+        "fullSwipe (SwipeActionsItem)",
+        "boolean",
+        "Lets a long swipe run the edge action. Defaults to true.",
+      ],
+      [
+        "moreLabel (SwipeActionsItem)",
+        "string",
+        "The menu button's name, placed before the row label. Defaults to More actions.",
+      ],
+      [
+        "children (SwipeActionsItem)",
+        "ReactNode",
+        "The row's content. Links and buttons inside keep working on a tap.",
+      ],
+      [
+        "tone (SwipeActionTone)",
+        '"neutral" | "primary" | "destructive"',
+        "Which theme fill an action uses.",
+      ],
+      [
+        "...ulProps (SwipeActionsProps)",
+        "HTMLAttributes",
+        "Native list attributes.",
+      ],
+      [
+        "...liProps (SwipeActionsItemProps)",
+        "HTMLAttributes",
+        "Native list item attributes.",
+      ],
+    ],
+    accessibility:
+      "The list is a named ul and each row a li. Every action is reachable without a swipe through the row's More actions button, a named button with aria-haspopup that opens a menu of menuitems with arrow key, Home, End, and Escape handling and focus returned on close. The revealed swipe buttons are hidden from assistive technology and out of the tab order until their side is open, so a screen reader never meets buttons it cannot see. Escape closes an open row. With reduced motion the row follows the finger but does not rubber band, and it opens, closes, and commits without animating.",
+  },
+  {
+    slug: "stack-panel",
+    kind: "component",
+    name: "Stack Panel",
+    family: "Wayfinding",
+    summary:
+      "A panel that drills into nested pages the way a phone's settings do. The row you pressed becomes the title of the page it opens.",
+    dependencies: ["lucide-react"],
+    install: registryInstallCommand("stack-panel"),
+    npmImport: packageImport("StackPanel", "stack-panel"),
+    usage: `export function Settings() {
+  return (
+    <StackPanel title="Settings" className="h-[26rem]">
+      <StackPanelItem icon={<Bell />} label="Notifications" detail="On">
+        <NotificationOptions />
+        <StackPanelItem label="Quiet hours" detail="22:00 to 07:00">
+          <QuietHoursForm />
+        </StackPanelItem>
+      </StackPanelItem>
+      <StackPanelItem icon={<Globe />} label="Language" detail="English">
+        <LanguageList />
+      </StackPanelItem>
+      <StackPanelItem label="Version" detail="4.2.0" />
+    </StackPanel>
+  )
+}`,
+    sections: [
+      {
+        id: "tree",
+        title: "Declared as a tree",
+        blocks: [
+          {
+            kind: "text",
+            text: "Each StackPanelItem with children is a row that opens those children as the next page. Items nest as deep as the settings do, and anything else can sit beside them: checkboxes, a form, a paragraph. A page is only rendered once it is opened, and pages underneath stay mounted while covered, so their scroll position and any state inside them survive the trip back.",
+          },
+          {
+            kind: "list",
+            items: [
+              "With children: a row with a chevron that opens a page titled with its label, or with title when that should differ.",
+              "With onSelect and no children: a button row that runs the action, such as Clear cache.",
+              "With neither: a plain row for a value that is only read, such as a version number.",
+            ],
+          },
+          {
+            kind: "text",
+            text: "Give the panel a height with className. Every page fills it and scrolls its own body under a fixed header.",
+          },
+        ],
+      },
+      {
+        id: "motion",
+        title: "The title travels",
+        blocks: [
+          {
+            kind: "text",
+            text: "On a push the row's label moves up into the header and becomes the new page's title, while the page fades in and its content slides a short way from the right. Back runs the same motion in reverse, returning the title to its row. Each takes about a quarter of a second. With reduced motion pages are swapped at once.",
+          },
+        ],
+      },
+    ],
+    props: [
+      ["title", "ReactNode", "The heading of the first page."],
+      [
+        "backLabel",
+        "string",
+        'Read before the previous title on the back button. Defaults to "Back to".',
+      ],
+      ["children", "ReactNode", "The first page: rows and any other content."],
+      [
+        "className",
+        "string",
+        "Classes for size and placement. Set a height here.",
+      ],
+      [
+        "...divProps (StackPanelProps)",
+        "HTMLAttributes",
+        "Native div attributes.",
+      ],
+      [
+        "label (StackPanelItem)",
+        "ReactNode",
+        "The row's text, and the title of the page it opens.",
+      ],
+      [
+        "title (StackPanelItem)",
+        "ReactNode",
+        "A title for the opened page when it should differ from the label.",
+      ],
+      [
+        "detail (StackPanelItem)",
+        "ReactNode",
+        "A value at the end of the row, such as On or English.",
+      ],
+      [
+        "icon (StackPanelItem)",
+        "ReactNode",
+        "Drawn before the label. Hidden from assistive technology.",
+      ],
+      [
+        "value (StackPanelItem)",
+        "string",
+        "A stable id for the page. Defaults to one React generates.",
+      ],
+      [
+        "onSelect (StackPanelItem)",
+        "() => void",
+        "Runs for a row that opens no page.",
+      ],
+      ["disabled (StackPanelItem)", "boolean", "Makes the row unavailable."],
+      ["className (StackPanelItem)", "string", "Classes for the row."],
+      [
+        "children (StackPanelItemProps)",
+        "ReactNode",
+        "The page this row opens. A row without children opens nothing.",
+      ],
+    ],
+    accessibility:
+      "Each page is a section labelled by its own h2. Opening a page moves focus to that heading, and going back returns focus to the row that opened it, so a keyboard or screen reader user never loses their place. Pages underneath are inert while covered. The back button reads as Back to and the previous title, with only the title shown. Escape goes back one page, and so does Backspace unless focus is in a text field or select. On the first page neither key is taken, so a dialog around the panel still closes on Escape. Rows are native buttons at least 44px tall.",
+  },
+  {
+    slug: "link-preview",
+    kind: "component",
+    name: "Link Preview",
+    family: "Wayfinding",
+    summary:
+      "An inline link that shows where it leads before you follow it: an image, the title, a description, and the domain.",
+    dependencies: [],
+    install: registryInstallCommand("link-preview"),
+    npmImport: packageImport("LinkPreview", "link-preview"),
+    usage: `async function loadPreview(href: string) {
+  const response = await fetch(\`/api/unfurl?url=\${encodeURIComponent(href)}\`)
+  if (!response.ok) throw new Error("No preview")
+  return (await response.json()) as LinkPreviewData
+}
+
+export function Note() {
+  return (
+    <p>
+      The{" "}
+      <LinkPreview href="https://developer.mozilla.org/docs/Web/CSS/@media/prefers-reduced-motion" loadPreview={loadPreview}>
+        reduced motion query
+      </LinkPreview>{" "}
+      is worth reading first.
+    </p>
+  )
+}`,
+    sections: [
+      {
+        id: "data",
+        title: "Where the preview comes from",
+        blocks: [
+          {
+            kind: "text",
+            text: "Pass preview when you already have the data. Pass loadPreview to fetch it the first time someone rests on the link. Loading starts as soon as the pointer arrives, so it usually finishes during the open delay, and a skeleton holds the card's shape when it does not. Results are kept per href for the life of the page and shared by every link to the same address. A rejected load is not kept, so the next hover tries again, and the card meanwhile says there is no preview and still shows the domain.",
+          },
+          {
+            kind: "text",
+            text: "Fetching another site's page from the browser is usually blocked, so loadPreview normally calls your own server, which reads the page's Open Graph tags.",
+          },
+        ],
+      },
+      {
+        id: "timing",
+        title: "Hover, focus, and touch",
+        blocks: [
+          {
+            kind: "list",
+            items: [
+              "A pointer has to rest on the link for openDelay, 500ms by default, so a pointer crossing the paragraph opens nothing.",
+              "Leaving waits closeDelay, 250ms by default, and the card sits flush against the link, so the pointer can move onto the card without it closing.",
+              "Keyboard focus opens it after the same delay. Escape and moving focus away close it.",
+              "On touch screens it never opens. A tap follows the link at once, and a long press is left to the browser, which already offers its own preview and menu there.",
+            ],
+          },
+        ],
+      },
+    ],
+    types: [
+      {
+        name: "LinkPreviewData",
+        rows: [
+          ["title", "string", "The page's title."],
+          [
+            "description",
+            "string",
+            "A line or two about the page. Clamped to three lines.",
+          ],
+          [
+            "image",
+            "string",
+            "An image or screenshot URL. The card leaves it out if it fails to load.",
+          ],
+          [
+            "domain",
+            "string",
+            "Shown under the text. Defaults to the link's host name.",
+          ],
+        ],
+      },
+    ],
+    props: [
+      ["href", "string", "Where the link goes."],
+      ["preview", "LinkPreviewData", "Preview data the host already has."],
+      [
+        "loadPreview",
+        "(href: string) => Promise<LinkPreviewData>",
+        "Fetches the preview on first hover or focus. Results are kept per href.",
+      ],
+      [
+        "openDelay",
+        "number",
+        "Milliseconds of rest before the card opens. Defaults to 500.",
+      ],
+      [
+        "closeDelay",
+        "number",
+        "Milliseconds the card waits for the pointer to come back. Defaults to 250.",
+      ],
+      [
+        "loadingLabel, unavailableLabel",
+        "string",
+        "What the card says while loading and when there is nothing to show.",
+      ],
+      ["children", "ReactNode", "The link text."],
+      ["className", "string", "Classes for the link."],
+      [
+        "...anchorProps (LinkPreviewProps)",
+        "AnchorHTMLAttributes",
+        "Native link attributes such as target and rel.",
+      ],
+    ],
+    accessibility:
+      "The link is a native a element and nothing about it changes: its click, its focus, and its keyboard behavior are the browser's. The card is supplementary. It has role tooltip, is attached to the link with aria-describedby only while it is open, and holds nothing interactive, so it never becomes a stop in the tab order. Escape closes it. The image is decorative because the title is printed beside it, and the loading state is named for screen readers. With reduced motion the card appears without its short fade and rise, and the skeleton does not pulse.",
+  },
+  {
+    slug: "sparkline",
+    kind: "component",
+    name: "Sparkline",
+    family: "Charts",
+    summary:
+      "A trend line small enough for a table cell, with the change since the first value and a readout you can move along it.",
+    dependencies: [],
+    install: registryInstallCommand("sparkline"),
+    npmImport: packageImport("Sparkline", "sparkline"),
+    usage: `export function SignupsCell({ days }: { days: Day[] }) {
+  return (
+    <Sparkline
+      data={days.map((day) => day.signups)}
+      labels={days.map((day) => day.label)}
+      label="Signups, last 14 days"
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "change",
+        title: "Which change is good news",
+        blocks: [
+          {
+            kind: "text",
+            text: "The badge compares the latest value with the first one and shows the difference as a signed percentage beside an arrow, so the direction is never carried by colour alone. A move in the wrong direction takes the destructive colour. For latency, error counts, and anything else where falling is the good outcome, set goodDirection to down.",
+          },
+          {
+            kind: "code",
+            code: `<Sparkline
+  data={p95}
+  goodDirection="down"
+  format={{ style: "unit", unit: "millisecond" }}
+  label="Checkout p95 latency"
+/>`,
+          },
+          {
+            kind: "text",
+            text: "When the first value is zero there is no meaningful percentage, so the badge is left out. showChange={false} removes it everywhere.",
+          },
+        ],
+      },
+      {
+        id: "gaps",
+        title: "Gaps, flat lines, and negatives",
+        blocks: [
+          {
+            kind: "text",
+            text: "A null in data is a missing day. The line breaks there instead of drawing a slope through a value nobody recorded, and the readout skips it. A flat series draws through the middle, a single value draws only its dot, and a series that crosses zero gets a hairline at zero.",
+          },
+        ],
+      },
+      {
+        id: "reading",
+        title: "Reading a point",
+        blocks: [
+          {
+            kind: "text",
+            text: "Hovering moves a readout to the nearest point. With the keyboard the chart is one tab stop: the arrow keys step through the points, Home and End jump to the first and the latest. In a long table where every row has a sparkline, scrub={false} takes them out of the tab order.",
+          },
+        ],
+      },
+    ],
+    props: [
+      [
+        "data",
+        "(number | null)[]",
+        "One value per step, oldest first. null is a gap.",
+      ],
+      [
+        "label",
+        "string",
+        "What the line measures. Starts the chart's accessible name.",
+      ],
+      [
+        "labels",
+        "string[]",
+        "A name for each step, such as a date, for the readout and the table.",
+      ],
+      ["area", "boolean", "Fills the space under the line with a light wash."],
+      [
+        "showChange",
+        "boolean",
+        "Shows the change from the first value. Defaults to true.",
+      ],
+      [
+        "goodDirection",
+        '"up" | "down"',
+        "Which way is good news. Defaults to up.",
+      ],
+      [
+        "scrub",
+        "boolean",
+        "Lets a pointer or the arrow keys read any point. Defaults to true.",
+      ],
+      ["table", "boolean", "Adds a visually hidden table of every value."],
+      [
+        "format",
+        "Intl.NumberFormatOptions",
+        "How values are written in the readout, the summary, and the table.",
+      ],
+      ["locale", "string", "The locale for every number."],
+      [
+        "color",
+        "string",
+        "Any CSS colour. Defaults to var(--chart-1), then var(--primary).",
+      ],
+      [
+        "height",
+        "number",
+        "Height of the plot in pixels. Defaults to 32. Width follows the element.",
+      ],
+      [
+        "data-state, data-trend",
+        '"idle" | "scrubbing", "up" | "down" | "flat"',
+        "Written to the root for styling.",
+      ],
+      [
+        "className",
+        "string",
+        "Classes for size and placement. The default width is w-36.",
+      ],
+      ["...divProps", "HTMLAttributes", "Native div attributes."],
+    ],
+    accessibility:
+      "The line is an image whose name is written from the data: the low, the high, the latest value, the change since the first value, and how many points are missing. A slider sits over it as a single tab stop, and its value text names the point being read, such as Tue: 1,204, so the readout a pointer sees is also what a screen reader hears. The change badge pairs its colour with an arrow and a sign. table adds a hidden table of every value for anyone who wants the numbers rather than the shape.",
+  },
+  {
+    slug: "heat-calendar",
+    kind: "component",
+    name: "Heat Calendar",
+    family: "Charts",
+    summary:
+      "A year of daily counts laid out as weeks, with a tooltip on every day and arrow keys that move through them.",
+    dependencies: [],
+    install: registryInstallCommand("heat-calendar"),
+    npmImport: packageImport("HeatCalendar", "heat-calendar"),
+    usage: `export function Commits({ days }: { days: HeatCalendarDay[] }) {
+  return (
+    <HeatCalendar
+      data={days}
+      label="Commits per day"
+      unit={{ one: "commit", other: "commits" }}
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "dates",
+        title: "Dates are days, read in UTC",
+        blocks: [
+          {
+            kind: "text",
+            text: "Each entry is a calendar day written as YYYY-MM-DD and a count. Days are read and named in UTC, so a day never shifts by one because the reader's clock is in another time zone. Bucket your events into days on the server, in whatever time zone your product counts in, and pass the result. Two entries for the same day are added together.",
+          },
+          {
+            kind: "code",
+            code: `<HeatCalendar
+  data={[
+    { date: "2026-03-02", count: 4 },
+    { date: "2026-03-03", count: 12 },
+  ]}
+  start="2026-01-01"
+  end="2026-03-31"
+/>`,
+            caption:
+              "Without start and end it shows the 52 weeks up to the latest day in the data.",
+          },
+        ],
+      },
+      {
+        id: "locale",
+        title: "Week start and names",
+        blocks: [
+          {
+            kind: "text",
+            text: "Month and weekday names come from Intl in the given locale, and so does the first day of the week where the browser reports it. weekStart overrides it, with 0 for Sunday. unit names what is being counted, in its singular and plural forms, for the cell names and the tooltip.",
+          },
+        ],
+      },
+      {
+        id: "intensity",
+        title: "How the shades are chosen",
+        blocks: [
+          {
+            kind: "text",
+            text: "A day with nothing is drawn in the muted colour. Every other day falls into one of four steps by its share of the busiest day in range, each step the chart colour mixed further into the background. Because the mix is with the background, the scale works in a dark theme without a second palette.",
+          },
+        ],
+      },
+      {
+        id: "narrow",
+        title: "On a narrow screen",
+        blocks: [
+          {
+            kind: "text",
+            text: "The weeks scroll sideways while the weekday labels stay put, and the scroll starts at the newest week, since that is usually the one being checked.",
+          },
+        ],
+      },
+    ],
+    props: [
+      [
+        "data",
+        "HeatCalendarDay[]",
+        "Daily counts as { date, count }, with date as YYYY-MM-DD.",
+      ],
+      [
+        "date, count (HeatCalendarDay)",
+        "string, number",
+        "One calendar day in UTC and its count.",
+      ],
+      [
+        "start",
+        "string",
+        "First day shown. Defaults to 52 weeks before the end.",
+      ],
+      [
+        "end",
+        "string",
+        "Last day shown. Defaults to the latest day in the data, or today.",
+      ],
+      [
+        "weekStart",
+        "number",
+        "First row, 0 for Sunday. Defaults to the locale's first day of the week.",
+      ],
+      ["locale", "string", "The locale for dates, weekdays, and numbers."],
+      [
+        "unit",
+        "{ one: string; other: string }",
+        "What is counted. Defaults to contribution and contributions.",
+      ],
+      [
+        "label",
+        "string",
+        "The accessible name of the grid. Defaults to Activity.",
+      ],
+      [
+        "color",
+        "string",
+        "Any CSS colour. Defaults to var(--chart-1), then var(--primary).",
+      ],
+      ["className", "string", "Classes for placement."],
+      ["...divProps", "HTMLAttributes", "Native div attributes."],
+    ],
+    accessibility:
+      "The calendar is a grid with one row per weekday, each row headed by the weekday's full name. Only one day is a tab stop. The up and down arrows move by a day, left and right by a week, Home and End to the first and last week on that weekday, and Ctrl+Home and Ctrl+End to the first and last day. Every day is named in full, such as 12 contributions on Tuesday, March 3, 2026, so the shade is never the only way to read it. The tooltip repeats that for pointer and keyboard users and closes on Escape. Month labels and the legend are decoration and hidden from assistive technology.",
+  },
+  {
+    slug: "metric-card",
+    kind: "component",
+    name: "Metric Card",
+    family: "Charts",
+    summary:
+      "A KPI card whose chart you can run along to read any day. Let go and the headline goes back to the total.",
+    dependencies: [],
+    install: registryInstallCommand("metric-card"),
+    npmImport: packageImport("MetricCard", "metric-card"),
+    usage: `export function Volume() {
+  const [period, setPeriod] = useState("30d")
+  const { days, previousTotal } = useVolume(period)
+
+  return (
+    <MetricCard
+      label="Gross volume"
+      data={days}
+      previous={previousTotal}
+      format={{ style: "currency", currency: "USD" }}
+      periods={[
+        { value: "7d", label: "7d" },
+        { value: "30d", label: "30d" },
+        { value: "90d", label: "90d" },
+      ]}
+      period={period}
+      onPeriodChange={setPeriod}
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "headline",
+        title: "The headline and the change",
+        blocks: [
+          {
+            kind: "text",
+            text: "The headline is the sum of the days unless you pass value, which is what you want for a rate or an average. previous is the same measure for the period before. The change is shown as a signed percentage with an arrow, and takes the destructive colour only when it moves against goodDirection.",
+          },
+          {
+            kind: "code",
+            code: `<MetricCard
+  label="Conversion"
+  data={days}
+  value={0.034}
+  previous={0.031}
+  format={{ style: "percent", maximumFractionDigits: 1 }}
+/>`,
+          },
+        ],
+      },
+      {
+        id: "scrubbing",
+        title: "Reading a day",
+        blocks: [
+          {
+            kind: "text",
+            text: "Moving a pointer over the chart, or dragging a finger along it, puts a line on that day and swaps the headline for that day's value, with its date where the change was. Leaving the chart puts the total back. Vertical swipes still scroll the page. With the keyboard the chart is one tab stop: the arrows step by a day, Page Up and Page Down by a week, Home and End to either end, and Escape lets go.",
+          },
+        ],
+      },
+      {
+        id: "periods",
+        title: "Periods",
+        blocks: [
+          {
+            kind: "text",
+            text: "periods draws a segmented control. The card does not fetch anything, so swap data and previous yourself when onPeriodChange fires. It works controlled with period or uncontrolled with defaultPeriod.",
+          },
+        ],
+      },
+      {
+        id: "motion",
+        title: "Motion",
+        blocks: [
+          {
+            kind: "text",
+            text: "When the headline changes, each digit rolls to its new value. While you scrub, the digits change at once so the number keeps up with your hand. With reduced motion every change is immediate.",
+          },
+        ],
+      },
+    ],
+    props: [
+      ["label", "string", "What is measured. Names the card."],
+      [
+        "data",
+        "MetricPoint[]",
+        "One point per day of the current period, oldest first.",
+      ],
+      [
+        "date, value (MetricPoint)",
+        "string, number",
+        "A day as YYYY-MM-DD, shown in UTC, and its value.",
+      ],
+      ["value", "number", "The headline. Defaults to the sum of the data."],
+      [
+        "previous",
+        "number",
+        "The same measure for the period before. Omit it and no change is shown.",
+      ],
+      [
+        "goodDirection",
+        '"up" | "down"',
+        "Which way is good news. Defaults to up.",
+      ],
+      [
+        "comparisonLabel",
+        "string",
+        "Text after the change. Defaults to vs previous period.",
+      ],
+      [
+        "format",
+        "Intl.NumberFormatOptions",
+        "How the headline and every day are written.",
+      ],
+      [
+        "dateFormat",
+        "Intl.DateTimeFormatOptions",
+        "How the day being read is written. Defaults to Tue, Oct 20.",
+      ],
+      ["locale", "string", "The locale for numbers and dates."],
+      [
+        "periods (MetricPeriod)",
+        "{ value: string; label: string }[]",
+        "Draws a segmented control with these choices.",
+      ],
+      ["period", "string", "The selected period, when controlled."],
+      [
+        "defaultPeriod",
+        "string",
+        "The first selected period, when uncontrolled.",
+      ],
+      [
+        "onPeriodChange",
+        "(period: string) => void",
+        "Runs when a period is chosen.",
+      ],
+      [
+        "color",
+        "string",
+        "Any CSS colour. Defaults to var(--chart-1), then var(--primary).",
+      ],
+      [
+        "chartHeight",
+        "number",
+        "Height of the chart in pixels. Defaults to 96.",
+      ],
+      [
+        "data-state",
+        '"idle" | "scrubbing"',
+        "Written to the root for styling.",
+      ],
+      ["className", "string", "Classes for placement and appearance."],
+      ["...divProps", "HTMLAttributes", "Native div attributes."],
+    ],
+    accessibility:
+      "The card is a group named by its label. The headline's accessible text is always the total, so a screen reader is never read a blur of rolling digits. The chart is a slider whose value text names the day and its value, such as Tue, Oct 20: $4,255. The change pairs its colour with an arrow and a sign and is read as Up 6.7% rather than as a symbol. The period control is a radio group with arrow-key movement and a single tab stop.",
+  },
 ] as const
 
 export const componentDocs = entries.map((entry, index) => ({
@@ -11383,6 +13774,11 @@ const familyOrder = [
     "Controls",
     "Familiar inputs with more feedback than usual, and none of it required to operate them.",
     "Familiar inputs, with more feedback than they usually get. None of the personality is load-bearing: every one works with a keyboard, a screen reader, and motion turned off.",
+  ],
+  [
+    "Charts",
+    "Small charts for the numbers a dashboard leads with, drawn in SVG from the theme's own colours.",
+    "Most dashboards need three charts, not thirty: a trend beside a number, a year of activity, and a card you can run a finger along. These draw in plain SVG with no charting library, take their colours from the theme, and can be read with a keyboard or a screen reader as well as a pointer.",
   ],
   [
     "Wayfinding",

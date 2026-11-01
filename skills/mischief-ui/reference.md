@@ -1,6 +1,6 @@
 # Mischief UI catalog
 
-Every component, grouped by family. 117 in total.
+Every component, grouped by family. 137 in total.
 
 Install one with `npx shadcn@latest add Tinkerers-Labs/mischief-ui/<component>`, and read its full
 documentation at `https://ui.tinkererslabs.com/docs/components/<component>.md` before using it.
@@ -40,6 +40,12 @@ The surface an assistant answers through: the thread, the composer, and everythi
 - `source-card`: One retrieved passage: where it came from, what it said, and how well it matched.
 - `presence-field`: An ambient backdrop that carries what the assistant is doing. It changes colour and pace with the state, and settles into each one rather than snapping to it.
 - `stream-glow`: An edge that breathes along a region while tokens land in it, and stops the moment they do.
+- `tool-approval`: Asks before an agent runs a tool. Shows what the call will do, offers Allow once, Always allow and Deny, and leaves a one-line record of the answer.
+- `message-queue`: Keeps follow-ups typed while the agent is busy. They stack above the composer, can be edited, reordered or removed, and go out one at a time when the agent is free.
+- `slash-menu`: A message field that opens a command menu when a word starts with a slash, then spells out the chosen command's arguments and marks the one you are typing.
+- `ghost-text`: An input or textarea that shows a suggested completion right after the caret. Tab takes it, Escape puts it away, and typing the suggested letters keeps it in place.
+- `inline-edit`: Select a span of a document, say how it should change, and watch the replacement stream in beside the struck-out original. Nothing changes until you accept it.
+- `message-branches`: The 2 / 3 switcher on a message that was edited or regenerated, with an overview of every place the conversation forked and which path is on screen.
 
 ## Code
 
@@ -87,6 +93,8 @@ What the page says while it waits, and when there is nothing to show.
 - `shimmering-text`: Words with a light moving across them, for the wait between asking and the first token.
 - `skeleton`: A placeholder the shape of what is coming, so the page does not jump when it arrives.
 - `status-pill`: A dot and a few words: operational, degraded, closed.
+- `status-island`: A small pill at the edge of the screen that reports background work. It reshapes as tasks come and go, opens into the full list, and leaves once everything is done.
+- `notification-stack`: Several notifications kept as one compact stack. It spreads into a readable list on hover, focus or tap, and folds back when you leave.
 
 ## Controls
 
@@ -108,6 +116,21 @@ Familiar inputs with more feedback than usual, and none of it required to operat
 - `combobox`: A field that narrows a list as you type, and holds one choice or several as removable chips.
 - `sortable-list`: A list reordered by dragging a handle, or from the keyboard without one, where every move is announced.
 - `stepper`: Where someone is in something with a beginning and an end, said in words as well as drawn.
+- `undo-button`: An action that looks done at once and only commits after a few seconds. Until then the button is Undo.
+- `feedback-widget`: A button in the corner that opens into a small form: how it is going, a message, and Send. A failed send keeps the text.
+- `wheel-picker`: A scrolling wheel for one value out of a long ordered list: an hour, a minute, a year, a size. Several wheels side by side make a time picker.
+- `weekly-hours`: Weekly availability, the settings screen of every booking tool. Each day is on or off and holds one or more time ranges, and mistakes are flagged where they are made.
+- `quantity-button`: An Add button that becomes a stepper in the same footprint once there is something to count, and turns back when the last one is removed.
+- `range-histogram`: A two-handle range filter drawn over the distribution it filters, so you can see where the results are before you cut them off.
+- `swipe-actions`: List rows that swipe aside to reveal what can be done with them, the way a mail inbox does. Every action is also in a menu.
+
+## Charts
+
+Small charts for the numbers a dashboard leads with, drawn in SVG from the theme's own colours.
+
+- `sparkline`: A trend line small enough for a table cell, with the change since the first value and a readout you can move along it.
+- `heat-calendar`: A year of daily counts laid out as weeks, with a tooltip on every day and arrow keys that move through them.
+- `metric-card`: A KPI card whose chart you can run along to read any day. Let go and the headline goes back to the total.
 
 ## Wayfinding
 
@@ -118,6 +141,8 @@ Knowing where you are in something long, and getting somewhere else quickly.
 - `scroll-to-top-button`: A floating way back after someone has moved down a long page or scroll area. It stays hidden near the top.
 - `pagination`: Page numbers with gaps where the run is broken, as buttons or as your own links.
 - `side-panel`: A pane that comes in from the side: an inspector, a filter set, a row's detail.
+- `stack-panel`: A panel that drills into nested pages the way a phone's settings do. The row you pressed becomes the title of the page it opens.
+- `link-preview`: An inline link that shows where it leads before you follow it: an image, the title, a description, and the domain.
 
 ## Docs
 

@@ -1807,6 +1807,294 @@
       "registryDependencies": ["utils"]
     },
     {
+      "name": "tool-approval",
+      "type": "registry:ui",
+      "title": "Tool Approval",
+      "description": "Asks before an agent runs a tool. Shows what the call will do, offers Allow once, Always allow and Deny, and leaves a one-line record of the answer.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/tool-approval/tool-approval.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "permission", "dialog"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "message-queue",
+      "type": "registry:ui",
+      "title": "Message Queue",
+      "description": "Keeps follow-ups typed while the agent is busy. They stack above the composer, can be edited, reordered or removed, and go out one at a time when the agent is free.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/message-queue/message-queue.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "chat", "agent", "reorder"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "slash-menu",
+      "type": "registry:ui",
+      "title": "Slash Menu",
+      "description": "A message field that opens a command menu when a word starts with a slash, then spells out the chosen command's arguments and marks the one you are typing.",
+      "files": [
+        {
+          "path": "registry/default/slash-menu/slash-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "chat", "command", "input"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "ghost-text",
+      "type": "registry:ui",
+      "title": "Ghost Text",
+      "description": "An input or textarea that shows a suggested completion right after the caret. Tab takes it, Escape puts it away, and typing the suggested letters keeps it in place.",
+      "files": [
+        {
+          "path": "registry/default/ghost-text/ghost-text.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "input", "form", "autocomplete", "agent"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "inline-edit",
+      "type": "registry:ui",
+      "title": "Inline Edit",
+      "description": "Select a span of a document, say how it should change, and watch the replacement stream in beside the struck-out original. Nothing changes until you accept it.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/inline-edit/inline-edit.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "agent", "editor", "streaming", "review"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "message-branches",
+      "type": "registry:ui",
+      "title": "Message Branches",
+      "description": "The 2 / 3 switcher on a message that was edited or regenerated, with an overview of every place the conversation forked and which path is on screen.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/message-branches/message-branches.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ai", "chat", "navigation", "tree", "agent"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "undo-button",
+      "type": "registry:ui",
+      "title": "Undo Button",
+      "description": "An action that looks done at once and only commits after a few seconds. Until then the button is Undo.",
+      "files": [
+        {
+          "path": "registry/default/undo-button/undo-button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["button", "control", "feedback", "form"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "status-island",
+      "type": "registry:ui",
+      "title": "Status Island",
+      "description": "A small pill at the edge of the screen that reports background work. It reshapes as tasks come and go, opens into the full list, and leaves once everything is done.",
+      "files": [
+        {
+          "path": "registry/default/status-island/status-island.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["status", "progress", "feedback", "overlay"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "notification-stack",
+      "type": "registry:ui",
+      "title": "Notification Stack",
+      "description": "Several notifications kept as one compact stack. It spreads into a readable list on hover, focus or tap, and folds back when you leave.",
+      "files": [
+        {
+          "path": "registry/default/notification-stack/notification-stack.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["notification", "list", "feedback", "motion"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "feedback-widget",
+      "type": "registry:ui",
+      "title": "Feedback Widget",
+      "description": "A button in the corner that opens into a small form: how it is going, a message, and Send. A failed send keeps the text.",
+      "files": [
+        {
+          "path": "registry/default/feedback-widget/feedback-widget.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["form", "feedback", "dialog", "control"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "wheel-picker",
+      "type": "registry:ui",
+      "title": "Wheel Picker",
+      "description": "A scrolling wheel for one value out of a long ordered list: an hour, a minute, a year, a size. Several wheels side by side make a time picker.",
+      "files": [
+        {
+          "path": "registry/default/wheel-picker/wheel-picker.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["form", "input", "picker", "control"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "weekly-hours",
+      "type": "registry:ui",
+      "title": "Weekly Hours",
+      "description": "Weekly availability, the settings screen of every booking tool. Each day is on or off and holds one or more time ranges, and mistakes are flagged where they are made.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/weekly-hours/weekly-hours.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["form", "schedule", "time", "control"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "quantity-button",
+      "type": "registry:ui",
+      "title": "Quantity Button",
+      "description": "An Add button that becomes a stepper in the same footprint once there is something to count, and turns back when the last one is removed.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/quantity-button/quantity-button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["button", "form", "input", "control"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "range-histogram",
+      "type": "registry:ui",
+      "title": "Range Histogram",
+      "description": "A two-handle range filter drawn over the distribution it filters, so you can see where the results are before you cut them off.",
+      "files": [
+        {
+          "path": "registry/default/range-histogram/range-histogram.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["form", "slider", "data", "control"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "swipe-actions",
+      "type": "registry:ui",
+      "title": "Swipe Actions",
+      "description": "List rows that swipe aside to reveal what can be done with them, the way a mail inbox does. Every action is also in a menu.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/swipe-actions/swipe-actions.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["list", "drag", "control", "motion"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "stack-panel",
+      "type": "registry:ui",
+      "title": "Stack Panel",
+      "description": "A panel that drills into nested pages the way a phone's settings do. The row you pressed becomes the title of the page it opens.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "registry/default/stack-panel/stack-panel.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["navigation", "layout", "settings", "pages"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "link-preview",
+      "type": "registry:ui",
+      "title": "Link Preview",
+      "description": "An inline link that shows where it leads before you follow it: an image, the title, a description, and the domain.",
+      "files": [
+        {
+          "path": "registry/default/link-preview/link-preview.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["links", "preview", "hover", "navigation"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "sparkline",
+      "type": "registry:ui",
+      "title": "Sparkline",
+      "description": "A trend line small enough for a table cell, with the change since the first value and a readout you can move along it.",
+      "files": [
+        {
+          "path": "registry/default/sparkline/sparkline.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["chart", "data", "statistic", "table"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "heat-calendar",
+      "type": "registry:ui",
+      "title": "Heat Calendar",
+      "description": "A year of daily counts laid out as weeks, with a tooltip on every day and arrow keys that move through them.",
+      "files": [
+        {
+          "path": "registry/default/heat-calendar/heat-calendar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["chart", "data", "statistic", "keyboard"],
+      "registryDependencies": ["utils"]
+    },
+    {
+      "name": "metric-card",
+      "type": "registry:ui",
+      "title": "Metric Card",
+      "description": "A KPI card whose chart you can run along to read any day. Let go and the headline goes back to the total.",
+      "files": [
+        {
+          "path": "registry/default/metric-card/metric-card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["chart", "card", "statistic", "number"],
+      "registryDependencies": ["utils"]
+    },
+    {
       "name": "accordion-demo",
       "type": "registry:example",
       "title": "Accordion Demo",
@@ -2336,6 +2624,21 @@
       ]
     },
     {
+      "name": "feedback-widget-demo",
+      "type": "registry:example",
+      "title": "Feedback Widget Demo",
+      "description": "A worked example of Feedback Widget: A button in the corner that opens into a small form: how it is going, a message, and Send. A failed send keeps the text.",
+      "files": [
+        {
+          "path": "components/demos/feedback-widget-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/feedback-widget.json"
+      ]
+    },
+    {
       "name": "file-thumbnail-demo",
       "type": "registry:example",
       "title": "File Thumbnail Demo",
@@ -2443,6 +2746,19 @@
       ]
     },
     {
+      "name": "ghost-text-demo",
+      "type": "registry:example",
+      "title": "Ghost Text Demo",
+      "description": "A worked example of Ghost Text: An input or textarea that shows a suggested completion right after the caret. Tab takes it, Escape puts it away, and typing the suggested letters keeps it in place.",
+      "files": [
+        {
+          "path": "components/demos/ghost-text-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/ghost-text.json"]
+    },
+    {
       "name": "grain-overlay-demo",
       "type": "registry:example",
       "title": "Grain Overlay Demo",
@@ -2455,6 +2771,21 @@
       ],
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/grain-overlay.json"
+      ]
+    },
+    {
+      "name": "heat-calendar-demo",
+      "type": "registry:example",
+      "title": "Heat Calendar Demo",
+      "description": "A worked example of Heat Calendar: A year of daily counts laid out as weeks, with a tooltip on every day and arrow keys that move through them.",
+      "files": [
+        {
+          "path": "components/demos/heat-calendar-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/heat-calendar.json"
       ]
     },
     {
@@ -2536,6 +2867,21 @@
       ]
     },
     {
+      "name": "inline-edit-demo",
+      "type": "registry:example",
+      "title": "Inline Edit Demo",
+      "description": "A worked example of Inline Edit: Select a span of a document, say how it should change, and watch the replacement stream in beside the struck-out original. Nothing changes until you accept it.",
+      "files": [
+        {
+          "path": "components/demos/inline-edit-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/inline-edit.json"
+      ]
+    },
+    {
       "name": "install-command-demo",
       "type": "registry:example",
       "title": "Install Command Demo",
@@ -2611,6 +2957,21 @@
       "registryDependencies": ["https://ui.tinkererslabs.com/r/lightbox.json"]
     },
     {
+      "name": "link-preview-demo",
+      "type": "registry:example",
+      "title": "Link Preview Demo",
+      "description": "A worked example of Link Preview: An inline link that shows where it leads before you follow it: an image, the title, a description, and the domain.",
+      "files": [
+        {
+          "path": "components/demos/link-preview-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/link-preview.json"
+      ]
+    },
+    {
       "name": "magnetic-tabs-demo",
       "type": "registry:example",
       "title": "Magnetic Tabs Demo",
@@ -2682,6 +3043,21 @@
       ]
     },
     {
+      "name": "message-branches-demo",
+      "type": "registry:example",
+      "title": "Message Branches Demo",
+      "description": "A worked example of Message Branches: The 2 / 3 switcher on a message that was edited or regenerated, with an overview of every place the conversation forked and which path is on screen.",
+      "files": [
+        {
+          "path": "components/demos/message-branches-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/message-branches.json"
+      ]
+    },
+    {
       "name": "message-demo",
       "type": "registry:example",
       "title": "Message Demo",
@@ -2696,6 +3072,21 @@
       "registryDependencies": ["https://ui.tinkererslabs.com/r/message.json"]
     },
     {
+      "name": "message-queue-demo",
+      "type": "registry:example",
+      "title": "Message Queue Demo",
+      "description": "A worked example of Message Queue: Keeps follow-ups typed while the agent is busy. They stack above the composer, can be edited, reordered or removed, and go out one at a time when the agent is free.",
+      "files": [
+        {
+          "path": "components/demos/message-queue-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/message-queue.json"
+      ]
+    },
+    {
       "name": "metaballs-demo",
       "type": "registry:example",
       "title": "Metaballs Demo",
@@ -2707,6 +3098,21 @@
         }
       ],
       "registryDependencies": ["https://ui.tinkererslabs.com/r/metaballs.json"]
+    },
+    {
+      "name": "metric-card-demo",
+      "type": "registry:example",
+      "title": "Metric Card Demo",
+      "description": "A worked example of Metric Card: A KPI card whose chart you can run along to read any day. Let go and the headline goes back to the total.",
+      "files": [
+        {
+          "path": "components/demos/metric-card-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/metric-card.json"
+      ]
     },
     {
       "name": "mic-selector-demo",
@@ -2750,6 +3156,22 @@
         }
       ],
       "registryDependencies": ["https://ui.tinkererslabs.com/r/not-found.json"]
+    },
+    {
+      "name": "notification-stack-demo",
+      "type": "registry:example",
+      "title": "Notification Stack Demo",
+      "description": "A worked example of Notification Stack: Several notifications kept as one compact stack. It spreads into a readable list on hover, focus or tap, and folds back when you leave.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "components/demos/notification-stack-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/notification-stack.json"
+      ]
     },
     {
       "name": "number-ticker-demo",
@@ -2876,6 +3298,21 @@
       ]
     },
     {
+      "name": "quantity-button-demo",
+      "type": "registry:example",
+      "title": "Quantity Button Demo",
+      "description": "A worked example of Quantity Button: An Add button that becomes a stepper in the same footprint once there is something to count, and turns back when the last one is removed.",
+      "files": [
+        {
+          "path": "components/demos/quantity-button-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/quantity-button.json"
+      ]
+    },
+    {
       "name": "questionnaire-demo",
       "type": "registry:example",
       "title": "Questionnaire Demo",
@@ -2888,6 +3325,21 @@
       ],
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/questionnaire.json"
+      ]
+    },
+    {
+      "name": "range-histogram-demo",
+      "type": "registry:example",
+      "title": "Range Histogram Demo",
+      "description": "A worked example of Range Histogram: A two-handle range filter drawn over the distribution it filters, so you can see where the results are before you cut them off.",
+      "files": [
+        {
+          "path": "components/demos/range-histogram-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/range-histogram.json"
       ]
     },
     {
@@ -3211,6 +3663,19 @@
       "registryDependencies": ["https://ui.tinkererslabs.com/r/skeleton.json"]
     },
     {
+      "name": "slash-menu-demo",
+      "type": "registry:example",
+      "title": "Slash Menu Demo",
+      "description": "A worked example of Slash Menu: A message field that opens a command menu when a word starts with a slash, then spells out the chosen command's arguments and marks the one you are typing.",
+      "files": [
+        {
+          "path": "components/demos/slash-menu-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/slash-menu.json"]
+    },
+    {
       "name": "sortable-list-demo",
       "type": "registry:example",
       "title": "Sortable List Demo",
@@ -3239,6 +3704,19 @@
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/source-card.json"
       ]
+    },
+    {
+      "name": "sparkline-demo",
+      "type": "registry:example",
+      "title": "Sparkline Demo",
+      "description": "A worked example of Sparkline: A trend line small enough for a table cell, with the change since the first value and a readout you can move along it.",
+      "files": [
+        {
+          "path": "components/demos/sparkline-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": ["https://ui.tinkererslabs.com/r/sparkline.json"]
     },
     {
       "name": "spinner-demo",
@@ -3283,6 +3761,37 @@
       ],
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/spotlight-card.json"
+      ]
+    },
+    {
+      "name": "stack-panel-demo",
+      "type": "registry:example",
+      "title": "Stack Panel Demo",
+      "description": "A worked example of Stack Panel: A panel that drills into nested pages the way a phone's settings do. The row you pressed becomes the title of the page it opens.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "components/demos/stack-panel-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/stack-panel.json"
+      ]
+    },
+    {
+      "name": "status-island-demo",
+      "type": "registry:example",
+      "title": "Status Island Demo",
+      "description": "A worked example of Status Island: A small pill at the edge of the screen that reports background work. It reshapes as tasks come and go, opens into the full list, and leaves once everything is done.",
+      "files": [
+        {
+          "path": "components/demos/status-island-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/status-island.json"
       ]
     },
     {
@@ -3412,6 +3921,22 @@
       ],
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/suggestions.json"
+      ]
+    },
+    {
+      "name": "swipe-actions-demo",
+      "type": "registry:example",
+      "title": "Swipe Actions Demo",
+      "description": "A worked example of Swipe Actions: List rows that swipe aside to reveal what can be done with them, the way a mail inbox does. Every action is also in a menu.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "components/demos/swipe-actions-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/swipe-actions.json"
       ]
     },
     {
@@ -3559,6 +4084,26 @@
       ]
     },
     {
+      "name": "tool-approval-demo",
+      "type": "registry:example",
+      "title": "Tool Approval Demo",
+      "description": "A worked example of Tool Approval: Asks before an agent runs a tool. Shows what the call will do, offers Allow once, Always allow and Deny, and leaves a one-line record of the answer.",
+      "dependencies": ["lucide-react@^1.31.0"],
+      "files": [
+        {
+          "path": "components/demos/tool-approval-demo.tsx",
+          "type": "registry:example"
+        },
+        {
+          "path": "components/demos/restart-button.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/tool-approval.json"
+      ]
+    },
+    {
       "name": "tool-call-demo",
       "type": "registry:example",
       "title": "Tool Call Demo",
@@ -3597,6 +4142,21 @@
       ],
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/transcript-viewer.json"
+      ]
+    },
+    {
+      "name": "undo-button-demo",
+      "type": "registry:example",
+      "title": "Undo Button Demo",
+      "description": "A worked example of Undo Button: An action that looks done at once and only commits after a few seconds. Until then the button is Undo.",
+      "files": [
+        {
+          "path": "components/demos/undo-button-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/undo-button.json"
       ]
     },
     {
@@ -3646,6 +4206,36 @@
       ],
       "registryDependencies": [
         "https://ui.tinkererslabs.com/r/web-preview.json"
+      ]
+    },
+    {
+      "name": "weekly-hours-demo",
+      "type": "registry:example",
+      "title": "Weekly Hours Demo",
+      "description": "A worked example of Weekly Hours: Weekly availability, the settings screen of every booking tool. Each day is on or off and holds one or more time ranges, and mistakes are flagged where they are made.",
+      "files": [
+        {
+          "path": "components/demos/weekly-hours-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/weekly-hours.json"
+      ]
+    },
+    {
+      "name": "wheel-picker-demo",
+      "type": "registry:example",
+      "title": "Wheel Picker Demo",
+      "description": "A worked example of Wheel Picker: A scrolling wheel for one value out of a long ordered list: an hour, a minute, a year, a size. Several wheels side by side make a time picker.",
+      "files": [
+        {
+          "path": "components/demos/wheel-picker-demo.tsx",
+          "type": "registry:example"
+        }
+      ],
+      "registryDependencies": [
+        "https://ui.tinkererslabs.com/r/wheel-picker.json"
       ]
     },
     {

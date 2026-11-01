@@ -5,7 +5,7 @@ description: Find, evaluate, and install playful React components from Mischief 
 
 # Mischief UI
 
-117 accessible React components for shadcn projects, across 11 families. Add only the component that solves the request. Treat each one as owned source code that can be adapted to the project.
+137 accessible React components for shadcn projects, across 12 families. Add only the component that solves the request. Treat each one as owned source code that can be adapted to the project.
 
 ## Finding the right component
 
@@ -13,13 +13,14 @@ Start from the family, then read only what you need. Do not guess a component na
 
 | Family | Components | What it covers |
 | --- | --- | --- |
-| Agent UI | 31 | The surface an assistant answers through: the thread, the composer, and everything it shows while it is working. |
+| Agent UI | 37 | The surface an assistant answers through: the thread, the composer, and everything it shows while it is working. |
 | Code | 5 | Code an agent wrote, ran, or wants to change, and the controls to accept it. |
 | Documents | 13 | Reading a file someone uploaded, marking it up, cutting it into pieces, and pulling structure out of it. |
 | Files | 2 | Getting a file in, and showing what arrived. |
-| Feedback | 7 | What the page says while it waits, and when there is nothing to show. |
-| Controls | 16 | Familiar inputs with more feedback than usual, and none of it required to operate them. |
-| Wayfinding | 5 | Knowing where you are in something long, and getting somewhere else quickly. |
+| Feedback | 9 | What the page says while it waits, and when there is nothing to show. |
+| Controls | 23 | Familiar inputs with more feedback than usual, and none of it required to operate them. |
+| Charts | 3 | Small charts for the numbers a dashboard leads with, drawn in SVG from the theme's own colours. |
+| Wayfinding | 7 | Knowing where you are in something long, and getting somewhere else quickly. |
 | Docs | 5 | The furniture of a documentation site, taken out of this one. |
 | Blocks | 11 | Larger pieces that compose several components into one part of a page. |
 | Scenes | 18 | Backdrops and moments where the drawing is the job, each one taking its colours from the theme it was installed into. |

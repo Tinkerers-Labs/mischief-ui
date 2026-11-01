@@ -1,5 +1,25 @@
 import type { ComponentType } from "react"
 
+import { ToolApprovalDemo } from "@/components/demos/tool-approval-demo"
+import { MessageQueueDemo } from "@/components/demos/message-queue-demo"
+import { SlashMenuDemo } from "@/components/demos/slash-menu-demo"
+import { GhostTextDemo } from "@/components/demos/ghost-text-demo"
+import { InlineEditDemo } from "@/components/demos/inline-edit-demo"
+import { MessageBranchesDemo } from "@/components/demos/message-branches-demo"
+import { UndoButtonDemo } from "@/components/demos/undo-button-demo"
+import { StatusIslandDemo } from "@/components/demos/status-island-demo"
+import { NotificationStackDemo } from "@/components/demos/notification-stack-demo"
+import { FeedbackWidgetDemo } from "@/components/demos/feedback-widget-demo"
+import { WheelPickerDemo } from "@/components/demos/wheel-picker-demo"
+import { WeeklyHoursDemo } from "@/components/demos/weekly-hours-demo"
+import { QuantityButtonDemo } from "@/components/demos/quantity-button-demo"
+import { RangeHistogramDemo } from "@/components/demos/range-histogram-demo"
+import { SwipeActionsDemo } from "@/components/demos/swipe-actions-demo"
+import { StackPanelDemo } from "@/components/demos/stack-panel-demo"
+import { LinkPreviewDemo } from "@/components/demos/link-preview-demo"
+import { SparklineDemo } from "@/components/demos/sparkline-demo"
+import { HeatCalendarDemo } from "@/components/demos/heat-calendar-demo"
+import { MetricCardDemo } from "@/components/demos/metric-card-demo"
 import { CodeBlockDemo } from "@/components/demos/code-block-demo"
 import { DiffViewDemo } from "@/components/demos/diff-view-demo"
 import { ResponseActionsDemo } from "@/components/demos/response-actions-demo"
@@ -444,4 +464,30 @@ export const componentDemos: Record<string, ComponentDemo> = {
     frameClassName: "p-8 md:p-12",
   },
   "scrub-bar": { Demo: ScrubBarDemo, frameClassName: "p-6 md:p-10" },
+  "tool-approval": { Demo: ToolApprovalDemo, frameClassName: "p-4 md:p-8" },
+  "message-queue": { Demo: MessageQueueDemo, frameClassName: "p-4 md:p-8" },
+  "slash-menu": { Demo: SlashMenuDemo, frameClassName: "p-4 md:p-8" },
+  "ghost-text": { Demo: GhostTextDemo, frameClassName: "p-4 md:p-8" },
+  "inline-edit": { Demo: InlineEditDemo, frameClassName: "p-4 md:p-8" },
+  "message-branches": {
+    Demo: MessageBranchesDemo,
+    frameClassName: "p-4 md:p-8",
+  },
+  "undo-button": { Demo: UndoButtonDemo, frameClassName: "p-4 md:p-8" },
+  "status-island": { Demo: StatusIslandDemo, frameClassName: "p-4 md:p-8" },
+  "notification-stack": {
+    Demo: NotificationStackDemo,
+    frameClassName: "p-6 md:p-10",
+  },
+  "feedback-widget": { Demo: FeedbackWidgetDemo, frameClassName: "p-4 md:p-8" },
+  "wheel-picker": { Demo: WheelPickerDemo, frameClassName: "p-6 md:p-10" },
+  "weekly-hours": { Demo: WeeklyHoursDemo, frameClassName: "p-4 md:p-8" },
+  "quantity-button": { Demo: QuantityButtonDemo, frameClassName: "p-4 md:p-8" },
+  "range-histogram": { Demo: RangeHistogramDemo, frameClassName: "p-4 md:p-8" },
+  "swipe-actions": { Demo: SwipeActionsDemo, frameClassName: "p-4 md:p-8" },
+  "stack-panel": { Demo: StackPanelDemo, frameClassName: "p-4 md:p-8" },
+  "link-preview": { Demo: LinkPreviewDemo, frameClassName: "p-6 md:p-10" },
+  sparkline: { Demo: SparklineDemo, frameClassName: "p-4 md:p-8" },
+  "heat-calendar": { Demo: HeatCalendarDemo, frameClassName: "p-4 md:p-8" },
+  "metric-card": { Demo: MetricCardDemo, frameClassName: "p-4 md:p-8" },
 }

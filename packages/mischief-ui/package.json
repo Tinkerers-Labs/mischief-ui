@@ -604,6 +604,106 @@
       "types": "./dist/scrub-bar.d.ts",
       "import": "./dist/scrub-bar.js",
       "require": "./dist/scrub-bar.cjs"
+    },
+    "./tool-approval": {
+      "types": "./dist/tool-approval.d.ts",
+      "import": "./dist/tool-approval.js",
+      "require": "./dist/tool-approval.cjs"
+    },
+    "./message-queue": {
+      "types": "./dist/message-queue.d.ts",
+      "import": "./dist/message-queue.js",
+      "require": "./dist/message-queue.cjs"
+    },
+    "./slash-menu": {
+      "types": "./dist/slash-menu.d.ts",
+      "import": "./dist/slash-menu.js",
+      "require": "./dist/slash-menu.cjs"
+    },
+    "./ghost-text": {
+      "types": "./dist/ghost-text.d.ts",
+      "import": "./dist/ghost-text.js",
+      "require": "./dist/ghost-text.cjs"
+    },
+    "./inline-edit": {
+      "types": "./dist/inline-edit.d.ts",
+      "import": "./dist/inline-edit.js",
+      "require": "./dist/inline-edit.cjs"
+    },
+    "./message-branches": {
+      "types": "./dist/message-branches.d.ts",
+      "import": "./dist/message-branches.js",
+      "require": "./dist/message-branches.cjs"
+    },
+    "./undo-button": {
+      "types": "./dist/undo-button.d.ts",
+      "import": "./dist/undo-button.js",
+      "require": "./dist/undo-button.cjs"
+    },
+    "./status-island": {
+      "types": "./dist/status-island.d.ts",
+      "import": "./dist/status-island.js",
+      "require": "./dist/status-island.cjs"
+    },
+    "./notification-stack": {
+      "types": "./dist/notification-stack.d.ts",
+      "import": "./dist/notification-stack.js",
+      "require": "./dist/notification-stack.cjs"
+    },
+    "./feedback-widget": {
+      "types": "./dist/feedback-widget.d.ts",
+      "import": "./dist/feedback-widget.js",
+      "require": "./dist/feedback-widget.cjs"
+    },
+    "./wheel-picker": {
+      "types": "./dist/wheel-picker.d.ts",
+      "import": "./dist/wheel-picker.js",
+      "require": "./dist/wheel-picker.cjs"
+    },
+    "./weekly-hours": {
+      "types": "./dist/weekly-hours.d.ts",
+      "import": "./dist/weekly-hours.js",
+      "require": "./dist/weekly-hours.cjs"
+    },
+    "./quantity-button": {
+      "types": "./dist/quantity-button.d.ts",
+      "import": "./dist/quantity-button.js",
+      "require": "./dist/quantity-button.cjs"
+    },
+    "./range-histogram": {
+      "types": "./dist/range-histogram.d.ts",
+      "import": "./dist/range-histogram.js",
+      "require": "./dist/range-histogram.cjs"
+    },
+    "./swipe-actions": {
+      "types": "./dist/swipe-actions.d.ts",
+      "import": "./dist/swipe-actions.js",
+      "require": "./dist/swipe-actions.cjs"
+    },
+    "./stack-panel": {
+      "types": "./dist/stack-panel.d.ts",
+      "import": "./dist/stack-panel.js",
+      "require": "./dist/stack-panel.cjs"
+    },
+    "./link-preview": {
+      "types": "./dist/link-preview.d.ts",
+      "import": "./dist/link-preview.js",
+      "require": "./dist/link-preview.cjs"
+    },
+    "./sparkline": {
+      "types": "./dist/sparkline.d.ts",
+      "import": "./dist/sparkline.js",
+      "require": "./dist/sparkline.cjs"
+    },
+    "./heat-calendar": {
+      "types": "./dist/heat-calendar.d.ts",
+      "import": "./dist/heat-calendar.js",
+      "require": "./dist/heat-calendar.cjs"
+    },
+    "./metric-card": {
+      "types": "./dist/metric-card.d.ts",
+      "import": "./dist/metric-card.js",
+      "require": "./dist/metric-card.cjs"
     }
   },
   "scripts": {
