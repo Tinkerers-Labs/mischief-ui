@@ -19,6 +19,43 @@ export type Release = {
 
 export const releases: readonly Release[] = [
   {
+    version: "0.8.14",
+    date: "2026-11-02",
+    components: [
+      "tool-approval",
+      "message-queue",
+      "slash-menu",
+      "ghost-text",
+      "inline-edit",
+      "message-branches",
+      "undo-button",
+      "status-island",
+      "notification-stack",
+      "feedback-widget",
+      "wheel-picker",
+      "weekly-hours",
+      "quantity-button",
+      "range-histogram",
+      "swipe-actions",
+      "stack-panel",
+      "link-preview",
+      "sparkline",
+      "heat-calendar",
+      "metric-card",
+    ],
+    title: "Twenty familiar gaps, and charts",
+    summary:
+      "Tool Call showed what an agent ran but could not ask first. Elastic Slider could pick a range but not show where the results sat inside it. There was no wheel for a long ordered list, no way to take an action back, and no chart at all. This release fills the gaps that kept coming up, and adds a Charts family of three.",
+    changes: [
+      "Agent UI gains six. Tool Approval asks before a tool runs and wants a press and hold when the call is destructive. Message Queue holds follow-ups typed while the agent is busy. Slash Menu opens commands on a slash and marks the argument you are typing. Ghost Text offers a completion after the caret and takes it on Tab. Inline Edit rewrites a selection in place and refuses to apply over text that changed underneath it. Message Branches steps between versions of an edited message.",
+      "Feedback gains Status Island, a pill that reports background work and opens into the full list, and Notification Stack, which spreads a compact pile into a readable list on hover, focus or tap.",
+      "Controls gains Undo Button, which commits only after a grace window that pauses while you hover or focus it. It also gains Feedback Widget, Wheel Picker, Weekly Hours, Quantity Button, Range Histogram, and Swipe Actions, whose every action is also in a keyboard menu.",
+      "Wayfinding gains Stack Panel, which drills into nested pages like a phone's settings and returns focus to the row you came from, and Link Preview, which shows where a link leads on hover or focus and never stands between a tap and the page.",
+      "Charts is a new family: Sparkline, Heat Calendar and Metric Card. They are plain SVG with no charting library, read --chart-1 when the theme defines it and --primary when it does not, and can be read with the arrow keys or a screen reader as well as a pointer.",
+      "None of the twenty needs Motion or Base UI, so each installs with React alone.",
+    ],
+  },
+  {
     version: "0.8.13",
     date: "2026-09-04",
     components: ["save-bar"],
